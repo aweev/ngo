@@ -1,0 +1,194 @@
+/* src/styles/globals.css */
+@import "tailwindcss";
+
+/* Ensure you ran: pnpm add -D tailwindcss-animate */
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * STEP 1: CSS Variables (Runtime)
+ * Brand color themes via [data-brand] (sunset = default, ocean = alternative).
+ * Light/dark mode via `.dark` class combines with brand, giving 4 combos.
+ * BrandProvider may still override --primary/--accent inline for sunset only.
+ */
+:root,
+:root[data-brand="sunset"] {
+  --primary: #D95D39;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1D2129;
+  --secondary-foreground: #FFFFFF;
+  --accent: #F0A202;
+  --accent-foreground: #1D2129;
+
+  --background: #F9F8F6;
+  --foreground: #1D2129;
+
+  --card: #FFFFFF;
+  --card-foreground: #1D2129;
+  --popover: #FFFFFF;
+  --popover-foreground: #1D2129;
+  --muted: #F2F2F0;
+  --muted-foreground: #65676B;
+  --destructive: #dc2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #D95D39;
+
+  --radius: 0.5rem;
+
+  /* Texture Settings */
+  --texture-bogolan-opacity: 0.08;
+  --texture-paper-opacity: 0.12;
+  --texture-woven-opacity: 0.15;
+  --texture-blend-mode: multiply;
+}
+
+/* Ocean Trust — light */
+:root[data-brand="ocean"] {
+  --primary: #0E7C7B;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1D3557;
+  --secondary-foreground: #FFFFFF;
+  --accent: #E9C46A;
+  --accent-foreground: #14342B;
+  --ring: #0E7C7B;
+}
+
+.dark,
+:root[data-brand="sunset"].dark {
+  --background: #111317;
+  --foreground: #F8FAFC;
+  --card: #1D2129;
+  --card-foreground: #F8FAFC;
+  --popover: #1D2129;
+  --popover-foreground: #F8FAFC;
+  --muted: #1e2126;
+  --muted-foreground: #A1A1AA;
+  --destructive: #ef4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #333740;
+  --input: #333740;
+  --ring: #F0A202;
+
+  /* Dark mode texture adjustments */
+  --texture-bogolan-opacity: 0.05;
+  --texture-paper-opacity: 0.08;
+  --texture-blend-mode: screen;
+}
+
+/* Ocean Trust — dark: brighter teal for contrast on dark bg */
+:root[data-brand="ocean"].dark {
+  --primary: #2A9D8F;
+  --primary-foreground: #0B1512;
+  --secondary: #1D3557;
+  --secondary-foreground: #FFFFFF;
+  --accent: #E9C46A;
+  --accent-foreground: #14342B;
+  --ring: #E9C46A;
+}
+
+/* 
+ * STEP 2: Tailwind Configuration (Tokens)
+ */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius: var(--radius);
+
+  /* Brand Aliases */
+  --color-brand-hopeful-clay: var(--primary);
+  --color-brand-radiant-gold: var(--accent);
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans), "Inter", sans-serif;
+  --font-serif: "Lora", serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* 
+ * STEP 3: Utilities (Textures & Typography)
+ */
+@layer utilities {
+  .text-heading1 {
+    @apply font-serif text-[36px] leading-[1.1] md:text-[56px];
+  }
+
+  /* Bogolan (African mud cloth) texture */
+  .bg-texture-bogolan {
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3e%3cg fill='%23D95D39' fill-opacity='0.08'%3e%3cpath d='M30 0c16.569 0 30 13.431 30 30S46.569 60 30 60 0 46.569 0 30 13.431 0 30 0zm0 2C14.536 2 2 14.536 2 30s12.536 28 28 28 28-12.536 28-28S45.464 2 30 2z'/%3e%3cpath d='M15 15h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm10 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zM15 43h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm10 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2z'/%3e%3c/g%3e%3c/svg%3e");
+    background-size: 60px 60px;
+    background-repeat: repeat;
+    opacity: var(--texture-bogolan-opacity);
+    mix-blend-mode: var(--texture-blend-mode);
+    transition: opacity 0.3s ease, mix-blend-mode 0.3s ease;
+  }
+
+  /* Recycled paper texture */
+  .bg-texture-paper {
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3e%3cg fill='%23F0A202' fill-opacity='0.04'%3e%3cpath d='M0 0h40v40H0z'/%3e%3cpath d='M10 5a5 5 0 110 10 5 5 0 010-10zm20 10a5 5 0 110 10 5 5 0 010-10zm-10 10a5 5 0 110 10 5 5 0 010-10z'/%3e%3c/g%3e%3c/svg%3e");
+    background-size: 40px 40px;
+    background-repeat: repeat;
+    opacity: var(--texture-paper-opacity);
+    mix-blend-mode: var(--texture-blend-mode);
+    transition: opacity 0.3s ease, mix-blend-mode 0.3s ease;
+  }
+
+  /* Woven texture overlay */
+  .texture-overlay-woven {
+    position: relative;
+    z-index: 0;
+  }
+
+  .texture-overlay-woven::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3e%3cg fill='%2365676B' fill-opacity='0.06'%3e%3cpath d='M0 0h10v10H0zm10 10h10v10H10z'/%3e%3c/g%3e%3c/svg%3e");
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    pointer-events: none;
+    mix-blend-mode: var(--texture-blend-mode);
+    opacity: var(--texture-woven-opacity);
+  }
+}
+
+/* Ocean brand: retint Bogolan + paper textures to match teal/sand */
+[data-brand="ocean"] .bg-texture-bogolan {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3e%3cg fill='%230E7C7B' fill-opacity='0.08'%3e%3cpath d='M30 0c16.569 0 30 13.431 30 30S46.569 60 30 60 0 46.569 0 30 13.431 0 30 0zm0 2C14.536 2 2 14.536 2 30s12.536 28 28 28 28-12.536 28-28S45.464 2 30 2z'/%3e%3cpath d='M15 15h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm10 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zM15 43h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2zm10 0h2v2h-2zm4 0h2v2h-2zm4 0h2v2h-2z'/%3e%3c/g%3e%3c/svg%3e");
+}
+
+[data-brand="ocean"] .bg-texture-paper {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3e%3cg fill='%23E9C46A' fill-opacity='0.04'%3e%3cpath d='M0 0h40v40H0z'/%3e%3cpath d='M10 5a5 5 0 110 10 5 5 0 010-10zm20 10a5 5 0 110 10 5 5 0 010-10zm-10 10a5 5 0 110 10 5 5 0 010-10z'/%3e%3c/g%3e%3c/svg%3e");
+}

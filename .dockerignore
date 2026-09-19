@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+build
+dist
+coverage
+playwright-report
+test-results
+.turbo
+.env*.local
+.vercel
+*.tsbuildinfo
+.git

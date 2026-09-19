@@ -1,0 +1,1425 @@
+{
+    "Metadata": {
+        "title": "AWE e.V.",
+        "description": "Dignified Growth & Radiant Community. Empowering communities through education, support, and sustainable development."
+    },
+    "NotFound": {
+        "title": "Page Not Found",
+        "description": "The page you are looking for does not exist or has been moved."
+    },
+    "Navigation": {
+        "back_home": "Back to Home",
+        "about": "Our Story",
+        "about_items": {
+            "story": {
+                "label": "Our Story",
+                "desc": "Our history, mission, and theory of change."
+            },
+            "team": {
+                "label": "Leadership & Team",
+                "desc": "Meet the board and staff."
+            },
+            "financials": {
+                "label": "Financials & Trust",
+                "desc": "Transparency reports and audits."
+            },
+            "partners": {
+                "label": "Partners",
+                "desc": "Our ecosystem of supporters."
+            }
+        },
+        "programs": "Programs",
+        "stories": "Impact Stories",
+        "news": "News & Insights",
+        "donate": "Donate Now",
+        "login": "Member Login",
+        "settings": "Settings",
+        "volunteerLogin": "Volunteer Login",
+        "donateNow": "Donate Now",
+        "desc": {
+            "about": "Learn about our mission and history",
+            "programs": "Explore our core initiatives",
+            "stories": "Read success stories from the field",
+            "news": "Latest updates and press releases"
+        },
+        "get_involved": "Get Involved",
+        "involved_items": {
+            "volunteer": {
+                "label": "Volunteer",
+                "desc": "Join the team"
+            },
+            "corporate": {
+                "label": "Partnerships",
+                "desc": "CSR & Business"
+            },
+            "hub": {
+                "label": "Overview",
+                "desc": "All opportunities"
+            }
+        }
+    },
+    "ThemeToggle": {
+        "toggle": "Toggle theme",
+        "change": "Change theme",
+        "label": "Theme",
+        "loading": "Loading theme",
+        "light": {
+            "label": "Light",
+            "description": "Clean & bright"
+        },
+        "dark": {
+            "label": "Dark",
+            "description": "Easy on the eyes"
+        },
+        "system": {
+            "label": "System",
+            "description": "Follow device"
+        },
+        "currentMode": "Current: {mode}",
+        "systemPrefix": "System:",
+        "modes": {
+            "light": "light mode",
+            "dark": "dark mode"
+        }
+    },
+    "BrandTheme": {
+        "label": "Brand theme",
+        "sunset": {
+            "label": "Sunset"
+        },
+        "ocean": {
+            "label": "Ocean"
+        }
+    },
+    "Hero": {
+        "default_headline": "Dignified Growth,",
+        "default_accent": "Radiant Community.",
+        "default_subhead": "We empower communities through education, sustainable development, and unwavering support. Join us in building a future where everyone thrives.",
+        "cta_primary": "Donate Now",
+        "cta_secondary": "Our Story",
+        "trust_1": "Registered Non-Profit",
+        "trust_2": "100% Impact Transparency",
+        "scroll": "Scroll to Explore",
+        "stats_lives": "Lives Touched",
+        "stats_projects": "Active Projects",
+        "stats_countries": "Global Reach",
+        "Floating": {
+            "active_label": "Active",
+            "active_desc": "Projects",
+            "global_label": "Global",
+            "global_desc": "Impact"
+        }
+    },
+    "Impact": {
+        "Ticker": {
+            "gdpr": "GDPR Compliant",
+            "guidestar": "GuideStar Platinum",
+            "audit": "Audited Financials",
+            "registered": "Registered NGO",
+            "secure": "SSL Secure Payment"
+        },
+        "Stats": {
+            "title": "Measurable Change, Real Lives",
+            "track_record": "Our Track Record",
+            "audit_note": "Data audited annually by independent third-party evaluators.",
+            "view_report": "View Transparency Report",
+            "stats_lives": "Lives Touched",
+            "stats_projects": "Active Projects",
+            "stats_countries": "Global Reach"
+        }
+    },
+    "Mission": {
+        "preheadline": "Why We Exist",
+        "headline": "Empowering Communities through Dignity & Action",
+        "description": "We don't just provide aid; we build pathways. From economic empowerment to social integration, our holistic approach ensures that every individual has the tools to write their own success story.",
+        "values": {
+            "economic": "Economic Empowerment",
+            "economic_desc": "Providing skills training and micro-grants to launch sustainable businesses.",
+            "social": "Social Integration",
+            "social_desc": "Building bridges between diverse communities through shared cultural experiences.",
+            "health": "Community Health",
+            "health_desc": "Ensuring physical and mental well-being as the foundation for growth."
+        },
+        "quote": "Dignity is not a gift we give, but a right we uphold."
+    },
+    "Stories": {
+        "Carousel": {
+            "title": "Voices of Change",
+            "subtitle": "Real Stories, Real Impact",
+            "read_story": "Read Full Story"
+        },
+        "Hero": {
+            "headline": "Stories of Dignity & Growth",
+            "subheadline": "Meet the individuals, families, and volunteers shaping our community. Real stories, told in their own words.",
+            "cta": "Submit Your Story"
+        },
+        "Filters": {
+            "search_placeholder": "Search by keyword...",
+            "program_label": "Program",
+            "role_label": "Role",
+            "format_label": "Format",
+            "featured_only": "Show Featured Only",
+            "clear": "Clear All",
+            "Programs": {
+                "all": "All Programs",
+                "education": "Education",
+                "health": "Health",
+                "economic-empowerment": "Economic",
+                "social-integration": "Social"
+            },
+            "Roles": {
+                "all": "All Roles",
+                "beneficiary": "Beneficiary",
+                "volunteer": "Volunteer",
+                "partner": "Partner",
+                "donor": "Donor"
+            },
+            "Formats": {
+                "all": "All Formats",
+                "video": "Video",
+                "audio": "Audio / Podcast",
+                "article": "Article",
+                "photo": "Photo Essay"
+            }
+        },
+        "Featured": {
+            "badge": "Story of the Month",
+            "watch": "Watch Film",
+            "read": "Read Story",
+            "listen": "Listen Now"
+        },
+        "Grid": {
+            "duration": "{minutes}:{seconds}",
+            "listen_badge": "Listen",
+            "impact_interstitial": "These are just a few of the {count} lives impacted this year.",
+            "load_more": "Load More Stories",
+            "no_results": "No stories found matching your criteria."
+        },
+        "Detail": {
+            "context_label": "{program} • {location}",
+            "Player": {
+                "play": "Play Video",
+                "pause": "Pause",
+                "transcript": "Download Transcript",
+                "cc": "Captions"
+            },
+            "Timeline": {
+                "title": "The Journey"
+            },
+            "Impact": {
+                "title": "Key Outcomes"
+            },
+            "Consent": {
+                "notice": "This story is shared with explicit consent. Some names or details may have been anonymized to protect the privacy and dignity of the individuals involved."
+            },
+            "Action": {
+                "title": "Support futures like {name}'s",
+                "donate": "Donate to {program}",
+                "share": "Share Story",
+                "share_success": "Link copied to clipboard"
+            },
+            "Related": {
+                "title": "More Stories from {program}"
+            }
+        }
+    },
+    "Involved": {
+        "title": "Choose Your Path to Impact",
+        "badge": "Join The Movement",
+        "footer_question": "Not sure where to start?",
+        "footer_link": "Chat with us",
+        "Widgets": {
+            "quick_give_label": "Quick Give",
+            "donate_button": "Donate {amount}",
+            "impact_note": "Immediate Impact"
+        },
+        "donor": {
+            "title": "Support the Mission",
+            "desc": "Your contribution fuels direct impact for families in need.",
+            "cta": "Donate Now"
+        },
+        "volunteer": {
+            "title": "Join the Team",
+            "desc": "Share your skills with our community on the ground.",
+            "cta": "Find Opportunities"
+        },
+        "partner": {
+            "title": "Corporate Impact",
+            "desc": "Partner with us for high-impact CSR initiatives.",
+            "cta": "Partner With Us"
+        }
+    },
+    "Events": {
+        "badge": "Calendar",
+        "title": "Upcoming Events",
+        "view_all": "View All Events",
+        "Hub": {
+            "badge": "Calendar",
+            "hero_title": "Upcoming Events",
+            "hero_subtitle": "Join AWE at upcoming gatherings, workshops, and community events. New dates are added as they are confirmed.",
+            "empty_title": "No upcoming events right now",
+            "empty_subtitle": "New gatherings are announced regularly. Check back soon or follow us for updates."
+        },
+        "Detail": {
+            "badge": "Event",
+            "back_to_events": "All Events",
+            "date_label": "Date",
+            "time_label": "Time",
+            "location_label": "Location",
+            "virtual_label": "Online",
+            "capacity_label": "Capacity",
+            "registered_label": "Registered",
+            "register": "Register Now",
+            "details_title": "Event Details",
+            "virtual_event_note": "This event takes place online.",
+            "in_person_note": "This event takes place in person.",
+            "event_type_label": "Event Type",
+            "not_found": "Event not found"
+        }
+    },
+    "News": {
+        "title": "Latest Insights & Updates",
+        "subtitle": "From the Field",
+        "view_all": "View All News",
+        "read_article": "Read Article",
+        "by_author": "By <span>{name}</span>",
+        "fallback": {
+            "t1_title": "New Community Center Opens in Nairobi",
+            "t1_excerpt": "A milestone achievement for our urban development program, providing safe spaces for over 500 youth daily.",
+            "t2_title": "Annual Gala raises €50k for Education",
+            "t2_excerpt": "Thanks to our incredible donors, we can now fund 200 new scholarships for the upcoming academic year.",
+            "t3_title": "Tech Literacy Program Expands",
+            "t3_excerpt": "Partnering with local tech giants to bring coding bootcamps to rural areas, bridging the digital divide."
+        },
+        "Hub": {
+            "hero_title": "The Latest from AWE",
+            "hero_subtitle": "Program updates, thought leadership, and press announcements.",
+            "search_placeholder": "Search articles...",
+            "featured_badge": "Featured Story",
+            "read_full": "Read Full Article",
+            "read_more": "Read More",
+            "load_more": "Load More Articles",
+            "no_results": "No articles found matching your criteria.",
+            "Categories": {
+                "all": "All News",
+                "program-update": "Program Updates",
+                "thought-leadership": "Thought Leadership",
+                "press": "Press Coverage",
+                "event": "Events"
+            }
+        },
+        "Subscribe": {
+            "title": "Don't miss a beat.",
+            "placeholder": "Enter your email",
+            "button": "Subscribe",
+            "privacy": "We send one digest per month. Unsubscribe anytime."
+        },
+        "MediaKit": {
+            "title": "For the Media",
+            "subtitle": "Resources for journalists and partners.",
+            "assets": "Download Brand Assets",
+            "bios": "Executive Bios",
+            "contact": "Press Contact"
+        },
+        "Article": {
+            "breadcrumbs": {
+                "news": "News",
+                "home": "Home"
+            },
+            "meta": {
+                "read_time": "{min} min read",
+                "published": "Published on {date}"
+            },
+            "share": {
+                "title": "Share",
+                "copy": "Copy Link",
+                "copied": "Copied!"
+            },
+            "takeaways": "Key Takeaways",
+            "author": {
+                "role": "Author"
+            },
+            "related": "Read Next"
+        }
+    },
+    "Trust": {
+        "header": "Trusted by Global Partners & Institutions"
+    },
+    "Newsletter": {
+        "title": "Stay Connected to the Cause",
+        "subtitle": "Get weekly updates on our impact, inspiring stories from the field, and exclusive event invitations directly to your inbox.",
+        "badge": "Join Our Impact Newsletter",
+        "placeholder": "Your email address",
+        "subscribe": "Subscribe",
+        "submitting": "Subscribing...",
+        "privacy": "We respect your privacy. Unsubscribe anytime.",
+        "social_proof": "Join thousands of changemakers worldwide",
+        "error_email": "Please enter a valid email address.",
+        "benefits": {
+            "benefit_1": "Weekly impact updates",
+            "benefit_2": "Exclusive community stories",
+            "benefit_3": "Early access to programs"
+        },
+        "Success": {
+            "title": "Success!",
+            "message": "Welcome to our community of changemakers."
+        },
+        "Stats": {
+            "subscribers": "Subscribers",
+            "countries": "Countries",
+            "satisfaction": "Satisfaction"
+        }
+    },
+    "Fallback": {
+        "Hero": {
+            "default_headline": "Dignified Growth,",
+            "default_accent": "Radiant Community.",
+            "default_subhead": "We empower communities through education, sustainable development, and unwavering support. Join us in building a future where everyone thrives.",
+            "cta_primary": "Donate Now",
+            "cta_secondary": "Our Story",
+            "trust_1": "Registered Non-Profit",
+            "trust_2": "100% Impact Transparency",
+            "scroll": "Scroll to Explore",
+            "imageAlt": "Community & Impact"
+        },
+        "Testimonials": {
+            "t1_text": "AWE transformed our entire community through education and sustainable programs.",
+            "t1_author": "Maria Santos",
+            "t1_location": "Kenya",
+            "t2_text": "Hope was restored in our village. We now have access to clean water and education.",
+            "t2_author": "John Kamau",
+            "t2_location": "Uganda",
+            "t3_text": "Education changed everything for my children. They now have opportunities I never had.",
+            "t3_author": "Fatima Al-Rashid",
+            "t3_location": "Jordan"
+        },
+        "Metrics": {
+            "lives": "Lives Touched",
+            "lives_desc": "Direct beneficiaries of our programs",
+            "projects": "Active Projects",
+            "projects_desc": "Completed initiatives across 4 regions",
+            "countries": "Global Reach",
+            "countries_desc": "Active operational hubs",
+            "volunteers": "Volunteers",
+            "volunteers_desc": "Active community members"
+        }
+    },
+    "Footer": {
+        "tagline": "Building bridges between communities through dignified growth and radiant support. A non-profit dedicated to transparency and impact.",
+        "about": {
+            "title": "About Us",
+            "story": "Our Story",
+            "team": "Leadership",
+            "financials": "Financials",
+            "partners": "Partners"
+        },
+        "getInvolved": {
+            "title": "Get Involved",
+            "donate": "Donate",
+            "volunteer": "Volunteer",
+            "corporate": "Corporate Partnerships"
+        },
+        "programs": {
+            "title": "Our Programs",
+            "economic": "Economic Empowerment",
+            "education": "Education",
+            "health": "Health",
+            "social": "Social Integration",
+            "advocacy": "Advocacy"
+        },
+        "resources": {
+            "title": "Resources",
+            "news": "News",
+            "stories": "Stories",
+            "reports": "Reports",
+            "contact": "Contact"
+        },
+        "newsletter": {
+            "title": "Join the Movement",
+            "description": "Subscribe for impact updates.",
+            "placeholder": "Enter your email",
+            "subscribe": "Subscribe"
+        },
+        "legal": {
+            "privacy": "Privacy Policy",
+            "terms": "Terms",
+            "imprint": "Imprint"
+        },
+        "badges": {
+            "nonprofit": "Registered Nonprofit",
+            "verified": "Gold Transparency"
+        },
+        "madeWith": "Made with",
+        "inBerlin": "in Berlin"
+    },
+    "Error": {
+        "title": "Something went wrong",
+        "description": "We apologize for the inconvenience. The application encountered a critical error.",
+        "retry": "Try again",
+        "reload": "Reload Page",
+        "home": "Return Home"
+    },
+    "Common": {
+        "cta_donate": "Donate Now",
+        "cta_learn_more": "Our Story",
+        "scroll": "Scroll",
+        "image_placeholder": "Community & Impact",
+        "explore": "Explore",
+        "impact": "Impact"
+    },
+    "About": {
+        "Hero": {
+            "preheader": "Our Story",
+            "headline": "Founded on the belief that dignity is a human right, not a privilege.",
+            "lead": "What started as a small community initiative has grown into a global movement. We are rewriting the narrative of aid—moving from charity to partnership, from dependency to agency.",
+            "image_alt": "Our journey through the years"
+        },
+        "MissionVision": {
+            "mission_title": "Our Mission",
+            "mission_text": "To provide the tools, training, and networks necessary for communities to build their own sustainable futures.",
+            "vision_title": "Our Vision",
+            "vision_text": "A world where every individual, regardless of their starting point, has the agency to shape their own destiny."
+        },
+        "Timeline": {
+            "title": "Our Journey",
+            "milestones": {
+                "2018": {
+                    "title": "The Spark",
+                    "desc": "Founded in a living room in Berlin, initially focusing on language support for newcomers."
+                },
+                "2020": {
+                    "title": "First Community Center",
+                    "desc": "Opened our doors in Neighborhood X, serving 200 families weekly during the crisis."
+                },
+                "2022": {
+                    "title": "Global Expansion",
+                    "desc": "Launched partnerships in East Africa, shifting focus to economic empowerment."
+                },
+                "2024": {
+                    "title": "Institutional Growth",
+                    "desc": "Achieved GuideStar Platinum status and launched the digital mentorship platform."
+                }
+            }
+        },
+        "Values": {
+            "title": "The Values That Guide Us",
+            "integrity": {
+                "title": "Integrity",
+                "desc": "We act with radical transparency in finances and impact."
+            },
+            "empathy": {
+                "title": "Radical Empathy",
+                "desc": "We listen first, understanding that those closest to the problem hold the solution."
+            },
+            "agency": {
+                "title": "Agency",
+                "desc": "We don't save people; we remove obstacles so they can save themselves."
+            }
+        },
+        "Theory": {
+            "title": "Our Theory of Change",
+            "subtitle": "How we translate resources into lasting impact.",
+            "inputs": "Inputs",
+            "inputs_desc": "Donations, Volunteer Time, expertise.",
+            "activities": "Activities",
+            "activities_desc": "Workshops, Training, Mentorship.",
+            "outputs": "Outputs",
+            "outputs_desc": "Certified skills, Business plans, Connections.",
+            "outcomes": "Outcomes",
+            "outcomes_desc": "Sustainable Jobs, Economic Stability, Dignity.",
+            "sr_desc": "A flow chart showing Inputs leading to Activities, leading to Outputs, finally resulting in Outcomes."
+        },
+        "CTA": {
+            "text": "Meet the people behind the mission.",
+            "button": "View Leadership Team"
+        }
+    },
+    "Team": {
+        "Hero": {
+            "title": "Powered by People",
+            "subtitle": "A diverse coalition of experts, community leaders, and passionate volunteers working toward a shared vision."
+        },
+        "Leadership": {
+            "title": "Executive Leadership",
+            "ed_quote": "We don't lead from above; we lead from within the community."
+        },
+        "Board": {
+            "title": "Board of Directors",
+            "subtitle": " Governance & Strategic Oversight",
+            "role_chair": "Chair of the Board",
+            "role_treasurer": "Treasurer",
+            "role_secretary": "Secretary",
+            "affiliation_label": "External:"
+        },
+        "Staff": {
+            "title": "Key Staff & Coordinators",
+            "filters": {
+                "all": "All",
+                "programs": "Programs",
+                "operations": "Operations",
+                "comms": "Communications"
+            }
+        },
+        "Advisory": {
+            "title": "Advisory Council",
+            "subtitle": "Industry experts guiding our strategic direction."
+        },
+        "Careers": {
+            "title": "Want to join our mission?",
+            "button_jobs": "View Job Openings",
+            "button_volunteer": "Become a Volunteer"
+        }
+    },
+    "Financials": {
+        "Hero": {
+            "title": "Radical Transparency",
+            "subtitle": "We believe every Euro donated represents trust. Here is how we honor that trust.",
+            "badge": "Our Commitment"
+        },
+        "Journey": {
+            "title": "Where Your Money Goes",
+            "subtitle": "Fiscal Year 2024 Allocation",
+            "program": "Program Costs",
+            "management": "Management",
+            "fundraising": "Fundraising",
+            "efficiency": "Program efficiency",
+            "tooltip_efficiency": "85% Efficiency Rate"
+        },
+        "Metrics": {
+            "revenue": "Total Revenue",
+            "efficiency": "Program Efficiency",
+            "efficiency_desc": "of every €1 goes directly to the field",
+            "budget": "Approved Budget"
+        },
+        "Documents": {
+            "title": "Financial Archive",
+            "subtitle": "Download our annual reports and audit statements.",
+            "download": "Download",
+            "size": "PDF • {size}"
+        },
+        "Compliance": {
+            "title": "Verified & Accredited",
+            "subtitle": "We adhere to the strictest international standards for non-profit governance."
+        }
+    },
+    "Partners": {
+        "Hero": {
+            "title": "Stronger Together",
+            "subtitle": "Systemic change requires a coalition. We are proud to stand alongside these visionaries.",
+            "badge": "Our Ecosystem"
+        },
+        "Tiers": {
+            "strategic": "Institutional & Strategic Partners",
+            "strategic_desc": "Major funders and government bodies making our core operations possible.",
+            "corporate": "Corporate Sponsors",
+            "corporate_desc": "Industry leaders driving impact through CSR and innovation.",
+            "community": "Community Allies",
+            "community_desc": "Grassroots organizations we collaborate with on the ground."
+        },
+        "CTA": {
+            "title": "Become a Partner",
+            "benefits_title": "Why Partner With Us?",
+            "benefit_1": "Measurable CSR Impact Reports",
+            "benefit_2": "Employee Volunteering Opportunities",
+            "benefit_3": "Brand Alignment with Global SDGs",
+            "btn_deck": "Download Partnership Deck",
+            "btn_contact": "Contact Partnership Team"
+        }
+    },
+    "Programs": {
+        "Pillars": {
+            "title": "A Holistic Approach to Change",
+            "subtitle": "Our Core Pillars",
+            "learn_more": "Explore Program",
+            "economic": {
+                "title": "Economic Empowerment",
+                "description": "Providing vocational training, micro-grants, and business mentorship to build sustainable livelihoods and financial independence."
+            },
+            "education": {
+                "title": "Education & Youth",
+                "description": "Breaking the cycle of poverty through scholarship programs, digital literacy training, and after-school support for at-risk youth."
+            },
+            "health": {
+                "title": "Health & Wellness",
+                "description": "Ensuring physical and mental well-being through community clinics, nutritional support, and trauma-informed counseling."
+            },
+            "social": {
+                "title": "Social Integration",
+                "description": "Fostering belonging and reducing isolation through cultural exchange programs, language classes, and community events."
+            }
+        },
+        "Overview": {
+            "Hero": {
+                "headline": "A Holistic Approach to Change",
+                "subheadline": "We believe distinct challenges need integrated solutions. Our four pillars work together to build sustainable futures.",
+                "scroll_cta": "Explore Our Pillars"
+            },
+            "Pillars": {
+                "economic-empowerment": "Economic Empowerment",
+                "education": "Education & Youth",
+                "health": "Health & Wellness",
+                "social-integration": "Social Integration",
+                "explore": "Explore Pillar",
+                "desc_economic-empowerment": "Building financial independence through skills and capital.",
+                "desc_education": "Equipping the next generation with tools to thrive.",
+                "desc_health": "Ensuring physical and mental well-being as a foundation.",
+                "desc_social-integration": "Fostering belonging and community resilience."
+            },
+            "Theory": {
+                "title": "The Cycle of Change",
+                "subtitle": "How our programs connect to build resilience",
+                "step_1": "Health Stabilizes Family",
+                "step_2": "Education Empowers Youth",
+                "step_3": "Skills Build Income",
+                "step_4": "Community Creates Safety"
+            },
+            "Impact": {
+                "title": "Cumulative Impact",
+                "metric_1": "Programs Delivered",
+                "metric_2": "Active Projects",
+                "metric_3": "Regions Active",
+                "transparency_link": "View Full Transparency Report"
+            }
+        },
+        "Category": {
+            "breadcrumbs": {
+                "home": "Home",
+                "programs": "Programs"
+            },
+            "ProblemSolution": {
+                "challenge_title": "The Challenge",
+                "solution_title": "Our Approach"
+            },
+            "Projects": {
+                "title": "Current Initiatives",
+                "subtitle": "Projects actively running on the ground right now.",
+                "view_project": "View Project"
+            },
+            "CTA": {
+                "title": "Make a Direct Impact",
+                "donate": "Donate to {category}",
+                "volunteer": "Volunteer in {category}"
+            }
+        },
+        "Categories": {
+            "education": {
+                "title": "Education & Youth",
+                "hero_lead": "Education is the most powerful weapon which you can use to change the world. We provide access, tools, and mentorship.",
+                "challenge": "Over 40% of youth in our target regions lack access to digital literacy training, leaving them behind in the modern economy.",
+                "solution": "We build computer labs, train local teachers, and provide scholarships to ensure no child is left offline.",
+                "coordinator_quote": "Seeing a child write their first line of code is not just about technology; it's about unlocking a future they didn't know existed.",
+                "coordinator_name": "Sarah Jenkins",
+                "coordinator_role": "Head of Education Programs"
+            },
+            "health": {
+                "title": "Health & Wellness",
+                "hero_lead": "Health is the foundation of all growth. Without it, education and economic progress stall.",
+                "challenge": "Preventable diseases and lack of mental health support continue to ravage vulnerable communities.",
+                "solution": "We deploy mobile clinics and train community health workers to provide last-mile care.",
+                "coordinator_quote": "We treat patients, but we also heal communities by restoring their ability to work and learn.",
+                "coordinator_name": "Dr. Amara Okonjo",
+                "coordinator_role": "Medical Director"
+            },
+            "economic-empowerment": {
+                "title": "Economic Empowerment",
+                "hero_lead": "Charity is a band-aid; business is a cure. We build sustainable livelihoods.",
+                "challenge": "Talent is universal, but opportunity is not. Many entrepreneurs lack the seed capital to start.",
+                "solution": "We provide micro-grants and vocational training to turn ideas into income-generating businesses.",
+                "coordinator_quote": "When a woman starts a business, the entire village eats.",
+                "coordinator_name": "John Kamau",
+                "coordinator_role": "Economic Lead"
+            },
+            "social-integration": {
+                "title": "Social Integration",
+                "hero_lead": "Building bridges between cultures to foster belonging and reduce isolation.",
+                "challenge": "Refugees and migrants often face severe isolation, hindering their ability to contribute to society.",
+                "solution": "We create shared spaces for cultural exchange, language learning, and community building.",
+                "coordinator_quote": "A stranger is just a friend you haven't met yet. We create the meeting place.",
+                "coordinator_name": "Elena Rossi",
+                "coordinator_role": "Community Manager"
+            }
+        }
+    },
+    "Project": {
+        "meta_suffix": "AWE e.V. Initiative",
+        "Status": {
+            "not_found": "Project Not Found",
+            "planning": "Planning Phase",
+            "recruiting": "Recruiting Now",
+            "active": "In Progress",
+            "completed": "Completed"
+        },
+        "Sidebar": {
+            "title": "Get Involved",
+            "donate_title": "Fund this Initiative",
+            "donate_desc": "Help us reach our €{goal} goal.",
+            "donate_btn": "Donate to Project",
+            "volunteer_title": "Volunteer Openings",
+            "volunteer_desc": "{count} shifts available this month.",
+            "volunteer_btn": "View Schedule",
+            "apply_title": "Join as Participant",
+            "apply_desc": "Applications open until {date}.",
+            "apply_btn": "Apply Now",
+            "lead_label": "Project Lead"
+        },
+        "Tabs": {
+            "updates": "Field Updates",
+            "story": "The Story",
+            "impact": "Impact Data"
+        },
+        "Progress": {
+            "title": "Project Timeline"
+        },
+        "Related": {
+            "title": "Other Initiatives in {category}"
+        }
+    },
+    "Donation": {
+        "Page": {
+            "title": "Donate to AWE e.V.",
+            "description": "Your contribution creates sustainable change.",
+            "hero_headline": "Your Support Changes Lives.",
+            "hero_subheadline": "Join a community of donors building a future where everyone thrives.",
+            "quote": "Because of you, I can dream again.",
+            "quote_author": "Sarah, Education Program Alumna",
+            "secure_badge": "100% Secure Donation",
+            "tax_badge": "Tax Deductible",
+            "transparency_title": "Financial Transparency",
+            "transparency_desc": "We believe trust is earned. Here is exactly where your money goes.",
+            "faq_title": "Frequently Asked Questions",
+            "matching_title": "Corporate Matching",
+            "matching_desc": "Does your employer match gifts? Search below.",
+            "matching_placeholder": "Search for your company..."
+        },
+        "Widget": {
+            "frequency_monthly": "Give Monthly",
+            "frequency_one_time": "Give Once",
+            "custom_amount": "Other Amount",
+            "impact_label": "Your gift provides:",
+            "impact_25": "School supplies for one child",
+            "impact_50": "Clean water for a family",
+            "impact_100": "Vocational tools for an apprentice",
+            "impact_250": "A digital tablet for a classroom",
+            "impact_default": "Resources where they are needed most",
+            "payment_header": "Payment Details",
+            "email_label": "Email Address",
+            "receipt_check": "I need a tax receipt",
+            "submit_btn": "Donate €{amount}",
+            "secure_footer": "Encrypted & Secure via Stripe"
+        },
+        "FAQ": {
+            "q1": "Can I cancel my monthly donation?",
+            "a1": "Yes, absolutely. You can pause, modify, or cancel your monthly gift at any time via the Donor Portal or by contacting us directly.",
+            "q2": "Is this tax-deductible?",
+            "a2": "Yes. AWE e.V. is a registered non-profit. We send annual donation receipts for tax purposes automatically.",
+            "q3": "Do you accept PayPal?",
+            "a3": "Yes, we accept major Credit Cards, PayPal, Apple Pay, and Google Pay."
+        },
+        "ImpactSlider": {
+            "level_1": "Education Essentials",
+            "level_2": "Clean Water Access",
+            "level_3": "Vocational Toolkit",
+            "level_4": "Digital Classroom",
+            "min_label": "Small Gift",
+            "max_label": "Massive Change"
+        }
+    },
+    "Volunteer": {
+        "Hero": {
+            "headline": "Lend Your Skills. Spark Change.",
+            "subheadline": "Join a community of changemakers. Whether you have 2 hours a week or 2 days a month.",
+            "cta_primary": "View Open Roles",
+            "cta_secondary": "Log In to Portal"
+        },
+        "Benefits": {
+            "community_title": "Global Community",
+            "community_desc": "Connect with like-minded locals and global citizens committed to change.",
+            "skills_title": "Professional Growth",
+            "skills_desc": "Gain real-world experience, leadership skills, and professional mentorship.",
+            "impact_title": "Direct Impact",
+            "impact_desc": "See the tangible results of your time and energy in the communities we serve."
+        },
+        "Roles": {
+            "title": "Find Your Role",
+            "subtitle": "Browse opportunities that match your skills and schedule.",
+            "filters": {
+                "type": "Location",
+                "category": "Category",
+                "commitment": "Commitment",
+                "all": "All"
+            },
+            "card": {
+                "apply": "Apply Now",
+                "urgent": "Urgent"
+            },
+            "empty": {
+                "title": "No matching roles found",
+                "desc": "Try adjusting your filters or sign up for alerts."
+            }
+        },
+        "Journey": {
+            "title": "Your Journey to Impact",
+            "step_1": "Apply",
+            "step_1_desc": "Create your profile",
+            "step_2": "Onboarding",
+            "step_2_desc": "Complete intro wizard",
+            "step_3": "Training",
+            "step_3_desc": "Access our LMS",
+            "step_4": "Action",
+            "step_4_desc": "Book your first shift"
+        },
+        "Testimonials": {
+            "title": "Why We Volunteer"
+        }
+    },
+    "Corporate": {
+        "Hero": {
+            "headline": "Partner for Purpose",
+            "subheadline": "Align your brand with dignified growth. High-impact CSR opportunities for forward-thinking companies.",
+            "cta": "Inquire Now"
+        },
+        "ROI": {
+            "title": "The Business Case for Impact",
+            "engagement_title": "Employee Engagement",
+            "engagement_desc": "Boost team morale and retention through meaningful group volunteering experiences.",
+            "brand_title": "Brand Visibility",
+            "brand_desc": "Reach our diverse, socially conscious audience and strengthen your brand equity.",
+            "sdg_title": "SDG Alignment",
+            "sdg_desc": "Concrete metrics to meet your UN Sustainable Development Goals targets (SDG 1, 4, 8)."
+        },
+        "Tiers": {
+            "title": "Partnership Levels",
+            "subtitle": "Choose the level of engagement that fits your CSR strategy.",
+            "inquire": "Inquire Now",
+            "silver_title": "Impact Partner",
+            "silver_price": "€5k - €10k / year",
+            "gold_title": "Strategic Partner",
+            "gold_price": "€10k - €50k / year",
+            "platinum_title": "Visionary Partner",
+            "platinum_price": "€50k+ / year",
+            "feature_logo": "Logo Placement",
+            "feature_report": "Impact Report",
+            "feature_social": "Social Media Feature",
+            "feature_volunteering": "Team Volunteering Day",
+            "feature_advisory": "Advisory Council Seat",
+            "feature_custom": "Custom Program Design"
+        },
+        "CaseStudy": {
+            "title": "Success Stories"
+        },
+        "Form": {
+            "title": "Start the Conversation",
+            "subtitle": "Tell us about your CSR goals, and we'll design a partnership that works.",
+            "fields": {
+                "company": "Company Name",
+                "contact": "Contact Person",
+                "email": "Work Email",
+                "industry": "Industry",
+                "goals": "What are your CSR goals?",
+                "budget": "Estimated Budget"
+            },
+            "submit": "Request Partnership Deck",
+            "submitting": "Sending...",
+            "success_title": "Request Received",
+            "success_desc": "Our partnerships team will contact you within 24 hours."
+        },
+        "Downloads": {
+            "deck": "Download Partnership Deck (PDF)",
+            "report": "Annual Impact Report 2024"
+        }
+    },
+    "GetInvolved": {
+        "Hub": {
+            "title": "Be the Catalyst for Change",
+            "subtitle": "There are many ways to build a dignified future. Choose the path that matches your capacity to give.",
+            "Cards": {
+                "donate_title": "Make a Donation",
+                "donate_desc": "Fuel our programs with a one-time or monthly financial gift.",
+                "donate_impact": "Immediate funding for tools, books, and medical supplies.",
+                "donate_cta": "Give Now",
+                "volunteer_title": "Volunteer Your Time",
+                "volunteer_desc": "Share your professional skills or lend a hand on the ground.",
+                "volunteer_impact": "Direct mentorship and support for our community members.",
+                "volunteer_cta": "Find Roles",
+                "corporate_title": "Partner as a Business",
+                "corporate_desc": "Align your brand with impact through strategic CSR.",
+                "corporate_impact": "Systemic change through large-scale resource mobilization.",
+                "corporate_cta": "Partner Up"
+            },
+            "Questions": {
+                "title": "Not sure where to start?",
+                "text": "Our team can help you find the best way to contribute based on your interests.",
+                "cta": "Contact Us"
+            }
+        }
+    },
+    "Contact": {
+        "Hero": {
+            "headline": "Let’s Connect.",
+            "subheadline": "Have a question about our programs, partnerships, or donations? We are here to help."
+        },
+        "Channels": {
+            "general_title": "General Inquiries",
+            "general_email": "hello@awe-ev.org",
+            "press_title": "Media Relations",
+            "press_email": "press@awe-ev.org",
+            "visit_title": "Berlin HQ",
+            "visit_address": "Sample Street 123, Berlin",
+            "directions": "Get Directions"
+        },
+        "Form": {
+            "title": "Send a Message",
+            "fields": {
+                "name": "Full Name",
+                "email": "Email Address",
+                "topic": "Topic",
+                "company": "Company Name",
+                "message": "Message",
+                "consent": "I agree to the processing of my data per the Privacy Policy."
+            },
+            "Topics": {
+                "general": "General Inquiry",
+                "donation": "Donation Help",
+                "volunteer": "Volunteering",
+                "partner": "Partnership",
+                "report": "Report an Issue"
+            },
+            "hints": {
+                "volunteer": "Looking for open roles? Check our Volunteer Portal for faster application.",
+                "partner": "Please provide your organization details."
+            },
+            "submit": "Send Message",
+            "submitting": "Sending...",
+            "success_title": "Message Received",
+            "success_desc": "We usually reply within 48 hours."
+        },
+        "FAQ": {
+            "title": "Common Questions",
+            "q1": "How do I get a tax receipt?",
+            "a1": "Tax receipts are sent automatically via email in February for the previous tax year.",
+            "q2": "Can I donate clothes/goods?",
+            "a2": "Currently, we only accept financial contributions to ensure resources are used efficiently on the ground.",
+            "q3": "Where does the money go?",
+            "a3": "85% of all donations go directly to program implementation. View our Financials page for details."
+        },
+        "Map": {
+            "hours_label": "Office Hours",
+            "hours_value": "Mon-Fri, 9am - 5pm",
+            "phone_label": "Phone",
+            "open_maps": "Open in Google Maps"
+        },
+        "Safeguarding": {
+            "text": "Need to report a safeguarding concern anonymously?",
+            "link": "Use our Secure Reporting Channel"
+        }
+    },
+    "Safeguarding": {
+        "Hero": {
+            "title": "Secure Reporting Channel",
+            "subtitle": "A confidential space to report misconduct, fraud, or safety concerns regarding AWE e.V. operations.",
+            "badge": "Confidential & Encrypted"
+        },
+        "Notice": {
+            "title": "What to Report",
+            "text": "Use this channel for serious issues such as corruption, sexual exploitation, harassment, or financial fraud. For general complaints, please use the standard contact form.",
+            "non_retaliation": "We strictly prohibit retaliation against anyone who reports a concern in good faith.",
+            "emergency": "For immediate life-safety emergencies, please contact local authorities (112 in EU) directly."
+        },
+        "Form": {
+            "anonymous_label": "I wish to remain anonymous",
+            "name_label": "Name (Optional)",
+            "email_label": "Email (Optional)",
+            "email_hint": "Provide if you want updates on the investigation.",
+            "category_label": "Category of Concern",
+            "message_label": "Incident Details",
+            "message_placeholder": "Please provide as much detail as possible (dates, locations, names)...",
+            "submit": "Submit Secure Report",
+            "submitting": "Encrypting & Sending...",
+            "success_title": "Report Filed",
+            "success_desc": "Your report has been securely received by our Compliance Officer. Reference ID: {refId}",
+            "anonymous_hint": "Your identity will not be recorded if selected.",
+            "name_placeholder": "Jane Doe",
+            "email_placeholder": "jane@example.com",
+            "select_placeholder": "Select...",
+            "ssl_secure": "This connection is encrypted via SSL (TLS 1.3)",
+            "error_submission": "Submission failed. Please try again.",
+            "validation": {
+                "name_required": "Name required",
+                "email_invalid": "Invalid email",
+                "category_required": "Required",
+                "message_min": "Please provide more detail (min 20 chars)."
+            },
+            "Categories": {
+                "fraud": "Financial Fraud / Corruption",
+                "safeguarding": "Safeguarding / Abuse",
+                "harassment": "Harassment / Discrimination",
+                "security": "Data Security / Privacy Breach",
+                "other": "Other Serious Misconduct"
+            }
+        }
+    },
+    "Legal": {
+        "Imprint": {
+            "title": "Imprint (Impressum)",
+            "operator": "Information pursuant to § 5 TMG",
+            "address_1": "AWE e.V.",
+            "address_2": "Musterstraße 123",
+            "address_3": "10115 Berlin",
+            "address_4": "Germany",
+            "contact": "Contact",
+            "phone_label": "Phone",
+            "email_label": "Email",
+            "registration": "Register Entry",
+            "reg_court": "Registration Court",
+            "reg_number": "Registration Number",
+            "represented_by": "Represented by",
+            "board_members": "Dr. Amara Okonjo (Chairwoman), Elena Rossi (Deputy Chair)",
+            "tax_id": "Tax ID",
+            "vat_id": "Sales Tax ID pursuant to § 27a UstG",
+            "disclaimer_title": "Disclaimer",
+            "disclaimer_text": "Content is provided for information purposes. Liability for links to third-party websites is excluded."
+        },
+        "Privacy": {
+            "title": "Privacy Policy",
+            "intro": "We take the protection of your personal data very seriously.",
+            "section_1_title": "1. Data Collection",
+            "section_1_text": "We collect data only when necessary for the provision of our services...",
+            "section_2_title": "2. Cookies & Analytics",
+            "section_2_text": "We use essential cookies to ensure the website functions correctly...",
+            "section_3_title": "3. Your Rights (GDPR)",
+            "section_3_text": "Under the GDPR, you have the following rights regarding your data:",
+            "rights_list": {
+                "access": "Right to access",
+                "rectification": "Right to rectification",
+                "erasure": "Right to erasure ('Right to be forgotten')"
+            },
+            "section_4_title": "4. Contact Data Protection Officer",
+            "contact_email_label": "Email"
+        },
+        "Terms": {
+            "title": "Terms of Service",
+            "last_updated": "Last Updated: January 1, 2025",
+            "section_1_title": "1. Acceptance of Terms",
+            "section_1_text": "By accessing this website, you agree to be bound by these terms...",
+            "section_2_title": "2. Donations & Refunds",
+            "section_2_text": "Donations are generally non-refundable, except in cases of technical error...",
+            "section_3_title": "3. Intellectual Property",
+            "section_3_text": "All content on this site is property of AWE e.V. unless otherwise stated...",
+            "section_4_title": "4. Limitation of Liability",
+            "section_4_text": "AWE e.V. is not liable for damages arising from the use of this site...",
+            "acceptance_footer": "By using our services, you acknowledge that you have read and understood these terms."
+        }
+    },
+    "Auth": {
+        "Layout": {
+            "alt_impact": "Community Impact Visual",
+            "privacy": "Privacy",
+            "terms": "Terms",
+            "help": "Help",
+            "copyright": "© {year} AWE e.V."
+        },
+        "Login": {
+            "title": "Welcome Back",
+            "subtitle": "Sign in to access your dashboard.",
+            "email_label": "Email Address",
+            "password_label": "Password",
+            "forgot_password": "Forgot Password?",
+            "submit": "Sign In",
+            "loading": "Signing in...",
+            "no_account": "New to AWE e.V.?",
+            "create_account": "Create an account",
+            "magic_link_toggle": "Trouble with passwords? Sign in with a Magic Link.",
+            "magic_link_btn": "Send Magic Link",
+            "or_divider": "Or continue with",
+            "google_btn": "Continue with Google",
+            "facebook_btn": "Continue with Facebook",
+            "secure_badge": "Secure Access",
+            "context_banner": "Please sign in to complete your {action}.",
+            "errors": {
+                "credentials": "Invalid email or password.",
+                "generic": "Something went wrong. Please try again."
+            }
+        },
+        "Testimonials": {
+            "t1": "AWE didn't just give me skills; they gave me the confidence to lead.",
+            "t1_author": "Sarah J., Program Alumni",
+            "t2": "Volunteering here changed my perspective on global impact.",
+            "t2_author": "Mark T., Volunteer",
+            "t3": "Transparency and dignity are at the core of everything they do.",
+            "t3_author": "Elena R., Donor"
+        },
+        "Stats": {
+            "volunteers": "Active Volunteers",
+            "lives": "Lives Impacted",
+            "projects": "Projects Funded"
+        },
+        "Onboarding": {
+            "badge": "Your impact starts here",
+            "title": "How would you like to make a difference?",
+            "subtitle": "Choose the path that fits you best. You can update your preferences later.",
+            "volunteer_title": "I want to volunteer",
+            "volunteer_description": "Share your time, skills, and energy with our community.",
+            "donor_title": "I want to support",
+            "donor_description": "Help fund projects and create lasting change with your contribution.",
+            "already_started": "Already have an account?",
+            "back_to_login": "Sign in",
+            "step_label": "Step {step} of 4",
+            "progress_label": "Onboarding progress",
+            "volunteer_label": "Volunteer",
+            "donor_label": "Supporter",
+            "profile_title": "Tell us about yourself",
+            "profile_subtitle": "A few details help us personalize your experience.",
+            "first_name": "First name",
+            "last_name": "Last name",
+            "experience_label": "Relevant experience",
+            "experience_placeholder": "Share any experience, motivation, or context you would like us to know.",
+            "preferences_title": "Shape your involvement",
+            "preferences_subtitle": "Choose the areas and times that fit your life.",
+            "skills_label": "Skills you would like to share",
+            "availability_label": "When are you usually available?",
+            "causes_label": "Causes you care about",
+            "consent_title": "A clear and respectful start",
+            "consent_subtitle": "Review these permissions before completing your profile.",
+            "waiver_consent": "I agree to follow AWE's volunteer safeguarding and participation guidelines.",
+            "gdpr_consent": "I consent to AWE storing and using my information to manage my account and involvement.",
+            "consent_note": "You can update your preferences and withdraw optional permissions from your account settings.",
+            "review_title": "Review your details",
+            "review_subtitle": "Everything look right? You can go back to make changes.",
+            "review_name": "Name",
+            "review_role": "Your path",
+            "review_preferences": "Interests and availability",
+            "review_consent": "Permissions",
+            "confirmed": "Confirmed",
+            "none": "Not selected",
+            "back": "Back",
+            "continue": "Continue",
+            "finish": "Complete setup",
+            "errors": { "name": "Please enter your first and last name.", "preferences": "Please choose at least one relevant option and availability.", "consent": "Please accept the required permissions to continue." },
+            "complete_title": "You are ready to make an impact",
+            "complete_subtitle": "Your onboarding details are saved. Welcome to the AWE community.",
+            "dashboard": "Go to dashboard",
+            "start_over": "Start over"
+        },
+        "Register": {
+            "title": "Create your Account",
+            "subtitle": "Start your journey with AWE e.V. It takes less than 2 minutes.",
+            "login_link": "Already a member? Log in",
+            "Roles": {
+                "volunteer": "Volunteer",
+                "donor": "Donor",
+                "alumni": "Alumni"
+            },
+            "Social": {
+                "google": "Sign up with Google",
+                "facebook": "Sign up with Facebook",
+                "divider": "Or continue with email"
+            },
+            "Fields": {
+                "first_name": "First Name",
+                "last_name": "Last Name",
+                "email": "Email Address",
+                "email_tip": "Signing up for a Corporate Partnership? Check your email for an invite link instead.",
+                "password": "Password",
+                "password_req": "Min. 8 characters, 1 symbol, 1 number."
+            },
+            "Legal": {
+                "terms_statement": "I agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+                "gdpr": "I consent to the storage of my data for account management purposes (GDPR).",
+                "newsletter": "Send me updates about AWE's impact and upcoming events."
+            },
+            "submit": "Create Account",
+            "submitting": "Creating...",
+            "security_note": "Your data is encrypted and hosted securely in Frankfurt, Germany.",
+            "safeguarding": "Looking for help or social services? Visit our Support Center."
+        },
+        "ForgotPassword": {
+            "title": "Forgot Password?",
+            "subtitle": "Enter the email address associated with your account and we'll send you a link to reset your password.",
+            "email_label": "Email Address",
+            "submit": "Send Reset Link",
+            "submitting": "Sending...",
+            "back_login": "Back to Login",
+            "Success": {
+                "title": "Check Your Inbox",
+                "message": "If an account exists for {email}, we have sent a password reset link. Please check your spam folder if it doesn't appear within 5 minutes.",
+                "open_mail": "Open Email App",
+                "resend": "Resend Link",
+                "resend_wait": "Resend in {seconds}s"
+            },
+            "Footer": {
+                "trouble": "Still having trouble?",
+                "help_center": "Visit our Help Center"
+            }
+        },
+        "ResetPassword": {
+            "title": "Set New Password",
+            "subtitle": "Please choose a strong password for {email}.",
+            "back_login": "Back to Login",
+            "validating": "Verifying secure link...",
+            "password_label": "New Password",
+            "confirm_label": "Confirm New Password",
+            "submit": "Reset Password",
+            "security_notice": "If you didn't request this, contact security@awe-ev.org",
+            "errors": {
+                "match": "Passwords do not match."
+            },
+            "Invalid": {
+                "title": "Link Expired",
+                "desc": "This password reset link is invalid or has already been used.",
+                "button": "Request a New Link"
+            },
+            "Success": {
+                "title": "Password Updated",
+                "desc": "Your account has been secured. You can now log in with your new credentials.",
+                "redirect": "Redirecting to Login in {seconds}s...",
+                "button": "Go to Login Now"
+            },
+            "req_min_chars": "Min 8 chars",
+            "req_uppercase": "Uppercase",
+            "req_number": "Number",
+            "req_symbol": "Symbol"
+        },
+        "MFA": {
+            "title": "Two-Factor Authentication",
+            "subtitle_app": "Enter the 6-digit code from your authenticator app.",
+            "subtitle_recovery": "Enter one of your emergency recovery codes.",
+            "back_login": "Back to Login",
+            "verify_btn": "Verify",
+            "verify_recovery_btn": "Use Recovery Code",
+            "trust_device": "Trust this device for 30 days",
+            "recovery_label": "Recovery Code",
+            "switch_to_recovery": "Use a Recovery Code",
+            "switch_to_app": "Use Authenticator App",
+            "lost_device": "Lost access to your device?",
+            "secure_context": "Encrypted Session",
+            "success": "Verified successfully.",
+            "errors": {
+                "invalid": "Invalid code. Please try again.",
+                "generic": "Verification failed."
+            }
+        },
+        "Invite": {
+            "meta_title": "Accept Invitation",
+            "meta_desc": "Join the team at AWE e.V.",
+            "subtitle": "Invited by {inviter} to join as {role}.",
+            "Invalid": {
+                "title": "Invitation Invalid",
+                "desc": "This link has expired or has already been used. Please ask your administrator for a new one.",
+                "retry": "Refresh Page"
+            },
+            "New": {
+                "title": "Set up your account",
+                "email_verified": "Verified Email",
+                "fname": "First Name",
+                "lname": "Last Name",
+                "password": "Create Password",
+                "consent": "I agree to the confidentiality agreement and terms of service.",
+                "submit": "Accept & Join",
+                "error_generic": "Failed to create account.",
+                "error_required": "Required",
+                "error_password_req": "Min 8 chars, 1 number"
+            },
+            "Existing": {
+                "title": "Welcome back, {name}!",
+                "account_found": "AWE Account Found",
+                "password_label": "Verify Password to Join",
+                "submit": "Log In & Accept",
+                "error_credentials": "Password incorrect or login failed.",
+                "error_required": "Required"
+            },
+            "Footer": {
+                "help": "Need help? Contact the Administrator at"
+            }
+        },
+        "VerifyEmail": {
+            "back_login": "Back to Login",
+            "footer_identity": "AWE e.V. Identity Services",
+            "Success": {
+                "title": "Email Verified!",
+                "subtitle": "Your account is now active. You are being redirected.",
+                "redirect": "Redirecting in {seconds}s...",
+                "button": "Continue to Onboarding"
+            },
+            "Already": {
+                "title": "Already Verified",
+                "subtitle": "It looks like you've already completed this step.",
+                "button": "Go to Dashboard"
+            },
+            "Error": {
+                "expired_title": "Link Expired",
+                "expired_desc": "This verification link is older than 24 hours.",
+                "invalid_title": "Verification Failed",
+                "invalid_desc": "The link is invalid or malformed."
+            },
+            "Resend": {
+                "title": "Request New Link",
+                "email_label": "Enter your email address",
+                "button": "Resend Verification Link",
+                "success": "New link sent! Check your inbox.",
+                "error": "Failed to send link. Please try again."
+            }
+        },
+        "Claim": {
+            "meta_title": "Activate Your Profile",
+            "meta_desc": "Connect your past donation history to a new digital account.",
+            "back_search": "Not you? Search again",
+            "error_required": "Please enter an email or ID.",
+            "error_generic": "Something went wrong. Please try again.",
+            "footer_services": "AWE e.V. Member Services © 2025",
+            "Search": {
+                "title": "Activate Your Profile",
+                "subtitle": "Enter your email or Member ID to locate your legacy record.",
+                "label": "Email Address or Member ID",
+                "submit": "Find My Profile"
+            },
+            "Benefits": {
+                "title": "Why claim my account?",
+                "point_1": "See your full donation history",
+                "point_2": "Download annual tax receipts",
+                "point_3": "Update your contact preferences"
+            },
+            "Found": {
+                "title": "Welcome back, {name}!",
+                "subtitle": "We found a profile linked to {email}.",
+                "privacy_note": "To protect your data, we need to verify your identity before granting access.",
+                "submit": "Send Activation Code"
+            },
+            "NoMatch": {
+                "title": "We couldn't find a match",
+                "desc": "The email or ID provided doesn't match our active records. This might be due to a typo or an outdated email.",
+                "retry": "Search Again",
+                "create_new": "Create a New Account",
+                "contact_support": "Contact Membership Team"
+            },
+            "Success": {
+                "title": "Check Your Inbox",
+                "desc": "We've sent an activation link to your email address. Please click it to set your password and access your account.",
+                "toast": "Activation link sent!",
+                "login_btn": "Return to Login"
+            }
+        },
+        "VerifyEmailInstruction": {
+            "New": {
+                "title": "Check your inbox",
+                "subtitle": "We've sent a verification link to your email address. Please check your inbox (and spam folder) to activate your account."
+            },
+            "Default": {
+                "title": "Verify your Email",
+                "subtitle": "Enter your email address below to receive a new verification link."
+            },
+            "back_login": "Back to Login",
+            "footer_security": "Secure verification via AWE e.V."
+        },
+        "ResendForm": {
+            "email_label": "Email Address",
+            "email_placeholder": "name@example.com",
+            "error_email": "Please enter a valid email address",
+            "submit_btn": "Resend Verification Email",
+            "success_title": "Email Sent",
+            "success_desc": "If an account exists for that address, you will receive a link shortly.",
+            "try_different": "Try a different address",
+            "toast_sent": "Verification email sent!",
+            "toast_error": "Failed to send email. Please try again later."
+        }
+    }
+}
