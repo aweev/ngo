@@ -742,10 +742,6 @@ export async function createPublicDonation(input: {
 
     const reference = `WEB-${Date.now().toString(36).toUpperCase()}`;
 
-    const notesParts: string[] = [];
-    if (email) notesParts.push(`receipt_email: ${email.trim()}`);
-    if (needsReceipt !== undefined) notesParts.push(`tax_receipt: ${needsReceipt}`);
-
     const { error } = await supabase.from('donations').insert({
         organization_id: orgId,
         amount,
@@ -754,7 +750,10 @@ export async function createPublicDonation(input: {
         status: 'pending',
         payment_method: 'online',
         payment_reference: reference,
-        notes: notesParts.join('; ') || null,
+        email: email ? email.trim() : null,
+        donor_name: null,
+        needs_receipt: Boolean(needsReceipt),
+        notes: null,
     });
 
     if (error) {
@@ -806,26 +805,27 @@ export async function createDonationCheckout(input: {
     if (!parsed.success) {
         return { success: false, mode: 'pledge', error: 'Invalid donation details.' };
     }
-    const { amount, currency, type, email, needsReceipt, locale } = parsed.data;
+    const { amount, currency, type, email, fullName, needsReceipt, locale } = parsed.data;
 
     const rate = await enforceRateLimit('checkout');
     if (!rate.ok) return { success: false, mode: 'pledge', error: rate.error };
 
     const supabase = await createSupabaseServerClient();
-    const { data: orgId } = await supabase.rpc('public_default_org_id');
-    if (!orgId) {
+    const { data: orgId, error: orgError } = await supabase.rpc('public_default_org_id');
+    if (orgError || !orgId) {
         return { success: false, mode: 'pledge', error: 'No organization configured. Please complete the database setup.' };
     }
 
     const secret = process.env.STRIPE_SECRET_KEY;
     if (secret) {
+        let session: { id: string; url: string | null };
         try {
             const { default: Stripe } = await import('stripe');
             const stripe = new Stripe(secret);
             const origin = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
             const loc = locale && locale.length >= 2 ? locale : 'en';
 
-            const session = await stripe.checkout.sessions.create({
+            const created = await stripe.checkout.sessions.create({
                 mode: type === 'recurring' ? 'subscription' : 'payment',
                 customer_email: email,
                 line_items: [
@@ -846,26 +846,43 @@ export async function createDonationCheckout(input: {
                 success_url: `${origin}/${loc}/public/get-involved/donate/thank-you?session_id={CHECKOUT_SESSION_ID}`,
                 cancel_url: `${origin}/${loc}/public/get-involved/donate?canceled=1`,
             });
-
-            const reference = `WEB-${Date.now().toString(36).toUpperCase()}`;
-            await supabase.from('donations').insert({
-                organization_id: orgId,
-                amount,
-                currency,
-                type,
-                status: 'pending',
-                payment_method: 'online',
-                payment_reference: reference,
-                notes: `receipt_email: ${email}; tax_receipt: ${Boolean(needsReceipt)}`,
-                payment_provider: 'stripe',
-                payment_ref: session.id,
-            });
-
-            return { success: true, mode: 'checkout', url: session.url ?? undefined, reference, error: null };
+            session = { id: created.id, url: created.url };
         } catch (err) {
             console.error('[createDonationCheckout] Stripe error:', err);
             return { success: false, mode: 'pledge', error: 'Payment provider error. Please try again later.' };
         }
+
+        // Fail closed: never hand out a Checkout URL without a persisted
+        // pending row. Otherwise the user pays and the webhook logs
+        // `unmatched:true` with no local record of the money.
+        const reference = `WEB-${Date.now().toString(36).toUpperCase()}`;
+        const { error: insertError } = await supabase.from('donations').insert({
+            organization_id: orgId,
+            amount,
+            currency,
+            type,
+            status: 'pending',
+            payment_method: 'online',
+            payment_reference: reference,
+            email: email.trim(),
+            donor_name: fullName?.trim() || null,
+            needs_receipt: Boolean(needsReceipt),
+            notes: null,
+            payment_provider: 'stripe',
+            payment_ref: session.id,
+        });
+        if (insertError) {
+            console.error('[createDonationCheckout] Pending-row insert failed:', insertError.message);
+            try {
+                const { default: Stripe } = await import('stripe');
+                await new Stripe(secret).checkout.sessions.expire(session.id);
+            } catch {
+                // Session will expire on its own; the insert failure is what matters.
+            }
+            return { success: false, mode: 'pledge', error: 'Unable to start checkout right now. Please try again later.' };
+        }
+
+        return { success: true, mode: 'checkout', url: session.url ?? undefined, reference, error: null };
     }
 
     // Provider not configured — record an explicit pledge (honest fallback).

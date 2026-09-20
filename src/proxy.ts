@@ -76,6 +76,22 @@ export async function proxy(req: NextRequest) {
         }
     }
 
+    // 2c. Org-less users (signed in, no membership yet) cannot use protected
+    // zones — send them to the setup wizard, which either bootstraps a fresh
+    // workspace (first user) or explains the invite flow. Invite/claim/setup
+    // pages live outside protected zones, so claiming still works.
+    if (isProtected && user) {
+        const { data: membership } = await supabase
+            .from('organization_members')
+            .select('user_id')
+            .eq('user_id', user.id)
+            .limit(1)
+            .maybeSingle();
+        if (!membership) {
+            return NextResponse.redirect(new URL(`/${locale}/auth/setup`, req.url));
+        }
+    }
+
     // 3. Redirect logged-in users away from Login page
     if (isAuthPage && user) {
         // Get user's role from organization_members

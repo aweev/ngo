@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-    BarChart3, Users, HandHeart, HandCoins, Megaphone, FolderKanban,
+    BarChart3, Users, UserPlus, HandHeart, HandCoins, Megaphone, FolderKanban,
     Settings, ShieldCheck, ChevronLeft, ChevronRight, Zap, GitBranch,
     Clock, ClipboardList, Wallet, FileBarChart, Bell, MessageSquare,
     FileText, Puzzle, Tag, CalendarDays, TrendingUp, Award, UserMinus
@@ -30,6 +30,7 @@ const navGroups: NavGroup[] = [
     {
         title: "People & HR Governance",
         items: [
+            { href: "/admin/members", label: "Team & Invites", icon: UserPlus },
             { href: "/admin/workers", label: "Workers", icon: Users },
             { href: "/admin/volunteers", label: "Volunteers", icon: HandHeart },
             { href: "/admin/partners", label: "Partners", icon: HandCoins },

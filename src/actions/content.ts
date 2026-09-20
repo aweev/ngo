@@ -599,6 +599,15 @@ export async function transitionContentWorkflow(
         });
     }
 
+    if (to === 'in_review') {
+        try {
+            const { sendReviewRequest } = await import('@/actions/email');
+            await sendReviewRequest(pageId, '', auth.context.userId);
+        } catch {
+            console.error('[transitionContentWorkflow] Failed to send review notification.');
+        }
+    }
+
     revalidatePath('/admin/content');
     revalidatePath('/', 'layout');
     revalidatePublicContentRoutes();
@@ -694,12 +703,17 @@ function getAiTranslationConfig(): {
     provider: AiTranslationProvider;
     model: string | null;
     configured: boolean;
+    apiUrl: string | null;
 } {
     const provider = (process.env.CMS_TRANSLATION_PROVIDER ?? 'none') as AiTranslationProvider;
-    if (provider === 'none') return { provider, model: null, configured: false };
+    if (provider === 'none') return { provider, model: null, configured: false, apiUrl: null };
     const hasKey =
-        !!process.env.CMS_TRANSLATION_API_KEY || !!process.env.OPENAI_API_KEY || !!process.env.DEEPL_API_KEY;
-    return { provider, model: process.env.CMS_TRANSLATION_MODEL ?? null, configured: hasKey };
+        !!process.env.CMS_TRANSLATION_API_KEY ||
+        !!process.env.OPENAI_API_KEY ||
+        !!process.env.DEEPL_API_KEY ||
+        !!process.env.GOOGLE_TRANSLATION_API_KEY;
+    const apiUrl = process.env.CMS_TRANSLATION_API_URL ?? null;
+    return { provider, model: process.env.CMS_TRANSLATION_MODEL ?? null, configured: hasKey, apiUrl };
 }
 
 function translationPayload(row: Record<string, unknown>) {
@@ -716,47 +730,114 @@ function translationPayload(row: Record<string, unknown>) {
     };
 }
 
-async function translateWithOpenAi(
+async function translateWithProvider(
     payload: Record<string, unknown>,
     sourceLocale: string,
     targetLocale: string,
-    config: { model: string | null },
+    provider: AiTranslationProvider,
+    config: { model: string | null; apiUrl: string | null },
 ): Promise<Record<string, unknown>> {
-    const apiKey = process.env.CMS_TRANSLATION_API_KEY ?? process.env.OPENAI_API_KEY;
-    const endpoint = process.env.CMS_TRANSLATION_API_URL ?? 'https://api.openai.com/v1/chat/completions';
-    if (!apiKey) throw new Error('Missing translation provider API key.');
+    const endpoint = config.apiUrl ?? getProviderEndpoint(provider);
+    if (!endpoint) throw new Error(`No API endpoint configured for provider "${provider}".`);
 
-    const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            model: config.model ?? 'gpt-4o-mini',
-            temperature: 0.2,
-            response_format: { type: 'json_object' },
-            messages: [
-                {
-                    role: 'system',
-                    content:
-                        'Translate CMS content into the requested locale. Return only valid JSON with the same keys. Translate human-readable text, preserve URLs exactly, and never invent missing content.',
-                },
-                {
-                    role: 'user',
-                    content: JSON.stringify({ source_locale: sourceLocale, target_locale: targetLocale, content: payload }),
-                },
-            ],
-        }),
-        signal: AbortSignal.timeout(30_000),
-    });
-
-    if (!response.ok) throw new Error(`Translation provider returned ${response.status}.`);
-    const result = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
-    const content = result.choices?.[0]?.message?.content;
-    if (!content) throw new Error('Translation provider returned no content.');
-    const parsed: unknown = JSON.parse(content);
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-        throw new Error('Translation provider returned an invalid content shape.');
+    if (provider === 'openai') {
+        const apiKey = process.env.CMS_TRANSLATION_API_KEY ?? process.env.OPENAI_API_KEY;
+        if (!apiKey) throw new Error('Missing OpenAI API key.');
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                model: config.model ?? 'gpt-4o-mini',
+                temperature: 0.2,
+                response_format: { type: 'json_object' },
+                messages: [
+                    {
+                        role: 'system',
+                        content:
+                            'Translate CMS content into the requested locale. Return only valid JSON with the same keys. Translate human-readable text, preserve URLs exactly, and never invent missing content.',
+                    },
+                    {
+                        role: 'user',
+                        content: JSON.stringify({ source_locale: sourceLocale, target_locale: targetLocale, content: payload }),
+                    },
+                ],
+            }),
+            signal: AbortSignal.timeout(30_000),
+        });
+        if (!response.ok) throw new Error(`OpenAI returned ${response.status}.`);
+        const result = (await response.json()) as { choices?: Array<{ message?: { content?: string } }> };
+        const content = result.choices?.[0]?.message?.content;
+        if (!content) throw new Error('OpenAI returned no content.');
+        const parsed: unknown = JSON.parse(content);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+            throw new Error('OpenAI returned an invalid content shape.');
+        }
+        return parsed as Record<string, unknown>;
     }
-    return parsed as Record<string, unknown>;
+
+    if (provider === 'deepl') {
+        const apiKey = process.env.DEEPL_API_KEY;
+        if (!apiKey) throw new Error('Missing DeepL API key.');
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { Authorization: `DeepL-Auth-Key ${apiKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                text: JSON.stringify(payload),
+                source_lang: sourceLocale.toUpperCase().replace('-', '_'),
+                target_lang: targetLocale.toUpperCase().replace('-', '_'),
+                formality: 'more',
+            }),
+            signal: AbortSignal.timeout(30_000),
+        });
+        if (!response.ok) throw new Error(`DeepL returned ${response.status}.`);
+        const result = (await response.json()) as { translations?: Array<{ text?: string }> };
+        const text = result.translations?.[0]?.text;
+        if (!text) throw new Error('DeepL returned no content.');
+        const parsed: unknown = JSON.parse(text);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+            throw new Error('DeepL returned an invalid content shape.');
+        }
+        return parsed as Record<string, unknown>;
+    }
+
+    if (provider === 'google') {
+        const apiKey = process.env.GOOGLE_TRANSLATION_API_KEY;
+        if (!apiKey) throw new Error('Missing Google Translation API key.');
+        const response = await fetch(`${endpoint}?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                q: [JSON.stringify(payload)],
+                source: sourceLocale,
+                target: targetLocale,
+            }),
+            signal: AbortSignal.timeout(30_000),
+        });
+        if (!response.ok) throw new Error(`Google Translation API returned ${response.status}.`);
+        const result = (await response.json()) as { data?: { translations?: Array<{ translatedText?: string }> } };
+        const text = result.data?.translations?.[0]?.translatedText;
+        if (!text) throw new Error('Google Translation API returned no content.');
+        const parsed: unknown = JSON.parse(text);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+            throw new Error('Google Translation API returned an invalid content shape.');
+        }
+        return parsed as Record<string, unknown>;
+    }
+
+    throw new Error(`Unsupported translation provider: "${provider}".`);
+}
+
+function getProviderEndpoint(provider: AiTranslationProvider): string | null {
+    switch (provider) {
+        case 'openai':
+            return process.env.CMS_TRANSLATION_API_URL ?? 'https://api.openai.com/v1/chat/completions';
+        case 'deepl':
+            return process.env.CMS_TRANSLATION_API_URL ?? 'https://api-free.deepl.com/v2/translate';
+        case 'google':
+            return process.env.CMS_TRANSLATION_API_URL ?? 'https://translation.googleapis.com/language/translate/v2';
+        default:
+            return null;
+    }
 }
 
 /**
@@ -787,10 +868,6 @@ export async function requestAiTranslation(
         };
     }
 
-    if (config.provider !== 'openai') {
-        return { data: null, error: `AI provider "${config.provider}" is not supported yet. Configure CMS_TRANSLATION_PROVIDER=openai.` };
-    }
-
     try {
         const { data: source, error: sourceError } = await auth.context.supabase
             .from(TRANSLATIONS_TABLE)
@@ -801,7 +878,13 @@ export async function requestAiTranslation(
             .maybeSingle();
         if (sourceError || !source) return { data: null, error: 'Save the source translation before requesting AI translation.' };
 
-        const translated = await translateWithOpenAi(translationPayload(source), sourceLocale, targetLocale, config);
+        const translated = await translateWithProvider(
+            translationPayload(source),
+            sourceLocale,
+            targetLocale,
+            config.provider,
+            { model: config.model, apiUrl: config.apiUrl },
+        );
         const parsed = localeContentSchema.safeParse(translated);
         if (!parsed.success) return { data: null, error: 'AI translation returned incomplete or invalid content. Please translate manually.' };
         const { body, ...translatedFields } = parsed.data;
@@ -830,6 +913,13 @@ export async function requestAiTranslation(
 
         revalidatePath(`/admin/content/${pageId}`);
         revalidatePath('/admin/content');
+
+        try {
+            await notifyReviewRequest(pageId, targetLocale, auth.context.userId, auth.context.supabase);
+        } catch {
+            console.error('[requestAiTranslation] Failed to send review notification.');
+        }
+
         return {
             data: data as Record<string, unknown>,
             error: null,
@@ -845,4 +935,23 @@ export async function requestAiTranslation(
 }
 
 export type { ContentWorkflowState };
+
+// ---------------------------------------------------------------------
+// Email notification callbacks
+// ---------------------------------------------------------------------
+
+async function notifyReviewRequest(
+    pageId: string,
+    locale: string,
+    userId: string,
+    supabase: import('@supabase/supabase-js').SupabaseClient,
+): Promise<void> {
+    try {
+        const { sendReviewRequest } = await import('@/actions/email');
+        await sendReviewRequest(pageId, locale, userId);
+    } catch {
+        // Non-fatal: notification failure should not block the workflow.
+        console.error('[notifyReviewRequest] Could not send review notification.');
+    }
+}
 

@@ -10,7 +10,7 @@
  * Each attempt signs the body with HMAC-SHA256 (secret_token when set),
  * records a webhook_deliveries row, and updates the parent webhook counters.
  */
-import { corsHeaders, jsonResponse, requireCronSecret, serviceClient } from "../_shared/runtime.ts";
+import { jsonResponse, requireCronSecret, serviceClient } from "../_shared/runtime.ts";
 
 async function signBody(secret: string, body: string): Promise<string> {
     const key = await crypto.subtle.importKey(
@@ -94,7 +94,7 @@ async function attemptDelivery(
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
-    if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+    if (req.method === "OPTIONS") return jsonResponse({ error: "Method not allowed" }, 405);
     if (req.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
 
     const unauthorized = requireCronSecret(req);

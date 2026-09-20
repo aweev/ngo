@@ -31,6 +31,10 @@ const envSchema = z.object({
     // ---------------------------------------------------------------------------
     STRIPE_SECRET_KEY: z.string().min(1).optional(),
     STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
+    EMAIL_FROM: z.string().email().optional(),
+    ADMIN_EMAIL: z.string().email().optional(),
+    RESEND_API_KEY: z.string().min(1).optional(),
+    RECEIPT_HMAC_SECRET: z.string().min(32).optional(),
 });
 
 // 2. Explicitly map variables to ensure Next.js inlines them
@@ -47,6 +51,10 @@ const runtimeEnv = {
     CMS_TRANSLATION_MODEL: process.env.CMS_TRANSLATION_MODEL,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    EMAIL_FROM: process.env.EMAIL_FROM,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    RECEIPT_HMAC_SECRET: process.env.RECEIPT_HMAC_SECRET,
 };
 
 // 3. Validate

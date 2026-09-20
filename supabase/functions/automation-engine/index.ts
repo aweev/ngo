@@ -17,7 +17,6 @@
  *   create_task / update_field / create_record / custom -> recorded, no side effect
  */
 import {
-    corsHeaders,
     functionUrl,
     getPath,
     jsonResponse,
@@ -79,7 +78,7 @@ function evaluateConditions(
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
-    if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+    if (req.method === "OPTIONS") return jsonResponse({ error: "Method not allowed" }, 405);
     if (req.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
 
     const unauthorized = requireCronSecret(req);

@@ -13,7 +13,7 @@
  * recorded honestly: rows the worker cannot actually transmit (no provider
  * credentials configured) stay `pending` instead of being marked sent.
  */
-import { corsHeaders, jsonResponse, requireCronSecret, serviceClient } from "../_shared/runtime.ts";
+import { jsonResponse, requireCronSecret, serviceClient } from "../_shared/runtime.ts";
 
 function interpolate(template: string, variables: Record<string, unknown>): string {
     return template.replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (match, key: string) => {
@@ -112,7 +112,7 @@ async function dispatchOne(
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
-    if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+    if (req.method === "OPTIONS") return jsonResponse({ error: "Method not allowed" }, 405);
 
     const unauthorized = requireCronSecret(req);
     if (unauthorized) return unauthorized;

@@ -1,1429 +1,1443 @@
 {
-    "Metadata": {
-        "title": "AWE e.V.",
-        "description": "Würdevolles Wachstum & Strahlende Gemeinschaft. Gemeinschaften durch Bildung, Unterstützung und nachhaltige Entwicklung stärken."
+  "Metadata": {
+    "title": "AWE e.V.",
+    "description": "Würdevolles Wachstum & Strahlende Gemeinschaft. Gemeinschaften durch Bildung, Unterstützung und nachhaltige Entwicklung stärken."
+  },
+  "NotFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben."
+  },
+  "Navigation": {
+    "back_home": "Zurück zur Startseite",
+    "about": "Unsere Geschichte",
+    "about_items": {
+      "story": {
+        "label": "Unsere Geschichte",
+        "desc": "Unsere Geschichte, Mission und Theorie des Wandels."
+      },
+      "team": {
+        "label": "Führung & Team",
+        "desc": "Lernen Sie den Vorstand und die Mitarbeiter kennen."
+      },
+      "financials": {
+        "label": "Finanzen & Vertrauen",
+        "desc": "Transparenzberichte und Prüfungen."
+      },
+      "partners": {
+        "label": "Partner",
+        "desc": "Unser Ökosystem von Unterstützern."
+      }
     },
-    "NotFound": {
-        "title": "Seite nicht gefunden",
-        "description": "Die gesuchte Seite existiert nicht oder wurde verschoben."
+    "programs": "Programme",
+    "stories": "Wirkungsgeschichten",
+    "news": "Neuigkeiten & Einblicke",
+    "donate": "Jetzt spenden",
+    "login": "Mitglieder-Login",
+    "settings": "Einstellungen",
+    "volunteerLogin": "Freiwilligen-Login",
+    "donateNow": "Jetzt spenden",
+    "desc": {
+      "about": "Erfahren Sie mehr über unsere Mission und Geschichte",
+      "programs": "Entdecken Sie unsere Kerninitiativen",
+      "stories": "Lesen Sie Erfolgsgeschichten aus dem Feld",
+      "news": "Aktuelle Updates und Pressemitteilungen"
     },
-    "Navigation": {
-        "back_home": "Zurück zur Startseite",
-        "about": "Unsere Geschichte",
-        "about_items": {
-            "story": {
-                "label": "Unsere Geschichte",
-                "desc": "Unsere Geschichte, Mission und Theorie des Wandels."
-            },
-            "team": {
-                "label": "Führung & Team",
-                "desc": "Lernen Sie den Vorstand und die Mitarbeiter kennen."
-            },
-            "financials": {
-                "label": "Finanzen & Vertrauen",
-                "desc": "Transparenzberichte und Prüfungen."
-            },
-            "partners": {
-                "label": "Partner",
-                "desc": "Unser Ökosystem von Unterstützern."
-            }
-        },
-        "programs": "Programme",
-        "stories": "Wirkungsgeschichten",
-        "news": "Neuigkeiten & Einblicke",
-        "donate": "Jetzt spenden",
-        "login": "Mitglieder-Login",
-        "settings": "Einstellungen",
-        "volunteerLogin": "Freiwilligen-Login",
-        "donateNow": "Jetzt spenden",
-        "desc": {
-            "about": "Erfahren Sie mehr über unsere Mission und Geschichte",
-            "programs": "Entdecken Sie unsere Kerninitiativen",
-            "stories": "Lesen Sie Erfolgsgeschichten aus dem Feld",
-            "news": "Aktuelle Updates und Pressemitteilungen"
-        },
-        "get_involved": "Mitmachen",
-        "involved_items": {
-            "volunteer": {
-                "label": "Freiwilligenarbeit",
-                "desc": "Werden Sie Teil des Teams"
-            },
-            "corporate": {
-                "label": "Partnerschaften",
-                "desc": "CSR & Unternehmen"
-            },
-            "hub": {
-                "label": "Übersicht",
-                "desc": "Alle Möglichkeiten"
-            }
-        }
+    "get_involved": "Mitmachen",
+    "involved_items": {
+      "volunteer": {
+        "label": "Freiwilligenarbeit",
+        "desc": "Werden Sie Teil des Teams"
+      },
+      "corporate": {
+        "label": "Partnerschaften",
+        "desc": "CSR & Unternehmen"
+      },
+      "hub": {
+        "label": "Übersicht",
+        "desc": "Alle Möglichkeiten"
+      }
+    }
+  },
+  "ThemeToggle": {
+    "toggle": "Design wechseln",
+    "change": "Design ändern",
+    "label": "Design",
+    "loading": "Lade Design",
+    "light": {
+      "label": "Hell",
+      "description": "Sauber & hell"
     },
-    "ThemeToggle": {
-        "toggle": "Design wechseln",
-        "change": "Design ändern",
-        "label": "Design",
-        "loading": "Lade Design",
-        "light": {
-            "label": "Hell",
-            "description": "Sauber & hell"
-        },
-        "dark": {
-            "label": "Dunkel",
-            "description": "Augenschonend"
-        },
-        "system": {
-            "label": "System",
-            "description": "Geräteeinstellung"
-        },
-        "currentMode": "Aktuell: {mode}",
-        "systemPrefix": "System:",
-        "modes": {
-            "light": "Heller Modus",
-            "dark": "Dunkler Modus"
-        }
+    "dark": {
+      "label": "Dunkel",
+      "description": "Augenschonend"
     },
-    "BrandTheme": {
-        "label": "Farbthema",
-        "sunset": {
-            "label": "Sunset"
-        },
-        "ocean": {
-            "label": "Ocean"
-        }
+    "system": {
+      "label": "System",
+      "description": "Geräteeinstellung"
+    },
+    "currentMode": "Aktuell: {mode}",
+    "systemPrefix": "System:",
+    "modes": {
+      "light": "Heller Modus",
+      "dark": "Dunkler Modus"
+    }
+  },
+  "BrandTheme": {
+    "label": "Farbthema",
+    "sunset": {
+      "label": "Sunset"
+    },
+    "ocean": {
+      "label": "Ocean"
+    }
+  },
+  "Hero": {
+    "default_headline": "Würdevolles Wachstum,",
+    "default_accent": "Strahlende Gemeinschaft.",
+    "default_subhead": "Wir stärken Gemeinschaften durch Bildung, nachhaltige Entwicklung und unerschütterliche Unterstützung. Bauen Sie mit uns eine Zukunft, in der alle gedeihen.",
+    "cta_primary": "Jetzt Spenden",
+    "cta_secondary": "Unsere Geschichte",
+    "trust_1": "Eingetragener Verein",
+    "trust_2": "100% Transparenz",
+    "scroll": "Entdecken",
+    "stats_lives": "Erreichte Leben",
+    "stats_projects": "Aktive Projekte",
+    "stats_countries": "Globale Reichweite",
+    "Floating": {
+      "active_label": "Aktiv",
+      "active_desc": "Projekte",
+      "global_label": "Global",
+      "global_desc": "Wirkung"
+    }
+  },
+  "Impact": {
+    "Ticker": {
+      "gdpr": "DSGVO-Konform",
+      "guidestar": "GuideStar Platinum",
+      "audit": "Geprüfte Finanzen",
+      "registered": "Eingetragener Verein",
+      "secure": "SSL-Sicher"
+    },
+    "Stats": {
+      "title": "Messbarer Wandel, Echte Leben",
+      "track_record": "Unsere Erfolgsbilanz",
+      "audit_note": "Daten werden jährlich von unabhängigen Dritten geprüft.",
+      "view_report": "Transparenzbericht ansehen",
+      "stats_lives": "Erreichte Leben",
+      "stats_projects": "Aktive Projekte",
+      "stats_countries": "Globale Reichweite"
+    }
+  },
+  "Mission": {
+    "preheadline": "Warum wir existieren",
+    "headline": "Stärkung durch Würde & Tatkraft",
+    "description": "Wir leisten nicht nur Hilfe, wir bauen Wege. Von wirtschaftlicher Stärkung bis zur sozialen Integration stellt unser ganzheitlicher Ansatz sicher, dass jeder Einzelne die Werkzeuge hat, um seine eigene Erfolgsgeschichte zu schreiben.",
+    "values": {
+      "economic": "Wirtschaftliche Stärkung",
+      "economic_desc": "Bereitstellung von Kompetenztraining und Mikrokrediten für nachhaltige Unternehmen.",
+      "social": "Soziale Integration",
+      "social_desc": "Brückenbauen zwischen verschiedenen Gemeinschaften durch gemeinsame kulturelle Erlebnisse.",
+      "health": "Gesundheit",
+      "health_desc": "Sicherstellung des physischen und mentalen Wohlbefindens als Grundlage für Wachstum."
+    },
+    "quote": "Würde ist kein Geschenk, das wir geben, sondern ein Recht, das wir wahren."
+  },
+  "Programs": {
+    "Pillars": {
+      "title": "Ein ganzheitlicher Ansatz für den Wandel",
+      "subtitle": "Unsere Grundpfeiler",
+      "learn_more": "Programm erkunden",
+      "economic": {
+        "title": "Wirtschaftliche Stärkung",
+        "description": "Bereitstellung von Berufsausbildung, Mikrokrediten und geschäftlichem Mentoring zum Aufbau nachhaltiger Lebensgrundlagen und finanzieller Unabhängigkeit."
+      },
+      "education": {
+        "title": "Bildung & Jugend",
+        "description": "Den Armutskreislauf durchbrechen durch Stipendienprogramme, digitale Kompetenzschulung und außerschulische Unterstützung für gefährdete Jugendliche."
+      },
+      "health": {
+        "title": "Gesundheit & Wohlbefinden",
+        "description": "Sicherstellung des physischen und psychischen Wohlbefindens durch Gemeinschaftskliniken, ernährungswissenschaftliche Unterstützung und traumasensible Beratung."
+      },
+      "social": {
+        "title": "Soziale Integration",
+        "description": "Förderung der Zugehörigkeit und Reduzierung von Isolation durch kulturelle Austauschprogramme, Sprachkurse und Gemeinschaftsveranstaltungen."
+      }
+    },
+    "Category": {
+      "breadcrumbs": {
+        "home": "Startseite",
+        "programs": "Programme"
+      },
+      "ProblemSolution": {
+        "challenge_title": "Die Herausforderung",
+        "solution_title": "Unser Ansatz"
+      },
+      "Projects": {
+        "title": "Aktuelle Initiativen",
+        "subtitle": "Projekte, die derzeit vor Ort aktiv laufen.",
+        "view_project": "Projekt ansehen"
+      },
+      "CTA": {
+        "title": "Nehmen Sie direkten Einfluss",
+        "donate": "Spenden für {category}",
+        "volunteer": "Freiwilligenarbeit im Bereich {category}"
+      }
+    },
+    "Overview": {
+      "Hero": {
+        "headline": "Ein ganzheitlicher Ansatz für Veränderung",
+        "subheadline": "Wir glauben, dass unterschiedliche Herausforderungen integrierte Lösungen erfordern. Unsere vier Säulen arbeiten zusammen, um nachhaltige Zukünfte zu bauen.",
+        "scroll_cta": "Unsere Säulen erkunden"
+      },
+      "Pillars": {
+        "economic-empowerment": "Wirtschaftliche Stärkung",
+        "education": "Bildung & Jugend",
+        "health": "Gesundheit & Wohlbefinden",
+        "social-integration": "Soziale Integration",
+        "explore": "Säule erkunden",
+        "desc_economic-empowerment": "Aufbau finanzieller Unabhängigkeit durch Fähigkeiten und Kapital.",
+        "desc_education": "Die nächste Generation mit den Werkzeugen für ein erfolgreiches Leben ausstatten.",
+        "desc_health": "Sicherstellung von physischem und mentalem Wohlbefinden als Fundament.",
+        "desc_social-integration": "Förderung von Zugehörigkeit und gesellschaftlichem Zusammenhalt."
+      },
+      "Theory": {
+        "title": "Der Kreislauf des Wandels",
+        "subtitle": "Wie unsere Programme ineinandergreifen, um Resilienz aufzubauen",
+        "step_1": "Gesundheit stabilisiert die Familie",
+        "step_2": "Bildung stärkt die Jugend",
+        "step_3": "Fähigkeiten schaffen Einkommen",
+        "step_4": "Gemeinschaft schafft Sicherheit"
+      },
+      "Impact": {
+        "title": "Kumulative Wirkung",
+        "metric_1": "Durchgeführte Programme",
+        "metric_2": "Aktive Projekte",
+        "metric_3": "Aktive Regionen",
+        "transparency_link": "Vollständigen Transparenzbericht ansehen"
+      }
+    },
+    "Categories": {
+      "education": {
+        "title": "Bildung & Jugend",
+        "hero_lead": "Bildung ist die mächtigste Waffe, die man einsetzen kann, um die Welt zu verändern. Wir bieten Zugang, Werkzeuge und Mentoring.",
+        "challenge": "Über 40 % der Jugendlichen in unseren Zielregionen fehlt der Zugang zu digitaler Bildung, wodurch sie in der modernen Wirtschaft zurückbleiben.",
+        "solution": "Wir bauen Computerräume, bilden lokale Lehrer aus und vergeben Stipendien, um sicherzustellen, dass kein Kind den Anschluss verliert.",
+        "coordinator_quote": "Zu sehen, wie ein Kind seine erste Zeile Code schreibt, hat nicht nur mit Technologie zu tun; es geht darum, eine Zukunft zu erschließen, von der es nicht wusste, dass es sie gibt.",
+        "coordinator_name": "Sarah Jenkins",
+        "coordinator_role": "Leiterin Bildungsprogramme"
+      },
+      "health": {
+        "title": "Gesundheit & Wohlbefinden",
+        "hero_lead": "Gesundheit ist das Fundament allen Wachstums. Ohne sie kommen Bildung und wirtschaftlicher Fortschritt zum Erliegen.",
+        "challenge": "Vermeidbare Krankheiten und mangelnde Unterstützung bei psychischen Problemen verwüsten weiterhin gefährdete Gemeinschaften.",
+        "solution": "Wir setzen mobile Kliniken ein und schulen lokales Gesundheitspersonal, um die Versorgung bis auf die letzte Meile zu gewährleisten.",
+        "coordinator_quote": "Wir behandeln Patienten, aber wir heilen auch Gemeinschaften, indem wir ihre Arbeits- und Lernfähigkeit wiederherstellen.",
+        "coordinator_name": "Dr. Amara Okonjo",
+        "coordinator_role": "Ärztliche Direktorin"
+      },
+      "economic-empowerment": {
+        "title": "Wirtschaftliche Stärkung",
+        "hero_lead": "Wohltätigkeit ist ein Pflaster; Unternehmertum ist die Heilung. Wir bauen nachhaltige Lebensgrundlagen auf.",
+        "challenge": "Talent ist universell, Chancen sind es nicht. Vielen Unternehmern fehlt das Startkapital, um loszulegen.",
+        "solution": "Wir bieten Mikrozuschüsse und berufliche Bildung, um Ideen in einkommensschaffende Unternehmen zu verwandeln.",
+        "coordinator_quote": "Wenn eine Frau ein Unternehmen gründet, isst das ganze Dorf.",
+        "coordinator_name": "John Kamau",
+        "coordinator_role": "Leiter Wirtschaftsförderung"
+      },
+      "social-integration": {
+        "title": "Soziale Integration",
+        "hero_lead": "Brücken zwischen Kulturen bauen, um Zugehörigkeit zu fördern und Isolation zu verringern.",
+        "challenge": "Geflüchtete und Migranten sind oft schwerer Isolation ausgesetzt, was ihre Fähigkeit behindert, zur Gesellschaft beizutragen.",
+        "solution": "Wir schaffen gemeinsame Räume für kulturellen Austausch, Spracherwerb und Gemeinschaftsbildung.",
+        "coordinator_quote": "Ein Fremder ist nur ein Freund, den man noch nicht getroffen hat. Wir schaffen den Ort der Begegnung.",
+        "coordinator_name": "Elena Rossi",
+        "coordinator_role": "Community Managerin"
+      }
+    }
+  },
+  "Stories": {
+    "Carousel": {
+      "title": "Stimmen des Wandels",
+      "subtitle": "Echte Geschichten, echte Wirkung",
+      "read_story": "Ganze Geschichte lesen"
     },
     "Hero": {
-        "default_headline": "Würdevolles Wachstum,",
-        "default_accent": "Strahlende Gemeinschaft.",
-        "default_subhead": "Wir stärken Gemeinschaften durch Bildung, nachhaltige Entwicklung und unerschütterliche Unterstützung. Bauen Sie mit uns eine Zukunft, in der alle gedeihen.",
-        "cta_primary": "Jetzt Spenden",
-        "cta_secondary": "Unsere Geschichte",
-        "trust_1": "Eingetragener Verein",
-        "trust_2": "100% Transparenz",
-        "scroll": "Entdecken",
-        "stats_lives": "Erreichte Leben",
-        "stats_projects": "Aktive Projekte",
-        "stats_countries": "Globale Reichweite",
-        "Floating": {
-            "active_label": "Aktiv",
-            "active_desc": "Projekte",
-            "global_label": "Global",
-            "global_desc": "Wirkung"
+      "headline": "Geschichten von Würde & Wachstum",
+      "subheadline": "Lernen Sie die Menschen, Familien und Freiwilligen kennen, die unsere Gemeinschaft prägen. Echte Geschichten, erzählt in ihren eigenen Worten.",
+      "cta": "Ihre Geschichte einreichen"
+    },
+    "Filters": {
+      "search_placeholder": "Nach Stichwort suchen...",
+      "program_label": "Programm",
+      "role_label": "Rolle",
+      "format_label": "Format",
+      "featured_only": "Nur Hervorgehobene",
+      "clear": "Alle löschen",
+      "Programs": {
+        "all": "Alle Programme",
+        "education": "Bildung",
+        "health": "Gesundheit",
+        "economic-empowerment": "Wirtschaft",
+        "social-integration": "Soziales"
+      },
+      "Roles": {
+        "all": "Alle Rollen",
+        "beneficiary": "Begünstigte",
+        "volunteer": "Freiwillige",
+        "partner": "Partner",
+        "donor": "Spender"
+      },
+      "Formats": {
+        "all": "Alle Formate",
+        "video": "Video",
+        "audio": "Audio / Podcast",
+        "article": "Artikel",
+        "photo": "Foto-Essay"
+      }
+    },
+    "Featured": {
+      "badge": "Geschichte des Monats",
+      "watch": "Film ansehen",
+      "read": "Geschichte lesen",
+      "listen": "Jetzt anhören"
+    },
+    "Grid": {
+      "duration": "{minutes}:{seconds}",
+      "listen_badge": "Anhören",
+      "impact_interstitial": "Dies sind nur einige der {count} Leben, die wir dieses Jahr positiv beeinflusst haben.",
+      "load_more": "Weitere Geschichten laden",
+      "no_results": "Keine Geschichten gefunden, die Ihren Kriterien entsprechen."
+    },
+    "Detail": {
+      "context_label": "{program} • {location}",
+      "Player": {
+        "play": "Video abspielen",
+        "pause": "Pause",
+        "transcript": "Transkript herunterladen",
+        "cc": "Untertitel"
+      },
+      "Timeline": {
+        "title": "Die Reise"
+      },
+      "Impact": {
+        "title": "Wichtige Ergebnisse"
+      },
+      "Consent": {
+        "notice": "Diese Geschichte wird mit ausdrücklicher Zustimmung geteilt. Einige Namen oder Details wurden möglicherweise anonymisiert, um die Privatsphäre und Würde der beteiligten Personen zu schützen."
+      },
+      "Action": {
+        "title": "Unterstützen Sie Zukünfte wie die von {name}",
+        "donate": "Spenden für {program}",
+        "share": "Geschichte teilen",
+        "share_success": "Link in die Zwischenablage kopiert"
+      },
+      "Related": {
+        "title": "Mehr Geschichten aus {program}"
+      }
+    }
+  },
+  "Involved": {
+    "title": "Wählen Sie Ihren Weg zur Wirkung",
+    "badge": "Werden Sie Teil der Bewegung",
+    "footer_question": "Unsicher, wo Sie anfangen sollen?",
+    "footer_link": "Chatten Sie mit uns",
+    "Widgets": {
+      "quick_give_label": "Schnellspende",
+      "donate_button": "{amount} spenden",
+      "impact_note": "Sofortige Wirkung"
+    },
+    "donor": {
+      "title": "Unterstützen Sie die Mission",
+      "desc": "Ihr Beitrag ermöglicht direkte Hilfe für Familien in Not.",
+      "cta": "Jetzt spenden"
+    },
+    "volunteer": {
+      "title": "Werden Sie Teil des Teams",
+      "desc": "Teilen Sie Ihre Fähigkeiten mit unserer Gemeinschaft vor Ort.",
+      "cta": "Möglichkeiten entdecken"
+    },
+    "partner": {
+      "title": "Unternehmens-Impact",
+      "desc": "Werden Sie Partner für wirkungsvolle CSR-Initiativen.",
+      "cta": "Partner werden"
+    }
+  },
+  "Events": {
+    "badge": "Kalender",
+    "title": "Bevorstehende Veranstaltungen",
+    "view_all": "Alle Veranstaltungen ansehen",
+    "Hub": {
+      "badge": "Kalender",
+      "hero_title": "Bevorstehende Veranstaltungen",
+      "hero_subtitle": "Begleiten Sie AWE bei bevorstehenden Treffen, Workshops und Community-Veranstaltungen. Neue Termine werden hinzugefügt, sobald sie bestätigt sind.",
+      "empty_title": "Derzeit keine bevorstehenden Veranstaltungen",
+      "empty_subtitle": "Neue Veranstaltungen werden regelmäßig angekündigt. Schauen Sie bald wieder vorbei oder folgen Sie uns für Updates."
+    },
+    "Detail": {
+      "badge": "Veranstaltung",
+      "back_to_events": "Alle Veranstaltungen",
+      "date_label": "Datum",
+      "time_label": "Uhrzeit",
+      "location_label": "Ort",
+      "virtual_label": "Online",
+      "capacity_label": "Kapazität",
+      "registered_label": "Angemeldet",
+      "register": "Jetzt anmelden",
+      "details_title": "Veranstaltungsdetails",
+      "virtual_event_note": "Diese Veranstaltung findet online statt.",
+      "in_person_note": "Diese Veranstaltung findet vor Ort statt.",
+      "event_type_label": "Veranstaltungsart",
+      "not_found": "Veranstaltung nicht gefunden"
+    }
+  },
+  "News": {
+    "title": "Aktuelle Einblicke & Updates",
+    "subtitle": "Berichte aus dem Feld",
+    "view_all": "Alle Nachrichten ansehen",
+    "read_article": "Artikel lesen",
+    "by_author": "Von <span>{name}</span>",
+    "fallback": {
+      "t1_title": "Neues Gemeindezentrum eröffnet in Nairobi",
+      "t1_excerpt": "Ein Meilenstein für unser Stadtentwicklungsprogramm, der täglich sichere Räume für über 500 Jugendliche bietet.",
+      "t2_title": "Jahresgala sammelt 50.000 € für Bildung",
+      "t2_excerpt": "Dank unserer unglaublichen Spender können wir nun 200 neue Stipendien für das kommende akademische Jahr finanzieren.",
+      "t3_title": "Programm zur digitalen Kompetenz erweitert",
+      "t3_excerpt": "Partnerschaft mit lokalen Tech-Giganten, um Programmier-Bootcamps in ländliche Gebiete zu bringen und die digitale Kluft zu überbrücken."
+    },
+    "Hub": {
+      "hero_title": "Das Neueste von AWE",
+      "hero_subtitle": "Programm-Updates, Expertenbeiträge und Pressemitteilungen.",
+      "search_placeholder": "Artikel suchen...",
+      "featured_badge": "Top-Story",
+      "read_full": "Ganzen Artikel lesen",
+      "read_more": "Mehr lesen",
+      "load_more": "Weitere Artikel laden",
+      "no_results": "Keine Artikel gefunden, die Ihren Kriterien entsprechen.",
+      "Categories": {
+        "all": "Alle Nachrichten",
+        "program-update": "Programm-Updates",
+        "thought-leadership": "Expertenbeiträge",
+        "press": "Presseberichte",
+        "event": "Veranstaltungen"
+      }
+    },
+    "Subscribe": {
+      "title": "Nichts verpassen.",
+      "placeholder": "Geben Sie Ihre E-Mail ein",
+      "button": "Abonnieren",
+      "privacy": "Wir senden eine Zusammenfassung pro Monat. Jederzeit abbestellbar."
+    },
+    "MediaKit": {
+      "title": "Für die Presse",
+      "subtitle": "Ressourcen für Journalisten und Partner.",
+      "assets": "Markenmaterialien herunterladen",
+      "bios": "Biografien der Führungskräfte",
+      "contact": "Pressekontakt"
+    },
+    "Article": {
+      "breadcrumbs": {
+        "news": "Nachrichten",
+        "home": "Startseite"
+      },
+      "meta": {
+        "read_time": "{min} Min. Lesezeit",
+        "published": "Veröffentlicht am {date}"
+      },
+      "share": {
+        "title": "Teilen",
+        "copy": "Link kopieren",
+        "copied": "Kopiert!"
+      },
+      "takeaways": "Das Wichtigste in Kürze",
+      "author": {
+        "role": "Autor"
+      },
+      "related": "Nächster Artikel"
+    }
+  },
+  "Trust": {
+    "header": "Vertraut von globalen Partnern & Institutionen"
+  },
+  "Newsletter": {
+    "title": "Bleiben Sie mit der Sache verbunden",
+    "subtitle": "Erhalten Sie wöchentliche Updates, inspirierende Geschichten und exklusive Einladungen direkt in Ihren Posteingang.",
+    "badge": "Treten Sie unserem Impact-Newsletter bei",
+    "placeholder": "Ihre E-Mail-Adresse",
+    "subscribe": "Abonnieren",
+    "submitting": "Abonniere...",
+    "privacy": "Wir respektieren Ihre Privatsphäre. Jederzeit abbestellbar.",
+    "social_proof": "Schließen Sie sich Tausenden von Changemakern weltweit an",
+    "error_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "benefits": {
+      "benefit_1": "Wöchentliche Updates",
+      "benefit_2": "Exklusive Geschichten",
+      "benefit_3": "Früher Zugang"
+    },
+    "Success": {
+      "title": "Erfolg!",
+      "message": "Willkommen in unserer Gemeinschaft von Changemakern."
+    },
+    "Stats": {
+      "subscribers": "Abonnenten",
+      "countries": "Länder",
+      "satisfaction": "Zufriedenheit"
+    }
+  },
+  "Fallback": {
+    "Hero": {
+      "default_headline": "Würdevolles Wachstum,",
+      "default_accent": "Strahlende Gemeinschaft.",
+      "default_subhead": "Wir stärken Gemeinschaften durch Bildung, nachhaltige Entwicklung und unerschütterliche Unterstützung. Bauen Sie mit uns eine Zukunft, in der alle gedeihen.",
+      "cta_primary": "Jetzt Spenden",
+      "cta_secondary": "Unsere Geschichte",
+      "trust_1": "Eingetragener Verein",
+      "trust_2": "100% Transparenz",
+      "scroll": "Entdecken",
+      "imageAlt": "Gemeinschaft & Wirkung"
+    },
+    "Testimonials": {
+      "t1_text": "AWE hat unsere gesamte Gemeinschaft durch Bildung und nachhaltige Programme verändert.",
+      "t1_author": "Maria Santos",
+      "t1_location": "Kenia",
+      "t2_text": "Die Hoffnung ist in unser Dorf zurückgekehrt. Wir haben jetzt Zugang zu sauberem Wasser und Bildung.",
+      "t2_author": "John Kamau",
+      "t2_location": "Uganda",
+      "t3_text": "Bildung hat alles für meine Kinder verändert. Sie haben jetzt Chancen, die ich nie hatte.",
+      "t3_author": "Fatima Al-Rashid",
+      "t3_location": "Jordanien"
+    },
+    "Metrics": {
+      "lives": "Erreichte Leben",
+      "lives_desc": "Direkte Begünstigte unserer Programme",
+      "projects": "Aktive Projekte",
+      "projects_desc": "Abgeschlossene Initiativen in 4 Regionen",
+      "countries": "Globale Reichweite",
+      "countries_desc": "Aktive operative Standorte",
+      "volunteers": "Freiwillige",
+      "volunteers_desc": "Aktive Gemeinschaftsmitglieder"
+    }
+  },
+  "Footer": {
+    "tagline": "Brückenbauen zwischen Gemeinschaften durch würdevolles Wachstum und strahlende Unterstützung. Eine Non-Profit-Organisation, die sich Transparenz und Wirkung verschrieben hat.",
+    "about": {
+      "title": "Über uns",
+      "story": "Unsere Geschichte",
+      "team": "Team",
+      "financials": "Finanzen",
+      "partners": "Partner"
+    },
+    "getInvolved": {
+      "title": "Mitmachen",
+      "donate": "Spenden",
+      "volunteer": "Ehrenamt",
+      "corporate": "Unternehmenspartnerschaften"
+    },
+    "programs": {
+      "title": "Unsere Programme",
+      "economic": "Wirtschaft",
+      "education": "Bildung",
+      "health": "Gesundheit",
+      "social": "Integration",
+      "advocacy": "Interessenvertretung"
+    },
+    "resources": {
+      "title": "Ressourcen",
+      "news": "Aktuelles",
+      "stories": "Geschichten",
+      "reports": "Berichte",
+      "contact": "Kontakt"
+    },
+    "newsletter": {
+      "title": "Bewegung beitreten",
+      "description": "Abonnieren Sie Updates zur Wirkung.",
+      "placeholder": "Ihre E-Mail",
+      "subscribe": "Abonnieren"
+    },
+    "legal": {
+      "privacy": "Datenschutz",
+      "terms": "AGB",
+      "imprint": "Impressum"
+    },
+    "badges": {
+      "nonprofit": "Gemeinnütziger Verein",
+      "verified": "Gold Transparenz"
+    },
+    "madeWith": "Gemacht mit",
+    "inBerlin": "in Berlin"
+  },
+  "Error": {
+    "title": "Etwas ist schiefgelaufen",
+    "description": "Wir entschuldigen uns für die Unannehmlichkeiten. Ein kritischer Fehler ist aufgetreten.",
+    "retry": "Erneut versuchen",
+    "reload": "Seite neu laden",
+    "home": "Zur Startseite"
+  },
+  "Common": {
+    "cta_donate": "Jetzt spenden",
+    "cta_learn_more": "Unsere Geschichte",
+    "scroll": "Scrollen",
+    "image_placeholder": "Gemeinschaft & Wirkung",
+    "explore": "Entdecken",
+    "impact": "Wirkung"
+  },
+  "About": {
+    "Hero": {
+      "preheader": "Unsere Geschichte",
+      "headline": "Gegründet auf dem Glauben, dass Würde ein Menschenrecht ist, kein Privileg.",
+      "lead": "Was als kleine Gemeinschaftsinitiative begann, ist zu einer globalen Bewegung gewachsen. Wir schreiben das Narrativ der Hilfe neu – weg von bloßer Wohltätigkeit hin zu Partnerschaft, von Abhängigkeit zu Selbstbestimmung.",
+      "image_alt": "Unsere Reise durch die Jahre"
+    },
+    "MissionVision": {
+      "mission_title": "Unsere Mission",
+      "mission_text": "Bereitstellung der Werkzeuge, Schulungen und Netzwerke, die Gemeinschaften benötigen, um ihre eigene nachhaltige Zukunft aufzubauen.",
+      "vision_title": "Unsere Vision",
+      "vision_text": "Eine Welt, in der jeder Einzelne, unabhängig von seinem Startpunkt, die Handlungsfähigkeit besitzt, sein eigenes Schicksal zu gestalten."
+    },
+    "Timeline": {
+      "title": "Unser Weg",
+      "milestones": {
+        "2018": {
+          "title": "Der Funke",
+          "desc": "Gegründet in einem Wohnzimmer in Berlin, zunächst mit Fokus auf Sprachunterstützung für Neuankömmlinge."
+        },
+        "2020": {
+          "title": "Erstes Gemeindezentrum",
+          "desc": "Eröffnung in Nachbarschaft X, wöchentliche Versorgung von 200 Familien während der Krise."
+        },
+        "2022": {
+          "title": "Globale Expansion",
+          "desc": "Start von Partnerschaften in Ostafrika mit neuem Fokus auf wirtschaftliche Stärkung."
+        },
+        "2024": {
+          "title": "Institutionelles Wachstum",
+          "desc": "Erreichen des GuideStar Platinum-Status und Start der digitalen Mentoring-Plattform."
         }
+      }
     },
-    "Impact": {
-        "Ticker": {
-            "gdpr": "DSGVO-Konform",
-            "guidestar": "GuideStar Platinum",
-            "audit": "Geprüfte Finanzen",
-            "registered": "Eingetragener Verein",
-            "secure": "SSL-Sicher"
-        },
-        "Stats": {
-            "title": "Messbarer Wandel, Echte Leben",
-            "track_record": "Unsere Erfolgsbilanz",
-            "audit_note": "Daten werden jährlich von unabhängigen Dritten geprüft.",
-            "view_report": "Transparenzbericht ansehen",
-            "stats_lives": "Erreichte Leben",
-            "stats_projects": "Aktive Projekte",
-            "stats_countries": "Globale Reichweite"
-        }
+    "Values": {
+      "title": "Werte, die uns leiten",
+      "integrity": {
+        "title": "Integrität",
+        "desc": "Wir handeln mit radikaler Transparenz bei Finanzen und Wirkung."
+      },
+      "empathy": {
+        "title": "Radikale Empathie",
+        "desc": "Wir hören zuerst zu und verstehen, dass diejenigen, die dem Problem am nächsten sind, auch die Lösung kennen."
+      },
+      "agency": {
+        "title": "Selbstbestimmung",
+        "desc": "Wir retten keine Menschen; wir beseitigen Hindernisse, damit sie sich selbst helfen können."
+      }
     },
-    "Mission": {
-        "preheadline": "Warum wir existieren",
-        "headline": "Stärkung durch Würde & Tatkraft",
-        "description": "Wir leisten nicht nur Hilfe, wir bauen Wege. Von wirtschaftlicher Stärkung bis zur sozialen Integration stellt unser ganzheitlicher Ansatz sicher, dass jeder Einzelne die Werkzeuge hat, um seine eigene Erfolgsgeschichte zu schreiben.",
-        "values": {
-            "economic": "Wirtschaftliche Stärkung",
-            "economic_desc": "Bereitstellung von Kompetenztraining und Mikrokrediten für nachhaltige Unternehmen.",
-            "social": "Soziale Integration",
-            "social_desc": "Brückenbauen zwischen verschiedenen Gemeinschaften durch gemeinsame kulturelle Erlebnisse.",
-            "health": "Gesundheit",
-            "health_desc": "Sicherstellung des physischen und mentalen Wohlbefindens als Grundlage für Wachstum."
-        },
-        "quote": "Würde ist kein Geschenk, das wir geben, sondern ein Recht, das wir wahren."
+    "Theory": {
+      "title": "Unsere Theorie des Wandels",
+      "subtitle": "Wie wir Ressourcen in dauerhafte Wirkung umwandeln.",
+      "inputs": "Inputs",
+      "inputs_desc": "Spenden, Freiwilligenzeit, Expertise.",
+      "activities": "Aktivitäten",
+      "activities_desc": "Workshops, Schulungen, Mentoring.",
+      "outputs": "Outputs",
+      "outputs_desc": "Zertifizierte Fähigkeiten, Businesspläne, Verbindungen.",
+      "outcomes": "Wirkungen",
+      "outcomes_desc": "Nachhaltige Arbeitsplätze, wirtschaftliche Stabilität, Würde.",
+      "sr_desc": "Ein Flussdiagramm, das zeigt, wie Inputs zu Aktivitäten führen, diese zu Outputs und schließlich zu Wirkungen (Outcomes)."
     },
-    "Programs": {
-        "Pillars": {
-            "title": "Ein ganzheitlicher Ansatz für den Wandel",
-            "subtitle": "Unsere Grundpfeiler",
-            "learn_more": "Programm erkunden",
-            "economic": {
-                "title": "Wirtschaftliche Stärkung",
-                "description": "Bereitstellung von Berufsausbildung, Mikrokrediten und geschäftlichem Mentoring zum Aufbau nachhaltiger Lebensgrundlagen und finanzieller Unabhängigkeit."
-            },
-            "education": {
-                "title": "Bildung & Jugend",
-                "description": "Den Armutskreislauf durchbrechen durch Stipendienprogramme, digitale Kompetenzschulung und außerschulische Unterstützung für gefährdete Jugendliche."
-            },
-            "health": {
-                "title": "Gesundheit & Wohlbefinden",
-                "description": "Sicherstellung des physischen und psychischen Wohlbefindens durch Gemeinschaftskliniken, ernährungswissenschaftliche Unterstützung und traumasensible Beratung."
-            },
-            "social": {
-                "title": "Soziale Integration",
-                "description": "Förderung der Zugehörigkeit und Reduzierung von Isolation durch kulturelle Austauschprogramme, Sprachkurse und Gemeinschaftsveranstaltungen."
-            }
-        },
-        "Category": {
-            "breadcrumbs": {
-                "home": "Startseite",
-                "programs": "Programme"
-            },
-            "ProblemSolution": {
-                "challenge_title": "Die Herausforderung",
-                "solution_title": "Unser Ansatz"
-            },
-            "Projects": {
-                "title": "Aktuelle Initiativen",
-                "subtitle": "Projekte, die derzeit vor Ort aktiv laufen.",
-                "view_project": "Projekt ansehen"
-            },
-            "CTA": {
-                "title": "Nehmen Sie direkten Einfluss",
-                "donate": "Spenden für {category}",
-                "volunteer": "Freiwilligenarbeit im Bereich {category}"
-            }
-        },
-        "Overview": {
-            "Hero": {
-                "headline": "Ein ganzheitlicher Ansatz für Veränderung",
-                "subheadline": "Wir glauben, dass unterschiedliche Herausforderungen integrierte Lösungen erfordern. Unsere vier Säulen arbeiten zusammen, um nachhaltige Zukünfte zu bauen.",
-                "scroll_cta": "Unsere Säulen erkunden"
-            },
-            "Pillars": {
-                "economic-empowerment": "Wirtschaftliche Stärkung",
-                "education": "Bildung & Jugend",
-                "health": "Gesundheit & Wohlbefinden",
-                "social-integration": "Soziale Integration",
-                "explore": "Säule erkunden",
-                "desc_economic-empowerment": "Aufbau finanzieller Unabhängigkeit durch Fähigkeiten und Kapital.",
-                "desc_education": "Die nächste Generation mit den Werkzeugen für ein erfolgreiches Leben ausstatten.",
-                "desc_health": "Sicherstellung von physischem und mentalem Wohlbefinden als Fundament.",
-                "desc_social-integration": "Förderung von Zugehörigkeit und gesellschaftlichem Zusammenhalt."
-            },
-            "Theory": {
-                "title": "Der Kreislauf des Wandels",
-                "subtitle": "Wie unsere Programme ineinandergreifen, um Resilienz aufzubauen",
-                "step_1": "Gesundheit stabilisiert die Familie",
-                "step_2": "Bildung stärkt die Jugend",
-                "step_3": "Fähigkeiten schaffen Einkommen",
-                "step_4": "Gemeinschaft schafft Sicherheit"
-            },
-            "Impact": {
-                "title": "Kumulative Wirkung",
-                "metric_1": "Durchgeführte Programme",
-                "metric_2": "Aktive Projekte",
-                "metric_3": "Aktive Regionen",
-                "transparency_link": "Vollständigen Transparenzbericht ansehen"
-            }
-        },
-        "Categories": {
-            "education": {
-                "title": "Bildung & Jugend",
-                "hero_lead": "Bildung ist die mächtigste Waffe, die man einsetzen kann, um die Welt zu verändern. Wir bieten Zugang, Werkzeuge und Mentoring.",
-                "challenge": "Über 40 % der Jugendlichen in unseren Zielregionen fehlt der Zugang zu digitaler Bildung, wodurch sie in der modernen Wirtschaft zurückbleiben.",
-                "solution": "Wir bauen Computerräume, bilden lokale Lehrer aus und vergeben Stipendien, um sicherzustellen, dass kein Kind den Anschluss verliert.",
-                "coordinator_quote": "Zu sehen, wie ein Kind seine erste Zeile Code schreibt, hat nicht nur mit Technologie zu tun; es geht darum, eine Zukunft zu erschließen, von der es nicht wusste, dass es sie gibt.",
-                "coordinator_name": "Sarah Jenkins",
-                "coordinator_role": "Leiterin Bildungsprogramme"
-            },
-            "health": {
-                "title": "Gesundheit & Wohlbefinden",
-                "hero_lead": "Gesundheit ist das Fundament allen Wachstums. Ohne sie kommen Bildung und wirtschaftlicher Fortschritt zum Erliegen.",
-                "challenge": "Vermeidbare Krankheiten und mangelnde Unterstützung bei psychischen Problemen verwüsten weiterhin gefährdete Gemeinschaften.",
-                "solution": "Wir setzen mobile Kliniken ein und schulen lokales Gesundheitspersonal, um die Versorgung bis auf die letzte Meile zu gewährleisten.",
-                "coordinator_quote": "Wir behandeln Patienten, aber wir heilen auch Gemeinschaften, indem wir ihre Arbeits- und Lernfähigkeit wiederherstellen.",
-                "coordinator_name": "Dr. Amara Okonjo",
-                "coordinator_role": "Ärztliche Direktorin"
-            },
-            "economic-empowerment": {
-                "title": "Wirtschaftliche Stärkung",
-                "hero_lead": "Wohltätigkeit ist ein Pflaster; Unternehmertum ist die Heilung. Wir bauen nachhaltige Lebensgrundlagen auf.",
-                "challenge": "Talent ist universell, Chancen sind es nicht. Vielen Unternehmern fehlt das Startkapital, um loszulegen.",
-                "solution": "Wir bieten Mikrozuschüsse und berufliche Bildung, um Ideen in einkommensschaffende Unternehmen zu verwandeln.",
-                "coordinator_quote": "Wenn eine Frau ein Unternehmen gründet, isst das ganze Dorf.",
-                "coordinator_name": "John Kamau",
-                "coordinator_role": "Leiter Wirtschaftsförderung"
-            },
-            "social-integration": {
-                "title": "Soziale Integration",
-                "hero_lead": "Brücken zwischen Kulturen bauen, um Zugehörigkeit zu fördern und Isolation zu verringern.",
-                "challenge": "Geflüchtete und Migranten sind oft schwerer Isolation ausgesetzt, was ihre Fähigkeit behindert, zur Gesellschaft beizutragen.",
-                "solution": "Wir schaffen gemeinsame Räume für kulturellen Austausch, Spracherwerb und Gemeinschaftsbildung.",
-                "coordinator_quote": "Ein Fremder ist nur ein Freund, den man noch nicht getroffen hat. Wir schaffen den Ort der Begegnung.",
-                "coordinator_name": "Elena Rossi",
-                "coordinator_role": "Community Managerin"
-            }
-        }
+    "CTA": {
+      "text": "Lernen Sie die Menschen hinter der Mission kennen.",
+      "button": "Führungsteam ansehen"
+    }
+  },
+  "Team": {
+    "Hero": {
+      "title": "Von Menschen getragen",
+      "subtitle": "Eine vielfältige Koalition aus Experten, Gemeindeleitern und engagierten Freiwilligen, die an einer gemeinsamen Vision arbeiten."
     },
-    "Stories": {
-        "Carousel": {
-            "title": "Stimmen des Wandels",
-            "subtitle": "Echte Geschichten, echte Wirkung",
-            "read_story": "Ganze Geschichte lesen"
-        },
-        "Hero": {
-            "headline": "Geschichten von Würde & Wachstum",
-            "subheadline": "Lernen Sie die Menschen, Familien und Freiwilligen kennen, die unsere Gemeinschaft prägen. Echte Geschichten, erzählt in ihren eigenen Worten.",
-            "cta": "Ihre Geschichte einreichen"
-        },
-        "Filters": {
-            "search_placeholder": "Nach Stichwort suchen...",
-            "program_label": "Programm",
-            "role_label": "Rolle",
-            "format_label": "Format",
-            "featured_only": "Nur Hervorgehobene",
-            "clear": "Alle löschen",
-            "Programs": {
-                "all": "Alle Programme",
-                "education": "Bildung",
-                "health": "Gesundheit",
-                "economic-empowerment": "Wirtschaft",
-                "social-integration": "Soziales"
-            },
-            "Roles": {
-                "all": "Alle Rollen",
-                "beneficiary": "Begünstigte",
-                "volunteer": "Freiwillige",
-                "partner": "Partner",
-                "donor": "Spender"
-            },
-            "Formats": {
-                "all": "Alle Formate",
-                "video": "Video",
-                "audio": "Audio / Podcast",
-                "article": "Artikel",
-                "photo": "Foto-Essay"
-            }
-        },
-        "Featured": {
-            "badge": "Geschichte des Monats",
-            "watch": "Film ansehen",
-            "read": "Geschichte lesen",
-            "listen": "Jetzt anhören"
-        },
-        "Grid": {
-            "duration": "{minutes}:{seconds}",
-            "listen_badge": "Anhören",
-            "impact_interstitial": "Dies sind nur einige der {count} Leben, die wir dieses Jahr positiv beeinflusst haben.",
-            "load_more": "Weitere Geschichten laden",
-            "no_results": "Keine Geschichten gefunden, die Ihren Kriterien entsprechen."
-        },
-        "Detail": {
-            "context_label": "{program} • {location}",
-            "Player": {
-                "play": "Video abspielen",
-                "pause": "Pause",
-                "transcript": "Transkript herunterladen",
-                "cc": "Untertitel"
-            },
-            "Timeline": {
-                "title": "Die Reise"
-            },
-            "Impact": {
-                "title": "Wichtige Ergebnisse"
-            },
-            "Consent": {
-                "notice": "Diese Geschichte wird mit ausdrücklicher Zustimmung geteilt. Einige Namen oder Details wurden möglicherweise anonymisiert, um die Privatsphäre und Würde der beteiligten Personen zu schützen."
-            },
-            "Action": {
-                "title": "Unterstützen Sie Zukünfte wie die von {name}",
-                "donate": "Spenden für {program}",
-                "share": "Geschichte teilen",
-                "share_success": "Link in die Zwischenablage kopiert"
-            },
-            "Related": {
-                "title": "Mehr Geschichten aus {program}"
-            }
-        }
+    "Leadership": {
+      "title": "Geschäftsführung",
+      "ed_quote": "Wir führen nicht von oben herab; wir führen aus der Mitte der Gemeinschaft heraus."
     },
-    "Involved": {
-        "title": "Wählen Sie Ihren Weg zur Wirkung",
-        "badge": "Werden Sie Teil der Bewegung",
-        "footer_question": "Unsicher, wo Sie anfangen sollen?",
-        "footer_link": "Chatten Sie mit uns",
-        "Widgets": {
-            "quick_give_label": "Schnellspende",
-            "donate_button": "{amount} spenden",
-            "impact_note": "Sofortige Wirkung"
-        },
-        "donor": {
-            "title": "Unterstützen Sie die Mission",
-            "desc": "Ihr Beitrag ermöglicht direkte Hilfe für Familien in Not.",
-            "cta": "Jetzt spenden"
-        },
-        "volunteer": {
-            "title": "Werden Sie Teil des Teams",
-            "desc": "Teilen Sie Ihre Fähigkeiten mit unserer Gemeinschaft vor Ort.",
-            "cta": "Möglichkeiten entdecken"
-        },
-        "partner": {
-            "title": "Unternehmens-Impact",
-            "desc": "Werden Sie Partner für wirkungsvolle CSR-Initiativen.",
-            "cta": "Partner werden"
-        }
+    "Board": {
+      "title": "Vorstand",
+      "subtitle": "Governance & strategische Aufsicht",
+      "role_chair": "Vorsitz",
+      "role_treasurer": "Schatzmeister",
+      "role_secretary": "Schriftführer",
+      "affiliation_label": "Extern:"
     },
-    "Events": {
-        "badge": "Kalender",
-        "title": "Bevorstehende Veranstaltungen",
-        "view_all": "Alle Veranstaltungen ansehen",
-        "Hub": {
-            "badge": "Kalender",
-            "hero_title": "Bevorstehende Veranstaltungen",
-            "hero_subtitle": "Begleiten Sie AWE bei bevorstehenden Treffen, Workshops und Community-Veranstaltungen. Neue Termine werden hinzugefügt, sobald sie bestätigt sind.",
-            "empty_title": "Derzeit keine bevorstehenden Veranstaltungen",
-            "empty_subtitle": "Neue Veranstaltungen werden regelmäßig angekündigt. Schauen Sie bald wieder vorbei oder folgen Sie uns für Updates."
-        },
-        "Detail": {
-            "badge": "Veranstaltung",
-            "back_to_events": "Alle Veranstaltungen",
-            "date_label": "Datum",
-            "time_label": "Uhrzeit",
-            "location_label": "Ort",
-            "virtual_label": "Online",
-            "capacity_label": "Kapazität",
-            "registered_label": "Angemeldet",
-            "register": "Jetzt anmelden",
-            "details_title": "Veranstaltungsdetails",
-            "virtual_event_note": "Diese Veranstaltung findet online statt.",
-            "in_person_note": "Diese Veranstaltung findet vor Ort statt.",
-            "event_type_label": "Veranstaltungsart",
-            "not_found": "Veranstaltung nicht gefunden"
-        }
+    "Staff": {
+      "title": "Mitarbeiter & Koordinatoren",
+      "filters": {
+        "all": "Alle",
+        "programs": "Programme",
+        "operations": "Operatives",
+        "comms": "Kommunikation"
+      }
     },
-    "News": {
-        "title": "Aktuelle Einblicke & Updates",
-        "subtitle": "Berichte aus dem Feld",
-        "view_all": "Alle Nachrichten ansehen",
-        "read_article": "Artikel lesen",
-        "by_author": "Von <span>{name}</span>",
-        "fallback": {
-            "t1_title": "Neues Gemeindezentrum eröffnet in Nairobi",
-            "t1_excerpt": "Ein Meilenstein für unser Stadtentwicklungsprogramm, der täglich sichere Räume für über 500 Jugendliche bietet.",
-            "t2_title": "Jahresgala sammelt 50.000 € für Bildung",
-            "t2_excerpt": "Dank unserer unglaublichen Spender können wir nun 200 neue Stipendien für das kommende akademische Jahr finanzieren.",
-            "t3_title": "Programm zur digitalen Kompetenz erweitert",
-            "t3_excerpt": "Partnerschaft mit lokalen Tech-Giganten, um Programmier-Bootcamps in ländliche Gebiete zu bringen und die digitale Kluft zu überbrücken."
-        },
-        "Hub": {
-            "hero_title": "Das Neueste von AWE",
-            "hero_subtitle": "Programm-Updates, Expertenbeiträge und Pressemitteilungen.",
-            "search_placeholder": "Artikel suchen...",
-            "featured_badge": "Top-Story",
-            "read_full": "Ganzen Artikel lesen",
-            "read_more": "Mehr lesen",
-            "load_more": "Weitere Artikel laden",
-            "no_results": "Keine Artikel gefunden, die Ihren Kriterien entsprechen.",
-            "Categories": {
-                "all": "Alle Nachrichten",
-                "program-update": "Programm-Updates",
-                "thought-leadership": "Expertenbeiträge",
-                "press": "Presseberichte",
-                "event": "Veranstaltungen"
-            }
-        },
-        "Subscribe": {
-            "title": "Nichts verpassen.",
-            "placeholder": "Geben Sie Ihre E-Mail ein",
-            "button": "Abonnieren",
-            "privacy": "Wir senden eine Zusammenfassung pro Monat. Jederzeit abbestellbar."
-        },
-        "MediaKit": {
-            "title": "Für die Presse",
-            "subtitle": "Ressourcen für Journalisten und Partner.",
-            "assets": "Markenmaterialien herunterladen",
-            "bios": "Biografien der Führungskräfte",
-            "contact": "Pressekontakt"
-        },
-        "Article": {
-            "breadcrumbs": {
-                "news": "Nachrichten",
-                "home": "Startseite"
-            },
-            "meta": {
-                "read_time": "{min} Min. Lesezeit",
-                "published": "Veröffentlicht am {date}"
-            },
-            "share": {
-                "title": "Teilen",
-                "copy": "Link kopieren",
-                "copied": "Kopiert!"
-            },
-            "takeaways": "Das Wichtigste in Kürze",
-            "author": {
-                "role": "Autor"
-            },
-            "related": "Nächster Artikel"
-        }
+    "Advisory": {
+      "title": "Beirat",
+      "subtitle": "Branchenexperten, die unsere strategische Ausrichtung begleiten."
     },
-    "Trust": {
-        "header": "Vertraut von globalen Partnern & Institutionen"
+    "Careers": {
+      "title": "Möchten Sie sich unserer Mission anschließen?",
+      "button_jobs": "Offene Stellen ansehen",
+      "button_volunteer": "Freiwilliger werden"
+    }
+  },
+  "Financials": {
+    "Hero": {
+      "title": "Radikale Transparenz",
+      "subtitle": "Wir glauben, dass jeder gespendete Euro Vertrauen repräsentiert. Hier zeigen wir, wie wir diesem Vertrauen gerecht werden.",
+      "badge": "Unsere Verpflichtung"
     },
-    "Newsletter": {
-        "title": "Bleiben Sie mit der Sache verbunden",
-        "subtitle": "Erhalten Sie wöchentliche Updates, inspirierende Geschichten und exklusive Einladungen direkt in Ihren Posteingang.",
-        "badge": "Treten Sie unserem Impact-Newsletter bei",
-        "placeholder": "Ihre E-Mail-Adresse",
-        "subscribe": "Abonnieren",
-        "submitting": "Abonniere...",
-        "privacy": "Wir respektieren Ihre Privatsphäre. Jederzeit abbestellbar.",
-        "social_proof": "Schließen Sie sich Tausenden von Changemakern weltweit an",
-        "error_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
-        "benefits": {
-            "benefit_1": "Wöchentliche Updates",
-            "benefit_2": "Exklusive Geschichten",
-            "benefit_3": "Früher Zugang"
-        },
-        "Success": {
-            "title": "Erfolg!",
-            "message": "Willkommen in unserer Gemeinschaft von Changemakern."
-        },
-        "Stats": {
-            "subscribers": "Abonnenten",
-            "countries": "Länder",
-            "satisfaction": "Zufriedenheit"
-        }
+    "Journey": {
+      "title": "Wohin Ihr Geld fließt",
+      "subtitle": "Mittelverwendung Geschäftsjahr 2024",
+      "program": "Programmkosten",
+      "management": "Verwaltung",
+      "fundraising": "Mittelbeschaffung",
+      "tooltip_efficiency": "85% Effizienzquote",
+      "efficiency": "Programmeffizienz"
     },
-    "Fallback": {
-        "Hero": {
-            "default_headline": "Würdevolles Wachstum,",
-            "default_accent": "Strahlende Gemeinschaft.",
-            "default_subhead": "Wir stärken Gemeinschaften durch Bildung, nachhaltige Entwicklung und unerschütterliche Unterstützung. Bauen Sie mit uns eine Zukunft, in der alle gedeihen.",
-            "cta_primary": "Jetzt Spenden",
-            "cta_secondary": "Unsere Geschichte",
-            "trust_1": "Eingetragener Verein",
-            "trust_2": "100% Transparenz",
-            "scroll": "Entdecken",
-            "imageAlt": "Gemeinschaft & Wirkung"
-        },
-        "Testimonials": {
-            "t1_text": "AWE hat unsere gesamte Gemeinschaft durch Bildung und nachhaltige Programme verändert.",
-            "t1_author": "Maria Santos",
-            "t1_location": "Kenia",
-            "t2_text": "Die Hoffnung ist in unser Dorf zurückgekehrt. Wir haben jetzt Zugang zu sauberem Wasser und Bildung.",
-            "t2_author": "John Kamau",
-            "t2_location": "Uganda",
-            "t3_text": "Bildung hat alles für meine Kinder verändert. Sie haben jetzt Chancen, die ich nie hatte.",
-            "t3_author": "Fatima Al-Rashid",
-            "t3_location": "Jordanien"
-        },
-        "Metrics": {
-            "lives": "Erreichte Leben",
-            "lives_desc": "Direkte Begünstigte unserer Programme",
-            "projects": "Aktive Projekte",
-            "projects_desc": "Abgeschlossene Initiativen in 4 Regionen",
-            "countries": "Globale Reichweite",
-            "countries_desc": "Aktive operative Standorte",
-            "volunteers": "Freiwillige",
-            "volunteers_desc": "Aktive Gemeinschaftsmitglieder"
-        }
+    "Metrics": {
+      "revenue": "Gesamteinnahmen",
+      "efficiency": "Programmeffizienz",
+      "efficiency_desc": "von jedem Euro fließt direkt in die Arbeit vor Ort",
+      "budget": "Freigegebenes Budget"
     },
-    "Footer": {
-        "tagline": "Brückenbauen zwischen Gemeinschaften durch würdevolles Wachstum und strahlende Unterstützung. Eine Non-Profit-Organisation, die sich Transparenz und Wirkung verschrieben hat.",
-        "about": {
-            "title": "Über uns",
-            "story": "Unsere Geschichte",
-            "team": "Team",
-            "financials": "Finanzen",
-            "partners": "Partner"
-        },
-        "getInvolved": {
-            "title": "Mitmachen",
-            "donate": "Spenden",
-            "volunteer": "Ehrenamt",
-            "corporate": "Unternehmenspartnerschaften"
-        },
-        "programs": {
-            "title": "Unsere Programme",
-            "economic": "Wirtschaft",
-            "education": "Bildung",
-            "health": "Gesundheit",
-            "social": "Integration",
-            "advocacy": "Interessenvertretung"
-        },
-        "resources": {
-            "title": "Ressourcen",
-            "news": "Aktuelles",
-            "stories": "Geschichten",
-            "reports": "Berichte",
-            "contact": "Kontakt"
-        },
-        "newsletter": {
-            "title": "Bewegung beitreten",
-            "description": "Abonnieren Sie Updates zur Wirkung.",
-            "placeholder": "Ihre E-Mail",
-            "subscribe": "Abonnieren"
-        },
-        "legal": {
-            "privacy": "Datenschutz",
-            "terms": "AGB",
-            "imprint": "Impressum"
-        },
-        "badges": {
-            "nonprofit": "Gemeinnütziger Verein",
-            "verified": "Gold Transparenz"
-        },
-        "madeWith": "Gemacht mit",
-        "inBerlin": "in Berlin"
+    "Documents": {
+      "title": "Finanzarchiv",
+      "subtitle": "Laden Sie unsere Jahresberichte und Prüfungsberichte herunter.",
+      "download": "Herunterladen",
+      "size": "PDF • {size}"
     },
-    "Error": {
-        "title": "Etwas ist schiefgelaufen",
-        "description": "Wir entschuldigen uns für die Unannehmlichkeiten. Ein kritischer Fehler ist aufgetreten.",
-        "retry": "Erneut versuchen",
-        "reload": "Seite neu laden",
-        "home": "Zur Startseite"
+    "Compliance": {
+      "title": "Verifiziert & Akkreditiert",
+      "subtitle": "Wir halten uns an die strengsten internationalen Standards für Non-Profit-Governance."
+    }
+  },
+  "Partners": {
+    "Hero": {
+      "title": "Gemeinsam stärker",
+      "subtitle": "Systemischer Wandel erfordert ein Bündnis. Wir sind stolz darauf, an der Seite dieser Visionäre zu stehen.",
+      "badge": "Unser Ökosystem"
     },
-    "Common": {
-        "cta_donate": "Jetzt spenden",
-        "cta_learn_more": "Unsere Geschichte",
-        "scroll": "Scrollen",
-        "image_placeholder": "Gemeinschaft & Wirkung",
-        "explore": "Entdecken",
-        "impact": "Wirkung"
+    "Tiers": {
+      "strategic": "Institutionelle & strategische Partner",
+      "strategic_desc": "Große Geldgeber und staatliche Stellen, die unseren operativen Kernbetrieb ermöglichen.",
+      "corporate": "Unternehmenssponsoren",
+      "corporate_desc": "Branchenführer, die durch CSR und Innovation Wirkung erzielen.",
+      "community": "Gemeinschaftliche Verbündete",
+      "community_desc": "Basisorganisationen, mit denen wir vor Ort zusammenarbeiten."
     },
-    "About": {
-        "Hero": {
-            "preheader": "Unsere Geschichte",
-            "headline": "Gegründet auf dem Glauben, dass Würde ein Menschenrecht ist, kein Privileg.",
-            "lead": "Was als kleine Gemeinschaftsinitiative begann, ist zu einer globalen Bewegung gewachsen. Wir schreiben das Narrativ der Hilfe neu – weg von bloßer Wohltätigkeit hin zu Partnerschaft, von Abhängigkeit zu Selbstbestimmung.",
-            "image_alt": "Unsere Reise durch die Jahre"
-        },
-        "MissionVision": {
-            "mission_title": "Unsere Mission",
-            "mission_text": "Bereitstellung der Werkzeuge, Schulungen und Netzwerke, die Gemeinschaften benötigen, um ihre eigene nachhaltige Zukunft aufzubauen.",
-            "vision_title": "Unsere Vision",
-            "vision_text": "Eine Welt, in der jeder Einzelne, unabhängig von seinem Startpunkt, die Handlungsfähigkeit besitzt, sein eigenes Schicksal zu gestalten."
-        },
-        "Timeline": {
-            "title": "Unser Weg",
-            "milestones": {
-                "2018": {
-                    "title": "Der Funke",
-                    "desc": "Gegründet in einem Wohnzimmer in Berlin, zunächst mit Fokus auf Sprachunterstützung für Neuankömmlinge."
-                },
-                "2020": {
-                    "title": "Erstes Gemeindezentrum",
-                    "desc": "Eröffnung in Nachbarschaft X, wöchentliche Versorgung von 200 Familien während der Krise."
-                },
-                "2022": {
-                    "title": "Globale Expansion",
-                    "desc": "Start von Partnerschaften in Ostafrika mit neuem Fokus auf wirtschaftliche Stärkung."
-                },
-                "2024": {
-                    "title": "Institutionelles Wachstum",
-                    "desc": "Erreichen des GuideStar Platinum-Status und Start der digitalen Mentoring-Plattform."
-                }
-            }
-        },
-        "Values": {
-            "title": "Werte, die uns leiten",
-            "integrity": {
-                "title": "Integrität",
-                "desc": "Wir handeln mit radikaler Transparenz bei Finanzen und Wirkung."
-            },
-            "empathy": {
-                "title": "Radikale Empathie",
-                "desc": "Wir hören zuerst zu und verstehen, dass diejenigen, die dem Problem am nächsten sind, auch die Lösung kennen."
-            },
-            "agency": {
-                "title": "Selbstbestimmung",
-                "desc": "Wir retten keine Menschen; wir beseitigen Hindernisse, damit sie sich selbst helfen können."
-            }
-        },
-        "Theory": {
-            "title": "Unsere Theorie des Wandels",
-            "subtitle": "Wie wir Ressourcen in dauerhafte Wirkung umwandeln.",
-            "inputs": "Inputs",
-            "inputs_desc": "Spenden, Freiwilligenzeit, Expertise.",
-            "activities": "Aktivitäten",
-            "activities_desc": "Workshops, Schulungen, Mentoring.",
-            "outputs": "Outputs",
-            "outputs_desc": "Zertifizierte Fähigkeiten, Businesspläne, Verbindungen.",
-            "outcomes": "Wirkungen",
-            "outcomes_desc": "Nachhaltige Arbeitsplätze, wirtschaftliche Stabilität, Würde.",
-            "sr_desc": "Ein Flussdiagramm, das zeigt, wie Inputs zu Aktivitäten führen, diese zu Outputs und schließlich zu Wirkungen (Outcomes)."
-        },
-        "CTA": {
-            "text": "Lernen Sie die Menschen hinter der Mission kennen.",
-            "button": "Führungsteam ansehen"
-        }
+    "CTA": {
+      "title": "Werden Sie Partner",
+      "benefits_title": "Warum mit uns partnern?",
+      "benefit_1": "Messbare CSR-Wirkungsberichte",
+      "benefit_2": "Möglichkeiten für Corporate Volunteering",
+      "benefit_3": "Markenausrichtung an den globalen SDGs",
+      "btn_deck": "Partnerschaftspräsentation herunterladen",
+      "btn_contact": "Partnerschaftsteam kontaktieren"
+    }
+  },
+  "Project": {
+    "meta_suffix": "AWE e.V. Initiative",
+    "Status": {
+      "not_found": "Projekt nicht gefunden",
+      "planning": "Planungsphase",
+      "recruiting": "Rekrutierung läuft",
+      "active": "In Arbeit",
+      "completed": "Abgeschlossen"
     },
-    "Team": {
-        "Hero": {
-            "title": "Von Menschen getragen",
-            "subtitle": "Eine vielfältige Koalition aus Experten, Gemeindeleitern und engagierten Freiwilligen, die an einer gemeinsamen Vision arbeiten."
-        },
-        "Leadership": {
-            "title": "Geschäftsführung",
-            "ed_quote": "Wir führen nicht von oben herab; wir führen aus der Mitte der Gemeinschaft heraus."
-        },
-        "Board": {
-            "title": "Vorstand",
-            "subtitle": "Governance & strategische Aufsicht",
-            "role_chair": "Vorsitz",
-            "role_treasurer": "Schatzmeister",
-            "role_secretary": "Schriftführer",
-            "affiliation_label": "Extern:"
-        },
-        "Staff": {
-            "title": "Mitarbeiter & Koordinatoren",
-            "filters": {
-                "all": "Alle",
-                "programs": "Programme",
-                "operations": "Operatives",
-                "comms": "Kommunikation"
-            }
-        },
-        "Advisory": {
-            "title": "Beirat",
-            "subtitle": "Branchenexperten, die unsere strategische Ausrichtung begleiten."
-        },
-        "Careers": {
-            "title": "Möchten Sie sich unserer Mission anschließen?",
-            "button_jobs": "Offene Stellen ansehen",
-            "button_volunteer": "Freiwilliger werden"
-        }
+    "Sidebar": {
+      "title": "Mitmachen",
+      "donate_title": "Diese Initiative finanzieren",
+      "donate_desc": "Helfen Sie uns, unser Ziel von {goal} € zu erreichen.",
+      "donate_btn": "Für das Projekt spenden",
+      "volunteer_title": "Freiwilligenarbeit",
+      "volunteer_desc": "{count} Schichten diesen Monat verfügbar.",
+      "volunteer_btn": "Zeitplan ansehen",
+      "apply_title": "Als Teilnehmer bewerben",
+      "apply_desc": "Bewerbungen offen bis {date}.",
+      "apply_btn": "Jetzt bewerben",
+      "lead_label": "Projektleitung"
     },
-    "Financials": {
-        "Hero": {
-            "title": "Radikale Transparenz",
-            "subtitle": "Wir glauben, dass jeder gespendete Euro Vertrauen repräsentiert. Hier zeigen wir, wie wir diesem Vertrauen gerecht werden.",
-            "badge": "Unsere Verpflichtung"
-        },
-        "Journey": {
-            "title": "Wohin Ihr Geld fließt",
-            "subtitle": "Mittelverwendung Geschäftsjahr 2024",
-            "program": "Programmkosten",
-            "management": "Verwaltung",
-            "fundraising": "Mittelbeschaffung",
-            "tooltip_efficiency": "85% Effizienzquote",
-            "efficiency": "Programmeffizienz"
-        },
-        "Metrics": {
-            "revenue": "Gesamteinnahmen",
-            "efficiency": "Programmeffizienz",
-            "efficiency_desc": "von jedem Euro fließt direkt in die Arbeit vor Ort",
-            "budget": "Freigegebenes Budget"
-        },
-        "Documents": {
-            "title": "Finanzarchiv",
-            "subtitle": "Laden Sie unsere Jahresberichte und Prüfungsberichte herunter.",
-            "download": "Herunterladen",
-            "size": "PDF • {size}"
-        },
-        "Compliance": {
-            "title": "Verifiziert & Akkreditiert",
-            "subtitle": "Wir halten uns an die strengsten internationalen Standards für Non-Profit-Governance."
-        }
+    "Tabs": {
+      "updates": "Berichte aus dem Feld",
+      "story": "Die Geschichte",
+      "impact": "Wirkungsdaten"
     },
-    "Partners": {
-        "Hero": {
-            "title": "Gemeinsam stärker",
-            "subtitle": "Systemischer Wandel erfordert ein Bündnis. Wir sind stolz darauf, an der Seite dieser Visionäre zu stehen.",
-            "badge": "Unser Ökosystem"
-        },
-        "Tiers": {
-            "strategic": "Institutionelle & strategische Partner",
-            "strategic_desc": "Große Geldgeber und staatliche Stellen, die unseren operativen Kernbetrieb ermöglichen.",
-            "corporate": "Unternehmenssponsoren",
-            "corporate_desc": "Branchenführer, die durch CSR und Innovation Wirkung erzielen.",
-            "community": "Gemeinschaftliche Verbündete",
-            "community_desc": "Basisorganisationen, mit denen wir vor Ort zusammenarbeiten."
-        },
-        "CTA": {
-            "title": "Werden Sie Partner",
-            "benefits_title": "Warum mit uns partnern?",
-            "benefit_1": "Messbare CSR-Wirkungsberichte",
-            "benefit_2": "Möglichkeiten für Corporate Volunteering",
-            "benefit_3": "Markenausrichtung an den globalen SDGs",
-            "btn_deck": "Partnerschaftspräsentation herunterladen",
-            "btn_contact": "Partnerschaftsteam kontaktieren"
-        }
+    "Progress": {
+      "title": "Projekt-Zeitplan"
     },
-    "Project": {
-        "meta_suffix": "AWE e.V. Initiative",
-        "Status": {
-            "not_found": "Projekt nicht gefunden",
-            "planning": "Planungsphase",
-            "recruiting": "Rekrutierung läuft",
-            "active": "In Arbeit",
-            "completed": "Abgeschlossen"
-        },
-        "Sidebar": {
-            "title": "Mitmachen",
-            "donate_title": "Diese Initiative finanzieren",
-            "donate_desc": "Helfen Sie uns, unser Ziel von {goal} € zu erreichen.",
-            "donate_btn": "Für das Projekt spenden",
-            "volunteer_title": "Freiwilligenarbeit",
-            "volunteer_desc": "{count} Schichten diesen Monat verfügbar.",
-            "volunteer_btn": "Zeitplan ansehen",
-            "apply_title": "Als Teilnehmer bewerben",
-            "apply_desc": "Bewerbungen offen bis {date}.",
-            "apply_btn": "Jetzt bewerben",
-            "lead_label": "Projektleitung"
-        },
-        "Tabs": {
-            "updates": "Berichte aus dem Feld",
-            "story": "Die Geschichte",
-            "impact": "Wirkungsdaten"
-        },
-        "Progress": {
-            "title": "Projekt-Zeitplan"
-        },
-        "Related": {
-            "title": "Andere Initiativen im Bereich {category}"
-        }
+    "Related": {
+      "title": "Andere Initiativen im Bereich {category}"
+    }
+  },
+  "Donation": {
+    "Page": {
+      "title": "Spenden Sie an AWE e.V.",
+      "description": "Ihr Beitrag schafft nachhaltige Veränderung.",
+      "hero_headline": "Ihre Unterstützung verändert Leben.",
+      "hero_subheadline": "Werden Sie Teil einer Gemeinschaft von Spendern, die eine Zukunft bauen, in der sich jeder entfalten kann.",
+      "quote": "Dank Ihnen kann ich wieder träumen.",
+      "quote_author": "Sarah, Absolventin des Bildungsprogramms",
+      "secure_badge": "100% Sichere Spende",
+      "tax_badge": "Steuerlich absetzbar",
+      "transparency_title": "Finanzielle Transparenz",
+      "transparency_desc": "Wir glauben, dass Vertrauen verdient werden muss. Hier sehen Sie genau, wohin Ihr Geld fließt.",
+      "faq_title": "Häufig gestellte Fragen",
+      "matching_title": "Spendenverdopplung durch Arbeitgeber",
+      "matching_desc": "Verdoppelt Ihr Arbeitgeber Spenden? Suchen Sie unten.",
+      "matching_placeholder": "Suchen Sie nach Ihrem Unternehmen..."
     },
-    "Donation": {
-        "Page": {
-            "title": "Spenden Sie an AWE e.V.",
-            "description": "Ihr Beitrag schafft nachhaltige Veränderung.",
-            "hero_headline": "Ihre Unterstützung verändert Leben.",
-            "hero_subheadline": "Werden Sie Teil einer Gemeinschaft von Spendern, die eine Zukunft bauen, in der sich jeder entfalten kann.",
-            "quote": "Dank Ihnen kann ich wieder träumen.",
-            "quote_author": "Sarah, Absolventin des Bildungsprogramms",
-            "secure_badge": "100% Sichere Spende",
-            "tax_badge": "Steuerlich absetzbar",
-            "transparency_title": "Finanzielle Transparenz",
-            "transparency_desc": "Wir glauben, dass Vertrauen verdient werden muss. Hier sehen Sie genau, wohin Ihr Geld fließt.",
-            "faq_title": "Häufig gestellte Fragen",
-            "matching_title": "Spendenverdopplung durch Arbeitgeber",
-            "matching_desc": "Verdoppelt Ihr Arbeitgeber Spenden? Suchen Sie unten.",
-            "matching_placeholder": "Suchen Sie nach Ihrem Unternehmen..."
-        },
-        "Widget": {
-            "frequency_monthly": "Monatlich geben",
-            "frequency_one_time": "Einmalig geben",
-            "custom_amount": "Anderer Betrag",
-            "impact_label": "Ihre Spende ermöglicht:",
-            "impact_25": "Schulmaterial für ein Kind",
-            "impact_50": "Sauberes Wasser für eine Familie",
-            "impact_100": "Werkzeuge für einen Auszubildenden",
-            "impact_250": "Ein Tablet für ein Klassenzimmer",
-            "impact_default": "Ressourcen, wo sie am dringendsten benötigt werden",
-            "payment_header": "Zahlungsdetails",
-            "email_label": "E-Mail-Adresse",
-            "receipt_check": "Ich benötige eine Spendenquittung",
-            "submit_btn": "€{amount} spenden",
-            "secure_footer": "Verschlüsselt & Sicher via Stripe"
-        },
-        "FAQ": {
-            "q1": "Kann ich meine monatliche Spende kündigen?",
-            "a1": "Ja, absolut. Sie können Ihre monatliche Spende jederzeit über das Spenderportal oder durch direkte Kontaktaufnahme pausieren, ändern oder kündigen.",
-            "q2": "Ist das steuerlich absetzbar?",
-            "a2": "Ja. AWE e.V. ist eine registrierte gemeinnützige Organisation. Wir versenden automatisch jährliche Spendenbescheinigungen für steuerliche Zwecke.",
-            "q3": "Akzeptieren Sie PayPal?",
-            "a3": "Ja, wir akzeptieren alle gängigen Kreditkarten, PayPal, Apple Pay und Google Pay."
-        },
-        "ImpactSlider": {
-            "level_1": "Grundlagen der Bildung",
-            "level_2": "Zugang zu sauberem Wasser",
-            "level_3": "Berufsausrüstung",
-            "level_4": "Digitales Klassenzimmer",
-            "min_label": "Kleine Spende",
-            "max_label": "Große Wirkung"
-        }
+    "Widget": {
+      "frequency_monthly": "Monatlich geben",
+      "frequency_one_time": "Einmalig geben",
+      "custom_amount": "Anderer Betrag",
+      "impact_label": "Ihre Spende ermöglicht:",
+      "impact_25": "Schulmaterial für ein Kind",
+      "impact_50": "Sauberes Wasser für eine Familie",
+      "impact_100": "Werkzeuge für einen Auszubildenden",
+      "impact_250": "Ein Tablet für ein Klassenzimmer",
+      "impact_default": "Ressourcen, wo sie am dringendsten benötigt werden",
+      "payment_header": "Zahlungsdetails",
+      "email_label": "E-Mail-Adresse",
+      "receipt_check": "Ich benötige eine Spendenquittung",
+      "submit_btn": "€{amount} spenden",
+      "secure_footer": "Verschlüsselt & Sicher via Stripe"
     },
-    "Volunteer": {
-        "Hero": {
-            "headline": "Helfen Sie mit Ihren Fähigkeiten. Bewirken Sie Veränderung.",
-            "subheadline": "Werden Sie Teil einer Gemeinschaft von Veränderern. Ob Sie 2 Stunden pro Woche oder 2 Tage im Monat Zeit haben.",
-            "cta_primary": "Offene Stellen ansehen",
-            "cta_secondary": "Im Portal anmelden"
-        },
-        "Benefits": {
-            "community_title": "Globale Gemeinschaft",
-            "community_desc": "Vernetzen Sie sich mit Gleichgesinnten vor Ort und globalen Bürgern, die sich dem Wandel verschrieben haben.",
-            "skills_title": "Berufliche Entwicklung",
-            "skills_desc": "Sammeln Sie praktische Erfahrungen, Führungskompetenzen und berufliches Mentoring.",
-            "impact_title": "Direkte Wirkung",
-            "impact_desc": "Sehen Sie die greifbaren Ergebnisse Ihrer Zeit und Energie in den Gemeinden, denen wir dienen."
-        },
-        "Roles": {
-            "title": "Finden Sie Ihre Rolle",
-            "subtitle": "Durchsuchen Sie Möglichkeiten, die Ihren Fähigkeiten und Ihrem Zeitplan entsprechen.",
-            "filters": {
-                "type": "Ort",
-                "category": "Kategorie",
-                "commitment": "Engagement",
-                "all": "Alle"
-            },
-            "card": {
-                "apply": "Jetzt bewerben",
-                "urgent": "Dringend"
-            },
-            "empty": {
-                "title": "Keine passenden Rollen gefunden",
-                "desc": "Versuchen Sie, Ihre Filter anzupassen oder melden Sie sich für Benachrichtigungen an."
-            }
-        },
-        "Journey": {
-            "title": "Ihr Weg zur Wirkung",
-            "step_1": "Bewerben",
-            "step_1_desc": "Erstellen Sie Ihr Profil",
-            "step_2": "Einarbeitung",
-            "step_2_desc": "Schließen Sie den Einführungsassistenten ab",
-            "step_3": "Schulung",
-            "step_3_desc": "Greifen Sie auf unser LMS zu",
-            "step_4": "Aktion",
-            "step_4_desc": "Buchen Sie Ihre erste Schicht"
-        },
-        "Testimonials": {
-            "title": "Warum wir uns engagieren"
-        }
+    "FAQ": {
+      "q1": "Kann ich meine monatliche Spende kündigen?",
+      "a1": "Ja, absolut. Sie können Ihre monatliche Spende jederzeit über das Spenderportal oder durch direkte Kontaktaufnahme pausieren, ändern oder kündigen.",
+      "q2": "Ist das steuerlich absetzbar?",
+      "a2": "Ja. AWE e.V. ist eine registrierte gemeinnützige Organisation. Wir versenden automatisch jährliche Spendenbescheinigungen für steuerliche Zwecke.",
+      "q3": "Akzeptieren Sie PayPal?",
+      "a3": "Ja, wir akzeptieren alle gängigen Kreditkarten, PayPal, Apple Pay und Google Pay."
     },
-    "Corporate": {
-        "Hero": {
-            "headline": "Partner für den guten Zweck",
-            "subheadline": "Richten Sie Ihre Marke auf würdevolles Wachstum aus. Wirksame CSR-Möglichkeiten für zukunftsorientierte Unternehmen.",
-            "cta": "Jetzt anfragen"
-        },
-        "ROI": {
-            "title": "Der Business Case für Wirkung",
-            "engagement_title": "Mitarbeiterengagement",
-            "engagement_desc": "Steigern Sie die Team-Moral und Mitarbeiterbindung durch sinnvolle Gruppen-Freiwilligenarbeit.",
-            "brand_title": "Markensichtbarkeit",
-            "brand_desc": "Erreichen Sie unser vielfältiges, sozial bewusstes Publikum und stärken Sie Ihre Markenbekanntheit.",
-            "sdg_title": "SDG-Ausrichtung",
-            "sdg_desc": "Konkrete Metriken zur Erreichung Ihrer Ziele für nachhaltige Entwicklung der UN (SDG 1, 4, 8)."
-        },
-        "Tiers": {
-            "title": "Partnerschaftslevel",
-            "subtitle": "Wählen Sie das Engagement-Level, das zu Ihrer CSR-Strategie passt.",
-            "inquire": "Jetzt anfragen",
-            "silver_title": "Impact-Partner",
-            "silver_price": "€5.000 - €10.000 / Jahr",
-            "gold_title": "Strategischer Partner",
-            "gold_price": "€10.000 - €50.000 / Jahr",
-            "platinum_title": "Visionärer Partner",
-            "platinum_price": "€50.000+ / Jahr",
-            "feature_logo": "Logo-Platzierung",
-            "feature_report": "Wirkungsbericht",
-            "feature_social": "Social Media Feature",
-            "feature_volunteering": "Team-Freiwilligentag",
-            "feature_advisory": "Sitz im Beirat",
-            "feature_custom": "Individuelles Programmdesign"
-        },
-        "CaseStudy": {
-            "title": "Erfolgsgeschichten"
-        },
-        "Form": {
-            "title": "Starten Sie das Gespräch",
-            "subtitle": "Erzählen Sie uns von Ihren CSR-Zielen, und wir gestalten eine Partnerschaft, die funktioniert.",
-            "fields": {
-                "company": "Firmenname",
-                "contact": "Ansprechpartner",
-                "email": "Geschäfts-E-Mail",
-                "industry": "Branche",
-                "goals": "Was sind Ihre CSR-Ziele?",
-                "budget": "Geschätztes Budget"
-            },
-            "submit": "Partnerschafts-Deck anfordern",
-            "submitting": "Senden...",
-            "success_title": "Anfrage erhalten",
-            "success_desc": "Unser Partnerschaftsteam wird Sie innerhalb von 24 Stunden kontaktieren."
-        },
-        "Downloads": {
-            "deck": "Partnerschafts-Deck herunterladen (PDF)",
-            "report": "Jährlicher Wirkungsbericht 2024"
-        }
+    "ImpactSlider": {
+      "level_1": "Grundlagen der Bildung",
+      "level_2": "Zugang zu sauberem Wasser",
+      "level_3": "Berufsausrüstung",
+      "level_4": "Digitales Klassenzimmer",
+      "min_label": "Kleine Spende",
+      "max_label": "Große Wirkung"
+    }
+  },
+  "Volunteer": {
+    "Hero": {
+      "headline": "Helfen Sie mit Ihren Fähigkeiten. Bewirken Sie Veränderung.",
+      "subheadline": "Werden Sie Teil einer Gemeinschaft von Veränderern. Ob Sie 2 Stunden pro Woche oder 2 Tage im Monat Zeit haben.",
+      "cta_primary": "Offene Stellen ansehen",
+      "cta_secondary": "Im Portal anmelden"
     },
-    "GetInvolved": {
-        "Hub": {
-            "title": "Seien Sie der Katalysator für Veränderung",
-            "subtitle": "Es gibt viele Wege, eine würdevolle Zukunft aufzubauen. Wählen Sie den Weg, der zu Ihrer Fähigkeit zu geben passt.",
-            "Cards": {
-                "donate_title": "Spenden Sie",
-                "donate_desc": "Finanzieren Sie unsere Programme mit einer einmaligen oder monatlichen Spende.",
-                "donate_impact": "Sofortige Finanzierung von Werkzeugen, Büchern und medizinischen Hilfsmitteln.",
-                "donate_cta": "Jetzt spenden",
-                "volunteer_title": "Spenden Sie Ihre Zeit",
-                "volunteer_desc": "Teilen Sie Ihre beruflichen Fähigkeiten oder helfen Sie vor Ort mit.",
-                "volunteer_impact": "Direkte Mentoring und Unterstützung für unsere Community-Mitglieder.",
-                "volunteer_cta": "Rollen finden",
-                "corporate_title": "Partner als Unternehmen",
-                "corporate_desc": "Richten Sie Ihre Marke durch strategische CSR auf Wirkung aus.",
-                "corporate_impact": "Systemische Veränderung durch groß angelegte Ressourcenmobilisierung.",
-                "corporate_cta": "Partnerschaft eingehen"
-            },
-            "Questions": {
-                "title": "Sie wissen nicht, wo Sie anfangen sollen?",
-                "text": "Unser Team hilft Ihnen, den besten Weg zur Beitragsleistung basierend auf Ihren Interessen zu finden.",
-                "cta": "Kontaktieren Sie uns"
-            }
-        }
+    "Benefits": {
+      "community_title": "Globale Gemeinschaft",
+      "community_desc": "Vernetzen Sie sich mit Gleichgesinnten vor Ort und globalen Bürgern, die sich dem Wandel verschrieben haben.",
+      "skills_title": "Berufliche Entwicklung",
+      "skills_desc": "Sammeln Sie praktische Erfahrungen, Führungskompetenzen und berufliches Mentoring.",
+      "impact_title": "Direkte Wirkung",
+      "impact_desc": "Sehen Sie die greifbaren Ergebnisse Ihrer Zeit und Energie in den Gemeinden, denen wir dienen."
     },
-    "Contact": {
-        "Hero": {
-            "headline": "Lassen Sie uns in Kontakt treten.",
-            "subheadline": "Haben Sie eine Frage zu unseren Programmen, Partnerschaften oder Spenden? Wir sind hier, um zu helfen."
-        },
-        "Channels": {
-            "general_title": "Allgemeine Anfragen",
-            "general_email": "hallo@awe-ev.org",
-            "press_title": "Pressekontakt",
-            "press_email": "presse@awe-ev.org",
-            "visit_title": "Hauptsitz Berlin",
-            "visit_address": "Musterstraße 123, Berlin",
-            "directions": "Wegbeschreibung"
-        },
-        "Form": {
-            "title": "Nachricht senden",
-            "fields": {
-                "name": "Vollständiger Name",
-                "email": "E-Mail-Adresse",
-                "topic": "Thema",
-                "company": "Firmenname",
-                "message": "Nachricht",
-                "consent": "Ich stimme der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu."
-            },
-            "Topics": {
-                "general": "Allgemeine Anfrage",
-                "donation": "Hilfe bei Spenden",
-                "volunteer": "Freiwilligenarbeit",
-                "partner": "Partnerschaft",
-                "report": "Problem melden"
-            },
-            "hints": {
-                "volunteer": "Suchen Sie nach offenen Stellen? Prüfen Sie unser Freiwilligen-Portal für eine schnellere Bewerbung.",
-                "partner": "Bitte geben Sie Details zu Ihrer Organisation an."
-            },
-            "submit": "Nachricht senden",
-            "submitting": "Wird gesendet...",
-            "success_title": "Nachricht empfangen",
-            "success_desc": "Wir antworten normalerweise innerhalb von 48 Stunden."
-        },
-        "FAQ": {
-            "title": "Häufige Fragen",
-            "q1": "Wie erhalte ich eine Spendenquittung?",
-            "a1": "Spendenquittungen werden automatisch im Februar für das vorangegangene Steuerjahr per E-Mail versendet.",
-            "q2": "Kann ich Kleidung/Waren spenden?",
-            "a2": "Derzeit akzeptieren wir nur finanzielle Beiträge, um sicherzustellen, dass die Ressourcen vor Ort effizient genutzt werden.",
-            "q3": "Wohin fließt das Geld?",
-            "a3": "85% aller Spenden fließen direkt in die Umsetzung der Programme. Details finden Sie auf unserer Finanzseite."
-        },
-        "Map": {
-            "hours_label": "Bürozeiten",
-            "hours_value": "Mo-Fr, 09:00 - 17:00 Uhr",
-            "phone_label": "Telefon",
-            "open_maps": "In Google Maps öffnen"
-        },
-        "Safeguarding": {
-            "text": "Möchten Sie ein Schutzbedenken anonym melden?",
-            "link": "Nutzen Sie unseren sicheren Meldekanal"
-        }
+    "Roles": {
+      "title": "Finden Sie Ihre Rolle",
+      "subtitle": "Durchsuchen Sie Möglichkeiten, die Ihren Fähigkeiten und Ihrem Zeitplan entsprechen.",
+      "filters": {
+        "type": "Ort",
+        "category": "Kategorie",
+        "commitment": "Engagement",
+        "all": "Alle"
+      },
+      "card": {
+        "apply": "Jetzt bewerben",
+        "urgent": "Dringend"
+      },
+      "empty": {
+        "title": "Keine passenden Rollen gefunden",
+        "desc": "Versuchen Sie, Ihre Filter anzupassen oder melden Sie sich für Benachrichtigungen an."
+      }
+    },
+    "Journey": {
+      "title": "Ihr Weg zur Wirkung",
+      "step_1": "Bewerben",
+      "step_1_desc": "Erstellen Sie Ihr Profil",
+      "step_2": "Einarbeitung",
+      "step_2_desc": "Schließen Sie den Einführungsassistenten ab",
+      "step_3": "Schulung",
+      "step_3_desc": "Greifen Sie auf unser LMS zu",
+      "step_4": "Aktion",
+      "step_4_desc": "Buchen Sie Ihre erste Schicht"
+    },
+    "Testimonials": {
+      "title": "Warum wir uns engagieren"
+    }
+  },
+  "Corporate": {
+    "Hero": {
+      "headline": "Partner für den guten Zweck",
+      "subheadline": "Richten Sie Ihre Marke auf würdevolles Wachstum aus. Wirksame CSR-Möglichkeiten für zukunftsorientierte Unternehmen.",
+      "cta": "Jetzt anfragen"
+    },
+    "ROI": {
+      "title": "Der Business Case für Wirkung",
+      "engagement_title": "Mitarbeiterengagement",
+      "engagement_desc": "Steigern Sie die Team-Moral und Mitarbeiterbindung durch sinnvolle Gruppen-Freiwilligenarbeit.",
+      "brand_title": "Markensichtbarkeit",
+      "brand_desc": "Erreichen Sie unser vielfältiges, sozial bewusstes Publikum und stärken Sie Ihre Markenbekanntheit.",
+      "sdg_title": "SDG-Ausrichtung",
+      "sdg_desc": "Konkrete Metriken zur Erreichung Ihrer Ziele für nachhaltige Entwicklung der UN (SDG 1, 4, 8)."
+    },
+    "Tiers": {
+      "title": "Partnerschaftslevel",
+      "subtitle": "Wählen Sie das Engagement-Level, das zu Ihrer CSR-Strategie passt.",
+      "inquire": "Jetzt anfragen",
+      "silver_title": "Impact-Partner",
+      "silver_price": "€5.000 - €10.000 / Jahr",
+      "gold_title": "Strategischer Partner",
+      "gold_price": "€10.000 - €50.000 / Jahr",
+      "platinum_title": "Visionärer Partner",
+      "platinum_price": "€50.000+ / Jahr",
+      "feature_logo": "Logo-Platzierung",
+      "feature_report": "Wirkungsbericht",
+      "feature_social": "Social Media Feature",
+      "feature_volunteering": "Team-Freiwilligentag",
+      "feature_advisory": "Sitz im Beirat",
+      "feature_custom": "Individuelles Programmdesign"
+    },
+    "CaseStudy": {
+      "title": "Erfolgsgeschichten"
+    },
+    "Form": {
+      "title": "Starten Sie das Gespräch",
+      "subtitle": "Erzählen Sie uns von Ihren CSR-Zielen, und wir gestalten eine Partnerschaft, die funktioniert.",
+      "fields": {
+        "company": "Firmenname",
+        "contact": "Ansprechpartner",
+        "email": "Geschäfts-E-Mail",
+        "industry": "Branche",
+        "goals": "Was sind Ihre CSR-Ziele?",
+        "budget": "Geschätztes Budget"
+      },
+      "submit": "Partnerschafts-Deck anfordern",
+      "submitting": "Senden...",
+      "success_title": "Anfrage erhalten",
+      "success_desc": "Unser Partnerschaftsteam wird Sie innerhalb von 24 Stunden kontaktieren."
+    },
+    "Downloads": {
+      "deck": "Partnerschafts-Deck herunterladen (PDF)",
+      "report": "Jährlicher Wirkungsbericht 2024"
+    }
+  },
+  "GetInvolved": {
+    "Hub": {
+      "title": "Seien Sie der Katalysator für Veränderung",
+      "subtitle": "Es gibt viele Wege, eine würdevolle Zukunft aufzubauen. Wählen Sie den Weg, der zu Ihrer Fähigkeit zu geben passt.",
+      "Cards": {
+        "donate_title": "Spenden Sie",
+        "donate_desc": "Finanzieren Sie unsere Programme mit einer einmaligen oder monatlichen Spende.",
+        "donate_impact": "Sofortige Finanzierung von Werkzeugen, Büchern und medizinischen Hilfsmitteln.",
+        "donate_cta": "Jetzt spenden",
+        "volunteer_title": "Spenden Sie Ihre Zeit",
+        "volunteer_desc": "Teilen Sie Ihre beruflichen Fähigkeiten oder helfen Sie vor Ort mit.",
+        "volunteer_impact": "Direkte Mentoring und Unterstützung für unsere Community-Mitglieder.",
+        "volunteer_cta": "Rollen finden",
+        "corporate_title": "Partner als Unternehmen",
+        "corporate_desc": "Richten Sie Ihre Marke durch strategische CSR auf Wirkung aus.",
+        "corporate_impact": "Systemische Veränderung durch groß angelegte Ressourcenmobilisierung.",
+        "corporate_cta": "Partnerschaft eingehen"
+      },
+      "Questions": {
+        "title": "Sie wissen nicht, wo Sie anfangen sollen?",
+        "text": "Unser Team hilft Ihnen, den besten Weg zur Beitragsleistung basierend auf Ihren Interessen zu finden.",
+        "cta": "Kontaktieren Sie uns"
+      }
+    }
+  },
+  "Contact": {
+    "Hero": {
+      "headline": "Lassen Sie uns in Kontakt treten.",
+      "subheadline": "Haben Sie eine Frage zu unseren Programmen, Partnerschaften oder Spenden? Wir sind hier, um zu helfen."
+    },
+    "Channels": {
+      "general_title": "Allgemeine Anfragen",
+      "general_email": "hallo@awe-ev.org",
+      "press_title": "Pressekontakt",
+      "press_email": "presse@awe-ev.org",
+      "visit_title": "Hauptsitz Berlin",
+      "visit_address": "Musterstraße 123, Berlin",
+      "directions": "Wegbeschreibung"
+    },
+    "Form": {
+      "title": "Nachricht senden",
+      "fields": {
+        "name": "Vollständiger Name",
+        "email": "E-Mail-Adresse",
+        "topic": "Thema",
+        "company": "Firmenname",
+        "message": "Nachricht",
+        "consent": "Ich stimme der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu."
+      },
+      "Topics": {
+        "general": "Allgemeine Anfrage",
+        "donation": "Hilfe bei Spenden",
+        "volunteer": "Freiwilligenarbeit",
+        "partner": "Partnerschaft",
+        "report": "Problem melden"
+      },
+      "hints": {
+        "volunteer": "Suchen Sie nach offenen Stellen? Prüfen Sie unser Freiwilligen-Portal für eine schnellere Bewerbung.",
+        "partner": "Bitte geben Sie Details zu Ihrer Organisation an."
+      },
+      "submit": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "success_title": "Nachricht empfangen",
+      "success_desc": "Wir antworten normalerweise innerhalb von 48 Stunden."
+    },
+    "FAQ": {
+      "title": "Häufige Fragen",
+      "q1": "Wie erhalte ich eine Spendenquittung?",
+      "a1": "Spendenquittungen werden automatisch im Februar für das vorangegangene Steuerjahr per E-Mail versendet.",
+      "q2": "Kann ich Kleidung/Waren spenden?",
+      "a2": "Derzeit akzeptieren wir nur finanzielle Beiträge, um sicherzustellen, dass die Ressourcen vor Ort effizient genutzt werden.",
+      "q3": "Wohin fließt das Geld?",
+      "a3": "85% aller Spenden fließen direkt in die Umsetzung der Programme. Details finden Sie auf unserer Finanzseite."
+    },
+    "Map": {
+      "hours_label": "Bürozeiten",
+      "hours_value": "Mo-Fr, 09:00 - 17:00 Uhr",
+      "phone_label": "Telefon",
+      "open_maps": "In Google Maps öffnen"
     },
     "Safeguarding": {
-        "Hero": {
-            "title": "Sicherer Meldekanal",
-            "subtitle": "Ein vertraulicher Raum, um Fehlverhalten, Betrug oder Sicherheitsbedenken in Bezug auf die Arbeit von AWE e.V. zu melden.",
-            "badge": "Vertraulich & Verschlüsselt"
-        },
-        "Notice": {
-            "title": "Was gemeldet werden sollte",
-            "text": "Nutzen Sie diesen Kanal für schwerwiegende Probleme wie Korruption, sexuelle Ausbeutung, Belästigung oder Finanzbetrug. Für allgemeine Beschwerden nutzen Sie bitte das Standard-Kontaktformular.",
-            "non_retaliation": "Wir untersagen strikt jegliche Vergeltungsmaßnahmen gegen Personen, die in gutem Glauben Bedenken äußern.",
-            "emergency": "Bei unmittelbarer Lebensgefahr wenden Sie sich bitte direkt an die örtlichen Behörden (112 in der EU)."
-        },
-        "Form": {
-            "anonymous_label": "Ich möchte anonym bleiben",
-            "anonymous_hint": "Ihre Identität wird nicht erfasst, wenn ausgewählt.",
-            "name_label": "Name (Optional)",
-            "name_placeholder": "Max Mustermann",
-            "email_label": "E-Mail (Optional)",
-            "email_placeholder": "max@beispiel.de",
-            "email_hint": "Angeben, wenn Sie Updates zur Untersuchung wünschen.",
-            "category_label": "Kategorie des Bedenkens",
-            "select_placeholder": "Bitte wählen...",
-            "message_label": "Details zum Vorfall",
-            "message_placeholder": "Bitte geben Sie so viele Details wie möglich an (Datum, Ort, Namen)...",
-            "submit": "Sichere Meldung absenden",
-            "submitting": "Verschlüsseln & Senden...",
-            "ssl_secure": "Diese Verbindung ist SSL-verschlüsselt (TLS 1.3)",
-            "error_submission": "Übermittlung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-            "success_title": "Meldung eingereicht",
-            "success_desc": "Ihre Meldung wurde sicher von unserem Compliance-Beauftragten empfangen. Referenz-ID: {refId}",
-            "Categories": {
-                "fraud": "Finanzbetrug / Korruption",
-                "safeguarding": "Schutz vor Missbrauch / Safeguarding",
-                "harassment": "Belästigung / Diskriminierung",
-                "security": "Datensicherheit / Datenschutzverletzung",
-                "other": "Sonstiges schwerwiegendes Fehlverhalten"
-            },
-            "validation": {
-                "name_required": "Name erforderlich",
-                "email_invalid": "Ungültige E-Mail",
-                "category_required": "Erforderlich",
-                "message_min": "Bitte geben Sie mehr Details an (min. 20 Zeichen)."
-            }
-        }
-    },
-    "Legal": {
-        "Imprint": {
-            "title": "Impressum",
-            "operator": "Angaben gemäß § 5 TMG",
-            "address_1": "AWE e.V.",
-            "address_2": "Musterstraße 123",
-            "address_3": "10115 Berlin",
-            "address_4": "Deutschland",
-            "contact": "Kontakt",
-            "phone_label": "Telefon",
-            "email_label": "E-Mail",
-            "registration": "Registereintrag",
-            "reg_court": "Registergericht",
-            "reg_number": "Registernummer",
-            "represented_by": "Vertreten durch",
-            "board_members": "Dr. Amara Okonjo (Vorsitzende), Elena Rossi (Stellvertretende Vorsitzende)",
-            "tax_id": "Steuernummer",
-            "vat_id": "Umsatzsteuer-ID gemäß § 27a UStG",
-            "disclaimer_title": "Haftungsausschluss",
-            "disclaimer_text": "Die Inhalte dienen Informationszwecken. Eine Haftung für Links zu externen Webseiten Dritter wird ausgeschlossen."
-        },
-        "Privacy": {
-            "title": "Datenschutzerklärung",
-            "intro": "Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst.",
-            "section_1_title": "1. Datenerfassung",
-            "section_1_text": "Wir erfassen Daten nur, wenn dies für die Bereitstellung unserer Dienste notwendig ist...",
-            "section_2_title": "2. Cookies & Analytik",
-            "section_2_text": "Wir verwenden essenzielle Cookies, um sicherzustellen, dass die Website ordnungsgemäß funktioniert...",
-            "section_3_title": "3. Ihre Rechte (DSGVO)",
-            "section_3_text": "Gemäß der DSGVO haben Sie folgende Rechte bezüglich Ihrer Daten:",
-            "rights_list": {
-                "access": "Recht auf Auskunft",
-                "rectification": "Recht auf Berichtigung",
-                "erasure": "Recht auf Löschung ('Recht auf Vergessenwerden')"
-            },
-            "section_4_title": "4. Kontakt Datenschutzbeauftragter",
-            "contact_email_label": "E-Mail"
-        },
-        "Terms": {
-            "title": "Nutzungsbedingungen",
-            "last_updated": "Zuletzt aktualisiert: 1. Januar 2025",
-            "section_1_title": "1. Geltungsbereich",
-            "section_1_text": "Durch den Zugriff auf diese Website erklären Sie sich mit diesen Bedingungen einverstanden...",
-            "section_2_title": "2. Spenden & Rückerstattungen",
-            "section_2_text": "Spenden sind grundsätzlich nicht erstattungsfähig, außer in Fällen technischer Fehler...",
-            "section_3_title": "3. Geistiges Eigentum",
-            "section_3_text": "Alle Inhalte auf dieser Seite sind Eigentum von AWE e.V., sofern nicht anders angegeben...",
-            "section_4_title": "4. Haftungsbeschränkung",
-            "section_4_text": "AWE e.V. haftet nicht für Schäden, die aus der Nutzung dieser Seite entstehen...",
-            "acceptance_footer": "Durch die Nutzung unserer Dienste bestätigen Sie, dass Sie diese Bedingungen gelesen und verstanden haben."
-        }
-    },
-    "Auth": {
-        "Layout": {
-            "alt_impact": "Bild: Gesellschaftliche Wirkung",
-            "privacy": "Datenschutz",
-            "terms": "AGB",
-            "help": "Hilfe",
-            "copyright": "© {year} AWE e.V."
-        },
-        "Login": {
-            "title": "Willkommen zurück",
-            "subtitle": "Melden Sie sich an, um auf Ihr Dashboard zuzugreifen.",
-            "email_label": "E-Mail-Adresse",
-            "password_label": "Passwort",
-            "forgot_password": "Passwort vergessen?",
-            "submit": "Anmelden",
-            "loading": "Anmeldung läuft...",
-            "no_account": "Neu bei AWE e.V.?",
-            "create_account": "Konto erstellen",
-            "magic_link_toggle": "Probleme mit Passwörtern? Mit magischem Link anmelden.",
-            "magic_link_btn": "Magischen Link senden",
-            "or_divider": "Oder weiter mit",
-            "google_btn": "Weiter mit Google",
-            "facebook_btn": "Weiter mit Facebook",
-            "secure_badge": "Sicherer Zugang",
-            "context_banner": "Bitte melden Sie sich an, um {action} abzuschließen.",
-            "errors": {
-                "credentials": "Ungültige E-Mail oder Passwort.",
-                "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
-            }
-        },
-        "Testimonials": {
-            "t1": "AWE hat mir nicht nur Fähigkeiten vermittelt, sondern auch das Selbstvertrauen, Führung zu übernehmen.",
-            "t1_author": "Sarah J., Programm-Absolventin",
-            "t2": "Die Freiwilligenarbeit hier hat meine Sicht auf globale Zusammenhänge verändert.",
-            "t2_author": "Mark T., Freiwilliger",
-            "t3": "Transparenz und Würde stehen im Mittelpunkt von allem, was sie tun.",
-            "t3_author": "Elena R., Spenderin"
-        },
-        "Stats": {
-            "volunteers": "Aktive Freiwillige",
-            "lives": "Erreichte Menschen",
-            "projects": "Finanzierte Projekte"
-        },
-        "Onboarding": {
-            "badge": "Dein Engagement beginnt hier",
-            "title": "Wie möchtest du etwas bewirken?",
-            "subtitle": "Wähle den Weg, der zu dir passt.",
-            "volunteer_title": "Ich möchte mich engagieren",
-            "volunteer_description": "Teile deine Zeit und Fähigkeiten mit unserer Gemeinschaft.",
-            "donor_title": "Ich möchte unterstützen",
-            "donor_description": "Hilf mit deiner Spende, Projekte zu finanzieren.",
-            "already_started": "Du hast bereits ein Konto?",
-            "back_to_login": "Anmelden",
-            "step_label": "Schritt {step} von 4",
-            "progress_label": "Fortschritt",
-            "volunteer_label": "Freiwillige Mitarbeit",
-            "donor_label": "Unterstützer",
-            "profile_title": "Erzähle uns von dir",
-            "profile_subtitle": "Ein paar Angaben helfen uns, dein Erlebnis zu personalisieren.",
-            "first_name": "Vorname",
-            "last_name": "Nachname",
-            "experience_label": "Relevante Erfahrung",
-            "experience_placeholder": "Teile deine Erfahrung oder Motivation.",
-            "preferences_title": "Gestalte dein Engagement",
-            "preferences_subtitle": "Wähle passende Bereiche und Zeiten.",
-            "skills_label": "Fähigkeiten",
-            "availability_label": "Wann bist du verfügbar?",
-            "causes_label": "Themen, die dir wichtig sind",
-            "consent_title": "Ein klarer und respektvoller Start",
-            "consent_subtitle": "Prüfe diese Einwilligungen.",
-            "waiver_consent": "Ich stimme den Richtlinien für Sicherheit und Teilnahme bei AWE zu.",
-            "gdpr_consent": "Ich stimme der Nutzung meiner Daten zur Verwaltung meines Kontos zu.",
-            "consent_note": "Du kannst deine Einstellungen später ändern.",
-            "review_title": "Prüfe deine Angaben",
-            "review_subtitle": "Du kannst zurückgehen und Änderungen vornehmen.",
-            "review_name": "Name",
-            "review_role": "Dein Weg",
-            "review_preferences": "Interessen und Verfügbarkeit",
-            "review_consent": "Einwilligungen",
-            "confirmed": "Bestätigt",
-            "none": "Nicht ausgewählt",
-            "back": "Zurück",
-            "continue": "Weiter",
-            "finish": "Einrichtung abschließen",
-            "errors": {
-                "name": "Bitte gib deinen Vor- und Nachnamen ein.",
-                "preferences": "Bitte wähle Optionen und Verfügbarkeit.",
-                "consent": "Bitte akzeptiere die erforderlichen Einwilligungen."
-            },
-            "complete_title": "Du bist bereit, etwas zu bewirken",
-            "complete_subtitle": "Deine Angaben sind gespeichert. Willkommen bei AWE.",
-            "dashboard": "Zum Dashboard",
-            "start_over": "Neu beginnen"
-        },
-        "Register": {
-            "title": "Konto erstellen",
-            "subtitle": "Beginnen Sie Ihre Reise mit AWE e.V. Es dauert weniger als 2 Minuten.",
-            "login_link": "Bereits Mitglied? Anmelden",
-            "Roles": {
-                "volunteer": "Freiwilliger",
-                "donor": "Spender",
-                "alumni": "Alumni (Ehemalige)"
-            },
-            "Social": {
-                "google": "Mit Google registrieren",
-                "facebook": "Mit Facebook registrieren",
-                "divider": "Oder mit E-Mail fortfahren"
-            },
-            "Fields": {
-                "first_name": "Vorname",
-                "last_name": "Nachname",
-                "email": "E-Mail-Adresse",
-                "email_tip": "Melden Sie sich für eine Unternehmenspartnerschaft an? Prüfen Sie stattdessen Ihre E-Mails auf einen Einladungslink.",
-                "password": "Passwort",
-                "password_req": "Min. 8 Zeichen, 1 Sonderzeichen, 1 Zahl."
-            },
-            "Legal": {
-                "terms_statement": "Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu.",
-                "gdpr": "Ich willige in die Speicherung meiner Daten zu Kontoverwaltungszwecken ein (DSGVO).",
-                "newsletter": "Senden Sie mir Updates über die Wirkung von AWE und kommende Veranstaltungen."
-            },
-            "submit": "Konto erstellen",
-            "submitting": "Wird erstellt...",
-            "security_note": "Ihre Daten werden verschlüsselt und sicher in Frankfurt, Deutschland gehostet.",
-            "safeguarding": "Suchen Sie Hilfe oder soziale Dienste? Besuchen Sie unser Hilfszentrum."
-        },
-        "ForgotPassword": {
-            "title": "Passwort vergessen?",
-            "subtitle": "Geben Sie die E-Mail-Adresse ein, die mit Ihrem Konto verknüpft ist, und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
-            "email_label": "E-Mail-Adresse",
-            "submit": "Link senden",
-            "submitting": "Wird gesendet...",
-            "back_login": "Zurück zur Anmeldung",
-            "Success": {
-                "title": "Prüfen Sie Ihren Posteingang",
-                "message": "Wenn ein Konto für {email} existiert, haben wir einen Link zum Zurücksetzen des Passworts gesendet. Bitte prüfen Sie Ihren Spam-Ordner, falls er nicht innerhalb von 5 Minuten erscheint.",
-                "open_mail": "E-Mail-App öffnen",
-                "resend": "Link erneut senden",
-                "resend_wait": "Erneut senden in {seconds}s"
-            },
-            "Footer": {
-                "trouble": "Immer noch Probleme?",
-                "help_center": "Besuchen Sie unser Hilfecenter"
-            }
-        },
-        "ResetPassword": {
-            "title": "Neues Passwort festlegen",
-            "subtitle": "Bitte wählen Sie ein starkes Passwort für {email}.",
-            "back_login": "Zurück zur Anmeldung",
-            "validating": "Sicherer Link wird überprüft...",
-            "password_label": "Neues Passwort",
-            "confirm_label": "Neues Passwort bestätigen",
-            "submit": "Passwort zurücksetzen",
-            "security_notice": "Wenn Sie dies nicht angefordert haben, kontaktieren Sie security@awe-ev.org",
-            "errors": {
-                "match": "Passwörter stimmen nicht überein."
-            },
-            "Invalid": {
-                "title": "Link abgelaufen",
-                "desc": "Dieser Link zum Zurücksetzen des Passworts ist ungültig oder wurde bereits verwendet.",
-                "button": "Neuen Link anfordern"
-            },
-            "Success": {
-                "title": "Passwort aktualisiert",
-                "desc": "Ihr Konto wurde gesichert. Sie können sich nun mit Ihren neuen Zugangsdaten anmelden.",
-                "redirect": "Weiterleitung zur Anmeldung in {seconds}s...",
-                "button": "Jetzt anmelden"
-            },
-            "req_min_chars": "Min. 8 Zeichen",
-            "req_uppercase": "Großbuchstabe",
-            "req_number": "Zahl",
-            "req_symbol": "Sonderzeichen"
-        },
-        "MFA": {
-            "title": "Zwei-Faktor-Authentifizierung",
-            "subtitle_app": "Geben Sie den 6-stelligen Code aus Ihrer Authenticator-App ein.",
-            "subtitle_recovery": "Geben Sie einen Ihrer Notfall-Wiederherstellungscodes ein.",
-            "back_login": "Zurück zur Anmeldung",
-            "verify_btn": "Verifizieren",
-            "verify_recovery_btn": "Wiederherstellungscode verwenden",
-            "trust_device": "Diesem Gerät für 30 Tage vertrauen",
-            "recovery_label": "Wiederherstellungscode",
-            "switch_to_recovery": "Wiederherstellungscode verwenden",
-            "switch_to_app": "Authenticator-App verwenden",
-            "lost_device": "Zugriff auf Ihr Gerät verloren?",
-            "secure_context": "Verschlüsselte Sitzung",
-            "success": "Erfolgreich verifiziert.",
-            "errors": {
-                "invalid": "Ungültiger Code. Bitte versuchen Sie es erneut.",
-                "generic": "Verifizierung fehlgeschlagen."
-            }
-        },
-        "Invite": {
-            "meta_title": "Einladung annehmen",
-            "meta_desc": "Werden Sie Teil des Teams bei AWE e.V.",
-            "subtitle": "Eingeladen von {inviter}, als {role} beizutreten.",
-            "Invalid": {
-                "title": "Einladung ungültig",
-                "desc": "Dieser Link ist abgelaufen oder wurde bereits verwendet. Bitte bitten Sie Ihren Administrator um einen neuen Link.",
-                "retry": "Seite neu laden"
-            },
-            "New": {
-                "title": "Konto einrichten",
-                "email_verified": "Verifizierte E-Mail",
-                "fname": "Vorname",
-                "lname": "Nachname",
-                "password": "Passwort erstellen",
-                "consent": "Ich stimme der Geheimhaltungsvereinbarung und den Nutzungsbedingungen zu.",
-                "submit": "Annehmen & Beitreten",
-                "error_generic": "Kontoerstellung fehlgeschlagen.",
-                "error_required": "Erforderlich",
-                "error_password_req": "Min. 8 Zeichen, 1 Zahl"
-            },
-            "Existing": {
-                "title": "Willkommen zurück, {name}!",
-                "account_found": "AWE-Konto gefunden",
-                "password_label": "Passwort bestätigen zum Beitreten",
-                "submit": "Anmelden & Annehmen",
-                "error_credentials": "Passwort falsch oder Anmeldung fehlgeschlagen.",
-                "error_required": "Erforderlich"
-            },
-            "Footer": {
-                "help": "Brauchen Sie Hilfe? Kontaktieren Sie den Administrator unter"
-            }
-        },
-        "VerifyEmail": {
-            "back_login": "Zurück zur Anmeldung",
-            "footer_identity": "AWE e.V. Identitätsdienste",
-            "Success": {
-                "title": "E-Mail verifiziert!",
-                "subtitle": "Ihr Konto ist jetzt aktiv. Sie werden weitergeleitet.",
-                "redirect": "Weiterleitung in {seconds}s...",
-                "button": "Weiter zum Onboarding"
-            },
-            "Already": {
-                "title": "Bereits verifiziert",
-                "subtitle": "Es scheint, als hätten Sie diesen Schritt bereits abgeschlossen.",
-                "button": "Zum Dashboard"
-            },
-            "Error": {
-                "expired_title": "Link abgelaufen",
-                "expired_desc": "Dieser Verifizierungslink ist älter als 24 Stunden.",
-                "invalid_title": "Verifizierung fehlgeschlagen",
-                "invalid_desc": "Der Link ist ungültig oder fehlerhaft."
-            },
-            "Resend": {
-                "title": "Neuen Link anfordern",
-                "email_label": "Geben Sie Ihre E-Mail-Adresse ein",
-                "button": "Verifizierungslink erneut senden",
-                "success": "Neuer Link gesendet! Prüfen Sie Ihren Posteingang.",
-                "error": "Link konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
-            }
-        },
-        "Claim": {
-            "meta_title": "Profil aktivieren",
-            "meta_desc": "Verbinden Sie Ihre bisherige Spendenhistorie mit einem neuen digitalen Konto.",
-            "back_search": "Nicht Sie? Erneut suchen",
-            "error_required": "Bitte geben Sie eine E-Mail oder ID ein.",
-            "error_generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
-            "footer_services": "AWE e.V. Mitgliederservice © 2025",
-            "Search": {
-                "title": "Profil aktivieren",
-                "subtitle": "Geben Sie Ihre E-Mail oder Mitglieds-ID ein, um Ihren bestehenden Eintrag zu finden.",
-                "label": "E-Mail-Adresse oder Mitglieds-ID",
-                "submit": "Mein Profil finden"
-            },
-            "Benefits": {
-                "title": "Warum mein Konto aktivieren?",
-                "point_1": "Sehen Sie Ihre vollständige Spendenhistorie ein",
-                "point_2": "Laden Sie jährliche Spendenbescheinigungen herunter",
-                "point_3": "Aktualisieren Sie Ihre Kontaktpräferenzen"
-            },
-            "Found": {
-                "title": "Willkommen zurück, {name}!",
-                "subtitle": "Wir haben ein Profil gefunden, das mit {email} verknüpft ist.",
-                "privacy_note": "Zum Schutz Ihrer Daten müssen wir Ihre Identität überprüfen, bevor wir Zugang gewähren.",
-                "submit": "Aktivierungscode senden"
-            },
-            "NoMatch": {
-                "title": "Wir konnten keinen Treffer finden",
-                "desc": "Die angegebene E-Mail oder ID stimmt nicht mit unseren aktiven Datensätzen überein. Dies kann an einem Tippfehler oder einer veralteten E-Mail liegen.",
-                "retry": "Erneut suchen",
-                "create_new": "Neues Konto erstellen",
-                "contact_support": "Mitgliederbetreuung kontaktieren"
-            },
-            "Success": {
-                "title": "Prüfen Sie Ihren Posteingang",
-                "desc": "Wir haben einen Aktivierungslink an Ihre E-Mail-Adresse gesendet. Bitte klicken Sie darauf, um Ihr Passwort festzulegen und auf Ihr Konto zuzugreifen.",
-                "toast": "Aktivierungslink gesendet!",
-                "login_btn": "Zurück zur Anmeldung"
-            }
-        },
-        "VerifyEmailInstruction": {
-            "New": {
-                "title": "Überprüfen Sie Ihren Posteingang",
-                "subtitle": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet. Bitte prüfen Sie Ihren Posteingang (und Spam-Ordner), um Ihr Konto zu aktivieren."
-            },
-            "Default": {
-                "title": "E-Mail verifizieren",
-                "subtitle": "Geben Sie unten Ihre E-Mail-Adresse ein, um einen neuen Bestätigungslink zu erhalten."
-            },
-            "back_login": "Zurück zum Login",
-            "footer_security": "Sichere Verifizierung über AWE e.V."
-        },
-        "ResendForm": {
-            "email_label": "E-Mail-Adresse",
-            "email_placeholder": "name@beispiel.de",
-            "error_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
-            "submit_btn": "Bestätigungs-E-Mail erneut senden",
-            "success_title": "E-Mail gesendet",
-            "success_desc": "Falls ein Konto mit dieser Adresse existiert, erhalten Sie in Kürze einen Link.",
-            "try_different": "Andere Adresse versuchen",
-            "toast_sent": "Bestätigungs-E-Mail gesendet!",
-            "toast_error": "E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es später erneut."
-        }
+      "text": "Möchten Sie ein Schutzbedenken anonym melden?",
+      "link": "Nutzen Sie unseren sicheren Meldekanal"
     }
+  },
+  "Safeguarding": {
+    "Hero": {
+      "title": "Sicherer Meldekanal",
+      "subtitle": "Ein vertraulicher Raum, um Fehlverhalten, Betrug oder Sicherheitsbedenken in Bezug auf die Arbeit von AWE e.V. zu melden.",
+      "badge": "Vertraulich & Verschlüsselt"
+    },
+    "Notice": {
+      "title": "Was gemeldet werden sollte",
+      "text": "Nutzen Sie diesen Kanal für schwerwiegende Probleme wie Korruption, sexuelle Ausbeutung, Belästigung oder Finanzbetrug. Für allgemeine Beschwerden nutzen Sie bitte das Standard-Kontaktformular.",
+      "non_retaliation": "Wir untersagen strikt jegliche Vergeltungsmaßnahmen gegen Personen, die in gutem Glauben Bedenken äußern.",
+      "emergency": "Bei unmittelbarer Lebensgefahr wenden Sie sich bitte direkt an die örtlichen Behörden (112 in der EU)."
+    },
+    "Form": {
+      "anonymous_label": "Ich möchte anonym bleiben",
+      "anonymous_hint": "Ihre Identität wird nicht erfasst, wenn ausgewählt.",
+      "name_label": "Name (Optional)",
+      "name_placeholder": "Max Mustermann",
+      "email_label": "E-Mail (Optional)",
+      "email_placeholder": "max@beispiel.de",
+      "email_hint": "Angeben, wenn Sie Updates zur Untersuchung wünschen.",
+      "category_label": "Kategorie des Bedenkens",
+      "select_placeholder": "Bitte wählen...",
+      "message_label": "Details zum Vorfall",
+      "message_placeholder": "Bitte geben Sie so viele Details wie möglich an (Datum, Ort, Namen)...",
+      "submit": "Sichere Meldung absenden",
+      "submitting": "Verschlüsseln & Senden...",
+      "ssl_secure": "Diese Verbindung ist SSL-verschlüsselt (TLS 1.3)",
+      "error_submission": "Übermittlung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      "success_title": "Meldung eingereicht",
+      "success_desc": "Ihre Meldung wurde sicher von unserem Compliance-Beauftragten empfangen. Referenz-ID: {refId}",
+      "Categories": {
+        "fraud": "Finanzbetrug / Korruption",
+        "safeguarding": "Schutz vor Missbrauch / Safeguarding",
+        "harassment": "Belästigung / Diskriminierung",
+        "security": "Datensicherheit / Datenschutzverletzung",
+        "other": "Sonstiges schwerwiegendes Fehlverhalten"
+      },
+      "validation": {
+        "name_required": "Name erforderlich",
+        "email_invalid": "Ungültige E-Mail",
+        "category_required": "Erforderlich",
+        "message_min": "Bitte geben Sie mehr Details an (min. 20 Zeichen)."
+      }
+    }
+  },
+  "Legal": {
+    "Imprint": {
+      "title": "Impressum",
+      "operator": "Angaben gemäß § 5 TMG",
+      "address_1": "AWE e.V.",
+      "address_2": "Musterstraße 123",
+      "address_3": "10115 Berlin",
+      "address_4": "Deutschland",
+      "contact": "Kontakt",
+      "phone_label": "Telefon",
+      "email_label": "E-Mail",
+      "registration": "Registereintrag",
+      "reg_court": "Registergericht",
+      "reg_number": "Registernummer",
+      "represented_by": "Vertreten durch",
+      "board_members": "Dr. Amara Okonjo (Vorsitzende), Elena Rossi (Stellvertretende Vorsitzende)",
+      "tax_id": "Steuernummer",
+      "vat_id": "Umsatzsteuer-ID gemäß § 27a UStG",
+      "disclaimer_title": "Haftungsausschluss",
+      "disclaimer_text": "Die Inhalte dienen Informationszwecken. Eine Haftung für Links zu externen Webseiten Dritter wird ausgeschlossen."
+    },
+    "Privacy": {
+      "title": "Datenschutzerklärung",
+      "intro": "Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst.",
+      "section_1_title": "1. Datenerfassung",
+      "section_1_text": "Wir erfassen Daten nur, wenn dies für die Bereitstellung unserer Dienste notwendig ist...",
+      "section_2_title": "2. Cookies & Analytik",
+      "section_2_text": "Wir verwenden essenzielle Cookies, um sicherzustellen, dass die Website ordnungsgemäß funktioniert...",
+      "section_3_title": "3. Ihre Rechte (DSGVO)",
+      "section_3_text": "Gemäß der DSGVO haben Sie folgende Rechte bezüglich Ihrer Daten:",
+      "rights_list": {
+        "access": "Recht auf Auskunft",
+        "rectification": "Recht auf Berichtigung",
+        "erasure": "Recht auf Löschung ('Recht auf Vergessenwerden')"
+      },
+      "section_4_title": "4. Kontakt Datenschutzbeauftragter",
+      "contact_email_label": "E-Mail"
+    },
+    "Terms": {
+      "title": "Nutzungsbedingungen",
+      "last_updated": "Zuletzt aktualisiert: 1. Januar 2025",
+      "section_1_title": "1. Geltungsbereich",
+      "section_1_text": "Durch den Zugriff auf diese Website erklären Sie sich mit diesen Bedingungen einverstanden...",
+      "section_2_title": "2. Spenden & Rückerstattungen",
+      "section_2_text": "Spenden sind grundsätzlich nicht erstattungsfähig, außer in Fällen technischer Fehler...",
+      "section_3_title": "3. Geistiges Eigentum",
+      "section_3_text": "Alle Inhalte auf dieser Seite sind Eigentum von AWE e.V., sofern nicht anders angegeben...",
+      "section_4_title": "4. Haftungsbeschränkung",
+      "section_4_text": "AWE e.V. haftet nicht für Schäden, die aus der Nutzung dieser Seite entstehen...",
+      "acceptance_footer": "Durch die Nutzung unserer Dienste bestätigen Sie, dass Sie diese Bedingungen gelesen und verstanden haben."
+    }
+  },
+  "Auth": {
+    "Layout": {
+      "alt_impact": "Bild: Gesellschaftliche Wirkung",
+      "privacy": "Datenschutz",
+      "terms": "AGB",
+      "help": "Hilfe",
+      "copyright": "© {year} AWE e.V."
+    },
+    "Login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Melden Sie sich an, um auf Ihr Dashboard zuzugreifen.",
+      "email_label": "E-Mail-Adresse",
+      "password_label": "Passwort",
+      "forgot_password": "Passwort vergessen?",
+      "submit": "Anmelden",
+      "loading": "Anmeldung läuft...",
+      "no_account": "Neu bei AWE e.V.?",
+      "create_account": "Konto erstellen",
+      "magic_link_toggle": "Probleme mit Passwörtern? Mit magischem Link anmelden.",
+      "magic_link_btn": "Magischen Link senden",
+      "or_divider": "Oder weiter mit",
+      "google_btn": "Weiter mit Google",
+      "facebook_btn": "Weiter mit Facebook",
+      "secure_badge": "Sicherer Zugang",
+      "context_banner": "Bitte melden Sie sich an, um {action} abzuschließen.",
+      "errors": {
+        "credentials": "Ungültige E-Mail oder Passwort.",
+        "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+      }
+    },
+    "Testimonials": {
+      "t1": "AWE hat mir nicht nur Fähigkeiten vermittelt, sondern auch das Selbstvertrauen, Führung zu übernehmen.",
+      "t1_author": "Sarah J., Programm-Absolventin",
+      "t2": "Die Freiwilligenarbeit hier hat meine Sicht auf globale Zusammenhänge verändert.",
+      "t2_author": "Mark T., Freiwilliger",
+      "t3": "Transparenz und Würde stehen im Mittelpunkt von allem, was sie tun.",
+      "t3_author": "Elena R., Spenderin"
+    },
+    "Stats": {
+      "volunteers": "Aktive Freiwillige",
+      "lives": "Erreichte Menschen",
+      "projects": "Finanzierte Projekte"
+    },
+    "Onboarding": {
+      "badge": "Dein Engagement beginnt hier",
+      "title": "Wie möchtest du etwas bewirken?",
+      "subtitle": "Wähle den Weg, der zu dir passt.",
+      "volunteer_title": "Ich möchte mich engagieren",
+      "volunteer_description": "Teile deine Zeit und Fähigkeiten mit unserer Gemeinschaft.",
+      "donor_title": "Ich möchte unterstützen",
+      "donor_description": "Hilf mit deiner Spende, Projekte zu finanzieren.",
+      "already_started": "Du hast bereits ein Konto?",
+      "back_to_login": "Anmelden",
+      "step_label": "Schritt {step} von 4",
+      "progress_label": "Fortschritt",
+      "volunteer_label": "Freiwillige Mitarbeit",
+      "donor_label": "Unterstützer",
+      "profile_title": "Erzähle uns von dir",
+      "profile_subtitle": "Ein paar Angaben helfen uns, dein Erlebnis zu personalisieren.",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "experience_label": "Relevante Erfahrung",
+      "experience_placeholder": "Teile deine Erfahrung oder Motivation.",
+      "preferences_title": "Gestalte dein Engagement",
+      "preferences_subtitle": "Wähle passende Bereiche und Zeiten.",
+      "skills_label": "Fähigkeiten",
+      "availability_label": "Wann bist du verfügbar?",
+      "causes_label": "Themen, die dir wichtig sind",
+      "consent_title": "Ein klarer und respektvoller Start",
+      "consent_subtitle": "Prüfe diese Einwilligungen.",
+      "waiver_consent": "Ich stimme den Richtlinien für Sicherheit und Teilnahme bei AWE zu.",
+      "gdpr_consent": "Ich stimme der Nutzung meiner Daten zur Verwaltung meines Kontos zu.",
+      "consent_note": "Du kannst deine Einstellungen später ändern.",
+      "review_title": "Prüfe deine Angaben",
+      "review_subtitle": "Du kannst zurückgehen und Änderungen vornehmen.",
+      "review_name": "Name",
+      "review_role": "Dein Weg",
+      "review_preferences": "Interessen und Verfügbarkeit",
+      "review_consent": "Einwilligungen",
+      "confirmed": "Bestätigt",
+      "none": "Nicht ausgewählt",
+      "back": "Zurück",
+      "continue": "Weiter",
+      "finish": "Einrichtung abschließen",
+      "errors": {
+        "name": "Bitte gib deinen Vor- und Nachnamen ein.",
+        "preferences": "Bitte wähle Optionen und Verfügbarkeit.",
+        "consent": "Bitte akzeptiere die erforderlichen Einwilligungen."
+      },
+      "complete_title": "Du bist bereit, etwas zu bewirken",
+      "complete_subtitle": "Deine Angaben sind gespeichert. Willkommen bei AWE.",
+      "dashboard": "Zum Dashboard",
+      "start_over": "Neu beginnen"
+    },
+    "Register": {
+      "title": "Konto erstellen",
+      "subtitle": "Beginnen Sie Ihre Reise mit AWE e.V. Es dauert weniger als 2 Minuten.",
+      "login_link": "Bereits Mitglied? Anmelden",
+      "Roles": {
+        "volunteer": "Freiwilliger",
+        "donor": "Spender",
+        "alumni": "Alumni (Ehemalige)"
+      },
+      "Social": {
+        "google": "Mit Google registrieren",
+        "facebook": "Mit Facebook registrieren",
+        "divider": "Oder mit E-Mail fortfahren"
+      },
+      "Fields": {
+        "first_name": "Vorname",
+        "last_name": "Nachname",
+        "email": "E-Mail-Adresse",
+        "email_tip": "Melden Sie sich für eine Unternehmenspartnerschaft an? Prüfen Sie stattdessen Ihre E-Mails auf einen Einladungslink.",
+        "password": "Passwort",
+        "password_req": "Min. 8 Zeichen, 1 Sonderzeichen, 1 Zahl."
+      },
+      "Legal": {
+        "terms_statement": "Ich stimme den <terms>Nutzungsbedingungen</terms> und der <privacy>Datenschutzerklärung</privacy> zu.",
+        "gdpr": "Ich willige in die Speicherung meiner Daten zu Kontoverwaltungszwecken ein (DSGVO).",
+        "newsletter": "Senden Sie mir Updates über die Wirkung von AWE und kommende Veranstaltungen."
+      },
+      "submit": "Konto erstellen",
+      "submitting": "Wird erstellt...",
+      "security_note": "Ihre Daten werden verschlüsselt und sicher in Frankfurt, Deutschland gehostet.",
+      "safeguarding": "Suchen Sie Hilfe oder soziale Dienste? Besuchen Sie unser Hilfszentrum."
+    },
+    "ForgotPassword": {
+      "title": "Passwort vergessen?",
+      "subtitle": "Geben Sie die E-Mail-Adresse ein, die mit Ihrem Konto verknüpft ist, und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+      "email_label": "E-Mail-Adresse",
+      "submit": "Link senden",
+      "submitting": "Wird gesendet...",
+      "back_login": "Zurück zur Anmeldung",
+      "Success": {
+        "title": "Prüfen Sie Ihren Posteingang",
+        "message": "Wenn ein Konto für {email} existiert, haben wir einen Link zum Zurücksetzen des Passworts gesendet. Bitte prüfen Sie Ihren Spam-Ordner, falls er nicht innerhalb von 5 Minuten erscheint.",
+        "open_mail": "E-Mail-App öffnen",
+        "resend": "Link erneut senden",
+        "resend_wait": "Erneut senden in {seconds}s"
+      },
+      "Footer": {
+        "trouble": "Immer noch Probleme?",
+        "help_center": "Besuchen Sie unser Hilfecenter"
+      }
+    },
+    "ResetPassword": {
+      "title": "Neues Passwort festlegen",
+      "subtitle": "Bitte wählen Sie ein starkes Passwort für {email}.",
+      "back_login": "Zurück zur Anmeldung",
+      "validating": "Sicherer Link wird überprüft...",
+      "password_label": "Neues Passwort",
+      "confirm_label": "Neues Passwort bestätigen",
+      "submit": "Passwort zurücksetzen",
+      "security_notice": "Wenn Sie dies nicht angefordert haben, kontaktieren Sie security@awe-ev.org",
+      "errors": {
+        "match": "Passwörter stimmen nicht überein."
+      },
+      "Invalid": {
+        "title": "Link abgelaufen",
+        "desc": "Dieser Link zum Zurücksetzen des Passworts ist ungültig oder wurde bereits verwendet.",
+        "button": "Neuen Link anfordern"
+      },
+      "Success": {
+        "title": "Passwort aktualisiert",
+        "desc": "Ihr Konto wurde gesichert. Sie können sich nun mit Ihren neuen Zugangsdaten anmelden.",
+        "redirect": "Weiterleitung zur Anmeldung in {seconds}s...",
+        "button": "Jetzt anmelden"
+      },
+      "req_min_chars": "Min. 8 Zeichen",
+      "req_uppercase": "Großbuchstabe",
+      "req_number": "Zahl",
+      "req_symbol": "Sonderzeichen"
+    },
+    "MFA": {
+      "title": "Zwei-Faktor-Authentifizierung",
+      "subtitle_app": "Geben Sie den 6-stelligen Code aus Ihrer Authenticator-App ein.",
+      "subtitle_recovery": "Geben Sie einen Ihrer Notfall-Wiederherstellungscodes ein.",
+      "back_login": "Zurück zur Anmeldung",
+      "verify_btn": "Verifizieren",
+      "verify_recovery_btn": "Wiederherstellungscode verwenden",
+      "trust_device": "Diesem Gerät für 30 Tage vertrauen",
+      "recovery_label": "Wiederherstellungscode",
+      "switch_to_recovery": "Wiederherstellungscode verwenden",
+      "switch_to_app": "Authenticator-App verwenden",
+      "lost_device": "Zugriff auf Ihr Gerät verloren?",
+      "secure_context": "Verschlüsselte Sitzung",
+      "success": "Erfolgreich verifiziert.",
+      "errors": {
+        "invalid": "Ungültiger Code. Bitte versuchen Sie es erneut.",
+        "generic": "Verifizierung fehlgeschlagen."
+      }
+    },
+    "Invite": {
+      "meta_title": "Einladung annehmen",
+      "meta_desc": "Werden Sie Teil des Teams bei AWE e.V.",
+      "subtitle": "Eingeladen von {inviter}, als {role} beizutreten.",
+      "Invalid": {
+        "title": "Einladung ungültig",
+        "desc": "Dieser Link ist abgelaufen oder wurde bereits verwendet. Bitte bitten Sie Ihren Administrator um einen neuen Link.",
+        "retry": "Seite neu laden"
+      },
+      "New": {
+        "title": "Konto einrichten",
+        "email_verified": "Verifizierte E-Mail",
+        "fname": "Vorname",
+        "lname": "Nachname",
+        "password": "Passwort erstellen",
+        "consent": "Ich stimme der Geheimhaltungsvereinbarung und den Nutzungsbedingungen zu.",
+        "submit": "Annehmen & Beitreten",
+        "error_generic": "Kontoerstellung fehlgeschlagen.",
+        "error_required": "Erforderlich",
+        "error_password_req": "Min. 8 Zeichen, 1 Zahl"
+      },
+      "Existing": {
+        "title": "Willkommen zurück, {name}!",
+        "account_found": "AWE-Konto gefunden",
+        "password_label": "Passwort bestätigen zum Beitreten",
+        "submit": "Anmelden & Annehmen",
+        "error_credentials": "Passwort falsch oder Anmeldung fehlgeschlagen.",
+        "error_required": "Erforderlich"
+      },
+      "Footer": {
+        "help": "Brauchen Sie Hilfe? Kontaktieren Sie den Administrator unter"
+      }
+    },
+    "VerifyEmail": {
+      "back_login": "Zurück zur Anmeldung",
+      "footer_identity": "AWE e.V. Identitätsdienste",
+      "Success": {
+        "title": "E-Mail verifiziert!",
+        "subtitle": "Ihr Konto ist jetzt aktiv. Sie werden weitergeleitet.",
+        "redirect": "Weiterleitung in {seconds}s...",
+        "button": "Weiter zum Onboarding"
+      },
+      "Already": {
+        "title": "Bereits verifiziert",
+        "subtitle": "Es scheint, als hätten Sie diesen Schritt bereits abgeschlossen.",
+        "button": "Zum Dashboard"
+      },
+      "Error": {
+        "expired_title": "Link abgelaufen",
+        "expired_desc": "Dieser Verifizierungslink ist älter als 24 Stunden.",
+        "invalid_title": "Verifizierung fehlgeschlagen",
+        "invalid_desc": "Der Link ist ungültig oder fehlerhaft."
+      },
+      "Resend": {
+        "title": "Neuen Link anfordern",
+        "email_label": "Geben Sie Ihre E-Mail-Adresse ein",
+        "button": "Verifizierungslink erneut senden",
+        "success": "Neuer Link gesendet! Prüfen Sie Ihren Posteingang.",
+        "error": "Link konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
+      }
+    },
+    "Claim": {
+      "meta_title": "Profil aktivieren",
+      "meta_desc": "Verbinden Sie Ihre bisherige Spendenhistorie mit einem neuen digitalen Konto.",
+      "back_search": "Nicht Sie? Erneut suchen",
+      "error_required": "Bitte geben Sie eine E-Mail oder ID ein.",
+      "error_generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+      "footer_services": "AWE e.V. Mitgliederservice © 2025",
+      "Search": {
+        "title": "Profil aktivieren",
+        "subtitle": "Geben Sie Ihre E-Mail oder Mitglieds-ID ein, um Ihren bestehenden Eintrag zu finden.",
+        "label": "E-Mail-Adresse oder Mitglieds-ID",
+        "submit": "Mein Profil finden"
+      },
+      "Benefits": {
+        "title": "Warum mein Konto aktivieren?",
+        "point_1": "Sehen Sie Ihre vollständige Spendenhistorie ein",
+        "point_2": "Laden Sie jährliche Spendenbescheinigungen herunter",
+        "point_3": "Aktualisieren Sie Ihre Kontaktpräferenzen"
+      },
+      "Found": {
+        "title": "Willkommen zurück, {name}!",
+        "subtitle": "Wir haben ein Profil gefunden, das mit {email} verknüpft ist.",
+        "privacy_note": "Zum Schutz Ihrer Daten müssen wir Ihre Identität überprüfen, bevor wir Zugang gewähren.",
+        "submit": "Aktivierungscode senden"
+      },
+      "NoMatch": {
+        "title": "Wir konnten keinen Treffer finden",
+        "desc": "Die angegebene E-Mail oder ID stimmt nicht mit unseren aktiven Datensätzen überein. Dies kann an einem Tippfehler oder einer veralteten E-Mail liegen.",
+        "retry": "Erneut suchen",
+        "create_new": "Neues Konto erstellen",
+        "contact_support": "Mitgliederbetreuung kontaktieren"
+      },
+      "Success": {
+        "title": "Prüfen Sie Ihren Posteingang",
+        "desc": "Wir haben einen Aktivierungslink an Ihre E-Mail-Adresse gesendet. Bitte klicken Sie darauf, um Ihr Passwort festzulegen und auf Ihr Konto zuzugreifen.",
+        "toast": "Aktivierungslink gesendet!",
+        "login_btn": "Zurück zur Anmeldung"
+      }
+    },
+    "VerifyEmailInstruction": {
+      "New": {
+        "title": "Überprüfen Sie Ihren Posteingang",
+        "subtitle": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet. Bitte prüfen Sie Ihren Posteingang (und Spam-Ordner), um Ihr Konto zu aktivieren."
+      },
+      "Default": {
+        "title": "E-Mail verifizieren",
+        "subtitle": "Geben Sie unten Ihre E-Mail-Adresse ein, um einen neuen Bestätigungslink zu erhalten."
+      },
+      "back_login": "Zurück zum Login",
+      "footer_security": "Sichere Verifizierung über AWE e.V."
+    },
+    "ResendForm": {
+      "email_label": "E-Mail-Adresse",
+      "email_placeholder": "name@beispiel.de",
+      "error_email": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+      "submit_btn": "Bestätigungs-E-Mail erneut senden",
+      "success_title": "E-Mail gesendet",
+      "success_desc": "Falls ein Konto mit dieser Adresse existiert, erhalten Sie in Kürze einen Link.",
+      "try_different": "Andere Adresse versuchen",
+      "toast_sent": "Bestätigungs-E-Mail gesendet!",
+      "toast_error": "E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es später erneut."
+    },
+    "Setup": {
+      "meta_title": "Arbeitsbereich einrichten",
+      "meta_desc": "Erstellen Sie Ihre Organisation und übernehmen Sie den Owner-Zugriff, oder warten Sie auf die Einladung eines Teammitglieds.",
+      "badge": "Erster Start",
+      "create_title": "Arbeitsbereich erstellen",
+      "create_subtitle": "Sie sind der Erste hier. Benennen Sie die Organisation — Sie werden ihr Owner.",
+      "org_name_label": "Name der Organisation",
+      "org_name_placeholder": "AWE e.V.",
+      "submit": "Arbeitsbereich erstellen",
+      "pending_title": "Angemeldet — Zugriff ausstehend",
+      "pending_desc": "Dieser Arbeitsbereich existiert bereits. Bitten Sie einen Administrator um einen Einladungslink und öffnen Sie ihn angemeldet, um Ihren Zugriff zu erhalten.",
+      "sign_out": "Abmelden",
+      "error_generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    }
+  }
 }

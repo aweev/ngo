@@ -14,7 +14,6 @@
  * job_type, then stamps last_run_*, run_count, and the following next_run_at.
  */
 import {
-    corsHeaders,
     functionUrl,
     jsonResponse,
     nextCronRun,
@@ -44,7 +43,7 @@ async function postSibling(req: Request, name: string, body: Record<string, unkn
 }
 
 Deno.serve(async (req: Request): Promise<Response> => {
-    if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+    if (req.method === "OPTIONS") return jsonResponse({ error: "Method not allowed" }, 405);
     if (req.method !== "GET" && req.method !== "POST") {
         return jsonResponse({ error: "Method not allowed" }, 405);
     }

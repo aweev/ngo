@@ -105,10 +105,14 @@ export async function updatePassword(newPassword: string) {
 export async function signInWithOAuth(provider: 'google' | 'github' | 'gitlab' | 'facebook') {
     const supabase = createSupabaseBrowserClient();
 
+    // Keep the locale prefix so the callback lands directly on
+    // /[locale]/auth/callback instead of relying on middleware redirects
+    // (which risk dropping the one-time `code` query param).
+    const locale = window.location.pathname.split('/')[1] || 'en';
     const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-            redirectTo: `${window.location.origin}/auth/callback`,
+            redirectTo: `${window.location.origin}/${locale}/auth/callback`,
         },
     });
 

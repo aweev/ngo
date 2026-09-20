@@ -33,3 +33,4 @@ export * from './tags';
 export * from './volunteers';
 export * from './workers';
 export * from './workflows';
+export * from './email';

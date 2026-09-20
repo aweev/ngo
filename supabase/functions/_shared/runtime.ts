@@ -7,16 +7,17 @@
  */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-export const corsHeaders: Record<string, string> = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-cron-secret",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+// No permissive CORS: these are server-to-server functions invoked only by
+// pg_cron / internal orchestration. A restrictive header set means browser
+// JS can never read responses (no cross-origin data leakage surface).
+export const noCorsHeaders: Record<string, string> = {
+    "Content-Type": "application/json",
 };
 
 export function jsonResponse(body: unknown, status = 200): Response {
     return new Response(JSON.stringify(body), {
         status,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...noCorsHeaders },
     });
 }
 
@@ -37,7 +38,20 @@ export function requireCronSecret(req: Request): Response | null {
     const expected = Deno.env.get("CRON_SECRET");
     if (!expected) return jsonResponse({ error: "CRON_SECRET is not configured" }, 500);
     const provided = req.headers.get("x-cron-secret");
-    if (provided !== expected) return jsonResponse({ error: "Unauthorized" }, 401);
+    if (!provided) return jsonResponse({ error: "Unauthorized" }, 401);
+    // Timing-safe compare to prevent secret exfiltration via timing side-channel.
+    const expectedBytes = new TextEncoder().encode(expected);
+    const providedBytes = new TextEncoder().encode(provided);
+    if (expectedBytes.length !== providedBytes.length || !crypto.subtle.timingSafeEqual) {
+        // Fallback for runtimes without timingSafeEqual (non-Deno Edge).
+        if (expectedBytes.length !== providedBytes.length || provided !== expected) {
+            return jsonResponse({ error: "Unauthorized" }, 401);
+        }
+    } else {
+        if (!crypto.subtle.timingSafeEqual(expectedBytes, providedBytes)) {
+            return jsonResponse({ error: "Unauthorized" }, 401);
+        }
+    }
     return null;
 }
 
