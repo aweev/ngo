@@ -179,7 +179,9 @@ export async function inviteMember(
         .maybeSingle();
     if (pending?.token) {
         const claimLink = claimLinkFor(pending.token as string, locale);
-        const emailSent = sendEmail ? await sendInviteEmail(admin, email, claimLink, firstName, lastName) : false;
+        const emailSent = sendEmail
+            ? await sendInviteEmail(admin, { email, claimLink, firstName, lastName, role, orgName: auth.context.organizationName })
+            : false;
         return { success: true, claimLink, emailSent, error: null };
     }
 
@@ -199,32 +201,57 @@ export async function inviteMember(
     if (error) return { success: false, error: 'Unable to create the invitation. Please try again.' };
 
     const claimLink = claimLinkFor(token, locale);
-    const emailSent = sendEmail ? await sendInviteEmail(admin, email, claimLink, firstName, lastName) : false;
+    const emailSent = sendEmail
+        ? await sendInviteEmail(admin, { email, claimLink, firstName, lastName, role, orgName: auth.context.organizationName })
+        : false;
 
     revalidatePath('/admin/members');
     return { success: true, claimLink, emailSent, error: null };
 }
 
+interface InviteMail {
+    email: string;
+    claimLink: string;
+    firstName?: string;
+    lastName?: string;
+    role: AppRole;
+    orgName: string | null;
+}
+
 /**
- * Sends the Supabase invite email pointing at our claim link.
- * Best-effort by design: returns false (never throws) when mail is
- * unconfigured, rate-limited, or the address already has an account —
- * the caller always falls back to sharing the claim link manually.
- * NOTE: the app URL must be allowlisted under Supabase Auth > Redirect URLs.
+ * Delivers the invitation email, Resend-first (branded, project standard),
+ * Supabase Auth invite as fallback. Best-effort by design: returns false
+ * (never throws) when mail is unconfigured, rate-limited, or the address
+ * already has an account — the caller always falls back to sharing the
+ * claim link manually.
+ * NOTE: the app URL must be allowlisted under Supabase Auth > Redirect URLs
+ * for the Supabase fallback leg.
  */
 async function sendInviteEmail(
     admin: ReturnType<typeof createSupabaseAdminClient>,
-    email: string,
-    claimLink: string,
-    firstName?: string,
-    lastName?: string,
+    invite: InviteMail,
 ): Promise<boolean> {
+    const { email, claimLink, firstName, role, orgName } = invite;
+    const greeting = firstName?.trim() ? `Hi ${firstName.trim()},` : 'Hi,';
+    const org = orgName || 'our organization';
+    try {
+        const { sendEmail } = await import('@/lib/email');
+        const viaResend = await sendEmail({
+            to: email,
+            subject: `You're invited to join ${org} (${role})`,
+            html: `<h1>${greeting}</h1><p>You've been invited to join <strong>${escapeInvite(org)} (${escapeInvite(role)})</strong>.</p><p><a href="${escapeInvite(claimLink)}">Accept your invitation</a></p><p>This link expires in ${INVITE_TTL_DAYS} days. If you did not expect this, you can ignore it.</p>`,
+            text: `${greeting} You've been invited to join ${org} (${role}). Accept here (expires in ${INVITE_TTL_DAYS} days): ${claimLink}`,
+        });
+        if (viaResend.success) return true;
+    } catch {
+        // Fall through to the Supabase leg.
+    }
     try {
         const { error } = await admin.auth.admin.inviteUserByEmail(email, {
             redirectTo: claimLink,
             data: {
-                first_name: firstName || undefined,
-                last_name: lastName || undefined,
+                first_name: invite.firstName || undefined,
+                last_name: invite.lastName || undefined,
             },
         });
         if (error) return false;
@@ -232,6 +259,15 @@ async function sendInviteEmail(
     } catch {
         return false;
     }
+}
+
+/** Minimal HTML-escaping for invite mail interpolation. */
+function escapeInvite(value: string): string {
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
 }
 
 /** Revokes a pending invitation so its link stops working. */

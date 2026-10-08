@@ -25,7 +25,10 @@ import { join, dirname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const WORKSPACE = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SCAN_ROOTS = ['src/app', 'src/components', 'src/lib'];
+// tests/ is scanned on purpose: the accessibility and page suites navigate to
+// literal URLs, and when those drift from the real /public routes the suite
+// quietly exercises 404 pages and still reports green.
+const SCAN_ROOTS = ['src/app', 'src/components', 'src/lib', 'src/hooks', 'tests'];
 const SKIP_FILES = new Set([
     'src/proxy.ts', // middleware matcher regex — not a link
 ]);
@@ -33,6 +36,9 @@ const SKIP_FILES = new Set([
 const PUBLIC_PREFIX = '/public';
 
 // Internal route families that only exist under /[locale]/public/*.
+// `/about` belongs here too: the a11y suite navigates to bare '/about', which
+// 404s under localePrefix:'always' while the test still reported green.
+// `/legal/*` is deliberately NOT here - it lives at /[locale]/legal/*.
 const PUBLIC_ROUTE_FAMILIES = [
     '/get-involved',
     '/contact',
@@ -41,7 +47,11 @@ const PUBLIC_ROUTE_FAMILIES = [
     '/programs',
     '/campaigns',
     '/events',
+    '/about',
 ];
+
+/** Any quoted literal that looks like an in-app path (used for test files). */
+const BARE_PATH_RE = /(['"`])(\/[a-z0-9[\]/_.-]*)\1/gi;
 
 // The only valid /public/programs/[category] slugs (src/lib/program-themes.ts).
 const VALID_CATEGORY_SLUGS = new Set([
@@ -52,8 +62,9 @@ const VALID_CATEGORY_SLUGS = new Set([
 ]);
 
 // Matches Link href={...} / href="..." / href: "..." / router.push(...) /
-// router.replace(...) / redirect(...) string- and template-literal targets.
-const LINK_TARGET_RE = /(?:href\s*=\s*\{?\s*|href\s*:\s*|push\s*\(\s*|replace\s*\(\s*|redirect\s*\(\s*)(['"`])([^'"`\n]*)\1/g;
+// router.replace(...) / redirect(...) / page.goto(...) string- and
+// template-literal targets.
+const LINK_TARGET_RE = /(?:href\s*=\s*\{?\s*|href\s*:\s*|push\s*\(\s*|replace\s*\(\s*|redirect\s*\(\s*|goto\s*\(\s*)(['"`])([^'"`\n]*)\1/g;
 
 function walk(dir, files = []) {
     for (const entry of readdirSync(dir)) {
@@ -118,6 +129,26 @@ for (const file of files.sort()) {
             const line = source.slice(0, m.index).split('\n').length;
             failures += 1;
             console.error(`  [VIOLATION]  ${rel(file)}:${line} — ${problem}`);
+        }
+    }
+
+    // Test files declare routes as plain array literals, which no href/goto
+    // pattern sees. Scan every quoted absolute path there, because a stale URL
+    // in a spec is exactly how a suite ends up asserting against 404 pages.
+    if (rel(file).startsWith('tests/')) {
+        BARE_PATH_RE.lastIndex = 0;
+        let b;
+        while ((b = BARE_PATH_RE.exec(source)) !== null) {
+            const target = b[2];
+            // Skip locale-prefixed and route-group-ish artefacts.
+            if (/^\/(en|de|fr|es|ar)(\/|$)/.test(target)) continue;
+            checked += 1;
+            const problem = checkTarget(target);
+            if (problem) {
+                const line = source.slice(0, b.index).split('\n').length;
+                failures += 1;
+                console.error(`  [VIOLATION]  ${rel(file)}:${line} — ${problem}`);
+            }
         }
     }
 }

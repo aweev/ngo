@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -10,13 +11,14 @@ interface CronEditorProps {
 }
 
 const presets = [
-    { label: "Every hour", value: "0 * * * *" },
-    { label: "Daily at 9 AM", value: "0 9 * * *" },
-    { label: "Every Monday", value: "0 9 * * 1" },
-    { label: "Monthly (1st)", value: "0 0 1 * *" },
-];
+    { label: "hourly", value: "0 * * * *" },
+    { label: "daily", value: "0 9 * * *" },
+    { label: "weekly", value: "0 9 * * 1" },
+    { label: "monthly", value: "0 0 1 * *" },
+] as const;
 
 export function CronEditor({ value, onChange }: CronEditorProps) {
+    const t = useTranslations("Admin.Automations.cron");
     const [cron, setCron] = useState(value || "0 9 * * *");
 
     const handleChange = (newVal: string) => {
@@ -28,7 +30,7 @@ export function CronEditor({ value, onChange }: CronEditorProps) {
         <div className="space-y-3 rounded-lg border p-4 bg-card">
             <div className="space-y-1">
                 <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Cron Expression
+                    {t("label")}
                 </label>
                 <Input
                     value={cron}
@@ -48,7 +50,7 @@ export function CronEditor({ value, onChange }: CronEditorProps) {
                         className="text-xs"
                         onClick={() => handleChange(p.value)}
                     >
-                        {p.label}
+                        {t(p.label)}
                     </Button>
                 ))}
             </div>

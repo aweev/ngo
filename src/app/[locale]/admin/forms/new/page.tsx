@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,8 @@ import { Link } from "@/lib/navigation";
 
 export default function NewFormPage() {
     const router = useRouter();
+    const t = useTranslations("Admin.Forms");
+    const tCommon = useTranslations("Admin.Common");
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState("");
     const [slug, setSlug] = useState("");
@@ -29,12 +32,12 @@ export default function NewFormPage() {
             description: description || null,
             status: "published",
             fields: [
-                { id: "f1", type: "text", label: "Full Name", required: true, sortOrder: 0 },
-                { id: "f2", type: "email", label: "Email Address", required: true, sortOrder: 1 },
-                { id: "f3", type: "textarea", label: "Application Statement", required: false, sortOrder: 2 },
+                { id: "f1", type: "text", label: t("defaults.full_name"), required: true, sortOrder: 0 },
+                { id: "f2", type: "email", label: t("defaults.email_address"), required: true, sortOrder: 1 },
+                { id: "f3", type: "textarea", label: t("defaults.application_statement"), required: false, sortOrder: 2 },
             ],
-            submit_button_text: "Submit Application",
-            success_message: "Thank you for submitting!",
+            submit_button_text: t("defaults.submit_button"),
+            success_message: t("defaults.success_message"),
             is_public: true,
             created_by: null,
         });
@@ -50,27 +53,27 @@ export default function NewFormPage() {
             <div className="flex items-center gap-2">
                 <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                     <Link href="/admin/forms">
-                        <ArrowLeft className="h-4 w-4" /> Back to Forms
+                        <ArrowLeft className="h-4 w-4" /> {t("back_to_forms")}
                     </Link>
                 </Button>
             </div>
 
             <PageHeader
-                title="Create Custom Form"
-                description="Build public or internal application forms, survey questionnaires, and feedback collector forms."
+                title={t("new_title")}
+                description={t("new_description")}
             />
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-base flex items-center gap-2">
-                            <ClipboardList className="h-4 w-4 text-emerald-500" /> Form Configuration
+                            <ClipboardList className="h-4 w-4 text-emerald-500" /> {t("config_title")}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Form Title</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("form_title")}</label>
                                 <Input
                                     required
                                     value={title}
@@ -78,25 +81,25 @@ export default function NewFormPage() {
                                         setTitle(e.target.value);
                                         setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-"));
                                     }}
-                                    placeholder="e.g. Volunteer Application Form 2026"
+                                    placeholder={t("form_title_placeholder")}
                                 />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL Slug</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("slug")}</label>
                                 <Input
                                     required
                                     value={slug}
                                     onChange={(e) => setSlug(e.target.value)}
-                                    placeholder="volunteer-application-2026"
+                                    placeholder={t("slug_placeholder")}
                                 />
                             </div>
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("description_label")}</label>
                             <Textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Provide instructions for submitters..."
+                                placeholder={t("description_placeholder")}
                             />
                         </div>
                     </CardContent>
@@ -104,10 +107,10 @@ export default function NewFormPage() {
 
                 <div className="flex justify-end gap-3">
                     <Button asChild variant="outline">
-                        <Link href="/admin/forms">Cancel</Link>
+                        <Link href="/admin/forms">{tCommon("cancel")}</Link>
                     </Button>
                     <Button type="submit" disabled={loading}>
-                        {loading ? "Publishing Form..." : "Publish Form"}
+                        {loading ? t("publishing") : t("publish")}
                     </Button>
                 </div>
             </form>

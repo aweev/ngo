@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { PublicHeader } from "@/components/layout/public/public-header";
 import { PublicFooter } from "@/components/layout/public/public-footer";
+import { CampaignRibbon } from "@/components/layout/public/campaign-ribbon";
 
 interface PublicLayoutProps {
     children: ReactNode;
@@ -19,6 +20,7 @@ export default async function PublicLayout({
 
     return (
         <div className="flex min-h-screen flex-col">
+            <CampaignRibbon />
             {/* Header - Sticky behavior is internal to the component */}
             <PublicHeader />
 

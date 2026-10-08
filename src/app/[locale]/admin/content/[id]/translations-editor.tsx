@@ -14,6 +14,7 @@ import {
 import { SUPPORTED_LOCALES, LOCALE_LABELS, type SupportedLocale } from "@/lib/i18n/locales";
 import { exportTranslations, importTranslations, translationCompleteness } from "@/lib/content/translations";
 import { TriangleAlert, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type TranslationRow = {
     locale: string;
@@ -46,6 +47,7 @@ export default function TranslationsEditor({
     rows: TranslationRow[];
     aiConfigured: boolean;
 }) {
+    const t = useTranslations("Admin.Content.Translations");
     const byLocale = new Map(rows.map((r) => [r.locale, r]));
     const [open, setOpen] = useState<SupportedLocale | null>("en");
     const [busy, setBusy] = useState<string | null>(null);
@@ -76,7 +78,7 @@ export default function TranslationsEditor({
     const save = async (locale: string) => {
         const d = draftFor(locale, byLocale.get(locale));
         if (!d.title.trim()) {
-            setError(`[${locale}] Title is required.`);
+            setError(t("title_required", { locale }));
             return;
         }
         setBusy(`${locale}:save`);
@@ -95,7 +97,7 @@ export default function TranslationsEditor({
         setBusy(null);
         if (res.error) setError(res.error);
         else {
-            setInfo(`[${locale}] Saved as draft. Request review when ready.`);
+            setInfo(t("saved_draft", { locale }));
             window.location.reload();
         }
     };
@@ -151,7 +153,7 @@ export default function TranslationsEditor({
             const raw = JSON.parse(await file.text());
             const parsed = importTranslations(raw);
             if (!parsed.ok || !parsed.locales) {
-                setError(parsed.error ?? "Invalid translation file.");
+                setError(parsed.error ?? t("invalid_file"));
                 return;
             }
             for (const [locale, payload] of Object.entries(parsed.locales)) {
@@ -171,34 +173,33 @@ export default function TranslationsEditor({
                     category_label: typeof p.category_label === "string" ? p.category_label : null,
                 });
             }
-            setInfo("Imported translations saved as drafts — review each locale before approving.");
+            setInfo(t("imported"));
             window.location.reload();
         } catch {
-            setError("Could not read that file. Expected a translation export JSON.");
+            setError(t("read_failed"));
         }
     };
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base">Translations</CardTitle>
+                <CardTitle className="text-base">{t("title")}</CardTitle>
                 <CardDescription>
-                    One row per locale. Publishing a locale requires approval and complete required
-                    fields — untranslated locales fall back to English on the public site.
+                    {t("description")}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-100">
                     <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
-                    <p>AI-generated text always requires human review before approval or publishing.</p>
+                    <p>{t("ai_warning")}</p>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
                     <Button size="sm" variant="outline" onClick={exportAll}>
-                        Export JSON
+                        {t("export_json")}
                     </Button>
                     <label className="inline-flex cursor-pointer items-center rounded-md border px-3 py-1.5 text-xs font-medium hover:bg-muted">
-                        Import JSON
+                        {t("import_json")}
                         <input
                             type="file"
                             accept="application/json"
@@ -229,7 +230,14 @@ export default function TranslationsEditor({
                     const pct = Math.round(completeness * 100);
                     const isOpen = open === locale;
                     return (
-                        <div key={locale} className="rounded-lg border">
+                        <div
+                            key={locale}
+                            data-testid="translation-row"
+                            data-locale={locale}
+                            data-status={row?.status ?? "missing"}
+                            data-completeness={pct}
+                            className="rounded-lg border"
+                        >
                             <button
                                 type="button"
                                 className="flex w-full items-center justify-between gap-3 p-3 text-left"
@@ -238,81 +246,81 @@ export default function TranslationsEditor({
                                 <span className="flex items-center gap-2 text-sm font-semibold">
                                     {LOCALE_LABELS[locale]}
                                     <Badge variant={row?.status === "published" ? "default" : "secondary"} className="text-[11px]">
-                                        {row?.status ?? "missing"}
+                                        {row?.status ?? t("status_missing")}
                                     </Badge>
                                 </span>
                                 <span className="text-xs text-muted-foreground">
-                                    {row ? `${pct}%${row.version ? ` · v${row.version}` : ""}` : "no translation yet"}
+                                    {row ? `${t("percent", { pct })}${row.version ? t("version", { version: row.version }) : ""}` : t("no_translation")}
                                 </span>
                             </button>
                             {isOpen && (
                                 <div className="space-y-3 border-t p-3">
                                     {missingFields.length > 0 && (
                                         <p className="text-xs text-muted-foreground">
-                                            Missing: <span className="font-mono">{missingFields.join(", ")}</span>
+                                            {t("missing_fields")} <span className="font-mono">{missingFields.join(", ")}</span>
                                         </p>
                                     )}
                                     <div className="grid gap-3 sm:grid-cols-2">
                                         <div className="space-y-1 sm:col-span-2">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Title *</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_title")}</label>
                                             <Input value={d.title} onChange={(e) => set(locale, "title", e.target.value)} />
                                         </div>
                                         <div className="space-y-1 sm:col-span-2">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Body</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_body")}</label>
                                             <Textarea value={d.body} onChange={(e) => set(locale, "body", e.target.value)} rows={4} />
                                         </div>
                                         <div className="space-y-1 sm:col-span-2">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Excerpt</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_excerpt")}</label>
                                             <Textarea value={d.excerpt} onChange={(e) => set(locale, "excerpt", e.target.value)} rows={2} />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Meta title</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_meta_title")}</label>
                                             <Input value={d.meta_title} onChange={(e) => set(locale, "meta_title", e.target.value)} maxLength={200} />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Meta description</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_meta_description")}</label>
                                             <Input value={d.meta_description} onChange={(e) => set(locale, "meta_description", e.target.value)} maxLength={500} />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover alt text</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_cover_alt")}</label>
                                             <Input value={d.cover_alt_text} onChange={(e) => set(locale, "cover_alt_text", e.target.value)} maxLength={300} />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category label</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_category")}</label>
                                             <Input value={d.category_label} onChange={(e) => set(locale, "category_label", e.target.value)} maxLength={120} />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">CTA label</label>
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_cta_label")}</label>
                                             <Input value={d.cta_label} onChange={(e) => set(locale, "cta_label", e.target.value)} maxLength={120} />
                                         </div>
                                         <div className="space-y-1">
-                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">CTA URL</label>
-                                            <Input value={d.cta_url} onChange={(e) => set(locale, "cta_url", e.target.value)} placeholder="https://… or /path" />
+                                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("label_cta_url")}</label>
+                                            <Input value={d.cta_url} onChange={(e) => set(locale, "cta_url", e.target.value)} placeholder={t("cta_url_placeholder")} />
                                         </div>
                                     </div>
                                     <div className="flex flex-wrap gap-2">
                                         <Button size="sm" disabled={busy !== null} onClick={() => save(locale)}>
-                                            {busy === `${locale}:save` ? "Saving…" : "Save translation"}
+                                            {busy === `${locale}:save` ? t("saving") : t("save")}
                                         </Button>
                                         <Button size="sm" variant="outline" disabled={busy !== null || !row} onClick={() => setStatus(locale, "in_review")}>
-                                            Request review
+                                            {t("request_review")}
                                         </Button>
                                         <Button size="sm" variant="outline" disabled={busy !== null || !row} onClick={() => setStatus(locale, "approved")}>
-                                            Approve
+                                            {t("approve")}
                                         </Button>
                                         <Button size="sm" variant="outline" disabled={busy !== null || !row} onClick={() => setStatus(locale, "published")}>
-                                            Publish locale
+                                            {t("publish")}
                                         </Button>
                                         <Button
                                             size="sm"
                                             variant="outline"
                                             className="gap-1"
                                             disabled={busy !== null || !aiConfigured}
-                                            title={aiConfigured ? "Generate a machine-translation draft (requires review)" : "AI translation is not configured"}
+                                            title={aiConfigured ? t("ai_tooltip_enabled") : t("ai_tooltip_disabled")}
                                             onClick={() => requestAi(locale)}
                                         >
                                             <Sparkles className="h-3.5 w-3.5" />
-                                            {busy === `${locale}:ai` ? "Working…" : aiConfigured ? "AI translate" : "AI (not configured)"}
+                                            {busy === `${locale}:ai` ? t("ai_working") : aiConfigured ? t("ai_translate") : t("ai_not_configured")}
                                         </Button>
                                     </div>
                                 </div>

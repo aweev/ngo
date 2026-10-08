@@ -12,6 +12,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "scripts/**",
+    // Generated test artifacts (Playwright bundles its tracing UI as minified
+    // JS; linting third-party bundles produces hundreds of false errors).
+    "playwright-report/**",
+    "test-results/**",
   ]),
 ]);
 

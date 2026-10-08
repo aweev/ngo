@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "@/lib/navigation";
+import { useTranslations } from "next-intl";
 import { Building2, Check, ChevronDown, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/auth/supabase-auth";
@@ -22,6 +23,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ user, activeOrganizationId, organizationName, memberships }: DashboardHeaderProps) {
     const router = useRouter();
+    const t = useTranslations("Admin.Nav.dashboardSidebar");
 
     const handleSignOut = async () => {
         await signOut();
@@ -46,14 +48,14 @@ export function DashboardHeader({ user, activeOrganizationId, organizationName, 
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="max-w-56 gap-2 truncate">
                                 <Building2 className="h-4 w-4 shrink-0" />
-                                <span className="truncate">{organizationName || "Organization"}</span>
+                                <span className="truncate">{organizationName || t("organization")}</span>
                                 <ChevronDown className="h-3.5 w-3.5 shrink-0" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start">
                             {memberships.map((membership) => (
                                 <DropdownMenuItem key={membership.organizationId} onClick={() => handleOrganizationChange(membership.organizationId)}>
-                                    <span className="flex-1">{membership.organizationName || "Organization"}</span>
+                                    <span className="flex-1">{membership.organizationName || t("organization")}</span>
                                     {membership.organizationId === activeOrganizationId && <Check className="h-4 w-4" />}
                                 </DropdownMenuItem>
                             ))}
@@ -70,7 +72,7 @@ export function DashboardHeader({ user, activeOrganizationId, organizationName, 
                 </div>
                 <Button variant="ghost" size="sm" onClick={handleSignOut}>
                     <LogOut className="h-4 w-4" />
-                    Sign out
+                    {t("signOut")}
                 </Button>
             </div>
         </header>

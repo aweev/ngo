@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,19 +10,22 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function BudgetsPage() {
+export default async function BudgetsPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Financial" });
+    const tEnums = await getTranslations({ locale, namespace: "Manage.Enums" });
     const { data: budgets } = await getBudgets();
 
     return (
         <div className="space-y-6">
             <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                 <Link href="/admin/financial">
-                    <ArrowLeft className="h-4 w-4" /> Back to Financials
+                    <ArrowLeft className="h-4 w-4" /> {t("back_to_financials")}
                 </Link>
             </Button>
             <PageHeader
-                title="Budgets"
-                description="Plan fiscal periods, allocate funds, and track budget status."
+                title={t("budgets_title")}
+                description={t("budgets_description")}
                 action={<NewBudgetForm />}
             />
 
@@ -29,17 +33,17 @@ export default async function BudgetsPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Budget</TableHead>
-                            <TableHead>Period</TableHead>
-                            <TableHead>Total</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead>{t("cols.budget")}</TableHead>
+                            <TableHead>{t("cols.period")}</TableHead>
+                            <TableHead>{t("cols.total")}</TableHead>
+                            <TableHead>{t("cols.status")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {(!budgets || budgets.length === 0) ? (
                             <TableRow>
                                 <TableCell colSpan={4} className="text-center py-8 text-muted-foreground text-sm">
-                                    No budgets configured yet.
+                                    {t("no_budgets")}
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -51,16 +55,18 @@ export default async function BudgetsPage() {
                                             <span>{b.name}</span>
                                         </div>
                                         {b.fiscal_year && (
-                                            <span className="text-xs text-muted-foreground">FY {b.fiscal_year}</span>
+                                            <span className="text-xs text-muted-foreground">{t("fiscal_year", { year: b.fiscal_year })}</span>
                                         )}
                                     </TableCell>
-                                    <TableCell className="capitalize text-xs">{b.period_type}</TableCell>
+                                    <TableCell className="text-xs">
+                                        {tEnums.has(b.period_type) ? tEnums(b.period_type) : b.period_type}
+                                    </TableCell>
                                     <TableCell className="font-mono font-bold text-sm">
-                                        {b.total_amount.toLocaleString("en", { style: "currency", currency: b.currency || "EUR" })}
+                                        {b.total_amount.toLocaleString(locale, { style: "currency", currency: b.currency || "EUR" })}
                                     </TableCell>
                                     <TableCell>
-                                        <Badge variant={b.status === "active" ? "default" : "outline"} className="capitalize">
-                                            {b.status}
+                                        <Badge variant={b.status === "active" ? "default" : "outline"}>
+                                            {tEnums.has(b.status) ? tEnums(b.status) : b.status}
                                         </Badge>
                                     </TableCell>
                                 </TableRow>

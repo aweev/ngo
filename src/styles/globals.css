@@ -56,6 +56,28 @@
   --ring: #0E7C7B;
 }
 
+/*
+ * Reviewed campaign treatments. These selectors are intentionally narrow:
+ * campaign data can select an identifier, but cannot supply arbitrary CSS,
+ * fonts, scripts, or inaccessible colors. CampaignSafetyGuard suppresses
+ * these tokens outside low-risk public storytelling routes.
+ */
+:root[data-campaign="year-end"]:not([data-campaign-suppressed]) {
+  --primary: #166534;
+  --primary-foreground: #FFFFFF;
+  --accent: #D4A72C;
+  --accent-foreground: #1F2937;
+  --ring: #166534;
+}
+
+:root[data-campaign="community-week"]:not([data-campaign-suppressed]) {
+  --primary: #6D28D9;
+  --primary-foreground: #FFFFFF;
+  --accent: #F97316;
+  --accent-foreground: #1F2937;
+  --ring: #6D28D9;
+}
+
 .dark,
 :root[data-brand="sunset"].dark {
   --background: #111317;
@@ -89,6 +111,23 @@
   --ring: #E9C46A;
 }
 
+/* Keep the approved campaign palettes legible in dark mode as well. */
+:root[data-campaign="year-end"].dark:not([data-campaign-suppressed]) {
+  --primary: #4ADE80;
+  --primary-foreground: #102417;
+  --accent: #FACC15;
+  --accent-foreground: #1F2937;
+  --ring: #FACC15;
+}
+
+:root[data-campaign="community-week"].dark:not([data-campaign-suppressed]) {
+  --primary: #C4B5FD;
+  --primary-foreground: #24123F;
+  --accent: #FDBA74;
+  --accent-foreground: #2A1406;
+  --ring: #FDBA74;
+}
+
 /* 
  * STEP 2: Tailwind Configuration (Tokens)
  */
@@ -118,9 +157,24 @@
   --color-brand-hopeful-clay: var(--primary);
   --color-brand-radiant-gold: var(--accent);
 
-  /* Fonts */
-  --font-sans: var(--font-geist-sans), "Inter", sans-serif;
-  --font-serif: "Lora", serif;
+  /* Fonts: system stacks (no webfont downloads — offline-first) */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-serif: Georgia, "Times New Roman", "Noto Serif", serif;
+}
+
+/*
+ * System font stacks. Applied on <body> via lib/fonts.ts variables,
+ * replacing the former next/font/google classes one-for-one.
+ */
+.font-system-sans {
+  --font-geist-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.font-system-serif {
+  --font-serif: Georgia, "Times New Roman", "Noto Serif", serif;
 }
 
 @layer base {

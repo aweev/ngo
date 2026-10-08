@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,19 +9,21 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function PerformanceReviewsPage() {
+export default async function PerformanceReviewsPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Reviews" });
     const { data: reviews } = await getPerformanceReviews();
 
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Executive Reviews & Staff Ratings"
-                description="360° performance evaluations, leadership endorsements, and private ED feedback for staff and volunteers."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <Button asChild className="gap-2">
                         <Link href="/admin/reviews/new">
                             <Plus className="h-4 w-4" />
-                            Submit Review
+                            {t("submit_review")}
                         </Link>
                     </Button>
                 }
@@ -30,18 +33,18 @@ export default async function PerformanceReviewsPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Review Title</TableHead>
-                            <TableHead>Target Scope</TableHead>
-                            <TableHead>ED Rating</TableHead>
-                            <TableHead>Strengths</TableHead>
-                            <TableHead>Visibility</TableHead>
+                            <TableHead>{t("cols.title")}</TableHead>
+                            <TableHead>{t("cols.scope")}</TableHead>
+                            <TableHead>{t("cols.rating")}</TableHead>
+                            <TableHead>{t("cols.strengths")}</TableHead>
+                            <TableHead>{t("cols.visibility")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {(!reviews || reviews.length === 0) ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="text-center py-8 text-muted-foreground text-sm">
-                                    No executive performance reviews logged yet. Click &quot;Submit Review&quot; to record evaluations.
+                                    {t("empty")}
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -57,15 +60,15 @@ export default async function PerformanceReviewsPage() {
                                     <TableCell>
                                         <div className="flex items-center gap-1 text-amber-500 font-bold text-xs">
                                             <Star className="h-3 w-3 fill-amber-500" />
-                                            <span>{r.rating} / 5</span>
+                                            <span>{t("rating_value", { rating: r.rating })}</span>
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-xs text-muted-foreground">
-                                        {r.strengths?.slice(0, 2).join(", ") || "General performance"}
+                                        {r.strengths?.slice(0, 2).join(", ") || t("general_performance")}
                                     </TableCell>
                                     <TableCell>
                                         <Badge variant={r.is_private ? "secondary" : "outline"}>
-                                            {r.is_private ? "Private (ED)" : "Public"}
+                                            {r.is_private ? t("private_ed") : t("public")}
                                         </Badge>
                                     </TableCell>
                                 </TableRow>

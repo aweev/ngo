@@ -1,13 +1,15 @@
-'use server';
-
-import { z } from 'zod';
-import { ENV } from '@/lib/env';
-
 /**
  * Email delivery — Resend-first (Supabase-only auth stack, no nodemailer).
  * RESEND_API_KEY enables real delivery. EMAIL_FROM is the verified sender.
  * When unconfigured, senders return {success:false} — nothing fake-sent.
+ *
+ * IMPORTANT: this is a plain server module (NOT a 'use server' file).
+ * It must never be moved into src/actions/ — doing so would expose
+ * sendEmail as a publicly invokable server action (open relay).
  */
+
+import { z } from 'zod';
+import { ENV } from '@/lib/env';
 
 const emailSchema = z.object({
     to: z.string().email().max(200),
@@ -184,3 +186,74 @@ export async function sendNewsletterUnsubscribe(params: {
         text: 'You have been unsubscribed from our newsletter.',
     });
 }
+
+export async function sendVolunteerShiftReminder(params: {
+    to: string;
+    volunteerName: string;
+    roleName: string;
+    shiftTime: string;
+    location: string;
+}): Promise<{ success: boolean; error: string | null }> {
+    const html = `
+        <h1>Volunteer Shift Reminder</h1>
+        <p>Hello ${escapeHtml(params.volunteerName)},</p>
+        <p>This is a reminder for your upcoming shift as <strong>${escapeHtml(params.roleName)}</strong>.</p>
+        <ul>
+            <li><strong>Time:</strong> ${escapeHtml(params.shiftTime)}</li>
+            <li><strong>Location:</strong> ${escapeHtml(params.location)}</li>
+        </ul>
+        <p>Thank you for your dedication to our mission!</p>
+    `;
+    return sendEmail({
+        to: params.to,
+        subject: `Upcoming Shift Reminder — ${params.roleName}`,
+        html,
+        text: `Reminder: Shift as ${params.roleName} on ${params.shiftTime} at ${params.location}.`,
+    });
+}
+
+export async function sendSafeguardingEscalationAlert(params: {
+    to: string;
+    caseId: string;
+    severity: string;
+    summary: string;
+}): Promise<{ success: boolean; error: string | null }> {
+    const html = `
+        <h1 style="color: #dc2626;">🚨 Safeguarding Escalation Alert</h1>
+        <p>A safeguarding report requires immediate review.</p>
+        <table>
+            <tr><td>Case ID:</td><td>${escapeHtml(params.caseId)}</td></tr>
+            <tr><td>Severity:</td><td><strong>${escapeHtml(params.severity.toUpperCase())}</strong></td></tr>
+            <tr><td>Summary:</td><td>${escapeHtml(params.summary)}</td></tr>
+        </table>
+        <p>Please log in to the secure compliance portal immediately.</p>
+    `;
+    return sendEmail({
+        to: params.to,
+        subject: `🚨 SAFEGUARDING ESCALATION [${params.severity.toUpperCase()}] — ${params.caseId}`,
+        html,
+        text: `SAFEGUARDING ALERT: Case ${params.caseId} (${params.severity}). ${params.summary}`,
+    });
+}
+
+export async function sendGrantMilestoneAlert(params: {
+    to: string;
+    grantName: string;
+    milestoneTitle: string;
+    dueDate: string;
+    budgetRemaining: number;
+    currency: string;
+}): Promise<{ success: boolean; error: string | null }> {
+    const html = `
+        <h1>Grant Milestone Upcoming</h1>
+        <p>Milestone <strong>${escapeHtml(params.milestoneTitle)}</strong> for grant <strong>${escapeHtml(params.grantName)}</strong> is due on ${escapeHtml(params.dueDate)}.</p>
+        <p>Remaining Grant Balance: <strong>${escapeHtml(params.budgetRemaining)} ${escapeHtml(params.currency)}</strong></p>
+    `;
+    return sendEmail({
+        to: params.to,
+        subject: `Grant Milestone Due — ${params.grantName}`,
+        html,
+        text: `Grant milestone ${params.milestoneTitle} due on ${params.dueDate}.`,
+    });
+}
+

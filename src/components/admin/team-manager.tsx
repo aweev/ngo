@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
     Check, Copy, Loader2, MailPlus, RefreshCw, ShieldCheck, Trash2, UserX,
 } from "lucide-react";
@@ -51,6 +52,7 @@ export function TeamManager({
     initialInvitations: OrgInvitation[];
     loadError: string | null;
 }) {
+    const t = useTranslations("Admin.Team.manager");
     const [members, setMembers] = useState(initialMembers);
     const [invitations, setInvitations] = useState(initialInvitations);
     const [refreshing, setRefreshing] = useState(false);
@@ -69,22 +71,22 @@ export function TeamManager({
         const result = await updateMemberRole({ userId, role });
         if (result.success) {
             setMembers((cur) => cur.map((m) => (m.userId === userId ? { ...m, role } : m)));
-            toast.success("Role updated.");
+            toast.success(t("role_updated"));
         } else {
-            toast.error(result.error || "Could not update the role.");
+            toast.error(result.error || t("role_update_failed"));
         }
         setActing(null);
     };
 
     const remove = async (userId: string, label: string) => {
-        if (!window.confirm(`Remove ${label} from the organization? They lose access immediately.`)) return;
+        if (!window.confirm(t("remove_confirm", { name: label }))) return;
         setActing(userId);
         const result = await removeMember(userId);
         if (result.success) {
             setMembers((cur) => cur.filter((m) => m.userId !== userId));
-            toast.success("Member removed.");
+            toast.success(t("member_removed"));
         } else {
-            toast.error(result.error || "Could not remove the member.");
+            toast.error(result.error || t("member_remove_failed"));
         }
         setActing(null);
     };
@@ -94,7 +96,7 @@ export function TeamManager({
         const result = await revokeInvitation(id);
         if (result.success) {
             setInvitations((cur) => cur.map((v) => (v.id === id ? { ...v, status: "revoked" } : v)));
-            toast.success("Invitation revoked.");
+            toast.success(t("invite_revoked"));
         } else {
             toast.error(result.error || "Could not revoke the invitation.");
         }
@@ -104,9 +106,9 @@ export function TeamManager({
     const copy = async (link: string) => {
         try {
             await navigator.clipboard.writeText(link);
-            toast.success("Invite link copied — send it to your teammate.");
+            toast.success(t("copy_link_title"));
         } catch {
-            toast.error("Copy failed. Select the link manually.");
+            toast.error(t("copy_link_failed"));
         }
     };
 
@@ -130,8 +132,8 @@ export function TeamManager({
             <Card>
                 <CardHeader className="flex flex-row items-start justify-between gap-4">
                     <div>
-                        <CardTitle className="text-base font-semibold">Members ({members.length})</CardTitle>
-                        <CardDescription>Everyone with access to this workspace.</CardDescription>
+                        <CardTitle className="text-base font-semibold">{t("members_title", { count: members.length })}</CardTitle>
+                        <CardDescription>{t("members_desc")}</CardDescription>
                     </div>
                     <div className="flex gap-2">
                         <Button size="sm" variant="outline" onClick={refresh} disabled={refreshing}>
@@ -148,15 +150,15 @@ export function TeamManager({
                 </CardHeader>
                 <CardContent>
                     {members.length === 0 ? (
-                        <p className="py-4 text-center text-sm text-muted-foreground">No members yet.</p>
+                        <p className="py-4 text-center text-sm text-muted-foreground">{t("members_empty")}</p>
                     ) : (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Person</TableHead>
-                                    <TableHead>Role</TableHead>
-                                    <TableHead className="hidden md:table-cell">Joined</TableHead>
-                                    <TableHead className="text-right">Actions</TableHead>
+                                    <TableHead>{t("col_person")}</TableHead>
+                                    <TableHead>{t("col_role")}</TableHead>
+                                    <TableHead className="hidden md:table-cell">{t("col_joined")}</TableHead>
+                                    <TableHead className="text-right">{t("col_actions")}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -215,20 +217,20 @@ export function TeamManager({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base font-semibold">Invitations ({pending.length} pending)</CardTitle>
-                    <CardDescription>Share the claim link — it works for new and existing accounts.</CardDescription>
+                    <CardTitle className="text-base font-semibold">{t("invitations_title", { count: pending.length })}</CardTitle>
+                    <CardDescription>{t("invitations_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {invitations.length === 0 ? (
-                        <p className="py-4 text-center text-sm text-muted-foreground">No invitations yet.</p>
+                        <p className="py-4 text-center text-sm text-muted-foreground">{t("invitations_empty")}</p>
                     ) : (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Email</TableHead>
-                                    <TableHead>Role</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="text-right">Actions</TableHead>
+                                    <TableHead>{t("col_email")}</TableHead>
+                                    <TableHead>{t("col_role")}</TableHead>
+                                    <TableHead>{t("col_status")}</TableHead>
+                                    <TableHead className="text-right">{t("col_actions")}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -246,7 +248,7 @@ export function TeamManager({
                                         <TableCell className="text-right">
                                             {v.status === "pending" && (
                                                 <div className="flex justify-end gap-1">
-                                                    <Button size="sm" variant="ghost" onClick={() => copy(v.claimLink)} title="Copy invite link">
+                                                    <Button size="sm" variant="ghost" onClick={() => copy(v.claimLink)} title={t("copy_invite_title")}>
                                                         <Copy className="h-4 w-4" />
                                                     </Button>
                                                     <Button
@@ -255,7 +257,7 @@ export function TeamManager({
                                                         className="text-destructive hover:text-destructive"
                                                         disabled={acting === v.id}
                                                         onClick={() => revoke(v.id)}
-                                                        title="Revoke invitation"
+                                                        title={t("revoke_invite_title")}
                                                     >
                                                         {acting === v.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                                                     </Button>
@@ -274,6 +276,7 @@ export function TeamManager({
 }
 
 function InviteDialog({ locale, onInvited }: { locale: string; onInvited: (link: string) => void }) {
+    const t = useTranslations("Admin.Team.manager");
     const [open, setOpen] = useState(false);
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -315,22 +318,22 @@ function InviteDialog({ locale, onInvited }: { locale: string; onInvited: (link:
         try {
             await navigator.clipboard.writeText(link);
             setCopied(true);
-            toast.success("Invite link copied.");
+            toast.success(t("copy_link_title"));
         } catch {
-            toast.error("Copy failed. Select the link manually.");
+            toast.error(t("copy_link_failed"));
         }
     };
 
     return (
         <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) reset(); }}>
             <DialogTrigger asChild>
-                <Button size="sm"><MailPlus className="mr-2 h-4 w-4" /> Invite member</Button>
+                <Button size="sm"><MailPlus className="mr-2 h-4 w-4" /> {t("invite_button")}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Invite to the workspace</DialogTitle>
+                    <DialogTitle>{t("invite_dlg_title")}</DialogTitle>
                     <DialogDescription>
-                        They claim access with the link below — no email delivery to configure.
+                        {t("invite_dlg_desc")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -339,12 +342,12 @@ function InviteDialog({ locale, onInvited }: { locale: string; onInvited: (link:
                         <div className={`flex items-center gap-2 rounded-lg border p-3 text-sm ${emailSent ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>
                             <ShieldCheck className="h-4 w-4 shrink-0" />
                             {emailSent
-                                ? `Invite email sent to ${email} (${ROLE_LABEL[role]}). The link below works too.`
-                                : `Email delivery unavailable — share this link with ${email} (${ROLE_LABEL[role]}) manually.`}
+                                ? t("invite_email_sent", { email, role: ROLE_LABEL[role] })
+                                : t("invite_email_unavailable", { email, role: ROLE_LABEL[role] })}
                         </div>
                         <div className="flex gap-2">
                             <Input value={link} readOnly className="font-mono text-xs" onFocus={(e) => e.target.select()} />
-                            <Button size="sm" onClick={copyLink} className="shrink-0">
+                            <Button size="sm" onClick={copyLink} className="shrink-0" aria-label={t("copy_link_title")}>
                                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                             </Button>
                         </div>
@@ -358,7 +361,7 @@ function InviteDialog({ locale, onInvited }: { locale: string; onInvited: (link:
                             <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">{error}</div>
                         )}
                         <div className="space-y-2">
-                            <Label>Email</Label>
+                            <Label>{t("email_label")}</Label>
                             <Input
                                 type="email"
                                 required
@@ -369,16 +372,16 @@ function InviteDialog({ locale, onInvited }: { locale: string; onInvited: (link:
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             <div className="space-y-2">
-                                <Label>First name</Label>
-                                <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Jane" />
+                                <Label>{t("first_name_label")}</Label>
+                                <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder={t("first_name_ph")} />
                             </div>
                             <div className="space-y-2">
-                                <Label>Last name</Label>
-                                <Input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Doe" />
+                                <Label>{t("last_name_label")}</Label>
+                                <Input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder={t("last_name_ph")} />
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label>Role</Label>
+                            <Label>{t("role_label")}</Label>
                             <Select value={role} onValueChange={(v) => setRole(v as AppRole)}>
                                 <SelectTrigger><SelectValue /></SelectTrigger>
                                 <SelectContent>
@@ -391,7 +394,7 @@ function InviteDialog({ locale, onInvited }: { locale: string; onInvited: (link:
                         <DialogFooter>
                             <Button type="submit" disabled={sending}>
                                 {sending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <MailPlus className="mr-2 h-4 w-4" />}
-                                Create invitation
+                                {t("create_invitation")}
                             </Button>
                         </DialogFooter>
                     </form>

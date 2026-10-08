@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { updateContentPage, checkSlugAvailable } from "@/actions/content";
 import { PAGE_CATEGORIES } from "@/lib/content/slug";
 import { TriangleAlert } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type EditorPage = {
     id: string;
@@ -29,6 +30,7 @@ export default function EditorForm({
     page: EditorPage;
     missingKeys: string[];
 }) {
+    const t = useTranslations("Admin.Content.Editor");
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [savedAt, setSavedAt] = useState<string | null>(null);
@@ -63,18 +65,18 @@ export default function EditorForm({
 
     useEffect(() => {
         if (!slugTouched) return;
-        const t = setTimeout(async () => {
+        const timer = setTimeout(async () => {
             const res = await checkSlugAvailable(slug.trim(), page.id);
-            setSlugMsg(res.available ? "Slug is available." : (res.error ?? "Slug unavailable."));
+            setSlugMsg(res.available ? t("slug_available") : (res.error ?? t("slug_unavailable")));
         }, 400);
-        return () => clearTimeout(t);
-    }, [slug, page.id, slugTouched]);
+        return () => clearTimeout(timer);
+    }, [slug, page.id, slugTouched, t]);
 
     const handleSave = async () => {
         setError(null);
         setSavedAt(null);
         if (!title.trim()) {
-            setError("Title is required.");
+            setError(t("title_required"));
             return;
         }
         const content: Record<string, unknown> = { ...(page.content as object), category };
@@ -129,8 +131,8 @@ export default function EditorForm({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Page fields</CardTitle>
-                    <CardDescription>Saving creates a revision snapshot — restorable from History.</CardDescription>
+                    <CardTitle className="text-base">{t("page_fields")}</CardTitle>
+                    <CardDescription>{t("page_fields_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-1">
@@ -165,15 +167,15 @@ export default function EditorForm({
                     </div>
                     <div className="space-y-1">
                         <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Body</label>
-                        <Textarea value={body} onChange={(e) => setBody(e.target.value)} rows={6} placeholder="Plain text or Markdown…" />
+                        <Textarea value={body} onChange={(e) => setBody(e.target.value)} rows={6} placeholder={t("body_placeholder")} />
                     </div>
                 </CardContent>
             </Card>
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Custom content fields</CardTitle>
-                    <CardDescription>Section-specific keys (e.g. headline_primary, cta_label). Reserved keys (translations, category) are managed elsewhere.</CardDescription>
+                    <CardTitle className="text-base">{t("custom_fields")}</CardTitle>
+                    <CardDescription>{t("custom_fields_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {pairs.map((p, i) => (
@@ -203,24 +205,24 @@ export default function EditorForm({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">SEO & cover</CardTitle>
+                    <CardTitle className="text-base">{t("seo_title")}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Meta title</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("meta_title_label")}</label>
                         <Input value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} maxLength={200} />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Meta description</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("meta_description_label")}</label>
                         <Textarea value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} maxLength={500} />
                     </div>
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover image URL</label>
-                            <Input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder="https://…" />
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("cover_url_label")}</label>
+                            <Input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder={t("cover_url_placeholder")} />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover alt text</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("cover_alt_label")}</label>
                             <Input value={coverAlt} onChange={(e) => setCoverAlt(e.target.value)} maxLength={300} />
                         </div>
                     </div>
@@ -228,10 +230,10 @@ export default function EditorForm({
             </Card>
 
             {error && <p className="text-sm text-red-500">{error}</p>}
-            {savedAt && <p className="text-sm text-emerald-600">Saved at {savedAt}.</p>}
+            {savedAt && <p className="text-sm text-emerald-600">{t("saved_at", { time: savedAt })}</p>}
             <div className="flex justify-end">
                 <Button onClick={handleSave} disabled={saving}>
-                    {saving ? "Saving…" : "Save changes"}
+                    {saving ? t("saving") : t("save_changes")}
                 </Button>
             </div>
         </div>

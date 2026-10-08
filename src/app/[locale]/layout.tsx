@@ -9,6 +9,11 @@ import { ENV } from '@/lib/env';
 import { ClientProviders } from '@/providers/client-providers';
 import { DEFAULT_CONFIG, GlobalConfig } from '@/types/config';
 import { DEFAULT_BRAND_THEME, isBrandThemeId } from '@/lib/brand-themes';
+import {
+  DEFAULT_BRAND_EXPERIENCE,
+  isBrandCampaignId,
+  type PublicBrandExperience,
+} from '@/lib/brand-experience';
 import { createSupabasePublicClient } from '@/lib/supabase/server';
 
 import '@/styles/globals.css';
@@ -29,15 +34,23 @@ export function generateStaticParams() {
  * cacheable. Never throws — falls back to sunset when the DB
  * is unreachable.
  */
-async function getServerDefaultBrandTheme() {
+async function getServerBrandExperience(): Promise<PublicBrandExperience> {
   try {
     const supabase = createSupabasePublicClient();
-    const { data } = await supabase.rpc('public_org_brand_theme');
-    if (isBrandThemeId(data)) return data;
+    const { data } = await supabase.rpc('public_org_brand_experience');
+    if (data && typeof data === 'object' && !Array.isArray(data)) {
+      const experience = data as Record<string, unknown>;
+      if (isBrandThemeId(experience.base_theme)) {
+        return {
+          baseTheme: experience.base_theme,
+          campaignId: isBrandCampaignId(experience.campaign_id) ? experience.campaign_id : null,
+        };
+      }
+    }
   } catch {
     // DB unreachable during build/prerender — use default.
   }
-  return DEFAULT_BRAND_THEME;
+  return { baseTheme: DEFAULT_BRAND_EXPERIENCE.baseTheme, campaignId: null };
 }
 
 type Props = {
@@ -90,7 +103,8 @@ export default async function RootLayout({ children, params }: Props) {
   const messages = await getMessages({ locale }).catch(() => ({}));
 
   // 3. Global Configuration (+ admin-chosen default brand theme)
-  const defaultBrandTheme = await getServerDefaultBrandTheme();
+  const brandExperience = await getServerBrandExperience();
+  const defaultBrandTheme = brandExperience.baseTheme;
   const config: GlobalConfig = {
     ...DEFAULT_CONFIG,
     brand: { ...DEFAULT_CONFIG.brand, defaultTheme: defaultBrandTheme },
@@ -99,7 +113,13 @@ export default async function RootLayout({ children, params }: Props) {
   const dir = locale === 'ar' ? 'rtl' : 'ltr';
 
   return (
-    <html lang={locale} dir={dir} data-brand={defaultBrandTheme} suppressHydrationWarning>
+    <html
+      lang={locale}
+      dir={dir}
+      data-brand={defaultBrandTheme}
+      data-campaign={brandExperience.campaignId ?? undefined}
+      suppressHydrationWarning
+    >
       <head>
         {/*
           Restore brand theme before paint to avoid flash.

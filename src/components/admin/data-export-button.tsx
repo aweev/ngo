@@ -1,6 +1,7 @@
 "use client";
 
 import { Download, FileJson, FileSpreadsheet } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -15,6 +16,8 @@ interface DataExportButtonProps {
 }
 
 export function DataExportButton({ data, filename = "export" }: DataExportButtonProps) {
+    const t = useTranslations("Admin.Common");
+
     const exportCSV = () => {
         if (!data || data.length === 0) return;
         const headers = Object.keys(data[0]).join(",");
@@ -49,17 +52,17 @@ export function DataExportButton({ data, filename = "export" }: DataExportButton
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="gap-2">
                     <Download className="h-4 w-4" />
-                    <span>Export</span>
+                    <span>{t("export")}</span>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={exportCSV} className="gap-2">
                     <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
-                    <span>Export CSV</span>
+                    <span>{t("export_csv")}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={exportJSON} className="gap-2">
                     <FileJson className="h-4 w-4 text-blue-600" />
-                    <span>Export JSON</span>
+                    <span>{t("export_json")}</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { getMediaLibrary, attachMediaItem, updateMediaAltText, deleteMediaItem } from "@/actions/media";
-import { Trash2 } from "lucide-react";
+import { getMediaLibrary, attachMediaItem, uploadMediaItem, updateMediaAltText, deleteMediaItem } from "@/actions/media";
+import { Trash2, Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type MediaRow = {
     id: string;
@@ -23,6 +24,7 @@ export default function MediaPanel({
     initial: MediaRow[];
     onUseAsCover?: (url: string, alt: string) => void;
 }) {
+    const t = useTranslations("Admin.Content.Media");
     const [items, setItems] = useState<MediaRow[]>(initial);
     const [search, setSearch] = useState("");
     const [busy, setBusy] = useState<string | null>(null);
@@ -44,7 +46,7 @@ export default function MediaPanel({
 
     const attach = async () => {
         if (!name.trim() || !url.trim()) {
-            setError("Name and file URL are required.");
+            setError(t("name_required"));
             return;
         }
         setBusy("attach");
@@ -73,7 +75,7 @@ export default function MediaPanel({
     };
 
     const remove = async (id: string, itemName: string) => {
-        if (!window.confirm(`Delete library record "${itemName}"? The storage file itself is kept — this removes the catalog entry.`)) return;
+        if (!window.confirm(t("delete_confirm", { name: itemName }))) return;
         setBusy(`del:${id}`);
         setError(null);
         const res = await deleteMediaItem(id);
@@ -85,7 +87,7 @@ export default function MediaPanel({
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base">Media library</CardTitle>
+                <CardTitle className="text-base">{t("title")}</CardTitle>
                 <CardDescription>
                     Attach hosted image/video URLs with alt text. Alt text is required for
                     accessibility — items without it are flagged below.
@@ -93,7 +95,7 @@ export default function MediaPanel({
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex gap-2">
-                    <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by name…" />
+                    <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("search_placeholder")} />
                     <Button size="sm" variant="outline" disabled={busy !== null} onClick={doSearch}>
                         Search
                     </Button>
@@ -109,7 +111,7 @@ export default function MediaPanel({
                                 <button
                                     type="button"
                                     className="shrink-0 text-muted-foreground hover:text-red-500"
-                                    title="Delete library record"
+                                    title={t("delete_record")}
                                     onClick={() => remove(m.id, m.name)}
                                 >
                                     <Trash2 className="h-3.5 w-3.5" />
@@ -119,10 +121,10 @@ export default function MediaPanel({
                                 // eslint-disable-next-line @next/next/no-img-element
                                 <img src={m.file_url} alt={m.alt_text ?? ""} className="mb-1 h-24 w-full rounded object-cover" loading="lazy" />
                             )}
-                            {!m.alt_text && <p className="mb-1 font-semibold text-amber-600">Missing alt text</p>}
+                            {!m.alt_text && <p className="mb-1 font-semibold text-amber-600">{t("alt_missing_label")}</p>}
                             {editingAlt === m.id ? (
                                 <div className="flex gap-1">
-                                    <Input value={altDraft} onChange={(e) => setAltDraft(e.target.value)} placeholder="Alt text" className="h-7 text-xs" />
+                                    <Input value={altDraft} onChange={(e) => setAltDraft(e.target.value)} placeholder={t("alt_text")} className="h-7 text-xs" />
                                     <Button size="sm" className="h-7" disabled={busy !== null} onClick={() => saveAlt(m.id)}>
                                         Save
                                     </Button>
@@ -157,21 +159,51 @@ export default function MediaPanel({
                             )}
                         </div>
                     ))}
-                    {items.length === 0 && <p className="text-sm text-muted-foreground">No media found.</p>}
+                    {items.length === 0 && <p className="text-sm text-muted-foreground">{t("no_media")}</p>}
                 </div>
 
                 <div className="rounded-lg border border-dashed p-3">
                     <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Attach hosted file (images & video, max 25 MB)
+                        {t("upload_section")}
+                    </p>
+                    <form
+                        className="mb-3 flex flex-col gap-2 sm:flex-row"
+                        onSubmit={async (e) => {
+                            e.preventDefault();
+                            const data = new FormData(e.currentTarget);
+                            if (!(data.get("file") instanceof File) || (data.get("file") as File).size === 0) {
+                                setError(t("choose_file"));
+                                return;
+                            }
+                            setBusy("upload");
+                            setError(null);
+                            const res = await uploadMediaItem(data);
+                            setBusy(null);
+                            if (res.error) setError(res.error);
+                            else {
+                                e.currentTarget.reset();
+                                window.location.reload();
+                            }
+                        }}
+                    >
+                        <Input type="file" name="file" accept="image/*,video/*" className="flex-1" />
+                        <Input name="alt_text" placeholder={t("alt_recommended")} className="flex-1" />
+                        <Button size="sm" type="submit" disabled={busy !== null} className="gap-1">
+                            <Upload className="h-3.5 w-3.5" />
+                            {busy === "upload" ? t("uploading") : t("upload")}
+                        </Button>
+                    </form>
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        {t("attach_hosted")}
                     </p>
                     <div className="grid gap-2 sm:grid-cols-3">
-                        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-                        <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" className="sm:col-span-2" />
+                        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("name_label")} />
+                        <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder={t("cover_url_placeholder")} className="sm:col-span-2" />
                     </div>
                     <div className="mt-2 flex gap-2">
-                        <Input value={alt} onChange={(e) => setAlt(e.target.value)} placeholder="Alt text (recommended)" className="flex-1" />
+                        <Input value={alt} onChange={(e) => setAlt(e.target.value)} placeholder={t("alt_recommended")} className="flex-1" />
                         <Button size="sm" disabled={busy !== null} onClick={attach}>
-                            {busy === "attach" ? "Attaching…" : "Attach"}
+                            {busy === "attach" ? t("attaching") : t("attach")}
                         </Button>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -29,47 +30,7 @@ export interface AutomationRuleDraft {
     actions: AutomationAction[];
 }
 
-const TRIGGER_OPTIONS: { value: AutomationTriggerType; label: string }[] = [
-    { value: "event", label: "Event-Based (record created/updated)" },
-    { value: "schedule", label: "Schedule-Based (cron)" },
-    { value: "condition", label: "Condition-Based (threshold met)" },
-    { value: "webhook", label: "Webhook Received" },
-    { value: "manual", label: "Manual Execution" },
-];
 
-const EVENT_SUGGESTIONS = [
-    "donation.created",
-    "donor.registered",
-    "volunteer.approved",
-    "event.published",
-    "expense.submitted",
-    "project.completed",
-    "worker.onboarded",
-];
-
-const CONDITION_OPERATORS: { value: AutomationCondition["operator"]; label: string }[] = [
-    { value: "eq", label: "equals" },
-    { value: "ne", label: "not equals" },
-    { value: "gt", label: "greater than" },
-    { value: "lt", label: "less than" },
-    { value: "gte", label: "greater or equal" },
-    { value: "lte", label: "less or equal" },
-    { value: "contains", label: "contains" },
-    { value: "not_contains", label: "does not contain" },
-    { value: "is_empty", label: "is empty" },
-    { value: "is_not_empty", label: "is not empty" },
-];
-
-const ACTION_OPTIONS: { value: AutomationAction["type"]; label: string }[] = [
-    { value: "send_notification", label: "Send in-app notification" },
-    { value: "send_email", label: "Send email" },
-    { value: "create_task", label: "Create task" },
-    { value: "update_field", label: "Update record field" },
-    { value: "trigger_webhook", label: "Trigger outgoing webhook" },
-    { value: "start_workflow", label: "Start workflow" },
-    { value: "create_record", label: "Create record" },
-    { value: "custom", label: "Custom action" },
-];
 
 const DEFAULT_DRAFT: AutomationRuleDraft = {
     name: "",
@@ -94,6 +55,49 @@ interface AutomationRuleBuilderProps {
 }
 
 export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/automations" }: AutomationRuleBuilderProps) {
+    const t = useTranslations("Admin.Automations.rulebuilder");
+
+    const TRIGGER_OPTIONS: { value: AutomationTriggerType; label: string }[] = [
+        { value: "event", label: t("trg_event") },
+        { value: "schedule", label: t("trg_schedule") },
+        { value: "condition", label: t("trg_condition") },
+        { value: "webhook", label: t("trg_webhook") },
+        { value: "manual", label: t("trg_manual") },
+    ];
+
+    const EVENT_SUGGESTIONS = [
+        "donation.created",
+        "donor.registered",
+        "volunteer.approved",
+        "event.published",
+        "expense.submitted",
+        "project.completed",
+        "worker.onboarded",
+    ];
+
+    const CONDITION_OPERATORS: { value: AutomationCondition["operator"]; label: string }[] = [
+        { value: "eq", label: t("op_eq") },
+        { value: "ne", label: t("op_ne") },
+        { value: "gt", label: t("op_gt") },
+        { value: "lt", label: t("op_lt") },
+        { value: "gte", label: t("op_gte") },
+        { value: "lte", label: t("op_lte") },
+        { value: "contains", label: t("op_contains") },
+        { value: "not_contains", label: t("op_not_contains") },
+        { value: "is_empty", label: t("op_is_empty") },
+        { value: "is_not_empty", label: t("op_is_not_empty") },
+    ];
+
+    const ACTION_OPTIONS: { value: AutomationAction["type"]; label: string }[] = [
+        { value: "send_notification", label: t("act_send_notification") },
+        { value: "send_email", label: t("act_send_email") },
+        { value: "create_task", label: t("act_create_task") },
+        { value: "update_field", label: t("act_update_field") },
+        { value: "trigger_webhook", label: t("act_trigger_webhook") },
+        { value: "start_workflow", label: t("act_start_workflow") },
+        { value: "create_record", label: t("act_create_record") },
+        { value: "custom", label: t("act_custom") },
+    ];
     const router = useRouter();
     const [draft, setDraft] = useState<AutomationRuleDraft>(initial ?? DEFAULT_DRAFT);
     const [loading, setLoading] = useState(false);
@@ -217,11 +221,11 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                     <CardTitle className="flex items-center gap-2 text-base">
                         <Zap className="h-4 w-4 text-amber-500" /> 1. Trigger
                     </CardTitle>
-                    <CardDescription>Choose what activates this automation.</CardDescription>
+                    <CardDescription>{t("trigger_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Rule name</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
                         <Input
                             required
                             value={draft.name}
@@ -234,14 +238,14 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                         <Textarea
                             value={draft.description}
                             onChange={(e) => patch({ description: e.target.value })}
-                            placeholder="What does this rule accomplish?"
+                            placeholder={t("description_ph")}
                         />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Trigger type</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("trigger_type_label")}</label>
                         <Select value={draft.trigger_type} onValueChange={(value) => handleTriggerChange(value as AutomationTriggerType)}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select trigger" />
+                                <SelectValue placeholder={t("trigger_select_ph")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {TRIGGER_OPTIONS.map((option) => (
@@ -294,25 +298,25 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base">2. Conditions (optional)</CardTitle>
-                    <CardDescription>All conditions must hold for the actions to run. Leave empty to always run.</CardDescription>
+                    <CardDescription>{t("cond_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {draft.conditions.length === 0 && (
-                        <p className="text-xs text-muted-foreground">No conditions — this rule fires on every trigger.</p>
+                        <p className="text-xs text-muted-foreground">{t("cond_none")}</p>
                     )}
                     {draft.conditions.map((condition, index) => (
                         <div key={index} className="flex flex-wrap items-end gap-2 rounded-lg border p-3">
                             <div className="w-44 space-y-1">
-                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Field</label>
+                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("cond_field_label")}</label>
                                 <Input
                                     value={condition.field}
                                     onChange={(e) => patchCondition(index, { field: e.target.value })}
-                                    placeholder="amount"
+                                    placeholder={t("cond_field_ph")}
                                     className="h-9 font-mono text-xs"
                                 />
                             </div>
                             <div className="w-44 space-y-1">
-                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Operator</label>
+                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("cond_operator_label")}</label>
                                 <Select
                                     value={condition.operator}
                                     onValueChange={(value) => patchCondition(index, { operator: value as AutomationCondition["operator"] })}
@@ -330,7 +334,7 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                                 </Select>
                             </div>
                             <div className="min-w-32 flex-1 space-y-1">
-                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Value</label>
+                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("cond_value_label")}</label>
                                 <Input
                                     value={String(condition.value ?? "")}
                                     disabled={condition.operator === "is_empty" || condition.operator === "is_not_empty"}
@@ -365,7 +369,7 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                         </div>
                     ))}
                     <Button type="button" variant="outline" size="sm" className="gap-1" onClick={addCondition}>
-                        <Plus className="h-3 w-3" /> Add condition
+                        <Plus className="h-3 w-3" /> {t("add_condition")}
                     </Button>
                 </CardContent>
             </Card>
@@ -374,7 +378,7 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base">3. Actions</CardTitle>
-                    <CardDescription>Executed in order when trigger and conditions pass. Optional delay per action.</CardDescription>
+                    <CardDescription>{t("actions_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {draft.actions.map((action, index) => (
@@ -401,7 +405,7 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                             </div>
                             <div className="grid gap-3 sm:grid-cols-2">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Action type</label>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("action_type_label")}</label>
                                     <Select value={action.type} onValueChange={(value) => patchAction(index, { type: value as AutomationAction["type"], config: {} })}>
                                         <SelectTrigger className="h-9">
                                             <SelectValue />
@@ -416,7 +420,7 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                                     </Select>
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Delay (seconds)</label>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("delay_label")}</label>
                                     <Input
                                         type="number"
                                         min={0}
@@ -430,7 +434,7 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                             </div>
                             <div className="space-y-1">
                                 <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                    Configuration (JSON)
+                                    {t("config_label")}
                                 </label>
                                 <Textarea
                                     value={JSON.stringify(action.config, null, 0)}
@@ -447,18 +451,18 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                         </div>
                     ))}
                     <Button type="button" variant="outline" size="sm" className="gap-1" onClick={addAction}>
-                        <Plus className="h-3 w-3" /> Add action
+                        <Plus className="h-3 w-3" /> {t("add_action")}
                     </Button>
                 </CardContent>
             </Card>
 
             <div className="flex justify-end gap-3">
                 <Button asChild variant="outline">
-                    <Link href={backHref}>Cancel</Link>
+                    <Link href={backHref}>{t("cancel")}</Link>
                 </Button>
                 <Button type="submit" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {loading ? "Saving..." : ruleId ? "Save changes" : "Save automation rule"}
+                    {loading ? t("saving") : ruleId ? t("save_edit") : t("save_new")}
                 </Button>
             </div>
 

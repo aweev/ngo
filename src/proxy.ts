@@ -36,8 +36,8 @@ export async function proxy(req: NextRequest) {
     const locale = pathname.split('/')[1] || routing.defaultLocale;
     const pathnameWithoutLocale = pathname.replace(`/${locale}`, '') || '/';
 
-    // 1. Define Protected Zones
-    const isProtected = pathnameWithoutLocale.startsWith('/admin') || pathnameWithoutLocale.startsWith('/dashboard');
+    // 1. Define Protected Zones (field app included: beneficiary PII lives there)
+    const isProtected = pathnameWithoutLocale.startsWith('/admin') || pathnameWithoutLocale.startsWith('/dashboard') || pathnameWithoutLocale.startsWith('/field');
     const isAuthPage = pathnameWithoutLocale.startsWith('/auth/login') || pathnameWithoutLocale.startsWith('/auth/register');
 
     // 2. Auth Guard (Redirect to Login)
@@ -68,10 +68,13 @@ export async function proxy(req: NextRequest) {
                     }
                 }
             } catch {
-                // Fail open to the page here: layouts + RLS still enforce
-                // authZ, and a hard bounce on MFA-API errors would lock out
-                // legitimate users. The login form performs the same check
-                // client-side as the primary gate.
+                // Phase 0: fail CLOSED to the MFA challenge. An MFA-API error
+                // must never silently downgrade an enrolled user to AAL1 —
+                // layouts + RLS remain the second line, not the excuse.
+                // Users are not locked out: completing the challenge grants entry.
+                const mfaUrl = new URL(`/${locale}/auth/mfa`, req.url);
+                mfaUrl.searchParams.set('callbackUrl', sanitizeCallbackUrl(pathname) ?? `/${locale}/dashboard`);
+                return NextResponse.redirect(mfaUrl);
             }
         }
     }

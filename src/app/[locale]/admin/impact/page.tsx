@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { getImpactMetrics, getImpactGoals } from "@/actions/impact";
@@ -7,7 +8,9 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function ImpactPage() {
+export default async function ImpactPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Impact" });
     const [{ data: metrics }, { data: goals }] = await Promise.all([
         getImpactMetrics(),
         getImpactGoals(),
@@ -16,13 +19,13 @@ export default async function ImpactPage() {
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Impact KPIs & Goals"
-                description="Track organization-wide impact metrics, SDG targets, and field goals."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <Button asChild className="gap-2">
                         <Link href="/admin/impact/new">
                             <Plus className="h-4 w-4" />
-                            Add Metric
+                            {t("add_metric")}
                         </Link>
                     </Button>
                 }
@@ -31,7 +34,7 @@ export default async function ImpactPage() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {(!metrics || metrics.length === 0) ? (
                     <div className="col-span-full rounded-lg border bg-card p-8 text-center text-sm text-muted-foreground">
-                        No impact metrics defined yet. Click &quot;Add Metric&quot; to define your first key indicator.
+                        {t("empty")}
                     </div>
                 ) : (
                     metrics.map((m) => <ImpactMetricCard key={m.id} metric={m} />)

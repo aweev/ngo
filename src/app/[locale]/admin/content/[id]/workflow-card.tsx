@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { transitionContentWorkflow } from "@/actions/content";
+import { useTranslations } from "next-intl";
 import type { ContentWorkflowState } from "@/lib/content/translations";
 
 export default function WorkflowCard({
@@ -21,6 +22,7 @@ export default function WorkflowCard({
     previewToken: string | null;
     locale: string;
 }) {
+    const t = useTranslations("Admin.Content.Workflow");
     const [busy, setBusy] = useState<ContentWorkflowState | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [notes, setNotes] = useState("");
@@ -43,15 +45,15 @@ export default function WorkflowCard({
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base">Workflow & publishing</CardTitle>
+                <CardTitle className="text-base">{t("title")}</CardTitle>
                 <CardDescription>
-                    Current state: <Badge variant="outline" className="capitalize">{current.replace(/_/g, " ")}</Badge>
+                    {t("current_state")} <Badge variant="outline" className="capitalize">{current.replace(/_/g, " ")}</Badge>
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                     {allowed.length === 0 && (
-                        <p className="text-xs text-muted-foreground">No further transitions from this state.</p>
+                        <p className="text-xs text-muted-foreground">{t("no_transitions")}</p>
                     )}
                     {allowed.map((to) => (
                         <Button
@@ -62,22 +64,22 @@ export default function WorkflowCard({
                             onClick={() => run(to)}
                             className="capitalize"
                         >
-                            {busy === to ? "Working…" : to === "published" ? "Approve & publish" : to.replace(/_/g, " ")}
+                            {busy === to ? t("working") : to === "published" ? t("approve_publish") : to.replace(/_/g, " ")}
                         </Button>
                     ))}
                 </div>
                 {showNotesFor && (
                     <div className="space-y-2">
                         <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Reviewer note (stored in approval history)
+                            {t("reviewer_note")}
                         </label>
-                        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="What should change? What was verified?" />
+                        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder={t("change_prompt")} />
                         <div className="flex gap-2">
                             <Button size="sm" disabled={busy !== null} onClick={() => run(showNotesFor)}>
-                                Confirm
+                                {t("confirm")}
                             </Button>
                             <Button size="sm" variant="ghost" onClick={() => setShowNotesFor(null)}>
-                                Cancel
+                                {t("cancel")}
                             </Button>
                         </div>
                     </div>
@@ -86,13 +88,13 @@ export default function WorkflowCard({
                 <div className="rounded-md border p-3 text-xs text-muted-foreground">
                     {previewToken ? (
                         <p>
-                            Draft preview link (share freely — token-gated, never indexed):{" "}
+                            {t("preview_link")}{" "}
                             <a className="font-mono text-primary hover:underline" href={`/${locale}/public/preview/${previewToken}`}>
                                 /{locale}/public/preview/{previewToken.slice(0, 8)}…
                             </a>
                         </p>
                     ) : (
-                        <p>Preview link unavailable (migration 24 not applied yet).</p>
+                        <p>{t("missing_preview")}</p>
                     )}
                 </div>
             </CardContent>

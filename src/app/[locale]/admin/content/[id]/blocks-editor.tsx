@@ -15,6 +15,7 @@ import {
 } from "@/actions/content-blocks";
 import { BLOCK_TYPES } from "@/lib/content/blocks";
 import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type BlockRow = {
     id: string;
@@ -25,6 +26,7 @@ export type BlockRow = {
 };
 
 export default function BlocksEditor({ pageId, initial }: { pageId: string; initial: BlockRow[] }) {
+    const t = useTranslations("Admin.Content.Blocks");
     const [blocks, setBlocks] = useState<BlockRow[]>(initial);
     const [error, setError] = useState<string | null>(null);
     const [busy, setBusy] = useState<string | null>(null);
@@ -49,11 +51,11 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
         try {
             parsed = JSON.parse(editJson || "{}");
         } catch {
-            setError("Block content must be valid JSON.");
+            setError(t("content_invalid"));
             return;
         }
         if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
-            setError("Block content must be a JSON object.");
+            setError(t("content_object"));
             return;
         }
         setBusy(`save:${id}`);
@@ -69,7 +71,7 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
 
     const add = async () => {
         if (!newName.trim()) {
-            setError("New block needs a name.");
+            setError(t("name_required"));
             return;
         }
         setBusy("add");
@@ -84,7 +86,7 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
     };
 
     const remove = async (id: string) => {
-        if (!window.confirm("Delete this block? This cannot be undone.")) return;
+        if (!window.confirm(t("delete_confirm"))) return;
         setBusy(`del:${id}`);
         setError(null);
         const res = await deleteContentBlock(id);
@@ -118,7 +120,7 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base">Content blocks</CardTitle>
+                <CardTitle className="text-base">{t("title")}</CardTitle>
                 <CardDescription>
                     Composable sections (hero, text, image, gallery, CTA, embed). The public homepage
                     reads mostly from page fields today — blocks are the path forward for rich layouts.
@@ -126,7 +128,7 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
             </CardHeader>
             <CardContent className="space-y-3">
                 {blocks.length === 0 && (
-                    <p className="text-sm text-muted-foreground">No blocks yet. Add the first one below.</p>
+                    <p className="text-sm text-muted-foreground">{t("empty")}</p>
                 )}
                 {blocks.map((b, i) => (
                     <div key={b.id} className="rounded-lg border p-3">
@@ -136,16 +138,16 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
                                 <Badge variant="secondary" className="text-[11px]">{b.type}</Badge>
                             </div>
                             <div className="flex items-center gap-1">
-                                <Button size="sm" variant="ghost" disabled={busy !== null} onClick={() => move(i, -1)} title="Move up">
+                                <Button size="sm" variant="ghost" disabled={busy !== null} onClick={() => move(i, -1)} title={t("move_up")}>
                                     <ArrowUp className="h-3.5 w-3.5" />
                                 </Button>
-                                <Button size="sm" variant="ghost" disabled={busy !== null} onClick={() => move(i, 1)} title="Move down">
+                                <Button size="sm" variant="ghost" disabled={busy !== null} onClick={() => move(i, 1)} title={t("move_down")}>
                                     <ArrowDown className="h-3.5 w-3.5" />
                                 </Button>
                                 <Button size="sm" variant="ghost" onClick={() => (editing === b.id ? setEditing(null) : startEdit(b))}>
-                                    {editing === b.id ? "Cancel" : "Edit"}
+                                    {editing === b.id ? t("cancel") : t("edit")}
                                 </Button>
-                                <Button size="sm" variant="ghost" disabled={busy !== null} onClick={() => remove(b.id)} title="Delete block">
+                                <Button size="sm" variant="ghost" disabled={busy !== null} onClick={() => remove(b.id)} title={t("delete")}>
                                     <Trash2 className="h-3.5 w-3.5 text-red-500" />
                                 </Button>
                             </div>
@@ -154,19 +156,19 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
                             <div className="mt-3 space-y-3">
                                 <div className="grid gap-3 sm:grid-cols-2">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
+                                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
                                         <Input value={editName} onChange={(e) => setEditName(e.target.value)} />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Type</label>
+                                                                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("type_label")}</label>
                                         <Select value={editType} onValueChange={setEditType}>
                                             <SelectTrigger>
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {BLOCK_TYPES.map((t) => (
-                                                    <SelectItem key={t} value={t}>
-                                                        {t}
+                                                {BLOCK_TYPES.map((bt) => (
+                                                    <SelectItem key={bt} value={bt}>
+                                                        {bt}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
@@ -175,12 +177,12 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                                        Content (JSON object) — image blocks support image_src + alt keys
+                                        {t("content_label")}
                                     </label>
                                     <Textarea value={editJson} onChange={(e) => setEditJson(e.target.value)} rows={5} className="font-mono text-xs" />
                                 </div>
                                 <Button size="sm" disabled={busy !== null} onClick={() => saveEdit(b.id)}>
-                                    {busy === `save:${b.id}` ? "Saving…" : "Save block"}
+                                    {busy === `save:${b.id}` ? t("saving") : t("save")}
                                 </Button>
                             </div>
                         )}
@@ -189,11 +191,11 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
 
                 <div className="flex flex-col gap-2 rounded-lg border border-dashed p-3 sm:flex-row sm:items-end">
                     <div className="flex-1 space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">New block name</label>
-                        <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="e.g. Hero split" />
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
+                        <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={t("name_placeholder")} />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Type</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("type_label")}</label>
                         <Select value={newType} onValueChange={setNewType}>
                             <SelectTrigger className="w-36">
                                 <SelectValue />
@@ -208,7 +210,7 @@ export default function BlocksEditor({ pageId, initial }: { pageId: string; init
                         </Select>
                     </div>
                     <Button size="sm" disabled={busy !== null} onClick={add}>
-                        {busy === "add" ? "Adding…" : "Add block"}
+                        {busy === "add" ? t("adding") : t("add")}
                     </Button>
                 </div>
 

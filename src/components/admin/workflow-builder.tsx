@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -14,21 +15,25 @@ import type { WorkflowStep, WorkflowStepType } from "@/types/domain/workflows";
 import { ArrowDown, ArrowLeft, ArrowUp, GitBranch, Loader2, Plus, Trash2 } from "lucide-react";
 import { Link } from "@/lib/navigation";
 
-const STEP_TYPES: { value: WorkflowStepType; label: string; description: string }[] = [
-    { value: "task", label: "Task", description: "A concrete piece of work to be completed" },
-    { value: "approval", label: "Approval", description: "Blocks until an authorized approver signs off" },
-    { value: "condition", label: "Condition", description: "Branch on context data (config: expression)" },
-    { value: "notification", label: "Notification", description: "Notify a user, role, or channel" },
-    { value: "action", label: "Action", description: "Execute an external/system action" },
-    { value: "delay", label: "Delay", description: "Wait for a duration before continuing" },
-    { value: "parallel", label: "Parallel", description: "Fan out into concurrent sub-steps" },
-];
+function getStepTypes(t: (key: string) => string): { value: WorkflowStepType; label: string; description: string }[] {
+    return [
+        { value: "task", label: t("step_task_label"), description: t("step_task_desc") },
+        { value: "approval", label: t("step_approval_label"), description: t("step_approval_desc") },
+        { value: "condition", label: t("step_condition_label"), description: t("step_condition_desc") },
+        { value: "notification", label: t("step_notification_label"), description: t("step_notification_desc") },
+        { value: "action", label: t("step_action_label"), description: t("step_action_desc") },
+        { value: "delay", label: t("step_delay_label"), description: t("step_delay_desc") },
+        { value: "parallel", label: t("step_parallel_label"), description: t("step_parallel_desc") },
+    ];
+}
 
-const ASSIGNEE_TYPES = [
-    { value: "user", label: "Specific user" },
-    { value: "role", label: "Role (e.g. approvers)" },
-    { value: "any", label: "Anyone (first come, first served)" },
-] as const;
+function getAssigneeTypes(t: (key: string) => string) {
+    return [
+        { value: "user", label: t("assignee_user") },
+        { value: "role", label: t("assignee_role") },
+        { value: "any", label: t("assignee_any") },
+    ] as const;
+}
 
 let stepSeq = 0;
 /** Client-only unique id for new steps (never persisted to the database). */
@@ -73,6 +78,9 @@ interface WorkflowBuilderProps {
 
 export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/workflows" }: WorkflowBuilderProps) {
     const router = useRouter();
+    const t = useTranslations("Admin.Workflows.builder");
+    const stepTypes = getStepTypes(t);
+    const assigneeTypes = getAssigneeTypes(t);
     const [draft, setDraft] = useState<WorkflowDraft>(initial ?? DEFAULT_DRAFT);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -169,12 +177,12 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
                     <CardTitle className="flex items-center gap-2 text-base">
                         <GitBranch className="h-4 w-4 text-blue-500" /> Workflow Definition
                     </CardTitle>
-                    <CardDescription>Name, URL slug, and lifecycle status of this template.</CardDescription>
+                    <CardDescription>{t("def_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Workflow name</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
                             <Input
                                 required
                                 value={draft.name}
@@ -183,7 +191,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
                             />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL slug</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("slug_label")}</label>
                             <Input
                                 required
                                 value={draft.slug}
@@ -198,7 +206,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
                         <Textarea
                             value={draft.description}
                             onChange={(e) => patch({ description: e.target.value })}
-                            placeholder="What business process does this workflow encode?"
+                            placeholder={t("description_ph")}
                         />
                     </div>
                     <div className="space-y-1">
@@ -221,11 +229,11 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base">Steps</CardTitle>
-                    <CardDescription>Executed sequentially. Reorder, edit, or insert steps below.</CardDescription>
+                    <CardDescription>{t("steps_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {draft.steps.map((step, index) => {
-                        const stepType = STEP_TYPES.find((t) => t.value === step.type);
+                        const stepType = stepTypes.find((option) => option.value === step.type);
                         const needsAssignee = step.type === "task" || step.type === "approval" || step.type === "notification";
                         return (
                             <div key={step.id} className="space-y-3 rounded-lg border p-4">
@@ -262,16 +270,16 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
 
                                 <div className="grid gap-3 sm:grid-cols-2">
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Step name</label>
+                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("step_name_label")}</label>
                                         <Input
                                             value={step.name}
                                             onChange={(e) => patchStep(index, { name: e.target.value })}
-                                            placeholder="Executive Sign-Off"
+                                            placeholder={t("step_name_ph")}
                                             className="h-9"
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Step type</label>
+                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("step_type_label")}</label>
                                         <Select
                                             value={step.type}
                                             onValueChange={(value) => patchStep(index, { type: value as WorkflowStepType, config: {} })}
@@ -280,7 +288,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {STEP_TYPES.map((option) => (
+                                                {stepTypes.map((option) => (
                                                     <SelectItem key={option.value} value={option.value}>
                                                         {option.label}
                                                     </SelectItem>
@@ -293,7 +301,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
                                 {needsAssignee ? (
                                     <div className="grid gap-3 sm:grid-cols-2">
                                         <div className="space-y-1">
-                                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Assignee type</label>
+                                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("assignee_type_label")}</label>
                                             <Select
                                                 value={step.assignee_type ?? "any"}
                                                 onValueChange={(value) =>
@@ -304,7 +312,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {ASSIGNEE_TYPES.map((option) => (
+                                                    {assigneeTypes.map((option) => (
                                                         <SelectItem key={option.value} value={option.value}>
                                                             {option.label}
                                                         </SelectItem>
@@ -329,7 +337,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
 
                                 {step.type === "delay" ? (
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Wait (hours)</label>
+                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("wait_label")}</label>
                                         <Input
                                             type="number"
                                             min={0}
@@ -342,7 +350,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
 
                                 <div className="grid gap-3 sm:grid-cols-2">
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Due in (hours)</label>
+                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("due_label")}</label>
                                         <Input
                                             type="number"
                                             min={0}
@@ -353,7 +361,7 @@ export function WorkflowBuilder({ initial, definitionId, backHref = "/admin/work
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Configuration (JSON)</label>
+                                        <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("config_label")}</label>
                                         <Input
                                             value={JSON.stringify(step.config)}
                                             onChange={(e) => {

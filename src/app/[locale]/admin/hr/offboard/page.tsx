@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import { Link } from "@/lib/navigation";
 
 export default function OffboardPage() {
     const router = useRouter();
+    const t = useTranslations("Admin.Hr.Offboard");
     const [loading, setLoading] = useState(false);
     const [personId, setPersonId] = useState("");
     const [personType, setPersonType] = useState<"worker" | "volunteer">("worker");
@@ -42,37 +44,37 @@ export default function OffboardPage() {
             <div className="flex items-center gap-2">
                 <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                     <Link href="/admin/hr">
-                        <ArrowLeft className="h-4 w-4" /> Back to HR Lifecycle
+                        <ArrowLeft className="h-4 w-4" /> {t("back")}
                     </Link>
                 </Button>
             </div>
 
             <PageHeader
-                title="Initiate Offboarding / Termination"
-                description="Automated system access revocation, hardware collection checklist, and ED exit interview."
+                title={t("title")}
+                description={t("description")}
             />
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-base flex items-center gap-2">
-                            <UserMinus className="h-4 w-4 text-rose-500" /> Offboarding Details
+                            <UserMinus className="h-4 w-4 text-rose-500" /> {t("details_title")}
                         </CardTitle>
-                        <CardDescription>Select the personnel ID and effective departure date.</CardDescription>
+                        <CardDescription>{t("details_description")}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Personnel ID (UUID)</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("person_id_label")}</label>
                                 <Input
                                     required
                                     value={personId}
                                     onChange={(e) => setPersonId(e.target.value)}
-                                    placeholder="Enter Worker or Volunteer UUID"
+                                    placeholder={t("person_id_placeholder")}
                                 />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Effective Date</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("effective_date_label")}</label>
                                 <Input
                                     type="date"
                                     required
@@ -83,12 +85,12 @@ export default function OffboardPage() {
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Offboarding Reason</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("reason_label")}</label>
                             <Textarea
                                 required
                                 value={reason}
                                 onChange={(e) => setReason(e.target.value)}
-                                placeholder="Contract expiration, resignation, performance, or reorganization..."
+                                placeholder={t("reason_placeholder")}
                             />
                         </div>
                     </CardContent>
@@ -96,10 +98,10 @@ export default function OffboardPage() {
 
                 <div className="flex justify-end gap-3">
                     <Button asChild variant="outline">
-                        <Link href="/admin/hr">Cancel</Link>
+                        <Link href="/admin/hr">{t("cancel")}</Link>
                     </Button>
                     <Button type="submit" variant="destructive" disabled={loading}>
-                        {loading ? "Initiating..." : "Initiate Offboarding Protocol"}
+                        {loading ? t("initiating") : t("initiate")}
                     </Button>
                 </div>
             </form>

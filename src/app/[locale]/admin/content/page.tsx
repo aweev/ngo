@@ -1,8 +1,9 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { getContentPages } from "@/actions/content";
+import { getContentPages, getContentLocaleCoverage } from "@/actions/content";
 import { Plus, FileText, Languages, Sparkles, ShieldAlert, TriangleAlert } from "lucide-react";
 import { Link } from "@/lib/navigation";
 import { SUPPORTED_LOCALES, LOCALE_SHORT, type SupportedLocale } from "@/lib/i18n/locales";
@@ -21,7 +22,19 @@ type PageRow = {
     content?: Record<string, unknown> | null;
 };
 
-function localeCoverage(page: PageRow): { locale: SupportedLocale; present: boolean; status: string }[] {
+function localeCoverage(
+    page: PageRow,
+    truth: Record<string, Record<string, string>>,
+): { locale: SupportedLocale; present: boolean; status: string }[] {
+    // Source of truth: content_page_translations rows. Legacy JSON columns
+    // are only a fallback for pages migrated before the workflow tables.
+    const rows = truth[page.id];
+    if (rows) {
+        return SUPPORTED_LOCALES.map((locale) => {
+            const status = rows[locale];
+            return { locale, present: typeof status === "string", status: status ?? "missing" };
+        });
+    }
     const fromColumn = (page.translations ?? {}) as Record<string, unknown>;
     const legacyContent = (page.content ?? {}) as Record<string, unknown>;
     const legacy = ((legacyContent.translations ?? legacyContent.locales ?? {}) as Record<string, unknown>);
@@ -36,26 +49,32 @@ function localeCoverage(page: PageRow): { locale: SupportedLocale; present: bool
     });
 }
 
-function approvalBadge(page: PageRow) {
+function approvalBadge(page: PageRow, t: (key: string) => string) {
     const approval = page.approval_status ?? (page.status === "published" ? "approved" : "draft");
     if (approval === "approved") {
         return (
             <Badge variant="outline" className="gap-1 text-[11px]">
-                Approved
+                {t("Approval.approved")}
             </Badge>
         );
     }
     if (approval === "pending_approval") {
-        return <Badge variant="secondary" className="text-[11px]">In review</Badge>;
+        return <Badge variant="secondary" className="text-[11px]">{t("Approval.in_review")}</Badge>;
     }
     if (approval === "rejected") {
-        return <Badge variant="destructive" className="text-[11px]">Changes requested</Badge>;
+        return <Badge variant="destructive" className="text-[11px]">{t("Approval.rejected")}</Badge>;
     }
-    return <Badge variant="secondary" className="text-[11px]">Draft — not approved</Badge>;
+    return <Badge variant="secondary" className="text-[11px]">{t("Approval.draft")}</Badge>;
 }
 
-export default async function ContentPage() {
-    const { data: pages } = await getContentPages();
+export default async function ContentPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Content" });
+    const tList = await getTranslations({ locale, namespace: "Admin.List" });
+    const [{ data: pages }, { data: coverage }] = await Promise.all([
+        getContentPages(),
+        getContentLocaleCoverage(),
+    ]);
     const rows = ((pages ?? []) as unknown as PageRow[]);
 
     const aiConfigured =
@@ -65,8 +84,8 @@ export default async function ContentPage() {
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Content pages"
-                description="Draft, translate (EN, DE, FR, ES, AR), request review, and publish. Publishing requires approval and the content.publish permission."
+                title={t("List.title")}
+                description={t("List.description")}
                 action={
                     <div className="flex gap-2">
                         <Button
@@ -75,17 +94,16 @@ export default async function ContentPage() {
                             disabled={!aiConfigured}
                             title={
                                 aiConfigured
-                                    ? "AI translation is configured"
-                                    : "AI translation is not configured — set CMS_TRANSLATION_PROVIDER and CMS_TRANSLATION_API_KEY to enable it. Manual translation remains available."
+                                    ? t("List.ai_configured")
+                                    : t("List.ai_not_configured")
                             }
                         >
                             <Sparkles className="h-4 w-4 text-purple-500" />
-                            {aiConfigured ? "AI Translation" : "AI Translation (not configured)"}
+                            {aiConfigured ? t("List.btn_ai_translation") : t("List.btn_ai_translation_not_configured")}
                         </Button>
                         <Button asChild className="gap-2">
                             <Link href="/admin/content/new">
-                                <Plus className="h-4 w-4" />
-                                New Page
+                                <Plus className="h-4 w-4" /> {t("List.btn_new_page")}
                             </Link>
                         </Button>
                     </div>
@@ -96,9 +114,7 @@ export default async function ContentPage() {
                 <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-100">
                     <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
                     <p>
-                        AI translation is not enabled in this environment. Add translations manually per
-                        locale. When AI translation is enabled,{" "}
-                        <strong>AI-generated text always requires human review</strong> before approval
+                        {t("List.ai_warning")} <strong>{t("List.ai_warning_strong")}</strong> before approval
                         or publishing.
                     </p>
                 </div>
@@ -108,12 +124,12 @@ export default async function ContentPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Page Title</TableHead>
-                            <TableHead>URL Slug</TableHead>
-                            <TableHead>Locales</TableHead>
-                            <TableHead>Workflow</TableHead>
-                            <TableHead>Approval</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead>{t("List.col_title")}</TableHead>
+                            <TableHead>{t("List.col_slug")}</TableHead>
+                            <TableHead>{t("List.col_locales")}</TableHead>
+                            <TableHead>{t("List.col_workflow")}</TableHead>
+                            <TableHead>{t("List.col_approval")}</TableHead>
+                            <TableHead>{t("List.col_status")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -126,8 +142,8 @@ export default async function ContentPage() {
                             </TableRow>
                         ) : (
                             rows.map((p) => {
-                                const coverage = localeCoverage(p);
-                                const present = coverage.filter((c) => c.present);
+                                const badges = localeCoverage(p, coverage ?? {});
+                                const present = badges.filter((c) => c.present);
                                 return (
                                     <TableRow key={p.id}>
                                         <TableCell className="font-semibold text-sm">
@@ -138,11 +154,11 @@ export default async function ContentPage() {
                                         </TableCell>
                                         <TableCell className="font-mono text-xs text-muted-foreground">/{p.slug}</TableCell>
                                         <TableCell>
-                                            <div className="flex items-center gap-1.5" title={coverage.map((c) => `${c.locale}: ${c.status}`).join(", ")}>
+                                            <div className="flex items-center gap-1.5" title={badges.map((c) => `${c.locale}: ${c.status}`).join(", ")}>
                                                 <Languages className="h-3.5 w-3.5 text-purple-500" />
                                                 <span className="text-xs font-mono">
                                                     {present.length === 0
-                                                        ? "EN only — no translations"
+                                                        ? t("Locale.missing")
                                                         : present.map((c) => LOCALE_SHORT[c.locale]).join(", ")}
                                                 </span>
                                                 <span className="text-[11px] text-muted-foreground">
@@ -150,7 +166,7 @@ export default async function ContentPage() {
                                                 </span>
                                             </div>
                                             <div className="mt-1 flex flex-wrap gap-1">
-                                                {coverage.map((c) => (
+                                                {badges.map((c) => (
                                                     <span
                                                         key={c.locale}
                                                         className={`inline-block rounded px-1 py-0.5 font-mono text-[10px] leading-none ${c.present
@@ -171,11 +187,11 @@ export default async function ContentPage() {
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center gap-1.5">
-                                                {approvalBadge(p)}
+                                                {approvalBadge(p, t)}
                                                 {(p.workflow_state === "in_review" || p.approval_status === "pending_approval") && (
                                                     <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                                                         <ShieldAlert className="h-3 w-3" />
-                                                        awaiting review
+                                                        {t("Status.pending_review")}
                                                     </span>
                                                 )}
                                             </div>

@@ -28,6 +28,12 @@ const PUBLIC_ALLOWLIST = [
     'portal-experience|getPublicPortalExperience', // public auth/onboarding portal copy
     'auth|validateInvitation',        // invitation preview (public token flow)
     'auth|acceptInvitation',          // invitation acceptance (authenticated user)
+    // Email senders are server-to-server helpers, never imported by client
+    // components: every call site is a guarded Server Action (content.ts,
+    // members.ts) or the signature-verified Stripe webhook. Guarding them
+    // here would break the session-less webhook; authorization lives with
+    // the caller by design.
+    'email|*',
 ];
 
 const GUARD_RE = /\b(authorizePermission|authorizeUser|authorizeOrganization|authorizeRole|requirePermission|requireUser|requireOrganization|requireRole)\s*\(/;

@@ -177,6 +177,61 @@ export async function getPerformanceReviews(): Promise<{ data: PerformanceReview
     return { data: data as PerformanceReview[], error: null };
 }
 
+/** Create a performance review (ED / people-lead flow). */
+export async function createPerformanceReview(input: {
+    subject_type: PerformanceReview['subject_type'];
+    subject_id: string;
+    title: string;
+    rating: number;
+    review_period?: string | null;
+    strengths?: string[];
+    areas_for_growth?: string[];
+    feedback_notes?: string;
+    is_private?: boolean;
+}): Promise<{ data: PerformanceReview | null; error: string | null }> {
+    const auth = await authorizePermission(PERMISSIONS.governance.manage);
+    if (!auth.ok) return { data: null, error: auth.error };
+
+    const rating = Math.round(Number(input.rating));
+    if (!['worker', 'volunteer', 'partner'].includes(input.subject_type)) {
+        return { data: null, error: 'Invalid review subject.' };
+    }
+    if (!input.subject_id || !input.title?.trim()) {
+        return { data: null, error: 'Subject and title are required.' };
+    }
+    if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
+        return { data: null, error: 'Rating must be between 1 and 5.' };
+    }
+    const clean = (v: unknown): string[] =>
+        Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && x.trim().length > 0).map((x) => x.trim()) : [];
+
+    const { data, error } = await auth.context.supabase
+        .from('performance_reviews')
+        .insert({
+            organization_id: auth.organizationId,
+            reviewer_id: auth.userId,
+            subject_type: input.subject_type,
+            subject_id: input.subject_id,
+            title: input.title.trim(),
+            rating,
+            review_period: input.review_period?.trim() || null,
+            strengths: clean(input.strengths),
+            areas_for_growth: clean(input.areas_for_growth),
+            feedback_notes: input.feedback_notes?.trim() || '',
+            is_private: input.is_private ?? true,
+        })
+        .select()
+        .single();
+
+    if (error) {
+        console.error('[createPerformanceReview]', error.message);
+        return { data: null, error: 'Unable to create the review. Please check the provided data.' };
+    }
+
+    revalidatePath('/admin/reviews');
+    return { data: data as PerformanceReview, error: null };
+}
+
 export async function getHRLifecycleRecords(): Promise<{ data: HRLifecycleRecord[] | null; error: string | null }> {
     const auth = await authorizePermission(PERMISSIONS.governance.read);
     if (!auth.ok) return { data: null, error: auth.error };

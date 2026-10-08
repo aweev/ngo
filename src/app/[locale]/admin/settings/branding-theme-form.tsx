@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Check, Loader2, Palette } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,12 +14,10 @@ import {
 import { useBrandTheme } from "@/providers/brand-theme-provider";
 import { updateDefaultBrandTheme } from "@/actions/organization";
 
-const THEME_DESCRIPTIONS: Record<BrandThemeId, string> = {
-    sunset: "Hopeful Clay + Radiant Gold — warm, Afro-centric house style.",
-    ocean: "Deep Teal + Warm Sand — calm, institutional trust.",
-};
+
 
 export function BrandingThemeForm({ initialTheme }: { initialTheme: BrandThemeId }) {
+    const t = useTranslations("Admin.SettingsBranding");
     const { setBrandTheme: setPersonalTheme } = useBrandTheme();
     const [selected, setSelected] = React.useState<BrandThemeId>(initialTheme);
     const [saving, setSaving] = React.useState(false);
@@ -34,9 +33,9 @@ export function BrandingThemeForm({ initialTheme }: { initialTheme: BrandThemeId
         if (result.success) {
             // Apply immediately for the admin too (personal override follows default)
             setPersonalTheme(selected);
-            setStatus({ kind: "ok", text: "Default theme updated for all visitors." });
+            setStatus({ kind: "ok", text: t("status_ok") });
         } else {
-            setStatus({ kind: "error", text: result.error ?? "Could not save the default theme." });
+            setStatus({ kind: "error", text: result.error ?? t("status_error") });
         }
     }
 
@@ -45,12 +44,11 @@ export function BrandingThemeForm({ initialTheme }: { initialTheme: BrandThemeId
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Palette className="h-4 w-4" />
                 <p>
-                    Visitors without a personal choice see this theme.
-                    Anyone can still override it with the theme switcher in the header.
+                    {t("hint")}
                 </p>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label="Default brand theme">
+            <div className="grid gap-3 sm:grid-cols-2" role="radiogroup" aria-label={t("aria_label")}>
                 {BRAND_THEME_IDS.map((id) => {
                     const [c1, c2] = BRAND_THEMES[id].swatches;
                     const isActive = selected === id;
@@ -85,7 +83,7 @@ export function BrandingThemeForm({ initialTheme }: { initialTheme: BrandThemeId
                                 <span>
                                     <span className="block text-sm font-semibold capitalize">{id}</span>
                                     <span className="block text-xs text-muted-foreground">
-                                        {THEME_DESCRIPTIONS[id]}
+                                        {t(id === "sunset" ? "theme_sunset" : "theme_ocean")}
                                     </span>
                                 </span>
                             </div>
@@ -96,7 +94,7 @@ export function BrandingThemeForm({ initialTheme }: { initialTheme: BrandThemeId
                             )}
                             {id === initialTheme && (
                                 <span className="absolute bottom-3 right-3 rounded-full bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                                    Current live
+                                    {t("current_live")}
                                 </span>
                             )}
                         </button>
@@ -118,7 +116,7 @@ export function BrandingThemeForm({ initialTheme }: { initialTheme: BrandThemeId
 
             <Button size="sm" onClick={handleSave} disabled={unchanged || saving}>
                 {saving && <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />}
-                {saving ? "Saving…" : "Set as Site Default"}
+                {saving ? t("saving") : t("set_default")}
             </Button>
         </div>
     );

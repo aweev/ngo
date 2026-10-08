@@ -37,6 +37,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
+# Every .env* variant is ignored by default: `.env.production` /
+# `.env.staging` hold real secrets and must never be committable.
 .env*
 !.env.example
 
@@ -46,3 +48,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local package store (pnpm store kept inside the workspace)
+.pnpm-store/
+
+# logs & diagnostics (regenerable; never commit)
+*.log
+*-diag.txt
+validation-summary.txt
+
+# test artifacts (regenerable)
+/playwright-report/
+/test-results/
+
+# supabase CLI link state (contains project refs / pooler URLs)
+supabase/.temp/
+
+# one-shot codemods already applied (kept locally, out of the tree's way)
+scripts/codemods/

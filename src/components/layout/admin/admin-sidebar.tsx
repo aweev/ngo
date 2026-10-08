@@ -3,13 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
     BarChart3, Users, UserPlus, HandHeart, HandCoins, Megaphone, FolderKanban,
     Settings, ShieldCheck, ChevronLeft, ChevronRight, Zap, GitBranch,
-    Clock, ClipboardList, Wallet, FileBarChart, Bell, MessageSquare,
-    FileText, Puzzle, Tag, CalendarDays, TrendingUp, Award, UserMinus
+    Clock, ClipboardList, ClipboardCheck, Wallet, FileBarChart, Bell, MessageSquare,
+    FileText, Puzzle, Tag, CalendarDays, TrendingUp, Award, UserMinus, ScrollText
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isPhase0NavVisible } from "@/lib/phase0-nav";
 
 interface NavGroup {
     title: string;
@@ -20,72 +22,77 @@ interface NavGroup {
     }[];
 }
 
-const navGroups: NavGroup[] = [
-    {
-        title: "Overview",
-        items: [
-            { href: "/admin", label: "Command Center", icon: BarChart3 },
-        ],
-    },
-    {
-        title: "People & HR Governance",
-        items: [
-            { href: "/admin/members", label: "Team & Invites", icon: UserPlus },
-            { href: "/admin/workers", label: "Workers", icon: Users },
-            { href: "/admin/volunteers", label: "Volunteers", icon: HandHeart },
-            { href: "/admin/partners", label: "Partners", icon: HandCoins },
-            { href: "/admin/donors", label: "Donors", icon: Users },
-            { href: "/admin/hr", label: "HR & Offboarding", icon: UserMinus },
-            { href: "/admin/reviews", label: "ED Reviews & Ratings", icon: Award },
-        ],
-    },
-    {
-        title: "Programs",
-        items: [
-            { href: "/admin/projects", label: "Projects", icon: FolderKanban },
-            { href: "/admin/campaigns", label: "Campaigns", icon: Megaphone },
-            { href: "/admin/events", label: "Events", icon: CalendarDays },
-            { href: "/admin/impact", label: "Impact KPIs", icon: TrendingUp },
-        ],
-    },
-    {
-        title: "Operations",
-        items: [
-            { href: "/admin/automations", label: "Automations", icon: Zap },
-            { href: "/admin/workflows", label: "Workflows", icon: GitBranch },
-            { href: "/admin/scheduling", label: "Scheduler", icon: Clock },
-            { href: "/admin/forms", label: "Forms", icon: ClipboardList },
-        ],
-    },
-    {
-        title: "Finance & Reports",
-        items: [
-            { href: "/admin/financial", label: "Financials", icon: Wallet },
-            { href: "/admin/reporting", label: "Reports", icon: FileBarChart },
-        ],
-    },
-    {
-        title: "Communication",
-        items: [
-            { href: "/admin/notifications", label: "Notifications", icon: Bell },
-            { href: "/admin/messaging", label: "Messages", icon: MessageSquare },
-            { href: "/admin/content", label: "CMS & AI Pipeline", icon: FileText },
-        ],
-    },
-    {
-        title: "System",
-        items: [
-            { href: "/admin/integrations", label: "Integrations", icon: Puzzle },
-            { href: "/admin/rbac", label: "Permissions", icon: ShieldCheck },
-            { href: "/admin/tags", label: "Tags", icon: Tag },
-            { href: "/admin/settings", label: "Settings", icon: Settings },
-        ],
-    },
-];
-
 export function AdminSidebar() {
     const pathname = usePathname();
     const [collapsed, setCollapsed] = useState(false);
+    const tGroups = useTranslations("Admin.Nav.groups");
+    const tItems = useTranslations("Admin.Nav.items");
+    const tNav = useTranslations("Admin.Nav");
+
+    const navGroups: NavGroup[] = [
+        {
+            title: tGroups("overview"),
+            items: [
+                { href: "/admin", label: tItems("commandCenter"), icon: BarChart3 },
+                { href: "/admin/governance", label: tItems("governance"), icon: ClipboardCheck },
+                { href: "/admin/trust", label: tItems("trustCenter"), icon: ScrollText },
+            ],
+        },
+        {
+            title: tGroups("people"),
+            items: [
+                { href: "/admin/members", label: tItems("teamInvites"), icon: UserPlus },
+                { href: "/admin/workers", label: tItems("workers"), icon: Users },
+                { href: "/admin/volunteers", label: tItems("volunteers"), icon: HandHeart },
+                { href: "/admin/partners", label: tItems("partners"), icon: HandCoins },
+                { href: "/admin/donors", label: tItems("donors"), icon: Users },
+                { href: "/admin/hr", label: tItems("hr"), icon: UserMinus },
+                { href: "/admin/reviews", label: tItems("edReviews"), icon: Award },
+            ],
+        },
+        {
+            title: tGroups("programs"),
+            items: [
+                { href: "/admin/projects", label: tItems("projects"), icon: FolderKanban },
+                { href: "/admin/campaigns", label: tItems("campaigns"), icon: Megaphone },
+                { href: "/admin/events", label: tItems("events"), icon: CalendarDays },
+                { href: "/admin/impact", label: tItems("impactKpis"), icon: TrendingUp },
+            ],
+        },
+        {
+            title: tGroups("operations"),
+            items: [
+                { href: "/admin/automations", label: tItems("automations"), icon: Zap },
+                { href: "/admin/workflows", label: tItems("workflows"), icon: GitBranch },
+                { href: "/admin/scheduling", label: tItems("scheduler"), icon: Clock },
+                { href: "/admin/forms", label: tItems("forms"), icon: ClipboardList },
+            ],
+        },
+        {
+            title: tGroups("finance"),
+            items: [
+                { href: "/admin/financial", label: tItems("financials"), icon: Wallet },
+                { href: "/admin/reporting", label: tItems("reports"), icon: FileBarChart },
+            ],
+        },
+        {
+            title: tGroups("communication"),
+            items: [
+                { href: "/admin/notifications", label: tItems("notifications"), icon: Bell },
+                { href: "/admin/messaging", label: tItems("messages"), icon: MessageSquare },
+                { href: "/admin/content", label: tItems("cms"), icon: FileText },
+            ],
+        },
+        {
+            title: tGroups("system"),
+            items: [
+                { href: "/admin/integrations", label: tItems("integrations"), icon: Puzzle },
+                { href: "/admin/rbac", label: tItems("permissions"), icon: ShieldCheck },
+                { href: "/admin/tags", label: tItems("tags"), icon: Tag },
+                { href: "/admin/settings", label: tItems("settings"), icon: Settings },
+            ],
+        },
+    ];
 
     useEffect(() => {
         // Read the persisted preference one frame after mount: sync setState
@@ -118,15 +125,18 @@ export function AdminSidebar() {
                 </div>
                 {!collapsed && (
                     <div className="flex flex-col overflow-hidden">
-                        <span className="text-sm font-semibold text-white tracking-wide truncate">Command Center</span>
-                        <span className="text-[10px] text-slate-400 uppercase tracking-wider truncate">NGO OS v2.0</span>
+                        <span className="text-sm font-semibold text-white tracking-wide truncate">{tNav("commandCenter")}</span>
+                        <span className="text-[10px] text-slate-400 uppercase tracking-wider truncate">{tNav("badge")}</span>
                     </div>
                 )}
             </div>
 
             {/* Nav Items */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 space-y-4">
-                {navGroups.map((group) => (
+                {navGroups
+                    .map((group) => ({ ...group, items: group.items.filter((item) => isPhase0NavVisible(item.href)) }))
+                    .filter((group) => group.items.length > 0)
+                    .map((group) => (
                     <div key={group.title} className="space-y-1">
                         {!collapsed && (
                             <h4 className="px-3 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
@@ -170,7 +180,7 @@ export function AdminSidebar() {
                     ) : (
                         <>
                             <ChevronLeft className="h-4 w-4" />
-                            <span>Collapse menu</span>
+                            <span>{tNav("collapse")}</span>
                         </>
                     )}
                 </button>

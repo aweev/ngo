@@ -11,6 +11,8 @@ import { SyncProvider } from './sync-provider';
 import { GlobalConfig } from '@/types/config';
 import { DEFAULT_BRAND_THEME, type BrandThemeId } from '@/lib/brand-themes';
 import { useAuthCheck } from '@/hooks/use-auth-check';
+import { OfflineBanner } from '@/components/common/offline-banner';
+import { CampaignSafetyGuard } from './campaign-safety-guard';
 
 type Props = {
     children: React.ReactNode;
@@ -56,6 +58,7 @@ export function ClientProviders({
                 messages={messages}
                 timeZone={timeZone ?? 'Europe/Berlin'}
             >
+                <CampaignSafetyGuard />
                 <SyncProvider> {/* PWA/Offline Support */}
                     <BrandThemeProvider defaultTheme={defaultBrandTheme}>
                         <ThemeProvider
@@ -70,6 +73,9 @@ export function ClientProviders({
                             */}
                             <BrandProvider config={config}>
                                 {children}
+
+                                {/* Offline Sync Banner Indicator */}
+                                <OfflineBanner />
 
                                 {/* Global Toaster for API Success/Error messages */}
                                 <Toaster

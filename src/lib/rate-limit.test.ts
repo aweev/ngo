@@ -7,10 +7,12 @@ vi.mock('next/headers', () => ({
     headers: async () => new Map<string, string>(),
 }));
 
-import { RATE_LIMITS, checkRateLimit } from '@/lib/rate-limit';
+import { RATE_LIMITS, checkRateLimit, clientIpFromHeaders } from '@/lib/rate-limit';
 
 afterEach(() => {
     vi.useRealTimers();
+    delete process.env.TRUSTED_PROXY_HOPS;
+    delete process.env.TRUST_PROXY_REAL_IP;
 });
 
 describe('checkRateLimit', () => {
@@ -46,5 +48,35 @@ describe('checkRateLimit', () => {
         for (const limit of Object.values(RATE_LIMITS)) {
             expect(limit).toBeGreaterThan(0);
         }
+    });
+});
+
+describe('clientIpFromHeaders', () => {
+    it('never trusts x-forwarded-for without declared trusted proxies', () => {
+        expect(clientIpFromHeaders('203.0.113.9, 10.0.0.1', null)).toBe('unknown');
+        expect(clientIpFromHeaders('203.0.113.9', '198.51.100.7')).toBe('unknown');
+    });
+
+    it('takes the entry added by the trusted proxy hop', () => {
+        process.env.TRUSTED_PROXY_HOPS = '1';
+        expect(clientIpFromHeaders('203.0.113.9, 10.0.0.1', null)).toBe('10.0.0.1');
+    });
+
+    it('walks back one entry per trusted hop', () => {
+        process.env.TRUSTED_PROXY_HOPS = '2';
+        expect(clientIpFromHeaders('203.0.113.9, 10.0.0.1, 10.0.0.2', null)).toBe('10.0.0.1');
+    });
+
+    it('ignores spoofed entries to the left of the trusted hops', () => {
+        process.env.TRUSTED_PROXY_HOPS = '1';
+        // The attacker prepends fake hops; only the edge-appended entry counts.
+        expect(clientIpFromHeaders('1.2.3.4, 5.6.7.8, 10.0.0.1', null)).toBe('10.0.0.1');
+    });
+
+    it('honors x-real-ip only when the operator opts in', () => {
+        process.env.TRUST_PROXY_REAL_IP = 'true';
+        expect(clientIpFromHeaders(null, '198.51.100.7')).toBe('198.51.100.7');
+        delete process.env.TRUST_PROXY_REAL_IP;
+        expect(clientIpFromHeaders(null, '198.51.100.7')).toBe('unknown');
     });
 });

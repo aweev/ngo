@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -16,12 +17,12 @@ import type { NotificationChannel } from "@/types/domain/notifications";
 import { ArrowLeft, Bell, Loader2 } from "lucide-react";
 import { Link } from "@/lib/navigation";
 
-const CHANNEL_OPTIONS: { value: NotificationChannel; label: string }[] = [
-    { value: "email", label: "Email" },
-    { value: "sms", label: "SMS" },
-    { value: "push", label: "Push" },
-    { value: "in_app", label: "In-App" },
-    { value: "webhook", label: "Webhook" },
+const CHANNEL_OPTIONS: NotificationChannel[] = [
+    "email",
+    "sms",
+    "push",
+    "in_app",
+    "webhook",
 ];
 
 const COMMON_VARIABLES = [
@@ -70,6 +71,7 @@ interface NotificationComposerProps {
 
 export function NotificationComposer({ initial, templateId, backHref = "/admin/notifications/templates" }: NotificationComposerProps) {
     const router = useRouter();
+    const t = useTranslations("Admin.Notifications.composer");
     const [draft, setDraft] = useState<NotificationTemplateDraft>(initial ?? DEFAULT_DRAFT);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -89,7 +91,7 @@ export function NotificationComposer({ initial, templateId, backHref = "/admin/n
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (!draft.name.trim() || !draft.body.trim()) {
-            setError("A template name and body are required.");
+            setError(t("required"));
             return;
         }
 
@@ -126,7 +128,7 @@ export function NotificationComposer({ initial, templateId, backHref = "/admin/n
             <div className="flex items-center gap-2">
                 <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                     <Link href={backHref}>
-                        <ArrowLeft className="h-4 w-4" /> Back to Templates
+                        <ArrowLeft className="h-4 w-4" /> {t("back")}
                     </Link>
                 </Button>
             </div>
@@ -140,23 +142,23 @@ export function NotificationComposer({ initial, templateId, backHref = "/admin/n
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base">
-                        <Bell className="h-4 w-4 text-blue-500" /> Template Details
+                        <Bell className="h-4 w-4 text-blue-500" /> {t("details_title")}
                     </CardTitle>
-                    <CardDescription>Identity, delivery channel, and message content.</CardDescription>
+                    <CardDescription>{t("details_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Template name</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
                             <Input
                                 required
                                 value={draft.name}
                                 onChange={(e) => patch({ name: e.target.value, slug: draft.slug || slugify(e.target.value) })}
-                                placeholder="e.g. Donation Thank You Email"
+                                placeholder={t("name_ph")}
                             />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Slug</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("slug_label")}</label>
                             <Input
                                 value={draft.slug}
                                 onChange={(e) => patch({ slug: slugify(e.target.value) })}
@@ -166,23 +168,23 @@ export function NotificationComposer({ initial, templateId, backHref = "/admin/n
                         </div>
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("desc_label")}</label>
                         <Input
                             value={draft.description}
                             onChange={(e) => patch({ description: e.target.value })}
-                            placeholder="Where and when this template is used"
+                            placeholder={t("desc_ph")}
                         />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Channel</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("channel_label")}</label>
                         <Select value={draft.channel} onValueChange={(value) => patch({ channel: value as NotificationChannel })}>
                             <SelectTrigger className="w-48">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                {CHANNEL_OPTIONS.map((option) => (
-                                    <SelectItem key={option.value} value={option.value}>
-                                        {option.label}
+                                {CHANNEL_OPTIONS.map((channel) => (
+                                    <SelectItem key={channel} value={channel}>
+                                        {t(channel)}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -191,38 +193,38 @@ export function NotificationComposer({ initial, templateId, backHref = "/admin/n
 
                     {draft.channel === "email" || draft.channel === "push" ? (
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Subject</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("subject_label")}</label>
                             <Input
                                 value={draft.subject}
                                 onChange={(e) => syncVariables(e.target.value, draft.body)}
-                                placeholder="Thank you for your donation, {{recipient_name}}!"
+                                placeholder={t("subject_ph")}
                             />
                         </div>
                     ) : null}
 
                     <div className="space-y-1">
                         <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Body {draft.channel === "sms" ? "(max ~320 chars)" : ""}
+                            {t("body_label")} {draft.channel === "sms" ? t("body_sms_hint") : ""}
                         </label>
                         <Textarea
                             required
                             value={draft.body}
                             onChange={(e) => syncVariables(draft.subject, e.target.value)}
-                            placeholder="Write the message content. Use variables like {{recipient_name}}."
+                            placeholder={t("body_ph")}
                             className="min-h-32"
                         />
                         {draft.channel === "sms" && draft.body.length > 320 ? (
-                            <p className="text-xs text-destructive">Body is {draft.body.length} characters — consider shortening for SMS.</p>
+                            <p className="text-xs text-destructive">{t("sms_too_long", { count: draft.body.length })}</p>
                         ) : null}
                     </div>
 
                     <div className="space-y-2">
                         <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Variables detected
+                            {t("variables_label")}
                         </label>
                         <div className="flex flex-wrap gap-1">
                             {draft.variables.length === 0 ? (
-                                <p className="text-xs text-muted-foreground">None yet — insert a placeholder below.</p>
+                                <p className="text-xs text-muted-foreground">{t("variables_empty")}</p>
                             ) : (
                                 draft.variables.map((variable) => (
                                     <span key={variable} className="rounded border bg-muted px-1.5 py-0.5 font-mono text-xs">{variable}</span>
@@ -250,11 +252,11 @@ export function NotificationComposer({ initial, templateId, backHref = "/admin/n
 
             <div className="flex justify-end gap-3">
                 <Button asChild variant="outline">
-                    <Link href={backHref}>Cancel</Link>
+                    <Link href={backHref}>{t("cancel")}</Link>
                 </Button>
                 <Button type="submit" disabled={loading}>
                     {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {loading ? "Saving..." : templateId ? "Save template" : "Create template"}
+                    {loading ? t("saving") : templateId ? t("save_edit") : t("save_new")}
                 </Button>
             </div>
         </form>

@@ -1,5 +1,6 @@
 import type { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * Recurring-billing handler (P0-4): `invoice.paid` / `invoice.payment_failed`
@@ -13,27 +14,12 @@ export type InvoiceOutcome =
     | { kind: 'unmatched' }
     | { kind: 'failed'; message: string };
 
-type SupabaseLike = {
-    from: (table: string) => {
-        select: (cols: string) => {
-            eq: (col: string, val: unknown) => {
-                maybeSingle: () => Promise<{ data: unknown }>;
-                order: (col: string, opts: unknown) => {
-                    limit: (n: number) => { maybeSingle: () => Promise<{ data: unknown }> };
-                };
-            };
-        };
-        insert: (row: Record<string, unknown>) => {
-            select: (cols: string) => { single: () => Promise<{ data: unknown; error: unknown }> };
-        };
-        update: (patch: Record<string, unknown>) => {
-            eq: (col: string, val: unknown) => {
-                is: (col: string, val: unknown) => Promise<{ error: unknown }>;
-            };
-        };
-    };
-    rpc: (fn: string) => Promise<{ data: unknown }>;
-};
+/**
+ * The service-role client (see the webhook route). Typed as the real
+ * SupabaseClient — the previous hand-rolled structural type drifted from
+ * the SDK and broke typechecking on every SDK upgrade.
+ */
+type SupabaseLike = SupabaseClient;
 
 async function linkDonorByEmail(
     supabase: SupabaseLike,
@@ -45,6 +31,7 @@ async function linkDonorByEmail(
         .from('donors')
         .select('id')
         .eq('organization_id', donation.organization_id)
+        .eq('email', email)
         .maybeSingle();
     let donorId: string | null = ((existing as { id?: string } | null)?.id as string | undefined) ?? null;
     if (!donorId) {

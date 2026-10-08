@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +22,7 @@ const EVENT_SUGGESTIONS = [
 ];
 
 export function NewWebhookForm() {
+    const t = useTranslations("Admin.Integrations.Webhooks.Form");
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
     const [url, setUrl] = useState("");
@@ -31,7 +33,7 @@ export function NewWebhookForm() {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (!name.trim() || !url.trim()) {
-            setError("A webhook name and target URL are required.");
+            setError(t("required"));
             return;
         }
         let parsedUrl: URL;
@@ -39,7 +41,7 @@ export function NewWebhookForm() {
             parsedUrl = new URL(url.trim());
             if (!["https:", "http:"].includes(parsedUrl.protocol)) throw new Error("bad protocol");
         } catch {
-            setError("Please provide a valid http(s) URL.");
+            setError(t("bad_url"));
             return;
         }
         setLoading(true);
@@ -62,7 +64,7 @@ export function NewWebhookForm() {
     if (!open) {
         return (
             <Button onClick={() => setOpen(true)} className="gap-2">
-                <Plus className="h-4 w-4" /> New Webhook
+                <Plus className="h-4 w-4" /> {t("new_webhook")}
             </Button>
         );
     }
@@ -71,7 +73,7 @@ export function NewWebhookForm() {
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                    <WebhookIcon className="h-4 w-4 text-violet-500" /> Register webhook
+                    <WebhookIcon className="h-4 w-4 text-violet-500" /> {t("register_title")}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -83,24 +85,24 @@ export function NewWebhookForm() {
                     )}
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
-                            <label htmlFor="webhook-name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Name</label>
+                            <label htmlFor="webhook-name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
                             <Input id="webhook-name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. CRM sync" />
                         </div>
                         <div className="space-y-1">
-                            <label htmlFor="webhook-url" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Target URL</label>
+                            <label htmlFor="webhook-url" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("url_label")}</label>
                             <Input id="webhook-url" required value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com/hooks/ngo" />
                         </div>
                     </div>
                     <div className="space-y-1">
-                        <label htmlFor="webhook-events" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Subscribed events (comma-separated)</label>
+                        <label htmlFor="webhook-events" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("events_label")}</label>
                         <Input id="webhook-events" value={events} onChange={(e) => setEvents(e.target.value)} placeholder={EVENT_SUGGESTIONS.join(", ")} />
-                        <p className="text-xs text-muted-foreground">Suggestions: {EVENT_SUGGESTIONS.join(", ")}</p>
+                        <p className="text-xs text-muted-foreground">{t("suggestions")} {EVENT_SUGGESTIONS.join(", ")}</p>
                     </div>
                     <div className="flex justify-end gap-3">
-                        <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button type="button" variant="outline" onClick={() => setOpen(false)}>{t("cancel")}</Button>
                         <Button type="submit" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {loading ? "Registering..." : "Register webhook"}
+                            {loading ? t("registering") : t("register")}
                         </Button>
                     </div>
                 </form>

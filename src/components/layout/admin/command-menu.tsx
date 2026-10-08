@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { isPhase0NavVisible } from "@/lib/phase0-nav";
 import {
     Search, Command, BarChart3, Users, HandHeart, HandCoins,
     Megaphone, FolderKanban, Settings, ShieldCheck, Zap, GitBranch,
@@ -11,52 +13,61 @@ import {
     FileText, Puzzle, Tag, CalendarDays, TrendingUp, Plus
 } from "lucide-react";
 
-const commandGroups = [
-    {
-        title: "Navigation",
-        items: [
-            { href: "/admin", label: "Overview / Command Center", icon: BarChart3 },
-            { href: "/admin/workers", label: "Workers Management", icon: Users },
-            { href: "/admin/volunteers", label: "Volunteers Management", icon: HandHeart },
-            { href: "/admin/partners", label: "Partners Management", icon: HandCoins },
-            { href: "/admin/donors", label: "Donors & Fundraising", icon: Users },
-            { href: "/admin/projects", label: "Projects", icon: FolderKanban },
-            { href: "/admin/campaigns", label: "Campaigns", icon: Megaphone },
-            { href: "/admin/events", label: "Events Calendar", icon: CalendarDays },
-            { href: "/admin/impact", label: "Impact KPIs & Goals", icon: TrendingUp },
-            { href: "/admin/automations", label: "Automations & IFTTT Engine", icon: Zap },
-            { href: "/admin/workflows", label: "Workflows & Approvals", icon: GitBranch },
-            { href: "/admin/scheduling", label: "Scheduler & Jobs", icon: Clock },
-            { href: "/admin/forms", label: "Custom Forms Builder", icon: ClipboardList },
-            { href: "/admin/financial", label: "Financials & Expenses", icon: Wallet },
-            { href: "/admin/reporting", label: "Reports & Analytics", icon: FileBarChart },
-            { href: "/admin/notifications", label: "Notification Templates", icon: Bell },
-            { href: "/admin/messaging", label: "Internal Messages", icon: MessageSquare },
-            { href: "/admin/content", label: "CMS Content & Pages", icon: FileText },
-            { href: "/admin/integrations", label: "Integrations & Webhooks", icon: Puzzle },
-            { href: "/admin/rbac", label: "Roles & Permissions", icon: ShieldCheck },
-            { href: "/admin/tags", label: "Tagging Engine", icon: Tag },
-            { href: "/admin/settings", label: "Organization Settings", icon: Settings },
-        ],
-    },
-    {
-        title: "Quick Actions",
-        items: [
-            { href: "/admin/workers?action=new", label: "Create New Worker", icon: Plus },
-            { href: "/admin/volunteers?action=new", label: "Register Volunteer", icon: Plus },
-            { href: "/admin/projects?action=new", label: "Launch New Project", icon: Plus },
-            { href: "/admin/campaigns?action=new", label: "Start New Campaign", icon: Plus },
-            { href: "/admin/automations/new", label: "Build Automation Rule", icon: Plus },
-            { href: "/admin/forms/new", label: "Create Custom Form", icon: Plus },
-            { href: "/admin/events/new", label: "Schedule Event", icon: Plus },
-        ],
-    },
-];
+interface CommandItem {
+    href: string;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+}
 
 export function AdminCommandMenu() {
     const router = useRouter();
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState("");
+    const t = useTranslations("Admin.Nav.menu");
+    const tLabels = useTranslations("Admin.Nav.menu.labels");
+    const tActions = useTranslations("Admin.Nav.menu.actions");
+
+    const commandGroups: { title: string; items: CommandItem[] }[] = [
+        {
+            title: t("title"),
+            items: [
+                { href: "/admin", label: tLabels("overview"), icon: BarChart3 },
+                { href: "/admin/workers", label: tLabels("workers"), icon: Users },
+                { href: "/admin/volunteers", label: tLabels("volunteers"), icon: HandHeart },
+                { href: "/admin/partners", label: tLabels("partners"), icon: HandCoins },
+                { href: "/admin/donors", label: tLabels("donors"), icon: Users },
+                { href: "/admin/projects", label: tLabels("projects"), icon: FolderKanban },
+                { href: "/admin/campaigns", label: tLabels("campaigns"), icon: Megaphone },
+                { href: "/admin/events", label: tLabels("events"), icon: CalendarDays },
+                { href: "/admin/impact", label: tLabels("impact"), icon: TrendingUp },
+                { href: "/admin/automations", label: tLabels("automations"), icon: Zap },
+                { href: "/admin/workflows", label: tLabels("workflows"), icon: GitBranch },
+                { href: "/admin/scheduling", label: tLabels("scheduling"), icon: Clock },
+                { href: "/admin/forms", label: tLabels("forms"), icon: ClipboardList },
+                { href: "/admin/financial", label: tLabels("financial"), icon: Wallet },
+                { href: "/admin/reporting", label: tLabels("reporting"), icon: FileBarChart },
+                { href: "/admin/notifications", label: tLabels("notifications"), icon: Bell },
+                { href: "/admin/messaging", label: tLabels("messaging"), icon: MessageSquare },
+                { href: "/admin/content", label: tLabels("content"), icon: FileText },
+                { href: "/admin/integrations", label: tLabels("integrations"), icon: Puzzle },
+                { href: "/admin/rbac", label: tLabels("rbac"), icon: ShieldCheck },
+                { href: "/admin/tags", label: tLabels("tags"), icon: Tag },
+                { href: "/admin/settings", label: tLabels("settings"), icon: Settings },
+            ],
+        },
+        {
+            title: t("quickActions"),
+            items: [
+                { href: "/admin/workers?action=new", label: tActions("newWorker"), icon: Plus },
+                { href: "/admin/volunteers?action=new", label: tActions("registerVolunteer"), icon: Plus },
+                { href: "/admin/projects?action=new", label: tActions("newProject"), icon: Plus },
+                { href: "/admin/campaigns?action=new", label: tActions("newCampaign"), icon: Plus },
+                { href: "/admin/automations/new", label: tActions("buildRule"), icon: Plus },
+                { href: "/admin/forms/new", label: tActions("newForm"), icon: Plus },
+                { href: "/admin/events/new", label: tActions("scheduleEvent"), icon: Plus },
+            ],
+        },
+    ];
 
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
@@ -75,7 +86,7 @@ export function AdminCommandMenu() {
                 <button className="flex h-9 w-full max-w-sm items-center justify-between rounded-lg border bg-background px-3 text-sm text-muted-foreground transition-colors hover:bg-muted">
                     <div className="flex items-center gap-2">
                         <Search className="h-4 w-4" />
-                        <span>Search Command Center...</span>
+                        <span>{t("searchPlaceholder")}</span>
                     </div>
                     <kbd className="pointer-events-none hidden rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:inline-flex">
                         <Command className="mr-0.5 h-3 w-3 inline" />K
@@ -83,7 +94,7 @@ export function AdminCommandMenu() {
                 </button>
             </DialogTrigger>
             <DialogContent className="max-w-xl p-0 overflow-hidden">
-                <DialogTitle className="sr-only">Command menu</DialogTitle>
+                <DialogTitle className="sr-only">{t("srTitle")}</DialogTitle>
                 <div className="border-b p-3">
                     <div className="flex items-center gap-2">
                         <Search className="h-4 w-4 text-muted-foreground" />
@@ -91,14 +102,16 @@ export function AdminCommandMenu() {
                             autoFocus
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            placeholder="Type a command or search section..."
+                            placeholder={t("commandPlaceholder")}
                             className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                         />
                     </div>
                 </div>
                 <div className="max-h-96 overflow-y-auto p-2 space-y-4">
                     {commandGroups.map((group) => {
+                        // Phase 0 bloat freeze: hidden sections stay out of the palette.
                         const filtered = group.items.filter((i) =>
+                            isPhase0NavVisible(i.href) &&
                             i.label.toLowerCase().includes(query.toLowerCase())
                         );
 

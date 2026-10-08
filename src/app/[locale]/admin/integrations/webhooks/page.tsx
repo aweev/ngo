@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -8,19 +9,21 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function WebhooksPage() {
+export default async function WebhooksPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Integrations.Webhooks" });
     const { data: webhooks } = await getWebhooks();
 
     return (
         <div className="space-y-6">
             <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                 <Link href="/admin/integrations">
-                    <ArrowLeft className="h-4 w-4" /> Back to Integrations
+                    <ArrowLeft className="h-4 w-4" /> {t("back")}
                 </Link>
             </Button>
             <PageHeader
-                title="Outgoing Webhooks"
-                description="Deliver organization events to external systems. New webhooks start inactive — activate after validating the receiver."
+                title={t("title")}
+                description={t("description")}
                 action={<NewWebhookForm />}
             />
 
@@ -28,18 +31,18 @@ export default async function WebhooksPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Webhook</TableHead>
-                            <TableHead>Target URL</TableHead>
-                            <TableHead>Events</TableHead>
-                            <TableHead>Deliveries</TableHead>
-                            <TableHead className="text-right">Status</TableHead>
+                            <TableHead>{t("cols.webhook")}</TableHead>
+                            <TableHead>{t("cols.url")}</TableHead>
+                            <TableHead>{t("cols.events")}</TableHead>
+                            <TableHead>{t("cols.deliveries")}</TableHead>
+                            <TableHead className="text-right">{t("cols.status")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {(!webhooks || webhooks.length === 0) ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="text-center py-8 text-muted-foreground text-sm">
-                                    No outgoing webhooks registered yet.
+                                    {t("empty")}
                                 </TableCell>
                             </TableRow>
                         ) : (

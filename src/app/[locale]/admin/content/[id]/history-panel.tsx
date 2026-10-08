@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { restorePageRevision, rotatePreviewToken } from "@/actions/content";
 import { Copy, RefreshCw, History } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export type ApprovalRow = {
     id: string;
@@ -39,13 +40,14 @@ export default function HistoryPanel({
     previewToken: string | null;
     locale: string;
 }) {
+    const t = useTranslations("Admin.Content.History");
     const [busy, setBusy] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [confirmDelete, setConfirmDelete] = useState("");
+    const [confirmDelete] = useState("");
     void confirmDelete;
 
     const restore = async (revisionId: string) => {
-        if (!window.confirm("Restore this revision? Current content is snapshotted first, so restore is reversible.")) return;
+        if (!window.confirm(t("restore_confirm"))) return;
         setBusy(`restore:${revisionId}`);
         setError(null);
         const res = await restorePageRevision(pageId, revisionId);
@@ -55,7 +57,7 @@ export default function HistoryPanel({
     };
 
     const rotate = async () => {
-        if (!window.confirm("Rotate the preview link? The old link stops working immediately.")) return;
+        if (!window.confirm(t("rotate_confirm"))) return;
         setBusy("rotate");
         setError(null);
         const res = await rotatePreviewToken(pageId);
@@ -70,7 +72,7 @@ export default function HistoryPanel({
         try {
             await navigator.clipboard.writeText(url);
         } catch {
-            setError("Could not copy — select and copy the link manually.");
+            setError(t("copy_failed"));
         }
     };
 
@@ -79,13 +81,13 @@ export default function HistoryPanel({
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base flex items-center gap-2">
-                        <History className="h-4 w-4" /> Revision history
+                        <History className="h-4 w-4" /> {t("title")}
                     </CardTitle>
-                    <CardDescription>Every save snapshots the page. Restore is content-only and itself reversible.</CardDescription>
+                    <CardDescription>{t("description")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {revisions.length === 0 ? (
-                        <p className="text-sm text-muted-foreground">No revisions yet — they appear after the first save.</p>
+                        <p className="text-sm text-muted-foreground">{t("no_revisions")}</p>
                     ) : (
                         <ul className="space-y-2">
                             {revisions.map((r) => (
@@ -97,7 +99,7 @@ export default function HistoryPanel({
                                         </p>
                                     </div>
                                     <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => restore(r.id)}>
-                                        {busy === `restore:${r.id}` ? "Restoring…" : "Restore"}
+                                        {busy === `restore:${r.id}` ? t("restoring") : t("restore")}
                                     </Button>
                                 </li>
                             ))}
@@ -108,12 +110,12 @@ export default function HistoryPanel({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Approval history</CardTitle>
-                    <CardDescription>Review requests, approvals, and change requests with reviewer identity.</CardDescription>
+                    <CardTitle className="text-base">{t("approval_title")}</CardTitle>
+                    <CardDescription>{t("approval_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {approvals.length === 0 ? (
-                        <p className="text-sm text-muted-foreground">No review activity yet.</p>
+                        <p className="text-sm text-muted-foreground">{t("no_approvals")}</p>
                     ) : (
                         <ul className="space-y-2">
                             {approvals.map((a) => (
@@ -134,8 +136,8 @@ export default function HistoryPanel({
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-base">Draft preview link</CardTitle>
-                    <CardDescription>Token-gated, shareable without login, excluded from search engines.</CardDescription>
+                    <CardTitle className="text-base">{t("preview_title")}</CardTitle>
+                    <CardDescription>{t("preview_description")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {previewToken ? (
@@ -148,11 +150,11 @@ export default function HistoryPanel({
                             </div>
                             <Button size="sm" variant="outline" className="gap-1" disabled={busy !== null} onClick={rotate}>
                                 <RefreshCw className="h-3.5 w-3.5" />
-                                {busy === "rotate" ? "Rotating…" : "Rotate link"}
+                                {busy === "rotate" ? t("rotating") : t("rotate")}
                             </Button>
                         </>
                     ) : (
-                        <p className="text-sm text-muted-foreground">Preview links need migration 24 applied.</p>
+                        <p className="text-sm text-muted-foreground">{t("missing_migration")}</p>
                     )}
                     {error && <p className="text-sm text-red-500">{error}</p>}
                 </CardContent>

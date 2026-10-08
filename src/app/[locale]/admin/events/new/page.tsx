@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/manage/page-header";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -17,6 +18,7 @@ import { Link } from "@/lib/navigation";
 
 export default function NewEventPage() {
     const router = useRouter();
+    const t = useTranslations("Admin.Events.new");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [type, setType] = useState<EventType>("in_person");
@@ -38,7 +40,7 @@ export default function NewEventPage() {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (!title.trim() || !startDate) {
-            setError("An event title and start date are required.");
+            setError(t("required"));
             return;
         }
         setLoading(true);
@@ -75,18 +77,18 @@ export default function NewEventPage() {
         <div className="max-w-3xl space-y-6">
             <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                 <Link href="/admin/events">
-                    <ArrowLeft className="h-4 w-4" /> Back to Events
+                    <ArrowLeft className="h-4 w-4" /> {t("back")}
                 </Link>
             </Button>
-            <PageHeader title="Schedule Event" description="Organize a workshop, webinar, or community outreach event." />
+            <PageHeader title={t("title")} description={t("description")} />
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-base">
-                            <CalendarDays className="h-4 w-4 text-purple-500" /> Event details
+                            <CalendarDays className="h-4 w-4 text-purple-500" /> {t("details_title")}
                         </CardTitle>
-                        <CardDescription>Describe the event and when it takes place.</CardDescription>
+                        <CardDescription>{t("details_description")}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {error && (
@@ -95,81 +97,81 @@ export default function NewEventPage() {
                             </Alert>
                         )}
                         <div className="space-y-1">
-                            <label htmlFor="event-title" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event title</label>
-                            <Input id="event-title" required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Community Cleanup Day" />
+                            <label htmlFor="event-title" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("event_title")}</label>
+                            <Input id="event-title" required value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("event_title_placeholder")} />
                         </div>
                         <div className="space-y-1">
-                            <label htmlFor="event-description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</label>
-                            <Textarea id="event-description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What will attendees experience?" />
+                            <label htmlFor="event-description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("description_label")}</label>
+                            <Textarea id="event-description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t("description_placeholder")} />
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label htmlFor="event-start" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Start date & time</label>
+                                <label htmlFor="event-start" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("start_label")}</label>
                                 <Input id="event-start" required type="datetime-local" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                             </div>
                             <div className="space-y-1">
-                                <label htmlFor="event-end" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">End date & time</label>
+                                <label htmlFor="event-end" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("end_label")}</label>
                                 <Input id="event-end" type="datetime-local" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                             </div>
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Event type</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("type_label")}</label>
                                 <Select value={type} onValueChange={(v) => setType(v as EventType)}>
                                     <SelectTrigger><SelectValue /></SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="in_person">In person</SelectItem>
-                                        <SelectItem value="virtual">Virtual</SelectItem>
-                                        <SelectItem value="hybrid">Hybrid</SelectItem>
+                                        <SelectItem value="in_person">{t("type_in_person")}</SelectItem>
+                                        <SelectItem value="virtual">{t("type_virtual")}</SelectItem>
+                                        <SelectItem value="hybrid">{t("type_hybrid")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("status_label")}</label>
                                 <Select value={status} onValueChange={(v) => setStatus(v as EventStatus)}>
                                     <SelectTrigger><SelectValue /></SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="draft">Draft</SelectItem>
-                                        <SelectItem value="published">Published</SelectItem>
-                                        <SelectItem value="cancelled">Cancelled</SelectItem>
-                                        <SelectItem value="completed">Completed</SelectItem>
+                                        <SelectItem value="draft">{t("status_draft")}</SelectItem>
+                                        <SelectItem value="published">{t("status_published")}</SelectItem>
+                                        <SelectItem value="cancelled">{t("status_cancelled")}</SelectItem>
+                                        <SelectItem value="completed">{t("status_completed")}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label htmlFor="event-location" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Location</label>
-                                <Input id="event-location" value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Venue or address" />
+                                <label htmlFor="event-location" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("location_label")}</label>
+                                <Input id="event-location" value={location} onChange={(e) => setLocation(e.target.value)} placeholder={t("location_placeholder")} />
                             </div>
                             <div className="space-y-1">
-                                <label htmlFor="event-city" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">City</label>
-                                <Input id="event-city" value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
+                                <label htmlFor="event-city" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("city_label")}</label>
+                                <Input id="event-city" value={city} onChange={(e) => setCity(e.target.value)} placeholder={t("city_placeholder")} />
                             </div>
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label htmlFor="event-virtual" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Virtual link</label>
+                                <label htmlFor="event-virtual" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("virtual_link_label")}</label>
                                 <Input id="event-virtual" value={virtualLink} onChange={(e) => setVirtualLink(e.target.value)} placeholder="https://..." />
                             </div>
                             <div className="space-y-1">
-                                <label htmlFor="event-capacity" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Max attendees</label>
-                                <Input id="event-capacity" type="number" min="1" value={maxAttendees} onChange={(e) => setMaxAttendees(e.target.value)} placeholder="Unlimited" />
+                                <label htmlFor="event-capacity" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("max_attendees_label")}</label>
+                                <Input id="event-capacity" type="number" min="1" value={maxAttendees} onChange={(e) => setMaxAttendees(e.target.value)} placeholder={t("max_attendees_placeholder")} />
                             </div>
                         </div>
                         <label className="flex items-center gap-2 text-sm">
                             <Checkbox checked={isPublic} onCheckedChange={(v) => setIsPublic(v === true)} />
-                            Visible on the public website
+                            {t("public_label")}
                         </label>
                     </CardContent>
                 </Card>
                 <div className="flex justify-end gap-3">
                     <Button asChild variant="outline">
-                        <Link href="/admin/events">Cancel</Link>
+                        <Link href="/admin/events">{t("cancel")}</Link>
                     </Button>
                     <Button type="submit" disabled={loading}>
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {loading ? "Saving..." : "Save event"}
+                        {loading ? t("saving") : t("save")}
                     </Button>
                 </div>
             </form>

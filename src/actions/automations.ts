@@ -120,6 +120,71 @@ export async function deleteAutomationRule(id: string): Promise<{ error: string 
     return { error: null };
 }
 
+export interface AutomationTemplate {
+    id: string;
+    name: string;
+    description: string | null;
+    category: string | null;
+    trigger_type: string;
+    template_config: {
+        trigger_config?: Record<string, unknown>;
+        conditions?: Record<string, unknown>[];
+        actions?: Record<string, unknown>[];
+    };
+    is_system: boolean;
+}
+
+/** System + org automation templates (starters for new rules). */
+export async function getAutomationTemplates(): Promise<{ data: AutomationTemplate[] | null; error: string | null }> {
+    const auth = await authorizePermission(PERMISSIONS.automations.read);
+    if (!auth.ok) return { data: null, error: auth.error };
+
+    const { data, error } = await auth.context.supabase
+        .from('automation_templates')
+        .select('id, name, description, category, trigger_type, template_config, is_system')
+        .or(`organization_id.eq.${auth.organizationId},is_system.eq.true`)
+        .order('name', { ascending: true });
+
+    if (error) return { data: null, error: 'Unable to load automation templates. Please try again.' };
+    return { data: data as AutomationTemplate[], error: null };
+}
+
+/**
+ * Instantiate a template into a disabled rule for review.
+ * Rules always start disabled — enabling is an explicit second step.
+ */
+export async function instantiateAutomationTemplate(
+    templateId: string,
+    name?: string,
+): Promise<{ data: AutomationRule | null; error: string | null }> {
+    const auth = await authorizePermission(PERMISSIONS.automations.manage);
+    if (!auth.ok) return { data: null, error: auth.error };
+
+    // RLS already scopes reads (own org + system rows); re-check ownership
+    // in JS so a forged id from another org fails closed here too.
+    const { data: scoped } = await auth.context.supabase
+        .from('automation_templates')
+        .select('name, description, trigger_type, template_config, organization_id, is_system')
+        .eq('id', templateId)
+        .maybeSingle();
+    const t = scoped as (AutomationTemplate & { organization_id: string | null }) | null;
+    if (!t || (t.organization_id !== null && !t.is_system && t.organization_id !== auth.organizationId)) {
+        return { data: null, error: 'Template not found.' };
+    }
+
+    const cfg = (t.template_config ?? {}) as AutomationTemplate['template_config'];
+    return createAutomationRule({
+        name: name?.trim() || `${t.name} (copy)`,
+        description: t.description,
+        is_enabled: false,
+        trigger_type: t.trigger_type as AutomationRule['trigger_type'],
+        trigger_config: (cfg.trigger_config ?? {}) as Record<string, unknown>,
+        conditions: (cfg.conditions ?? []) as unknown as AutomationRule['conditions'],
+        actions: (cfg.actions ?? []) as unknown as AutomationRule['actions'],
+        created_by: auth.context.userId,
+    });
+}
+
 /** Get automation execution history (organization-scoped, optionally per rule). */
 export async function getAutomationExecutions(ruleId?: string): Promise<{ data: AutomationExecution[] | null; error: string | null }> {
     const auth = await authorizePermission(PERMISSIONS.automations.read);

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,8 @@ import { Link } from "@/lib/navigation";
 
 export default function NewWorkflowDefinitionPage() {
     const router = useRouter();
+    const t = useTranslations("Admin.Workflows");
+    const tCommon = useTranslations("Admin.Common");
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
@@ -47,27 +50,27 @@ export default function NewWorkflowDefinitionPage() {
             <div className="flex items-center gap-2">
                 <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                     <Link href="/admin/workflows">
-                        <ArrowLeft className="h-4 w-4" /> Back to Workflows
+                        <ArrowLeft className="h-4 w-4" /> {t("back_to_workflows")}
                     </Link>
                 </Button>
             </div>
 
             <PageHeader
-                title="Design New Workflow"
-                description="Configure multi-step approval chains, task assignment flows, and execution steps."
+                title={t("new_title")}
+                description={t("new_description")}
             />
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-base flex items-center gap-2">
-                            <GitBranch className="h-4 w-4 text-blue-500" /> Workflow Template Details
+                            <GitBranch className="h-4 w-4 text-blue-500" /> {t("details_title")}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Workflow Name</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name")}</label>
                                 <Input
                                     required
                                     value={name}
@@ -75,25 +78,25 @@ export default function NewWorkflowDefinitionPage() {
                                         setName(e.target.value);
                                         setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-"));
                                     }}
-                                    placeholder="e.g. Grant Application Approval Flow"
+                                    placeholder={t("name_placeholder")}
                                 />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL Slug</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("slug")}</label>
                                 <Input
                                     required
                                     value={slug}
                                     onChange={(e) => setSlug(e.target.value)}
-                                    placeholder="grant-approval-flow"
+                                    placeholder={t("slug_placeholder")}
                                 />
                             </div>
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("description_label")}</label>
                             <Textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                placeholder="Describe the purpose of this workflow..."
+                                placeholder={t("description_placeholder")}
                             />
                         </div>
                     </CardContent>
@@ -101,10 +104,10 @@ export default function NewWorkflowDefinitionPage() {
 
                 <div className="flex justify-end gap-3">
                     <Button asChild variant="outline">
-                        <Link href="/admin/workflows">Cancel</Link>
+                        <Link href="/admin/workflows">{tCommon("cancel")}</Link>
                     </Button>
                     <Button type="submit" disabled={loading}>
-                        {loading ? "Creating Workflow..." : "Create Workflow"}
+                        {loading ? t("creating") : t("create")}
                     </Button>
                 </div>
             </form>

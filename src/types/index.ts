@@ -27,6 +27,28 @@ export type {
 
 // Domain types
 export type {
+    LegalEntityData,
+    DataClassification,
+    Fund,
+    FundType as TrustFundType,
+    Grant,
+    GrantStatus,
+    OrgDomain,
+    AuditEvent,
+    ConsentRecord,
+    ConsentSubjectType,
+    ConsentStatus,
+    RetentionPolicy,
+    LegalHold,
+    DataSubjectRequest,
+    DsarType,
+    DsarStatus,
+    TrustDocument,
+    DocumentScanState,
+    EvidenceLink,
+    EvidenceType,
+} from './domain/trust';
+export type {
     Organization,
     OrganizationInsert,
     OrganizationUpdate,

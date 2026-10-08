@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { archiveContentPage, deleteContentPage, unpublishContent } from "@/actions/content";
 import { ShieldAlert } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function DangerZone({
     pageId,
@@ -18,12 +19,13 @@ export default function DangerZone({
     status: string;
 }) {
     const router = useRouter();
+    const t = useTranslations("Admin.Content.Danger");
     const [busy, setBusy] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [confirm, setConfirm] = useState("");
 
     const runArchive = async () => {
-        if (!window.confirm("Archive this page? It leaves the public site and sitemap immediately. Reversible via workflow.")) return;
+        if (!window.confirm(t("archive_confirm"))) return;
         setBusy("archive");
         setError(null);
         const res = await archiveContentPage(pageId);
@@ -54,26 +56,26 @@ export default function DangerZone({
         <Card className="border-red-200 dark:border-red-900">
             <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2 text-red-600 dark:text-red-400">
-                    <ShieldAlert className="h-4 w-4" /> Danger zone
+                    <ShieldAlert className="h-4 w-4" /> {t("title")}
                 </CardTitle>
-                <CardDescription>Archiving is reversible; deletion is permanent.</CardDescription>
+                <CardDescription>{t("description")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                     {status === "published" && (
                         <Button size="sm" variant="outline" disabled={busy !== null} onClick={runUnpublish}>
-                            {busy === "unpublish" ? "Working…" : "Unpublish to draft"}
+                            {busy === "unpublish" ? t("unpublishing") : t("unpublish")}
                         </Button>
                     )}
                     {status !== "archived" && (
                         <Button size="sm" variant="outline" disabled={busy !== null} onClick={runArchive}>
-                            {busy === "archive" ? "Archiving…" : "Archive page"}
+                            {busy === "archive" ? t("archiving") : t("archive")}
                         </Button>
                     )}
                 </div>
                 <div className="space-y-2 rounded-md border p-3">
                     <p className="text-xs text-muted-foreground">
-                        To delete permanently, type the slug <span className="font-mono font-semibold">{slug}</span> below.
+                        {t("delete_label", { slug })}
                     </p>
                     <div className="flex gap-2">
                         <Input value={confirm} onChange={(e) => setConfirm(e.target.value)} placeholder={slug} className="font-mono" />
@@ -83,7 +85,7 @@ export default function DangerZone({
                             disabled={busy !== null || confirm.trim() !== slug}
                             onClick={runDelete}
                         >
-                            {busy === "delete" ? "Deleting…" : "Delete"}
+                            {busy === "delete" ? t("deleting") : t("delete")}
                         </Button>
                     </div>
                 </div>

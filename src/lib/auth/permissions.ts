@@ -43,8 +43,14 @@ export const PERMISSIONS = {
     campaigns: { read: 'campaigns.read', manage: 'campaigns.manage' },
     events: { read: 'events.read', manage: 'events.manage' },
     forms: { read: 'forms.read', manage: 'forms.manage' },
-    content: { read: 'content.read', manage: 'content.manage', publish: 'content.publish' },
+    content: {
+        read: 'content.read',
+        manage: 'content.manage',
+        review: 'content.review',
+        publish: 'content.publish',
+    },
     finance: { read: 'finance.read', manage: 'finance.manage', approve: 'finance.approve' },
+    beneficiaries: { read: 'beneficiaries.read', manage: 'beneficiaries.manage' },
     impact: { read: 'impact.read', manage: 'impact.manage' },
     notifications: { read: 'notifications.read', manage: 'notifications.manage' },
     messaging: { read: 'messaging.read', manage: 'messaging.manage' },
@@ -98,9 +104,10 @@ export const ROLE_PERMISSIONS: Record<AppRole, readonly Permission[] | '*'> = {
         PERMISSIONS.forms.manage,
         PERMISSIONS.impact.read,
         PERMISSIONS.impact.manage,
-        // Content (drafting only -- publishing requires content.publish)
+        // Content (draft + review; publishing requires content.publish)
         PERMISSIONS.content.read,
         PERMISSIONS.content.manage,
+        PERMISSIONS.content.review,
         // Communication
         PERMISSIONS.messaging.read,
         PERMISSIONS.notifications.read,
@@ -113,11 +120,16 @@ export const ROLE_PERMISSIONS: Record<AppRole, readonly Permission[] | '*'> = {
         PERMISSIONS.automations.read,
         PERMISSIONS.workflows.read,
         PERMISSIONS.governance.read,
+        PERMISSIONS.beneficiaries.read,
+        PERMISSIONS.beneficiaries.manage,
     ],
     member: [
         PERMISSIONS.notifications.read,
         PERMISSIONS.messaging.read,
         PERMISSIONS.events.read,
+        PERMISSIONS.projects.read,
+        PERMISSIONS.beneficiaries.read,
+        PERMISSIONS.beneficiaries.manage,
     ],
 };
 

@@ -89,5 +89,4 @@ REVOKE ALL ON FUNCTION public.schedule_cron_jobs(text) FROM PUBLIC, anon, authen
 GRANT EXECUTE ON FUNCTION public.schedule_cron_jobs(text) TO postgres;
 
 comment on function public.schedule_cron_jobs(text) is
-    'Idempotently (re)installs the pg_cron jobs that invoke the scheduled Edge Functions. '
-    || 'Requires the project''s functions URL (no hardcoded default). Admin-only.';
+    'Idempotently (re)installs the pg_cron jobs that invoke the scheduled Edge Functions. Requires the project''s functions URL (no hardcoded default). Admin-only.';

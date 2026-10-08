@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/manage/page-header";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -14,6 +15,7 @@ import { Link } from "@/lib/navigation";
 
 export default function NewRolePage() {
     const router = useRouter();
+    const t = useTranslations("Admin.Rbac.New");
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("");
     const [description, setDescription] = useState("");
@@ -28,7 +30,7 @@ export default function NewRolePage() {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (!name.trim() || !slug.trim()) {
-            setError("A role name and URL slug are required.");
+            setError(t("required"));
             return;
         }
         setLoading(true);
@@ -51,18 +53,18 @@ export default function NewRolePage() {
         <div className="max-w-3xl space-y-6">
             <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                 <Link href="/admin/rbac">
-                    <ArrowLeft className="h-4 w-4" /> Back to Roles
+                    <ArrowLeft className="h-4 w-4" /> {t("back")}
                 </Link>
             </Button>
-            <PageHeader title="Create Role" description="Define a custom role, then assign granular permissions on the next step." />
+            <PageHeader title={t("title")} description={t("description")} />
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2 text-base">
-                            <ShieldCheck className="h-4 w-4 text-emerald-500" /> Role details
+                            <ShieldCheck className="h-4 w-4 text-emerald-500" /> {t("details_title")}
                         </CardTitle>
-                        <CardDescription>Permissions start empty — grant them after creation.</CardDescription>
+                        <CardDescription>{t("details_description")}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {error && (
@@ -72,27 +74,27 @@ export default function NewRolePage() {
                         )}
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label htmlFor="role-name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Role name</label>
-                                <Input id="role-name" required value={name} onChange={(e) => updateName(e.target.value)} placeholder="e.g. Finance Reviewer" />
+                                <label htmlFor="role-name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
+                                <Input id="role-name" required value={name} onChange={(e) => updateName(e.target.value)} placeholder={t("name_placeholder")} />
                             </div>
                             <div className="space-y-1">
-                                <label htmlFor="role-slug" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL slug</label>
+                                <label htmlFor="role-slug" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("slug_label")}</label>
                                 <Input id="role-slug" required value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="finance-reviewer" />
                             </div>
                         </div>
                         <div className="space-y-1">
-                            <label htmlFor="role-description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</label>
-                            <Textarea id="role-description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Who should be assigned this role?" />
+                            <label htmlFor="role-description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("description_label")}</label>
+                            <Textarea id="role-description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t("description_placeholder")} />
                         </div>
                     </CardContent>
                 </Card>
                 <div className="flex justify-end gap-3">
                     <Button asChild variant="outline">
-                        <Link href="/admin/rbac">Cancel</Link>
+                        <Link href="/admin/rbac">{t("cancel")}</Link>
                     </Button>
                     <Button type="submit" disabled={loading}>
                         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {loading ? "Creating..." : "Create role"}
+                        {loading ? t("creating") : t("create")}
                     </Button>
                 </div>
             </form>

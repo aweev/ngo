@@ -12,9 +12,12 @@ import { createContentPage, checkSlugAvailable } from "@/actions/content";
 import { normalizeSlug, PAGE_CATEGORIES } from "@/lib/content/slug";
 import { ArrowLeft, FilePlus2 } from "lucide-react";
 import { Link } from "@/lib/navigation";
+import { useTranslations } from "next-intl";
 
 export default function NewContentPage() {
     const router = useRouter();
+    const t = useTranslations("Admin.Content");
+    const tCommon = useTranslations("Admin.Common");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [title, setTitle] = useState("");
@@ -47,18 +50,18 @@ export default function NewContentPage() {
     useEffect(() => {
         if (!debouncedSlug) return;
         let alive = true;
-        const t = setTimeout(async () => {
+        const timer = setTimeout(async () => {
             const res = await checkSlugAvailable(debouncedSlug);
             if (!alive) return;
             setSlugCheck({
                 slug: debouncedSlug,
                 state: res.available ? "ok" : res.error?.includes("already in use") ? "taken" : "invalid",
-                msg: res.available ? "Slug is available." : (res.error ?? "Slug unavailable."),
+                msg: res.available ? t("New.slug_available") : (res.error ?? t("New.slug_unavailable")),
             });
         }, 400);
         return () => {
             alive = false;
-            clearTimeout(t);
+            clearTimeout(timer);
         };
     }, [debouncedSlug]);
 
@@ -66,11 +69,11 @@ export default function NewContentPage() {
         e.preventDefault();
         setError(null);
         if (!title.trim()) {
-            setError("Title is required.");
+            setError(t("New.title_required"));
             return;
         }
         if (visibleSlugState === "taken" || visibleSlugState === "invalid") {
-            setError(visibleSlugMsg ?? "Fix the slug before saving.");
+            setError(visibleSlugMsg ?? t("New.slug_fix_required"));
             return;
         }
         setLoading(true);
@@ -90,7 +93,7 @@ export default function NewContentPage() {
         });
         setLoading(false);
         if (res.error || !res.data) {
-            setError(res.error ?? "Unable to create page.");
+            setError(res.error ?? t("New.unable_to_create"));
             return;
         }
         const id = (res.data as { id: string }).id;
@@ -102,31 +105,31 @@ export default function NewContentPage() {
             <div className="flex items-center gap-2">
                 <Button asChild variant="ghost" size="sm" className="gap-1 text-xs">
                     <Link href="/admin/content">
-                        <ArrowLeft className="h-4 w-4" /> Back to Pages
+                        <ArrowLeft className="h-4 w-4" /> {tCommon("back")}
                     </Link>
                 </Button>
             </div>
 
             <PageHeader
-                title="New content page"
-                description="Pages start as drafts. Add translations per locale, request review, then publish — publishing requires approval and the content.publish permission."
+                title={t("New.title")}
+                description={t("New.description")}
             />
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-base flex items-center gap-2">
-                            <FilePlus2 className="h-4 w-4 text-emerald-500" /> Page details
+                            <FilePlus2 className="h-4 w-4 text-emerald-500" /> {t("New.page_details")}
                         </CardTitle>
-                        <CardDescription>The slug becomes the URL — it must be unique and can&apos;t be a reserved word.</CardDescription>
+                        <CardDescription>{t("New.slug_hint")}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Title</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.title_label")}</label>
                             <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Our mission and vision" />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Slug</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.slug_label")}</label>
                             <Input
                                 required
                                 value={suggestedSlug}
@@ -139,15 +142,15 @@ export default function NewContentPage() {
                             />
                             {visibleSlugMsg && (
                                 <p className={`text-xs ${visibleSlugState === "ok" ? "text-emerald-600" : visibleSlugState === "checking" ? "text-muted-foreground" : "text-red-500"}`}>
-                                    {visibleSlugState === "checking" ? "Checking availability…" : visibleSlugMsg}
+                                    {visibleSlugState === "checking" ? t("New.slug_checking") : visibleSlugMsg}
                                 </p>
                             )}
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.category_label")}</label>
                             <Select value={category} onValueChange={setCategory}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select category" />
+                                    <SelectValue placeholder={t("New.category_placeholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {PAGE_CATEGORIES.map((c) => (
@@ -159,34 +162,34 @@ export default function NewContentPage() {
                             </Select>
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Excerpt</label>
-                            <Textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Short summary shown in listings…" />
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.excerpt_label")}</label>
+                            <Textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder={t("New.excerpt_placeholder")} />
                         </div>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-base">SEO</CardTitle>
-                        <CardDescription>Per-page search metadata. Falls back to title/excerpt when empty.</CardDescription>
+                        <CardTitle className="text-base">{t("New.seo_title")}</CardTitle>
+                        <CardDescription>{t("New.seo_description")}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Meta title</label>
-                            <Input value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} maxLength={200} placeholder="Defaults to the page title" />
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.meta_title_label")}</label>
+                            <Input value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} maxLength={200} placeholder={t("New.meta_title_placeholder")} />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Meta description</label>
-                            <Textarea value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} maxLength={500} placeholder="Defaults to the excerpt" />
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.meta_description_label")}</label>
+                            <Textarea value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} maxLength={500} placeholder={t("New.meta_description_placeholder")} />
                         </div>
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover image URL</label>
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.cover_url_label")}</label>
                                 <Input value={coverUrl} onChange={(e) => setCoverUrl(e.target.value)} placeholder="https://…" />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cover alt text</label>
-                                <Input value={coverAlt} onChange={(e) => setCoverAlt(e.target.value)} maxLength={300} placeholder="Describe the image" />
+                                <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("New.cover_alt_label")}</label>
+                                <Input value={coverAlt} onChange={(e) => setCoverAlt(e.target.value)} maxLength={300} placeholder={t("New.cover_alt_placeholder")} />
                             </div>
                         </div>
                     </CardContent>
@@ -196,10 +199,10 @@ export default function NewContentPage() {
 
                 <div className="flex justify-end gap-3">
                     <Button asChild variant="outline">
-                        <Link href="/admin/content">Cancel</Link>
+                        <Link href="/admin/content">{tCommon("cancel")}</Link>
                     </Button>
                     <Button type="submit" disabled={loading || visibleSlugState === "checking"}>
-                        {loading ? "Creating…" : "Create draft"}
+                        {loading ? t("New.creating") : t("New.create_draft")}
                     </Button>
                 </div>
             </form>

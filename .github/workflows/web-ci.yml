@@ -45,7 +45,10 @@ jobs:
           node scripts/verify-action-auth.mjs
           node scripts/verify-cta-links.mjs
           node scripts/verify-i18n.mjs
+          node scripts/verify-i18n-hardcoded.mjs
           node scripts/verify-migrations.mjs
+          node scripts/verify-rls-isolation.mjs
+          node scripts/verify-reliability.mjs
 
       - name: Build (standalone)
         env:
@@ -55,37 +58,90 @@ jobs:
           NEXT_OUTPUT: standalone
         run: pnpm build
 
+  # Runs the migrations against a real Supabase stack, not bare Postgres.
+  #
+  # The migrations reference auth.users / auth.uid(), storage.objects,
+  # vault.decrypted_secrets, cron.schedule and the anon/authenticated/service_role
+  # roles. None of those exist on a plain postgres image, so a bare-Postgres job
+  # cannot apply this schema at all - which is why the previous version of this
+  # job never reached its own assertions. `supabase db start` provides every one
+  # of them and applies supabase/migrations in order.
   rls:
-    name: RLS Isolation (Supabase)
+    name: RLS Isolation (real Supabase stack)
     needs: verify
     runs-on: ubuntu-latest
-    # Requires a linked Supabase project for ephemeral branch testing.
-    # Set SUPABASE_ACCESS_TOKEN + SUPABASE_PROJECT_ID as repo secrets to enable.
-    if: ${{ github.repository != '' && vars.RUN_RLS == 'true' }}
+    env:
+      DB_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
     steps:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
         with:
           version: latest
-      - name: Create ephemeral branch and run RLS tests
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_PROJECT_ID: ${{ vars.SUPABASE_PROJECT_ID }}
+      - name: Start Supabase (Postgres + auth + storage)
+        run: supabase start
+      - name: Apply all migrations to a fresh database
+        run: supabase db reset
+      # Every public table that owns tenant data must have RLS on. The catalog
+      # column is pg_class.relrowsecurity (pg_tables exposes it too, but its
+      # schemaname is a NAME and cannot be joined to pg_namespace.oid - the
+      # previous query did exactly that, errored under ON_ERROR_STOP, and so
+      # never reached the assertion at all).
+      - name: Assert RLS is enabled on every tenant table
         run: |
-          BRANCH="ci-${{ github.run_id }}"
-          supabase branches create "$BRANCH" --project-ref "$SUPABASE_PROJECT_ID"
-          sleep 60
-          supabase db push --branch "$BRANCH" --project-ref "$SUPABASE_PROJECT_ID"
-          echo "RLS test suite execution requires psql against the branch DB."
-          echo "Extend this step to connect + run supabase/tests/rls-isolation-tests.sql"
-          supabase branches delete "$BRANCH" --project-ref "$SUPABASE_PROJECT_ID"
+          psql "$DB_URL" -v ON_ERROR_STOP=1 -tAc "
+            SELECT string_agg(c.relname, ', ' ORDER BY c.relname)
+            FROM pg_class c
+            JOIN pg_namespace n ON n.oid = c.relnamespace
+            WHERE n.nspname = 'public'
+              AND c.relkind = 'r'
+              AND c.relrowsecurity = false
+              AND c.relname NOT IN ('stripe_events','spatial_ref_sys','schema_migrations');" \
+            > unrls.txt
+          echo "Tables without RLS: $(cat unrls.txt)"
+          [ -z "$(cat unrls.txt)" ] || { echo 'RLS missing on public tables'; exit 1; }
+      - name: Cross-tenant isolation suite
+        run: node scripts/run-rls-tests.mjs "$DB_URL"
+      # Live projection check: the public site reads through narrow SECURITY
+      # DEFINER views/functions, so CI must prove they exist and grant anon.
+      - name: Verify public views, functions and anon grants
+        run: node scripts/verify-db-projections.mjs
+      - name: Reliability gate (Wave 3)
+        run: node scripts/verify-reliability.mjs
+      - name: Stop Supabase
+        if: always()
+        run: supabase stop --no-backup
+
+  security:
+    name: Dependency, secret & license scanning
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Dependency audit (high and above block)
+        run: pnpm audit --prod --audit-level high
+      # Wave 0 item 5: no production dependency may ship under a copyleft,
+      # source-available or unresolved license.
+      - name: License policy (production dependencies)
+        run: node scripts/verify-licenses.mjs
 
   e2e:
     name: E2E (Playwright)
     needs: verify
     runs-on: ubuntu-latest
-    # Non-blocking until test suites are authored; flip required once green.
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -104,4 +160,5 @@ jobs:
           NEXT_PUBLIC_APP_URL: http://localhost:3000
           NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+          NEXT_OUTPUT: standalone
         run: pnpm test:e2e

@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,26 +9,28 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function HRLifecyclePage() {
+export default async function HRLifecyclePage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Hr.lifecycle" });
     const { data: records } = await getHRLifecycleRecords();
 
     return (
         <div className="space-y-6">
             <PageHeader
-                title="HR Onboarding & Offboarding Lifecycle"
-                description="Automated checklists, contract generation, equipment collection, and access revocation for hiring and termination."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <div className="flex gap-2">
                         <Button asChild variant="outline" className="gap-2">
                             <Link href="/admin/workers?action=new">
                                 <UserCheck className="h-4 w-4 text-emerald-500" />
-                                Onboard New Hire
+                                {t("onboard")}
                             </Link>
                         </Button>
                         <Button asChild variant="destructive" className="gap-2">
                             <Link href="/admin/hr/offboard">
                                 <UserMinus className="h-4 w-4" />
-                                Initiate Offboarding
+                                {t("offboard")}
                             </Link>
                         </Button>
                     </div>
@@ -38,11 +41,11 @@ export default async function HRLifecyclePage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Type</TableHead>
-                            <TableHead>Person Type</TableHead>
-                            <TableHead>Effective Date</TableHead>
-                            <TableHead>Access Status</TableHead>
-                            <TableHead>Lifecycle Status</TableHead>
+                            <TableHead>{t("cols.type")}</TableHead>
+                            <TableHead>{t("cols.person")}</TableHead>
+                            <TableHead>{t("cols.date")}</TableHead>
+                            <TableHead>{t("cols.access")}</TableHead>
+                            <TableHead>{t("cols.status")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>

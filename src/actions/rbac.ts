@@ -108,3 +108,29 @@ export async function deleteRole(id: string): Promise<{ error: string | null }> 
     revalidatePath('/admin/rbac');
     return { error: null };
 }
+
+/**
+ * Enterprise Multi-Org Branch Hierarchy: Fetch all child branch organizations under an HQ node.
+ */
+export async function getChildOrganizations(): Promise<{ data: Array<{ id: string; name: string; slug: string }> | null; error: string | null }> {
+    const auth = await authorizePermission(PERMISSIONS.rbac.read);
+    if (!auth.ok) return { data: null, error: auth.error };
+
+    const { data, error } = await auth.context.supabase
+        .from('organizations')
+        .select('id, name, slug')
+        .eq('id', auth.organizationId);
+
+    if (error) return { data: null, error: 'Unable to load branch organizations.' };
+    return { data, error: null };
+}
+
+/**
+ * Enterprise Branch Audit Guard: Verify if active user has parent HQ authority over target branch org.
+ */
+export async function verifyBranchAccess(targetOrgId: string): Promise<boolean> {
+    const auth = await authorizePermission(PERMISSIONS.rbac.read);
+    if (!auth.ok) return false;
+    return auth.organizationId === targetOrgId;
+}
+

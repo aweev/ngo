@@ -54,6 +54,8 @@ pnpm verify:migrations   # static SQL migration checks (quotes, ordering, RLS pa
 pnpm verify:actions      # every server action must be auth-guarded or allowlisted
 pnpm verify:cta-links    # every CTA must resolve to a real public route
 pnpm supabase:gen-types  # regenerate src/types/database.ts from the linked project
+pnpm seed:personas        # 4 staff users (owner/admin/manager/member) + org bootstrap
+pnpm seed:master          # full coherent demo dataset (see docs/11-seeding-and-demo.md)
 ```
 
 ## Architecture map
@@ -61,12 +63,15 @@ pnpm supabase:gen-types  # regenerate src/types/database.ts from the linked proj
 ```
 src/
   app/[locale]/public/    Public website (CMS-driven, ISR + tag revalidation)
+  app/[locale]/field/     Offline-first field PWA (register, log, sync)
   app/[locale]/dashboard/ Member dashboard
   app/[locale]/admin/     Admin command center (permission-gated)
   app/api/stripe/webhook/ Donation confirmation (signature-verified, service role)
   actions/                Server Actions — every export passes an auth guard
   lib/auth/               Permission registry + authorize*/require* guards
-  lib/supabase/           SSR/route/middleware/public clients
+  lib/supabase/           SSR/admin/route/middleware/public clients
+  lib/field-records.ts    Consent + PII encryption + idempotent field writes
+  lib/offline/            IndexedDB outbox + sync engine (ack-only removal)
   lib/content/            CMS view-models + rich-text sanitizer
   store/ hooks/ providers/ components/
 supabase/
@@ -87,7 +92,11 @@ install → `typegen` → `typecheck` → `lint` → all three static verify gat
 
 ## Further docs
 
-- [`docs/production-readiness-notes.md`](./docs/production-readiness-notes.md) — known gaps & release gate
+Start at [`docs/README.md`](./docs/README.md) — the full documentation index
+(vision, architecture, data model, security, finance, field ops, admin
+guide, deployment, operations, testing, seeding, roadmap, glossary).
+
+- [`docs/production-readiness-notes.md`](./docs/production-readiness-notes.md) — historical gaps & release gate (partially superseded by Phases 0–2; see banner)
 - [`docs/programs-production-plan.md`](./docs/programs-production-plan.md) — programs vertical plan
 - [`docs/planning/task.md`](./docs/planning/task.md) — build-wave execution log
 - [`MIGRATION-GUIDE.md`](./MIGRATION-GUIDE.md) — Go API → Next.js + Supabase architecture migration

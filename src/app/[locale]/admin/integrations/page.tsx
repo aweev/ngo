@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { getIntegrations } from "@/actions/integrations";
@@ -8,26 +9,28 @@ import { Link } from "@/lib/navigation";
 export const dynamic = "force-dynamic";
 
 const availableConnectors = [
-    { provider: "stripe", name: "Stripe Payments", description: "Accept recurring donor subscriptions & online contributions." },
-    { provider: "mailchimp", name: "Mailchimp Sync", description: "Sync contacts, campaign segments, and donor newsletters." },
-    { provider: "slack", name: "Slack Notifications", description: "Stream real-time volunteer activity & donation alerts to team channels." },
-    { provider: "twilio", name: "Twilio SMS", description: "Send automated SMS notifications to field workers and volunteers." },
-    { provider: "zapier", name: "Zapier Webhooks", description: "Connect to 5,000+ apps via webhooks." },
+    { provider: "stripe", name: "Stripe Payments" },
+    { provider: "mailchimp", name: "Mailchimp Sync" },
+    { provider: "slack", name: "Slack Notifications" },
+    { provider: "twilio", name: "Twilio SMS" },
+    { provider: "zapier", name: "Zapier Webhooks" },
 ];
 
-export default async function IntegrationsPage() {
+export default async function IntegrationsPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Integrations" });
     const { data: integrations } = await getIntegrations();
 
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Integrations & Webhooks Marketplace"
-                description="Connect external services, configure webhooks, and streamline organization data flow."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <Button asChild variant="outline" className="gap-2">
                         <Link href="/admin/integrations/webhooks">
                             <WebhookIcon className="h-4 w-4" />
-                            Outgoing Webhooks
+                            {t("webhooks_btn")}
                         </Link>
                     </Button>
                 }
@@ -41,7 +44,7 @@ export default async function IntegrationsPage() {
                             key={connector.provider}
                             provider={connector.provider}
                             name={connector.name}
-                            description={connector.description}
+                            description={t(`connectors.${connector.provider}`)}
                             status={active ? active.status : "pending"}
                             lastSyncedAt={active?.last_synced_at}
                         />

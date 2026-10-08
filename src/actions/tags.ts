@@ -21,7 +21,7 @@ export async function getTags(): Promise<{ data: Tag[] | null; error: string | n
 }
 
 /** Create a tag. */
-export async function createTag(input: Omit<TagInsert, 'organization_id'>): Promise<{ data: Tag | null; error: string | null }> {
+export async function createTag(input: Omit<TagInsert, 'organization_id' | 'created_by'>): Promise<{ data: Tag | null; error: string | null }> {
     const auth = await authorizePermission(PERMISSIONS.tags.manage);
     if (!auth.ok) return { data: null, error: auth.error };
 

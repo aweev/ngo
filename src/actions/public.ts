@@ -2,7 +2,8 @@
 
 import { z } from 'zod';
 import { createSupabaseServerClient, createSupabasePublicClient } from '@/lib/supabase/server';
-import { enforceRateLimit } from '@/lib/rate-limit';
+import { enforceRateLimit, getClientIp } from '@/lib/rate-limit';
+import { HONEYPOT_FIELD, hashThrottleIdentity, verifyHuman } from '@/lib/abuse-prevention';
 
 type PublicCampaign = {
     id: string;
@@ -567,15 +568,30 @@ export async function getPublicProjectsByCategory(
  * Subscribe to newsletter
  * Stores the subscriber in Supabase (idempotent via unique email constraint)
  */
-export async function subscribeToNewsletter(email: string, locale?: string): Promise<{ success: boolean; error: string | null }> {
+export async function subscribeToNewsletter(
+    email: string,
+    locale?: string,
+    meta?: { honeypot?: string; captchaToken?: string },
+): Promise<{ success: boolean; error: string | null }> {
     const normalizedEmail = email.trim().toLowerCase();
     const parsed = z.string().email().max(200).safeParse(normalizedEmail);
     if (!parsed.success) {
         return { success: false, error: 'Invalid email address' };
     }
 
-    const rate = await enforceRateLimit('newsletter');
+    const rate = await enforceRateLimit('newsletter', { subject: normalizedEmail });
     if (!rate.ok) return { success: false, error: rate.error };
+
+    // Abuse prevention (audit Wave 0, item 3): honeypot + optional CAPTCHA.
+    const human = await verifyHuman({ [HONEYPOT_FIELD]: meta?.honeypot ?? '' }, {
+        captchaToken: meta?.captchaToken,
+        ip: await getClientIp(),
+        surface: 'newsletter',
+        identity: hashThrottleIdentity(normalizedEmail),
+    });
+    if (!human.ok) {
+        return { success: false, error: 'Unable to subscribe right now. Please try again later.' };
+    }
 
     const supabase = await createSupabaseServerClient();
 
@@ -671,8 +687,21 @@ export async function submitPublicForm(
     }
     const cleanData = parsed.data as Record<string, unknown>;
 
-    const rate = await enforceRateLimit('form');
+    const formEmail = typeof cleanData.email === 'string' ? cleanData.email : undefined;
+    const rate = await enforceRateLimit('form', { subject: formEmail });
     if (!rate.ok) return { success: false, error: rate.error };
+
+    // Abuse prevention (audit Wave 0, item 3): honeypot + optional CAPTCHA.
+    // `data` is the raw payload; schema parsing below strips the control
+    // fields before anything is persisted.
+    const human = await verifyHuman(data, {
+        ip: await getClientIp(),
+        surface: 'form',
+        identity: formEmail ? hashThrottleIdentity(formEmail) : undefined,
+    });
+    if (!human.ok) {
+        return { success: false, error: human.reason ?? 'Submission rejected.' };
+    }
 
     const supabase = await createSupabaseServerClient();
 
@@ -707,8 +736,10 @@ export async function createPublicDonation(input: {
     type?: 'one_time' | 'recurring';
     email?: string;
     needsReceipt?: boolean;
+    honeypot?: string;
+    captchaToken?: string;
 }): Promise<{ success: boolean; reference?: string; error: string | null }> {
-    const { amount, currency = 'EUR', type = 'one_time', email, needsReceipt } = input;
+    const { amount, currency = 'EUR', type = 'one_time', email, needsReceipt, honeypot, captchaToken } = input;
 
     const parsed = z
         .object({
@@ -728,8 +759,19 @@ export async function createPublicDonation(input: {
         }
     }
 
-    const rate = await enforceRateLimit('donation');
+    const rate = await enforceRateLimit('donation', { subject: email });
     if (!rate.ok) return { success: false, error: rate.error };
+
+    // Abuse prevention (audit Wave 0, item 3): honeypot + optional CAPTCHA.
+    const human = await verifyHuman({ [HONEYPOT_FIELD]: honeypot ?? '' }, {
+        captchaToken,
+        ip: await getClientIp(),
+        surface: 'donation',
+        identity: email ? hashThrottleIdentity(email) : undefined,
+    });
+    if (!human.ok) {
+        return { success: false, error: 'Unable to record your donation right now. Please try again later.' };
+    }
 
     const supabase = await createSupabaseServerClient();
 
@@ -790,6 +832,8 @@ export async function createDonationCheckout(input: {
     fullName?: string;
     needsReceipt?: boolean;
     locale?: string;
+    honeypot?: string;
+    captchaToken?: string;
 }): Promise<DonationCheckoutResult> {
     const parsed = z
         .object({
@@ -807,8 +851,19 @@ export async function createDonationCheckout(input: {
     }
     const { amount, currency, type, email, fullName, needsReceipt, locale } = parsed.data;
 
-    const rate = await enforceRateLimit('checkout');
+    const rate = await enforceRateLimit('checkout', { subject: email });
     if (!rate.ok) return { success: false, mode: 'pledge', error: rate.error };
+
+    // Abuse prevention (audit Wave 0, item 3): honeypot + optional CAPTCHA.
+    const human = await verifyHuman({ [HONEYPOT_FIELD]: input.honeypot ?? '' }, {
+        captchaToken: input.captchaToken,
+        ip: await getClientIp(),
+        surface: 'checkout',
+        identity: hashThrottleIdentity(email),
+    });
+    if (!human.ok) {
+        return { success: false, mode: 'pledge', error: 'Unable to start the donation. Please try again later.' };
+    }
 
     const supabase = await createSupabaseServerClient();
     const { data: orgId, error: orgError } = await supabase.rpc('public_default_org_id');

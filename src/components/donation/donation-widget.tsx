@@ -14,6 +14,18 @@ import { toast } from "sonner";
 
 const PRESET_AMOUNTS = [25, 50, 100, 250];
 
+/**
+ * Client-side bounds for the donation field. The ceiling matches
+ * createDonationCheckout's `z.number().positive().max(1_000_000)` so a
+ * paste never round-trips to a server error; the floor of 1 is a deliberate
+ * UI choice (the server accepts any positive amount, including sub-unit ones).
+ */
+export const MIN_AMOUNT = 1;
+export const MAX_AMOUNT = 1_000_000;
+
+/** Same shape the server accepts via z.string().email().max(200). */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function DonationWidget() {
     const t = useTranslations("Donation.Widget");
     const [frequency, setFrequency] = useState<"MONTHLY" | "ONE_TIME">("MONTHLY");
@@ -23,16 +35,31 @@ export function DonationWidget() {
     const [fullName, setFullName] = useState("");
     const [needsReceipt, setNeedsReceipt] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [amountError, setAmountError] = useState<string | null>(null);
+    const [emailError, setEmailError] = useState<string | null>(null);
 
     const handleAmountSelect = (val: number) => {
         setAmount(val);
         setCustomAmount("");
+        setAmountError(null);
     };
 
     const handleCustomAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
         setCustomAmount(val);
-        if (Number(val) > 0) setAmount(Number(val));
+        const parsed = Number(val);
+        if (val === "") {
+            setAmountError(null);
+            return;
+        }
+        if (!Number.isFinite(parsed) || parsed < MIN_AMOUNT || parsed > MAX_AMOUNT) {
+            // Show why the amount was not taken, rather than silently
+            // keeping the previous one while the field displays a new value.
+            setAmountError(t("amount_invalid", { min: MIN_AMOUNT, max: MAX_AMOUNT }));
+            return;
+        }
+        setAmountError(null);
+        setAmount(parsed);
     };
 
     const getImpactText = () => {
@@ -43,8 +70,24 @@ export function DonationWidget() {
         return t("impact_default");
     };
 
+    /**
+     * Validate before submitting. The previous version returned silently when
+     * email or amount was missing, so the button appeared dead.
+     */
+    const validate = (): boolean => {
+        const nextAmountError =
+            !Number.isFinite(amount) || amount < MIN_AMOUNT || amount > MAX_AMOUNT
+                ? t("amount_invalid", { min: MIN_AMOUNT, max: MAX_AMOUNT })
+                : null;
+        const nextEmailError = !EMAIL_RE.test(email.trim()) ? t("email_invalid") : null;
+        setAmountError(nextAmountError);
+        setEmailError(nextEmailError);
+        return !nextAmountError && !nextEmailError;
+    };
+
     const handleDonate = async () => {
-        if (!email || !amount) return;
+        if (isLoading) return;
+        if (!validate()) return;
         setIsLoading(true);
 
         try {
@@ -130,19 +173,34 @@ export function DonationWidget() {
 
                 {/* Custom Amount */}
                 <div className="mb-8 space-y-4">
+                    <Label htmlFor="amount" className="sr-only">{t("custom_amount")}</Label>
                     <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
+                        <span aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
                         <Input
+                            id="amount"
+                            name="amount"
                             type="number"
+                            inputMode="decimal"
+                            min={MIN_AMOUNT}
+                            max={MAX_AMOUNT}
+                            step="1"
                             placeholder={t("custom_amount")}
                             value={customAmount}
                             onChange={handleCustomAmount}
+                            aria-describedby="donation-impact"
+                            aria-invalid={amountError ? true : undefined}
                             className="pl-8 h-12 rounded-xl bg-background/50 border-border/60 focus-visible:ring-primary/20 font-bold"
                         />
                     </div>
+                    {amountError && (
+                        <p id="amount-error" role="alert" className="text-sm font-medium text-destructive">
+                            {amountError}
+                        </p>
+                    )}
 
                     <AnimatePresence mode="wait">
                         <motion.div
+                            id="donation-impact"
                             key={amount}
                             initial={{ opacity: 0, y: -5 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -164,12 +222,24 @@ export function DonationWidget() {
                         <Label htmlFor="email" className="font-bold">{t("email_label")}</Label>
                         <Input
                             id="email"
+                            name="email"
                             type="email"
+                            autoComplete="email"
                             placeholder="you@example.com"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                if (emailError) setEmailError(null);
+                            }}
+                            aria-invalid={emailError ? true : undefined}
+                            aria-describedby={emailError ? "email-error" : undefined}
                             className="h-12 rounded-xl"
                         />
+                        {emailError && (
+                            <p id="email-error" role="alert" className="text-sm font-medium text-destructive">
+                                {emailError}
+                            </p>
+                        )}
                     </div>
                     <div className="flex items-center space-x-3">
                         <Checkbox
@@ -193,7 +263,7 @@ export function DonationWidget() {
                         size="lg"
                         className="w-full h-14 text-lg rounded-xl font-bold shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform bg-linear-to-r from-primary to-accent"
                         onClick={handleDonate}
-                        disabled={isLoading || !email}
+                        disabled={isLoading}
                     >
                         {isLoading ? (
                             <Loader2 className="w-5 h-5 animate-spin mr-2" />

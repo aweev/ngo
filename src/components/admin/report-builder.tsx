@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,19 +33,7 @@ interface ReportBuilderProps {
     onChange: (draft: ReportDraft) => void;
 }
 
-/** Data sources mirrored from REPORTABLE_TABLES in actions/reporting.ts. */
-const ENTITY_OPTIONS = [
-    { value: "donations", label: "Donations" },
-    { value: "donors", label: "Donors" },
-    { value: "workers", label: "Workers" },
-    { value: "volunteers", label: "Volunteers" },
-    { value: "partners", label: "Partners" },
-    { value: "projects", label: "Projects" },
-    { value: "campaigns", label: "Campaigns" },
-    { value: "org_events", label: "Events" },
-    { value: "expenses", label: "Expenses" },
-    { value: "impact_metrics", label: "Impact Metrics" },
-];
+
 
 /** Suggested metric columns per data source (kept intentionally simple). */
 const METRIC_SUGGESTIONS: Record<string, string[]> = {
@@ -78,6 +67,21 @@ function slugify(value: string): string {
 }
 
 export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
+    const t = useTranslations("Admin.Reporting.builder");
+
+    /** Data sources mirrored from REPORTABLE_TABLES in actions/reporting.ts. */
+    const ENTITY_OPTIONS = [
+        { value: "donations", label: t("ent_donations") },
+        { value: "donors", label: t("ent_donors") },
+        { value: "workers", label: t("ent_workers") },
+        { value: "volunteers", label: t("ent_volunteers") },
+        { value: "partners", label: t("ent_partners") },
+        { value: "projects", label: t("ent_projects") },
+        { value: "campaigns", label: t("ent_campaigns") },
+        { value: "org_events", label: t("ent_events") },
+        { value: "expenses", label: t("ent_expenses") },
+        { value: "impact_metrics", label: t("ent_impact") },
+    ];
     const [filterKey, setFilterKey] = useState("");
     const [filterValue, setFilterValue] = useState("");
     const [groupingInput, groupingSetInput] = useState("");
@@ -115,21 +119,21 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-base">Report definition</CardTitle>
-                <CardDescription>Data source, filters, grouping, and output columns.</CardDescription>
+                <CardTitle className="text-base">{t("def_title")}</CardTitle>
+                <CardDescription>{t("def_desc")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Report name</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("name_label")}</label>
                         <Input
                             value={value.name}
                             onChange={(e) => patch({ name: e.target.value, slug: value.slug || slugify(e.target.value) })}
-                            placeholder="Monthly volunteer activity"
+                            placeholder={t("name_ph")}
                         />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL slug</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("slug_label")}</label>
                         <Input
                             value={value.slug}
                             onChange={(e) => patch({ slug: slugify(e.target.value) })}
@@ -139,10 +143,10 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
                     </div>
                 </div>
                 <div className="space-y-1">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Data source</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("source_label")}</label>
                     <Select value={value.entity_type} onValueChange={(v) => patch({ entity_type: v, grouping: [], metrics: [] })}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select data source" />
+                            <SelectValue placeholder={t("source_ph")} />
                         </SelectTrigger>
                         <SelectContent>
                             {ENTITY_OPTIONS.map((option) => (
@@ -158,15 +162,15 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
                     <Textarea
                         value={value.description}
                         onChange={(e) => patch({ description: e.target.value })}
-                        placeholder="What decision will this report support?"
+                        placeholder={t("description_ph")}
                     />
                 </div>
 
                 {/* Filters */}
                 <div className="space-y-2 rounded-lg border p-3">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Filters</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("filters_label")}</label>
                     {Object.entries(value.filters).length === 0 && (
-                        <p className="text-xs text-muted-foreground">No filters — the report covers all records of the data source.</p>
+                        <p className="text-xs text-muted-foreground">{t("filters_empty")}</p>
                     )}
                     {Object.entries(value.filters).map(([key, val]) => (
                         <div key={key} className="flex items-center justify-between gap-2 text-xs">
@@ -180,12 +184,12 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
                     ))}
                     <div className="flex items-end gap-2">
                         <div className="w-40 space-y-1">
-                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Field</label>
-                            <Input value={filterKey} onChange={(e) => setFilterKey(e.target.value)} placeholder="status" className="h-9 font-mono text-xs" />
+                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("field_label")}</label>
+                            <Input value={filterKey} onChange={(e) => setFilterKey(e.target.value)} placeholder={t("field_ph")} className="h-9 font-mono text-xs" />
                         </div>
                         <div className="w-40 space-y-1">
-                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Equals</label>
-                            <Input value={filterValue} onChange={(e) => setFilterValue(e.target.value)} placeholder="active" className="h-9 font-mono text-xs" />
+                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("equals_label")}</label>
+                            <Input value={filterValue} onChange={(e) => setFilterValue(e.target.value)} placeholder={t("equals_ph")} className="h-9 font-mono text-xs" />
                         </div>
                         <Button type="button" variant="outline" size="sm" className="gap-1" onClick={addFilter}>
                             <Plus className="h-3 w-3" /> Add
@@ -195,7 +199,7 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
 
                 {/* Grouping */}
                 <div className="space-y-2 rounded-lg border p-3">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Grouping</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("grouping_label")}</label>
                     <div className="flex flex-wrap gap-1">
                         {value.grouping.map((g) => (
                             <Button
@@ -209,11 +213,11 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
                                 {g} <Trash2 className="h-3 w-3" />
                             </Button>
                         ))}
-                        {value.grouping.length === 0 && <p className="text-xs text-muted-foreground">No grouping — rows stay flat.</p>}
+                        {value.grouping.length === 0 && <p className="text-xs text-muted-foreground">{t("grouping_empty")}</p>}
                     </div>
                     <div className="flex flex-wrap items-end gap-2">
                         <div className="w-48 space-y-1">
-                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Group by</label>
+                            <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("group_by_label")}</label>
                             <Input value={groupingInput} onChange={(e) => groupingSetInput(e.target.value)} placeholder="category" className="h-9 font-mono text-xs" />
                         </div>
                         <Button type="button" variant="outline" size="sm" className="gap-1" onClick={() => addGrouping(groupingInput)}>
@@ -236,9 +240,9 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
 
                 {/* Metrics */}
                 <div className="space-y-2 rounded-lg border p-3">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Metrics (columns)</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("metrics_label")}</label>
                     <div className="flex flex-wrap gap-1">
-                        {value.metrics.length === 0 && <p className="text-xs text-muted-foreground">No explicit metrics — the snapshot stores all columns.</p>}
+                        {value.metrics.length === 0 && <p className="text-xs text-muted-foreground">{t("metrics_empty")}</p>}
                         {value.metrics.map((m) => (
                             <Button
                                 key={m}
@@ -271,7 +275,7 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
                 {/* Sorting */}
                 <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sort field</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("sort_field_label")}</label>
                         <Input
                             value={value.sort_field ?? ""}
                             onChange={(e) => patch({ sort_field: e.target.value.trim() || null })}
@@ -280,14 +284,14 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
                         />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sort direction</label>
+                        <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("sort_dir_label")}</label>
                         <Select value={value.sort_direction} onValueChange={(v) => patch({ sort_direction: v as "asc" | "desc" })}>
                             <SelectTrigger className="w-36">
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="asc">Ascending</SelectItem>
-                                <SelectItem value="desc">Descending</SelectItem>
+                                <SelectItem value="asc">{t("sort_asc")}</SelectItem>
+                                <SelectItem value="desc">{t("sort_desc")}</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

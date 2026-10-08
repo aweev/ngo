@@ -1,4 +1,7 @@
-export default function DashboardLoading() {
+import { getTranslations } from "next-intl/server";
+
+export default async function DashboardLoading() {
+    const t = await getTranslations("Admin.Loading");
     return (
         <div className="flex min-h-[60vh] items-center justify-center p-6" aria-busy="true" aria-live="polite">
             <div className="w-full max-w-3xl space-y-4">
@@ -9,7 +12,7 @@ export default function DashboardLoading() {
                         <div key={i} className="h-32 animate-pulse rounded-xl bg-muted/70" />
                     ))}
                 </div>
-                <span className="sr-only">Loading dashboard</span>
+                <span className="sr-only">{t("dashboard")}</span>
             </div>
         </div>
     );

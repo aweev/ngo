@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "ngo",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@9.15.0",
@@ -18,16 +18,21 @@
     "analyze": "ANALYZE=true next build",
     "clean": "node -e \"for(const d of ['.next','out','coverage','playwright-report','test-results'])try{require('fs').rmSync(d,{recursive:true,force:true})}catch{}\"",
     "preview": "next start",
-    "verify": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run verify:migrations && pnpm run verify:actions && pnpm run verify:cta-links && pnpm run verify:i18n",
+    "verify": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run verify:migrations && pnpm run verify:actions && pnpm run verify:cta-links && pnpm run verify:i18n && pnpm run verify:i18n:hardcoded && pnpm run verify:rls && pnpm run verify:reliability && pnpm run verify:licenses",
     "supabase:gen-types": "supabase gen types typescript --linked > src/types/database.ts",
-    "verify:migrations": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-migrations.ps1",
+    "verify:migrations": "node scripts/verify-migrations.mjs",
     "verify:actions": "node scripts/verify-action-auth.mjs",
     "verify:cta-links": "node scripts/verify-cta-links.mjs",
     "verify:i18n": "node scripts/verify-i18n.mjs",
+    "verify:i18n:hardcoded": "node scripts/verify-i18n-hardcoded.mjs",
+    "verify:rls": "node scripts/verify-rls-isolation.mjs",
+    "verify:reliability": "node scripts/verify-reliability.mjs",
+    "verify:licenses": "node scripts/verify-licenses.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
-    "seed:personas": "node scripts/seed-personas.mjs --confirm"
+    "seed:personas": "node scripts/seed-personas.mjs --confirm",
+    "seed:master": "node scripts/seed-master.mjs --confirm"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",
@@ -93,6 +98,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.1.17",
     "@tailwindcss/typography": "^0.5.20",
@@ -102,7 +108,7 @@
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.1",
     "autoprefixer": "^10.4.22",
-    "baseline-browser-mapping": "^2.11.20",
+    "baseline-browser-mapping": "^2.11.25",
     "eslint": "^9",
     "eslint-config-next": "16.0.4",
     "pg": "^8.23.0",

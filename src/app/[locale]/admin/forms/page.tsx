@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,19 +9,21 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function FormsPage() {
+export default async function FormsPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Forms" });
     const { data: forms } = await getForms();
 
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Custom Forms Builder"
-                description="Create public or internal data collection forms, surveys, and applications."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <Button asChild className="gap-2">
                         <Link href="/admin/forms/new">
                             <Plus className="h-4 w-4" />
-                            New Form
+                            {t("new_form")}
                         </Link>
                     </Button>
                 }
@@ -30,17 +33,17 @@ export default async function FormsPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Form Title</TableHead>
-                            <TableHead>Fields</TableHead>
-                            <TableHead>Access</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead>{t("cols.title")}</TableHead>
+                            <TableHead>{t("cols.fields")}</TableHead>
+                            <TableHead>{t("cols.access")}</TableHead>
+                            <TableHead>{t("cols.status")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {(!forms || forms.length === 0) ? (
                             <TableRow>
                                 <TableCell colSpan={4} className="text-center py-8 text-muted-foreground text-sm">
-                                    No custom forms created yet.
+                                    {t("empty")}
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -52,10 +55,10 @@ export default async function FormsPage() {
                                             <span>{form.title}</span>
                                         </Link>
                                     </TableCell>
-                                    <TableCell className="text-xs font-mono">{form.fields?.length || 0} fields</TableCell>
+                                    <TableCell className="text-xs font-mono">{t("fields_count", { count: form.fields?.length || 0 })}</TableCell>
                                     <TableCell className="text-xs">
                                         <Badge variant={form.is_public ? "default" : "outline"}>
-                                            {form.is_public ? "Public" : "Internal"}
+                                            {form.is_public ? t("public") : t("internal")}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>

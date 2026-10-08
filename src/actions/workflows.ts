@@ -149,6 +149,79 @@ export async function getWorkflowInstance(id: string): Promise<{ data: WorkflowI
     return { data, error: null };
 }
 
+/**
+ * Review the current step of a running/waiting workflow instance.
+ * Approve advances to the next step (completing the instance past the last
+ * step); reject cancels the instance. Every decision is appended to
+ * step_history with actor + timestamp for the audit trail.
+ */
+export async function reviewWorkflowInstance(
+    id: string,
+    decision: 'approved' | 'rejected',
+    note?: string,
+): Promise<{ data: WorkflowInstance | null; error: string | null }> {
+    const auth = await authorizePermission(PERMISSIONS.workflows.manage);
+    if (!auth.ok) return { data: null, error: auth.error };
+
+    const { data: instance } = await auth.context.supabase
+        .from('workflow_instances')
+        .select('*')
+        .eq('id', id)
+        .eq('organization_id', auth.organizationId)
+        .maybeSingle();
+    const inst = instance as WorkflowInstance | null;
+    if (!inst) return { data: null, error: 'Workflow instance not found.' };
+    if (inst.status !== 'running' && inst.status !== 'waiting') {
+        return { data: null, error: 'This instance is no longer actionable.' };
+    }
+
+    const { data: definition } = await auth.context.supabase
+        .from('workflow_definitions')
+        .select('steps')
+        .eq('id', inst.definition_id)
+        .eq('organization_id', auth.organizationId)
+        .maybeSingle();
+    const steps = (definition as { steps?: unknown } | null)?.steps;
+    const total = Array.isArray(steps) ? steps.length : 0;
+    const stepName = Array.isArray(steps)
+        ? ((steps[inst.current_step_index] as { name?: string } | undefined)?.name ?? `Step ${inst.current_step_index + 1}`)
+        : `Step ${inst.current_step_index + 1}`;
+
+    const now = new Date().toISOString();
+    const history = [...(inst.step_history ?? []), {
+        step_index: inst.current_step_index,
+        step_name: stepName,
+        status: decision === 'approved' ? 'completed' : 'failed',
+        started_at: null,
+        completed_at: now,
+        actor_id: auth.userId,
+        result: note?.trim() ? { decision, note: note.trim() } : { decision },
+    }] as WorkflowInstance['step_history'];
+
+    const patch: Partial<WorkflowInstance> =
+        decision === 'rejected'
+            ? { status: 'cancelled', step_history: history, completed_at: now }
+            : inst.current_step_index + 1 >= total && total > 0
+              ? { status: 'completed', step_history: history, completed_at: now }
+              : { status: 'running', current_step_index: inst.current_step_index + 1, step_history: history };
+
+    const { data, error } = await auth.context.supabase
+        .from('workflow_instances')
+        .update(patch)
+        .eq('id', id)
+        .eq('organization_id', auth.organizationId)
+        .select()
+        .maybeSingle();
+    if (error || !data) {
+        console.error('[reviewWorkflowInstance]', error?.message);
+        return { data: null, error: 'Unable to record the decision.' };
+    }
+
+    revalidatePath('/admin/workflows');
+    revalidatePath('/admin/governance');
+    return { data: data as WorkflowInstance, error: null };
+}
+
 /** Manually trigger a workflow instance. */
 export async function triggerWorkflow(definitionId: string, contextData: Record<string, unknown> = {}): Promise<{ data: WorkflowInstance | null; error: string | null }> {
     const auth = await authorizePermission(PERMISSIONS.workflows.manage);

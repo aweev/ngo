@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,26 +9,28 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function NotificationsPage() {
+export default async function NotificationsPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Notifications" });
     const { data: templates } = await getNotificationTemplates();
 
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Notifications & Templates"
-                description="Manage automated message templates for email, SMS, push, and in-app alerts."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <div className="flex gap-2">
                         <Button asChild variant="outline" className="gap-2">
                             <Link href="/admin/notifications/templates">
                                 <Bell className="h-4 w-4" />
-                                Templates
+                                {t("templates")}
                             </Link>
                         </Button>
                         <Button asChild className="gap-2">
                             <Link href="/admin/notifications/templates/new">
                                 <Plus className="h-4 w-4" />
-                                New Template
+                                {t("new_template")}
                             </Link>
                         </Button>
                     </div>
@@ -38,17 +41,17 @@ export default async function NotificationsPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Template Name</TableHead>
-                            <TableHead>Channel</TableHead>
-                            <TableHead>Subject</TableHead>
-                            <TableHead>System Template</TableHead>
+                            <TableHead>{t("cols.name")}</TableHead>
+                            <TableHead>{t("cols.channel")}</TableHead>
+                            <TableHead>{t("cols.subject")}</TableHead>
+                            <TableHead>{t("cols.system")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {(!templates || templates.length === 0) ? (
                             <TableRow>
                                 <TableCell colSpan={4} className="text-center py-8 text-muted-foreground text-sm">
-                                    No notification templates created yet.
+                                    {t("empty")}
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -61,10 +64,10 @@ export default async function NotificationsPage() {
                                         </div>
                                     </TableCell>
                                     <TableCell className="uppercase text-xs font-mono">{tpl.channel}</TableCell>
-                                    <TableCell className="text-xs text-muted-foreground">{tpl.subject || "N/A"}</TableCell>
+                                    <TableCell className="text-xs text-muted-foreground">{tpl.subject || t("not_available")}</TableCell>
                                     <TableCell>
                                         <Badge variant={tpl.is_system ? "secondary" : "outline"}>
-                                            {tpl.is_system ? "System" : "Custom"}
+                                            {tpl.is_system ? t("system") : t("custom")}
                                         </Badge>
                                     </TableCell>
                                 </TableRow>

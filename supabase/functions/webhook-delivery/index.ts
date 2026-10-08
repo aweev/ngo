@@ -24,6 +24,18 @@ async function signBody(secret: string, body: string): Promise<string> {
     return Array.from(new Uint8Array(signature)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/**
+ * Stable idempotency key: same target + event + payload digest always maps
+ * to ONE delivery row; redeliveries bump attempt_count instead of
+ * duplicating history (audit Wave 3: idempotency everywhere).
+ */
+async function deliveryIdempotencyKey(webhookId: string, eventType: string, payload: unknown): Promise<string> {
+    const canonical = JSON.stringify(payload ?? {});
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
+    const hex = Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
+    return `${webhookId}:${eventType}:${hex}`;
+}
+
 interface DeliveryTarget {
     id: string;
     organization_id: string;
@@ -68,16 +80,45 @@ async function attemptDelivery(
         clearTimeout(timeout);
     }
 
-    await supabase.from("webhook_deliveries").insert({
-        organization_id: target.organization_id,
-        webhook_id: webhookIdForCounters,
-        event_type: eventType,
-        payload,
-        response_status: responseStatus,
-        response_body: responseBody,
-        attempt_count: 1,
-        delivered_at: ok ? new Date().toISOString() : null,
-    });
+    // Idempotent recording: a redelivery bumps attempt_count on the SAME
+    // row (unique (organization_id, idempotency_key)) instead of inserting
+    // fresh history per attempt.
+    const idempotencyKey = await deliveryIdempotencyKey(webhookIdForCounters, eventType, payload);
+    const { data: existing } = await supabase.from("webhook_deliveries")
+        .select("id, attempt_count")
+        .eq("organization_id", target.organization_id)
+        .eq("idempotency_key", idempotencyKey)
+        .maybeSingle();
+    if (existing) {
+        await supabase.from("webhook_deliveries").update({
+            response_status: responseStatus,
+            response_body: responseBody,
+            attempt_count: (existing.attempt_count ?? 1) + 1,
+            delivered_at: ok ? new Date().toISOString() : null,
+        }).eq("id", existing.id);
+    } else {
+        const { error: recordError } = await supabase.from("webhook_deliveries").insert({
+            organization_id: target.organization_id,
+            webhook_id: webhookIdForCounters,
+            event_type: eventType,
+            payload,
+            idempotency_key: idempotencyKey,
+            response_status: responseStatus,
+            response_body: responseBody,
+            attempt_count: 1,
+            delivered_at: ok ? new Date().toISOString() : null,
+        });
+        // 23505 = concurrent duplicate won the insert; recording must never
+        // fail the delivery itself.
+        if (recordError && recordError.code !== "23505") {
+            console.log(JSON.stringify({
+                ts: new Date().toISOString(),
+                level: "warn",
+                event: "webhook.delivery_record_failed",
+                error: recordError.message,
+            }));
+        }
+    }
 
     const { data: current } = await supabase.from("webhooks")
         .select("success_count, failure_count")

@@ -33,4 +33,4 @@ export * from './tags';
 export * from './volunteers';
 export * from './workers';
 export * from './workflows';
-export * from './email';
+// email moved to src/lib/email.ts (server-only module, not a server action)

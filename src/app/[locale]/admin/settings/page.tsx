@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,61 +13,63 @@ import { PortalExperienceEditor } from "@/components/admin/portal-experience-edi
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminSettingsPage() {
+export default async function AdminSettingsPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Settings" });
     const { data: defaultBrandTheme } = await getDefaultBrandTheme();
     const { data: pendingRoleRequests } = await getPendingRoleRequests();
     const { data: portalExperienceItems } = await getPortalExperienceItems();
     return (
         <div className="space-y-6">
-            <PageHeader title="Organization Settings" description="Global workspace preferences, branding, security rules, and system configuration." />
+            <PageHeader title={t("title")} description={t("description")} />
 
             <Tabs defaultValue="general" className="w-full">
                 <TabsList className="grid w-full grid-cols-5 lg:w-auto">
-                    <TabsTrigger value="general">General Profile</TabsTrigger>
-                    <TabsTrigger value="branding">Branding & Portal</TabsTrigger>
-                    <TabsTrigger value="experience">Auth & Onboarding</TabsTrigger>
-                    <TabsTrigger value="security">Security & RLS</TabsTrigger>
-                    <TabsTrigger value="billing">Plan & Limits</TabsTrigger>
+                    <TabsTrigger value="general">{t("tabs.general")}</TabsTrigger>
+                    <TabsTrigger value="branding">{t("tabs.branding")}</TabsTrigger>
+                    <TabsTrigger value="experience">{t("tabs.experience")}</TabsTrigger>
+                    <TabsTrigger value="security">{t("tabs.security")}</TabsTrigger>
+                    <TabsTrigger value="billing">{t("tabs.billing")}</TabsTrigger>
                 </TabsList>
 
                 {/* General Settings */}
                 <TabsContent value="general" className="space-y-4 pt-4">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold">Organization Information</CardTitle>
-                            <CardDescription>Primary profile details visible across reports and member invitations.</CardDescription>
+                            <CardTitle className="text-base font-semibold">{t("info_title")}</CardTitle>
+                            <CardDescription>{t("info_description")}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Organization Name</label>
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("org_name")}</label>
                                     <Input defaultValue="AWE EV Organization" />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Registration / Tax ID</label>
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("tax_id")}</label>
                                     <Input defaultValue="NGO-948204-EU" />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Primary Contact Email</label>
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("contact_email")}</label>
                                     <Input defaultValue="contact@awe-ev.org" />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Default Currency</label>
+                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("currency")}</label>
                                     <Input defaultValue="EUR" />
                                 </div>
                             </div>
-                            <Button size="sm">Save Organization Profile</Button>
+                            <Button size="sm">{t("save_profile")}</Button>
                         </CardContent>
                     </Card>
                     <Card>
-                        <CardHeader><CardTitle className="text-base font-semibold">Pending access requests</CardTitle><CardDescription>Review requests for additional organization roles.</CardDescription></CardHeader>
+                        <CardHeader><CardTitle className="text-base font-semibold">{t("access_title")}</CardTitle><CardDescription>{t("access_description")}</CardDescription></CardHeader>
                         <CardContent><RoleRequestReview initialRequests={pendingRoleRequests} /></CardContent>
                     </Card>
                 </TabsContent>
 
                 <TabsContent value="experience" className="space-y-4 pt-4">
                     <Card>
-                        <CardHeader><CardTitle className="text-base font-semibold">Auth and onboarding experience</CardTitle><CardDescription>Organization-managed testimonials, impact stats, and onboarding choices.</CardDescription></CardHeader>
+                        <CardHeader><CardTitle className="text-base font-semibold">{t("exp_title")}</CardTitle><CardDescription>{t("exp_description")}</CardDescription></CardHeader>
                         <CardContent><PortalExperienceEditor initialItems={portalExperienceItems} /></CardContent>
                     </Card>
                 </TabsContent>
@@ -75,8 +78,8 @@ export default async function AdminSettingsPage() {
                 <TabsContent value="branding" className="space-y-4 pt-4">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold">Portal Branding</CardTitle>
-                            <CardDescription>Choose the default color theme visitors see across the public site.</CardDescription>
+                            <CardTitle className="text-base font-semibold">{t("brand_title")}</CardTitle>
+                            <CardDescription>{t("brand_description")}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <BrandingThemeForm initialTheme={defaultBrandTheme} />
@@ -88,12 +91,12 @@ export default async function AdminSettingsPage() {
                 <TabsContent value="security" className="space-y-4 pt-4">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold">Security & Access Control</CardTitle>
-                            <CardDescription>Session timeouts, Row Level Security enforcement, and Audit Logging.</CardDescription>
+                            <CardTitle className="text-base font-semibold">{t("sec_title")}</CardTitle>
+                            <CardDescription>{t("sec_description")}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4 text-xs text-muted-foreground">
-                            <p>Multi-tenant Row Level Security (RLS) is active on all 30+ database tables.</p>
-                            <p>Audit logging automatically records all admin mutations with user IP and timestamp.</p>
+                            <p>{t("sec_rls")}</p>
+                            <p>{t("sec_audit")}</p>
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -102,17 +105,17 @@ export default async function AdminSettingsPage() {
                 <TabsContent value="billing" className="space-y-4 pt-4">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base font-semibold">Subscription Plan</CardTitle>
-                            <CardDescription>Unlimited enterprise tier with full NGO OS feature access.</CardDescription>
+                            <CardTitle className="text-base font-semibold">{t("bill_title")}</CardTitle>
+                            <CardDescription>{t("bill_description")}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-2 text-xs">
                             <div className="flex justify-between border-b pb-2">
-                                <span className="font-medium">Current Tier:</span>
-                                <span className="font-bold text-emerald-600">Enterprise NGO OS (Fullstack)</span>
+                                <span className="font-medium">{t("current_tier")}</span>
+                                <span className="font-bold text-emerald-600">{t("tier_value")}</span>
                             </div>
                             <div className="flex justify-between pt-1">
-                                <span className="font-medium">Active Modules:</span>
-                                <span className="font-mono">38 / 38 Services Enabled</span>
+                                <span className="font-medium">{t("active_modules")}</span>
+                                <span className="font-mono">{t("modules_value")}</span>
                             </div>
                         </CardContent>
                     </Card>

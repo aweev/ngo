@@ -43,9 +43,26 @@ describe('roleHasPermission', () => {
 
     it('lets managers draft but not publish, approve, or touch RBAC', () => {
         expect(roleHasPermission('manager', PERMISSIONS.content.manage)).toBe(true);
+        expect(roleHasPermission('manager', PERMISSIONS.content.review)).toBe(true);
         expect(roleHasPermission('manager', PERMISSIONS.content.publish)).toBe(false);
         expect(roleHasPermission('manager', PERMISSIONS.finance.approve)).toBe(false);
         expect(roleHasPermission('manager', PERMISSIONS.rbac.manage)).toBe(false);
+    });
+
+    it('keeps the three content capabilities distinct', () => {
+        // Drafting, reviewing, and publishing are separate grants: a role can
+        // hold any one of them without implying the others.
+        const contentPermissions = [
+            PERMISSIONS.content.manage,
+            PERMISSIONS.content.review,
+            PERMISSIONS.content.publish,
+        ];
+        expect(new Set(contentPermissions).size).toBe(3);
+        expect(contentPermissions).toEqual(['content.manage', 'content.review', 'content.publish']);
+        // Members hold none of them.
+        for (const permission of contentPermissions) {
+            expect(roleHasPermission('member', permission)).toBe(false);
+        }
     });
 
     it('fails closed for members and unknown/null roles', () => {
@@ -113,9 +130,10 @@ describe('mergeEffectivePermissions', () => {
         expect(effectiveHasPermission(eff, PERMISSIONS.content.manage)).toBe(true);
         expect(effectiveHasPermission(eff, PERMISSIONS.tags.manage)).toBe(false);
         expect(effectiveHasPermission(eff, PERMISSIONS.finance.approve)).toBe(false); // expired
-        // Unknown keys are dropped: member's 3 base grants + content.manage only
-        // (a leaked 'not.a.permission' would make this 5).
-        expect(eff.size).toBe(4);
+        // Unknown keys are dropped: member's 6 base grants (Phase 1 added
+        // projects.read + beneficiaries.read/manage for field officers)
+        // + content.manage only (a leaked 'not.a.permission' would make this 8).
+        expect(eff.size).toBe(7);
     });
 
     it('lets an explicit deny beat base-role and custom grants', () => {

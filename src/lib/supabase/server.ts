@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { PUBLIC_CONTENT_TAG, PUBLIC_REVALIDATE_SECONDS } from '@/lib/cache-tags';
@@ -18,7 +18,7 @@ export async function createSupabaseServerClient() {
                 getAll() {
                     return cookieStore.getAll();
                 },
-                setAll(cookiesToSet) {
+                setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
                     try {
                         cookiesToSet.forEach(({ name, value, options }) =>
                             cookieStore.set(name, value, options)
@@ -50,7 +50,7 @@ export async function createSupabaseRouteHandlerClient() {
                 getAll() {
                     return cookieStore.getAll();
                 },
-                setAll(cookiesToSet) {
+                setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
                     cookiesToSet.forEach(({ name, value, options }) =>
                         cookieStore.set(name, value, options)
                     );
@@ -61,36 +61,11 @@ export async function createSupabaseRouteHandlerClient() {
 }
 
 /**
- * Creates a Supabase Admin client with service role key.
- * WARNING: This bypasses RLS. Only use for admin operations that require elevated privileges.
+ * Backward-compatible re-export. New code must import from
+ * `@/lib/supabase/admin-client` — the single choke point for the
+ * service-role key (bypasses RLS).
  */
-export function createSupabaseAdminClient() {
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-    if (!serviceRoleKey) {
-        throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set');
-    }
-
-    return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        serviceRoleKey,
-        {
-            cookies: {
-                getAll() {
-                    // Admin client is server-only and session-less
-                    return [];
-                },
-                setAll() {
-                    // No session persistence for the admin client
-                },
-            },
-            auth: {
-                autoRefreshToken: false,
-                persistSession: false,
-            },
-        }
-    );
-}
+export { createSupabaseAdminClient } from './admin-client';
 
 /**
  * Cookieless anon-key client for PUBLIC reads on the public website.

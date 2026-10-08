@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +9,9 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function WorkflowsPage() {
+export default async function WorkflowsPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Workflows" });
     const [{ data: definitions }, { data: instances }] = await Promise.all([
         getWorkflowDefinitions(),
         getWorkflowInstances(),
@@ -17,35 +20,35 @@ export default async function WorkflowsPage() {
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Workflows & Approvals"
-                description="Design multi-step business workflows, approval chains, and task sequences."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <Button asChild className="gap-2">
                         <Link href="/admin/workflows/new">
                             <Plus className="h-4 w-4" />
-                            New Workflow
+                            {t("new_workflow")}
                         </Link>
                     </Button>
                 }
             />
 
             <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Workflow Templates</h3>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">{t("templates")}</h3>
                 <div className="rounded-lg border bg-card">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Workflow Name</TableHead>
-                                <TableHead>Steps Count</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Version</TableHead>
+                                <TableHead>{t("cols.name")}</TableHead>
+                                <TableHead>{t("cols.steps")}</TableHead>
+                                <TableHead>{t("cols.status")}</TableHead>
+                                <TableHead>{t("cols.version")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {(!definitions || definitions.length === 0) ? (
                                 <TableRow>
                                     <TableCell colSpan={4} className="text-center py-6 text-muted-foreground text-sm">
-                                        No workflow definitions created yet.
+                                        {t("empty")}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -57,7 +60,7 @@ export default async function WorkflowsPage() {
                                                 <span>{wf.name}</span>
                                             </Link>
                                         </TableCell>
-                                        <TableCell className="text-xs">{wf.steps?.length || 0} steps</TableCell>
+                                        <TableCell className="text-xs">{t("steps_count", { count: wf.steps?.length || 0 })}</TableCell>
                                         <TableCell>
                                             <Badge variant="outline" className="capitalize">{wf.status}</Badge>
                                         </TableCell>

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -13,7 +14,8 @@ export default async function FormDetailPage({
 }: {
     params: Promise<{ locale: string; id: string }>;
 }) {
-    const { id } = await params;
+    const { locale, id } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Forms" });
     const [{ data: form }, { data: submissions }] = await Promise.all([
         getFormDefinition(id),
         getFormSubmissions(id),
@@ -32,7 +34,11 @@ export default async function FormDetailPage({
         <div className="space-y-8">
             <PageHeader
                 title={form.title}
-                description={`${form.fields?.length ?? 0} fields · ${submissions?.length ?? 0} submissions · Status: ${form.status}`}
+                description={t("submissions.summary", {
+                    fields: form.fields?.length ?? 0,
+                    submissions: submissions?.length ?? 0,
+                    status: form.status,
+                })}
                 action={exportRows.length > 0 ? <DataExportButton data={exportRows} filename={form.slug} /> : undefined}
             />
 
@@ -52,34 +58,34 @@ export default async function FormDetailPage({
 
             <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                    Submissions
+                    {t("submissions.title")}
                 </h3>
                 <div className="rounded-lg border bg-card">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Submitter</TableHead>
-                                <TableHead>Submitted at</TableHead>
-                                <TableHead>Answers</TableHead>
+                                <TableHead>{t("submissions.submitter")}</TableHead>
+                                <TableHead>{t("submissions.submitted_at")}</TableHead>
+                                <TableHead>{t("submissions.answers")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {(!submissions || submissions.length === 0) ? (
                                 <TableRow>
                                     <TableCell colSpan={3} className="text-center py-6 text-muted-foreground text-sm">
-                                        No submissions received yet.
+                                        {t("submissions.empty")}
                                     </TableCell>
                                 </TableRow>
                             ) : (
                                 submissions.map((s) => (
                                     <TableRow key={s.id}>
-                                        <TableCell className="text-xs">{s.submitter_email ?? "Anonymous"}</TableCell>
+                                        <TableCell className="text-xs">{s.submitter_email ?? t("submissions.anonymous")}</TableCell>
                                         <TableCell className="text-xs text-muted-foreground">
                                             {new Date(s.submitted_at).toLocaleString()}
                                         </TableCell>
                                         <TableCell>
                                             <Badge variant="outline" className="font-mono">
-                                                {Object.keys(s.data ?? {}).length} fields
+                                                {t("submissions.fields_count", { count: Object.keys(s.data ?? {}).length })}
                                             </Badge>
                                         </TableCell>
                                     </TableRow>

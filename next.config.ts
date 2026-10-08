@@ -12,12 +12,18 @@ const withPWA = withPWAInit({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
   // Never precache privileged HTML: admin/dashboard/auth must always hit the server.
+  // The FIELD app (/[locale]/field) is the exception: front-end navigations are
+  // cached at runtime so officers keep working offline after one online visit.
   aggressiveFrontEndNavCaching: false,
+  cacheOnFrontEndNav: true,
+  // Served when an uncached document is requested offline (see app/~offline).
+  fallbacks: { document: '/~offline' },
   reloadOnOnline: true,
   publicExcludes: ['!workbox-*.js', '!sw.js'],
   workboxOptions: {
-    // Never serve cached HTML for privileged or API routes.
-    navigateFallbackDenylist: [/^\/api/, /\/admin/, /\/dashboard/, /\/auth\//],
+    // Never serve cached HTML for privileged or API routes. /field is
+    // deliberately NOT denied: it is the offline-first surface.
+    navigateFallbackDenylist: [/^\/api/, /\/admin/, /\/dashboard/, /\/auth\//, /\/~offline/],
     runtimeCaching: [
       {
         // Cache Cloudinary Images
@@ -44,7 +50,7 @@ function createCSP(dev: boolean) {
     `script-src 'self'${dev ? " 'unsafe-inline' 'unsafe-eval'" : ''} https://js.stripe.com`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https://res.cloudinary.com https://images.unsplash.com",
-    "font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com",
+    "font-src 'self'",
     `connect-src 'self' ${supabaseUrl} https://api.cloudinary.com https://js.stripe.com https://*.sentry.io https://vitals.vercel-insights.com`.trim(),
     "media-src 'self' https://res.cloudinary.com",
     "worker-src 'self' blob:",

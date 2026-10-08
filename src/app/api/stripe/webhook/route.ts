@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type Stripe from 'stripe';
 import { createSupabaseAdminClient } from '@/lib/supabase/server';
-import { sendDonationReceipt, sendTaxReceipt } from '@/actions/email';
+import { sendDonationReceipt, sendTaxReceipt } from '@/lib/email';
 import { receiptUrlFor } from '@/lib/receipts';
 import { handleInvoiceEvent, isInvoiceEvent } from '@/lib/stripe-invoices';
 
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
     return handleStripeEvent(request);
 }
 
-export async function handleStripeEvent(request: Request) {
+async function handleStripeEvent(request: Request) {
     const secretKey = process.env.STRIPE_SECRET_KEY;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -172,7 +172,11 @@ export async function handleStripeEvent(request: Request) {
     let matched: DonationRow[] | null = null;
 
     // Recurring invoices land as one donation row per invoice (P0-4).
+    // Invoice events only ever map to completed/failed — narrow for the handler.
     if (isInvoiceEvent(event.type)) {
+        if (nextStatus !== 'completed' && nextStatus !== 'failed') {
+            return NextResponse.json({ received: true, unmatched: event.type });
+        }
         const outcome = await handleInvoiceEvent(supabase, event, nextStatus);
         if (outcome.kind === 'created') return NextResponse.json({ received: true, updated: 1 });
         if (outcome.kind === 'duplicate') return NextResponse.json({ received: true, duplicate: true });

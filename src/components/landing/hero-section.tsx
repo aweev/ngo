@@ -63,8 +63,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         if (nextSection) nextSection.scrollIntoView({ behavior: "smooth" });
     };
 
+    // NOTE: section top padding must always clear the fixed public header
+    // (~80-88px). lg:py-0 used to strip it on desktop, sliding the centered
+    // content underneath the nav.
     return (
-        <section className="relative w-full min-h-[100dvh] flex flex-col justify-center bg-background overflow-hidden pt-24 pb-12 lg:py-0">
+        <section className="relative w-full min-h-[100dvh] flex flex-col justify-center bg-background overflow-hidden pt-28 pb-12 lg:pt-36 lg:pb-20">
             {/* Background Textures */}
             <div className="absolute inset-0 pointer-events-none select-none">
                 <div className="absolute inset-0 bg-texture-paper opacity-40 z-0 mix-blend-multiply dark:mix-blend-screen" />
@@ -167,7 +170,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     {/* --- RIGHT COLUMN: VISUAL --- */}
                     <motion.div
                         variants={heroAnimations.floatingCard}
-                        className="relative w-full aspect-square lg:h-[600px] lg:w-full mt-8 lg:mt-0"
+                        className="relative w-full aspect-square lg:aspect-auto lg:h-[clamp(420px,62dvh,600px)] lg:w-full mt-8 lg:mt-0"
                     >
                         {/* Main Image Container */}
                         <div className="absolute inset-2 lg:inset-4 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-border/50 group">

@@ -1,3 +1,10 @@
+> **Status banner (Phases 0–2 shipped):** this note is now historical
+> context. The CMS translation/approval workflow gaps it describes stand,
+> but the finance-integrity, field-core, offline-sync, and reporting gaps
+> from the same era are closed — see `12-roadmap.md` (shipped) and the
+> current guides `02-architecture.md` through `10-testing-and-qa.md`. Do not
+> treat the P0 list below as the current release gate.
+
 **Production readiness status**
 
 The home and About pages are structurally wired, but they are not production-ready yet. The largest gap is that the CMS currently claims multilingual publishing and approvals without implementing the underlying workflow.

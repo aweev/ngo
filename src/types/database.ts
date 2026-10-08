@@ -1,4 +1,4 @@
-﻿export type Json =
+export type Json =
   | string
   | number
   | boolean
@@ -1096,14 +1096,18 @@ export type Database = {
         Row: {
           amount: number
           campaign_id: string | null
+          cancelled_at: string | null
           created_at: string
           currency: string
           dedication: string | null
+          dispute_status: string | null
           donated_at: string
           donor_id: string | null
           donor_name: string | null
+          email: string | null
           id: string
           is_anonymous: boolean
+          needs_receipt: boolean
           notes: string | null
           organization_id: string
           payment_intent: string | null
@@ -1112,22 +1116,30 @@ export type Database = {
           payment_ref: string | null
           payment_reference: string | null
           project_id: string | null
+          receipt_url: string | null
           status: string
+          stripe_customer_id: string | null
+          stripe_invoice_id: string | null
           subscription_ref: string | null
+          tax_receipt_url: string | null
           type: string
           updated_at: string
         }
         Insert: {
           amount: number
           campaign_id?: string | null
+          cancelled_at?: string | null
           created_at?: string
           currency?: string
           dedication?: string | null
+          dispute_status?: string | null
           donated_at?: string
           donor_id?: string | null
           donor_name?: string | null
+          email?: string | null
           id?: string
           is_anonymous?: boolean
+          needs_receipt?: boolean
           notes?: string | null
           organization_id: string
           payment_intent?: string | null
@@ -1136,22 +1148,30 @@ export type Database = {
           payment_ref?: string | null
           payment_reference?: string | null
           project_id?: string | null
+          receipt_url?: string | null
           status?: string
+          stripe_customer_id?: string | null
+          stripe_invoice_id?: string | null
           subscription_ref?: string | null
+          tax_receipt_url?: string | null
           type?: string
           updated_at?: string
         }
         Update: {
           amount?: number
           campaign_id?: string | null
+          cancelled_at?: string | null
           created_at?: string
           currency?: string
           dedication?: string | null
+          dispute_status?: string | null
           donated_at?: string
           donor_id?: string | null
           donor_name?: string | null
+          email?: string | null
           id?: string
           is_anonymous?: boolean
+          needs_receipt?: boolean
           notes?: string | null
           organization_id?: string
           payment_intent?: string | null
@@ -1160,8 +1180,12 @@ export type Database = {
           payment_ref?: string | null
           payment_reference?: string | null
           project_id?: string | null
+          receipt_url?: string | null
           status?: string
+          stripe_customer_id?: string | null
+          stripe_invoice_id?: string | null
           subscription_ref?: string | null
+          tax_receipt_url?: string | null
           type?: string
           updated_at?: string
         }
@@ -1625,9 +1649,73 @@ export type Database = {
           },
         ]
       }
+      form_definitions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          fields: Json
+          id: string
+          is_public: boolean
+          organization_id: string
+          slug: string
+          status: string
+          submit_button_text: string
+          success_message: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          fields?: Json
+          id?: string
+          is_public?: boolean
+          organization_id: string
+          slug: string
+          status?: string
+          submit_button_text?: string
+          success_message?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          fields?: Json
+          id?: string
+          is_public?: boolean
+          organization_id?: string
+          slug?: string
+          status?: string
+          submit_button_text?: string
+          success_message?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_definitions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "form_definitions_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "public_organization"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       form_submissions: {
         Row: {
           created_at: string
+          form_id: string | null
           form_slug: string
           id: string
           locale: string | null
@@ -1639,6 +1727,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          form_id?: string | null
           form_slug: string
           id?: string
           locale?: string | null
@@ -1650,6 +1739,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          form_id?: string | null
           form_slug?: string
           id?: string
           locale?: string | null
@@ -1660,6 +1750,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "form_submissions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "form_definitions"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "form_submissions_organization_id_fkey"
             columns: ["organization_id"]
@@ -2513,6 +2610,7 @@ export type Database = {
           quiet_hours_end: string | null
           quiet_hours_start: string | null
           sms_enabled: boolean
+          timezone: string | null
           updated_at: string
           user_id: string
         }
@@ -2527,6 +2625,7 @@ export type Database = {
           quiet_hours_end?: string | null
           quiet_hours_start?: string | null
           sms_enabled?: boolean
+          timezone?: string | null
           updated_at?: string
           user_id: string
         }
@@ -2541,6 +2640,7 @@ export type Database = {
           quiet_hours_end?: string | null
           quiet_hours_start?: string | null
           sms_enabled?: boolean
+          timezone?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -5171,6 +5271,10 @@ export type Database = {
       role_has_permission: {
         Args: { p_permission: string; p_role: string }
         Returns: boolean
+      }
+      schedule_cron_jobs: {
+        Args: { p_functions_base_url: string }
+        Returns: string
       }
       storage_org_id: { Args: { p_name: string }; Returns: string }
       user_has_org_access: { Args: { p_org_id: string }; Returns: boolean }

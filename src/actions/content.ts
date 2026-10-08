@@ -422,6 +422,39 @@ export async function rotatePreviewToken(pageId: string) {
     return { data, error: null };
 }
 
+/**
+ * Batch locale coverage for the content list: page_id -> (locale -> status),
+ * read from content_page_translations (the source of truth). Two queries
+ * total regardless of page count. Missing table resolves to an empty map
+ * so the list degrades to legacy columns instead of erroring.
+ */
+export async function getContentLocaleCoverage(): Promise<{
+    data: Record<string, Record<string, string>>;
+    error: string | null;
+}> {
+    const auth = await authorizePermission(PERMISSIONS.content.read);
+    if (!auth.ok) return { data: {}, error: auth.error };
+
+    const { data: pages } = await auth.context.supabase
+        .from(TABLE)
+        .select('id')
+        .eq('organization_id', auth.organizationId);
+    const ids = (pages ?? []).map((p) => p.id as string);
+    if (ids.length === 0) return { data: {}, error: null };
+
+    const { data, error } = await auth.context.supabase
+        .from(TRANSLATIONS_TABLE)
+        .select('page_id, locale, status')
+        .in('page_id', ids);
+    if (error) return { data: {}, error: null };
+
+    const map: Record<string, Record<string, string>> = {};
+    for (const row of (data ?? []) as { page_id: string; locale: string; status: string }[]) {
+        (map[row.page_id] ??= {})[row.locale] = row.status;
+    }
+    return { data: map, error: null };
+}
+
 /** List per-locale translation rows for a page (org-scoped). */
 export async function getPageTranslations(pageId: string) {
     const auth = await authorizePermission(PERMISSIONS.content.read);
@@ -601,8 +634,8 @@ export async function transitionContentWorkflow(
 
     if (to === 'in_review') {
         try {
-            const { sendReviewRequest } = await import('@/actions/email');
-            await sendReviewRequest(pageId, '', auth.context.userId);
+            const { sendReviewRequest } = await import('@/lib/email');
+            await sendReviewRequest({ pageId, locale: '', userId: auth.context.userId });
         } catch {
             console.error('[transitionContentWorkflow] Failed to send review notification.');
         }
@@ -947,8 +980,8 @@ async function notifyReviewRequest(
     supabase: import('@supabase/supabase-js').SupabaseClient,
 ): Promise<void> {
     try {
-        const { sendReviewRequest } = await import('@/actions/email');
-        await sendReviewRequest(pageId, locale, userId);
+        const { sendReviewRequest } = await import('@/lib/email');
+        await sendReviewRequest({ pageId, locale, userId });
     } catch {
         // Non-fatal: notification failure should not block the workflow.
         console.error('[notifyReviewRequest] Could not send review notification.');

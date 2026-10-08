@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -15,18 +16,20 @@ import type { FormField, FormFieldType } from "@/types/domain/forms";
 import { ArrowDown, ArrowLeft, ArrowUp, ClipboardList, Loader2, Plus, Trash2 } from "lucide-react";
 import { Link } from "@/lib/navigation";
 
-const FIELD_TYPES: { value: FormFieldType; label: string }[] = [
-    { value: "text", label: "Short text" },
-    { value: "textarea", label: "Long text (paragraph)" },
-    { value: "number", label: "Number" },
-    { value: "select", label: "Dropdown (options)" },
-    { value: "checkbox", label: "Checkbox (consent)" },
-    { value: "radio", label: "Radio (options)" },
-    { value: "date", label: "Date" },
-    { value: "file", label: "File upload" },
-    { value: "email", label: "Email" },
-    { value: "phone", label: "Phone" },
-];
+function getFieldTypes(t: (key: string) => string): { value: FormFieldType; label: string }[] {
+    return [
+        { value: "text", label: t("field_type_text") },
+        { value: "textarea", label: t("field_type_textarea") },
+        { value: "number", label: t("field_type_number") },
+        { value: "select", label: t("field_type_select") },
+        { value: "checkbox", label: t("field_type_checkbox") },
+        { value: "radio", label: t("field_type_radio") },
+        { value: "date", label: t("field_type_date") },
+        { value: "file", label: t("field_type_file") },
+        { value: "email", label: t("field_type_email") },
+        { value: "phone", label: t("field_type_phone") },
+    ];
+}
 
 let fieldSeq = 0;
 /** Client-only unique id for new fields (never persisted to the database). */
@@ -51,19 +54,21 @@ export interface FormBuilderDraft {
     is_public: boolean;
 }
 
-const DEFAULT_DRAFT: FormBuilderDraft = {
-    title: "",
-    slug: "",
-    description: "",
-    status: "draft",
-    fields: [
-        { id: nextFieldId(), type: "text", label: "Full Name", required: true, sortOrder: 0 },
-        { id: nextFieldId(), type: "email", label: "Email Address", required: true, sortOrder: 1 },
-    ],
-    submit_button_text: "Submit",
-    success_message: "Thank you for your submission!",
-    is_public: true,
-};
+function createDefaultDraft(labels: { name: string; email: string; submitText: string; successMessage: string }): FormBuilderDraft {
+    return {
+        title: "",
+        slug: "",
+        description: "",
+        status: "draft",
+        fields: [
+            { id: nextFieldId(), type: "text", label: labels.name, required: true, sortOrder: 0 },
+            { id: nextFieldId(), type: "email", label: labels.email, required: true, sortOrder: 1 },
+        ],
+        submit_button_text: labels.submitText,
+        success_message: labels.successMessage,
+        is_public: true,
+    };
+}
 
 interface FormBuilderProps {
     /** Initial values in edit mode. */
@@ -76,7 +81,16 @@ interface FormBuilderProps {
 
 export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: FormBuilderProps) {
     const router = useRouter();
-    const [draft, setDraft] = useState<FormBuilderDraft>(initial ?? DEFAULT_DRAFT);
+    const t = useTranslations("Admin.Forms.builder");
+    const fieldTypes = getFieldTypes(t);
+    const [draft, setDraft] = useState<FormBuilderDraft>(
+        initial ?? createDefaultDraft({
+            name: t("default_field_name"),
+            email: t("default_field_email"),
+            submitText: t("default_submit_text"),
+            successMessage: t("default_success_message"),
+        }),
+    );
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -140,8 +154,8 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
             description: draft.description.trim() || null,
             status: draft.status,
             fields: draft.fields.map((f, i) => ({ ...f, sortOrder: i })),
-            submit_button_text: draft.submit_button_text.trim() || "Submit",
-            success_message: draft.success_message.trim() || "Thank you for your submission!",
+            submit_button_text: draft.submit_button_text.trim() || t("default_submit_text"),
+            success_message: draft.success_message.trim() || t("default_success_message"),
             is_public: draft.is_public,
             created_by: null,
         };
@@ -181,12 +195,12 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
                     <CardTitle className="flex items-center gap-2 text-base">
                         <ClipboardList className="h-4 w-4 text-emerald-500" /> Form Configuration
                     </CardTitle>
-                    <CardDescription>Identity, visibility, and the messages submitters will see.</CardDescription>
+                    <CardDescription>{t("config_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Form title</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("form_title_label")}</label>
                             <Input
                                 required
                                 value={draft.title}
@@ -195,7 +209,7 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
                             />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">URL slug</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("slug_label")}</label>
                             <Input
                                 required
                                 value={draft.slug}
@@ -210,7 +224,7 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
                         <Textarea
                             value={draft.description}
                             onChange={(e) => patch({ description: e.target.value })}
-                            placeholder="Instructions for submitters..."
+                            placeholder={t("instructions_ph")}
                         />
                     </div>
                     <div className="grid gap-4 sm:grid-cols-2">
@@ -240,19 +254,19 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
                     </div>
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Submit button text</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("submit_text_label")}</label>
                             <Input
                                 value={draft.submit_button_text}
                                 onChange={(e) => patch({ submit_button_text: e.target.value })}
-                                placeholder="Submit Application"
+                                placeholder={t("submit_text_ph")}
                             />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Success message</label>
+                            <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("success_label")}</label>
                             <Input
                                 value={draft.success_message}
                                 onChange={(e) => patch({ success_message: e.target.value })}
-                                placeholder="Thank you for submitting!"
+                                placeholder={t("success_ph")}
                             />
                         </div>
                     </div>
@@ -262,7 +276,7 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
             <Card>
                 <CardHeader>
                     <CardTitle className="text-base">Fields</CardTitle>
-                    <CardDescription>Ordered list of questions. Options apply to dropdown and radio fields.</CardDescription>
+                    <CardDescription>{t("fields_desc")}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {draft.fields.map((field, index) => (
@@ -300,12 +314,12 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
                                     <Input
                                         value={field.label}
                                         onChange={(e) => patchField(index, { label: e.target.value })}
-                                        placeholder="Full Name"
+                                        placeholder={t("field_label_ph")}
                                         className="h-9"
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Field type</label>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("field_type_label")}</label>
                                     <Select
                                         value={field.type}
                                         onValueChange={(value) => patchField(index, { type: value as FormFieldType, options: undefined })}
@@ -314,7 +328,7 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
                                             <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {FIELD_TYPES.map((option) => (
+                                            {fieldTypes.map((option) => (
                                                 <SelectItem key={option.value} value={option.value}>
                                                     {option.label}
                                                 </SelectItem>
@@ -329,16 +343,16 @@ export function FormBuilder({ initial, formId, backHref = "/admin/forms" }: Form
                                     <Input
                                         value={field.placeholder ?? ""}
                                         onChange={(e) => patchField(index, { placeholder: e.target.value || undefined })}
-                                        placeholder="Jane Doe"
+                                        placeholder={t("field_placeholder_ph")}
                                         className="h-9"
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Help text</label>
+                                    <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("help_label")}</label>
                                     <Input
                                         value={field.helpText ?? ""}
                                         onChange={(e) => patchField(index, { helpText: e.target.value || undefined })}
-                                        placeholder="Shown below the field"
+                                        placeholder={t("help_ph")}
                                         className="h-9"
                                     />
                                 </div>

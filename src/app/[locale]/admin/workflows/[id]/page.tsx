@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -12,7 +13,8 @@ export default async function WorkflowDetailPage({
 }: {
     params: Promise<{ locale: string; id: string }>;
 }) {
-    const { id } = await params;
+    const { locale, id } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Workflows.Detail" });
     const [{ data: definition }, { data: instances }] = await Promise.all([
         getWorkflowDefinition(id),
         getWorkflowInstances({ definitionId: id }),
@@ -24,7 +26,7 @@ export default async function WorkflowDetailPage({
         <div className="space-y-8">
             <PageHeader
                 title={definition.name}
-                description={`Version ${definition.version} · ${definition.steps?.length ?? 0} steps · Status: ${definition.status}`}
+                description={t("version_desc", { version: definition.version, steps: definition.steps?.length ?? 0, status: definition.status })}
             />
 
             <WorkflowBuilder
@@ -41,23 +43,23 @@ export default async function WorkflowDetailPage({
 
             <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                    Running & past instances
+                    {t("instances_title")}
                 </h3>
                 <div className="rounded-lg border bg-card">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Started</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Current step</TableHead>
-                                <TableHead>Completed</TableHead>
+                                <TableHead>{t("cols.started")}</TableHead>
+                                <TableHead>{t("cols.status")}</TableHead>
+                                <TableHead>{t("cols.current_step")}</TableHead>
+                                <TableHead>{t("cols.completed")}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {(!instances || instances.length === 0) ? (
                                 <TableRow>
                                     <TableCell colSpan={4} className="text-center py-6 text-muted-foreground text-sm">
-                                        No workflow instances yet. Trigger this workflow to create the first run.
+                                        {t("empty")}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -75,7 +77,7 @@ export default async function WorkflowDetailPage({
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-xs font-mono">
-                                            Step {instance.current_step_index + 1} of {definition.steps?.length ?? 0}
+                                            {t("step_of", { current: instance.current_step_index + 1, total: definition.steps?.length ?? 0 })}
                                         </TableCell>
                                         <TableCell className="text-xs text-muted-foreground">
                                             {instance.completed_at ? new Date(instance.completed_at).toLocaleString() : "—"}

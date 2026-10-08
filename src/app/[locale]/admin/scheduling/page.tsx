@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,19 +9,21 @@ import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function SchedulingPage() {
+export default async function SchedulingPage({ params }: { params: Promise<{ locale: string }> }) {
+    const { locale } = await params;
+    const t = await getTranslations({ locale, namespace: "Admin.Scheduling" });
     const { data: jobs } = await getScheduledJobs();
 
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Scheduler & Cron Jobs"
-                description="Manage recurring scheduled tasks, automated exports, and timed triggers."
+                title={t("title")}
+                description={t("description")}
                 action={
                     <Button asChild className="gap-2">
                         <Link href="/admin/scheduling/new">
                             <Plus className="h-4 w-4" />
-                            Schedule Job
+                            {t("schedule_job")}
                         </Link>
                     </Button>
                 }
@@ -30,18 +33,18 @@ export default async function SchedulingPage() {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Job Name</TableHead>
-                            <TableHead>Schedule</TableHead>
-                            <TableHead>Job Type</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Next Run</TableHead>
+                            <TableHead>{t("cols.name")}</TableHead>
+                            <TableHead>{t("cols.schedule")}</TableHead>
+                            <TableHead>{t("cols.job_type")}</TableHead>
+                            <TableHead>{t("cols.status")}</TableHead>
+                            <TableHead>{t("cols.next_run")}</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {(!jobs || jobs.length === 0) ? (
                             <TableRow>
                                 <TableCell colSpan={5} className="text-center py-8 text-muted-foreground text-sm">
-                                    No scheduled jobs active. Click &quot;Schedule Job&quot; to set up timed automation.
+                                    {t("empty")}
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -57,11 +60,11 @@ export default async function SchedulingPage() {
                                     <TableCell className="capitalize text-xs">{job.job_type}</TableCell>
                                     <TableCell>
                                         <Badge variant={job.is_active ? "default" : "secondary"}>
-                                            {job.is_active ? "Active" : "Paused"}
+                                            {job.is_active ? t("active") : t("paused")}
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="text-xs text-muted-foreground">
-                                        {job.next_run_at ? new Date(job.next_run_at).toLocaleString() : "N/A"}
+                                        {job.next_run_at ? new Date(job.next_run_at).toLocaleString() : t("not_available")}
                                     </TableCell>
                                 </TableRow>
                             ))
