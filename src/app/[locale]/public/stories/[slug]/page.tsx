@@ -11,6 +11,7 @@ import { StoryActionBar } from "@/components/stories/detail/action-bar";
 import { StoryCard } from "@/components/stories/story-card";
 import { getPublicImpactStoryBySlug, getPublicImpactStories } from "@/actions/public";
 import { toStoryDeepDiveViewModel, toStoryViewModel } from "@/lib/content/public-mappers";
+import { buildPublicMetadata, buildArticleSchema } from "@/lib/seo";
 
 // ISR: purged by revalidatePublicContentRoutes() whenever a story is
 // published, unpublished or edited in /admin/content/stories.
@@ -41,20 +42,23 @@ const getStory = cache(async (slug: string): Promise<StoryDeepDiveViewModel | nu
     return toStoryDeepDiveViewModel(data, relatedStories);
 });
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-    const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+    const { locale, slug } = await params;
     const story = await getStory(slug);
     if (!story) return { title: "Story Not Found" };
-    return {
+    
+    return buildPublicMetadata({
+        locale,
+        path: `/public/stories/${slug}`,
         title: story.title,
         description: story.summary,
-        openGraph: {
-            title: story.title,
-            description: story.summary,
-            images: story.imageSrc ? [{ url: story.imageSrc }] : undefined,
-            type: "article",
-        },
-    };
+        ogImage: story.imageSrc,
+        publishedTime: story.publishedAt,
+        modifiedTime: story.publishedAt,
+        authors: [story.author.name],
+        section: story.program,
+        tags: [story.type, story.role, story.program].filter(Boolean),
+    });
 }
 
 export default async function StoryDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {

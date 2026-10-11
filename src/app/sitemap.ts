@@ -6,6 +6,10 @@ import {
     getPublicImpactStorySlugs,
     getPublicNewsSlugs,
     getPublicProjectSlugs,
+    getPublicCampaignSlugs,
+    getPublicTeamMemberSlugs,
+    getPublicDocumentSlugs,
+    getPublicMilestoneSlugs,
 } from '@/actions/public';
 import { projectPath } from '@/lib/program-routes';
 import type { ProgramCategory } from '@/lib/program-themes';
@@ -39,15 +43,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    // Dynamic CMS entries (published projects, events, news, impact stories).
-    // All slug helpers read safe public views through the cookieless anon
-    // client and fail soft to [] when the DB is unreachable, so sitemap
-    // generation never breaks the build.
-    const [projects, events, news, stories] = await Promise.all([
+    // Dynamic CMS entries (published projects, events, news, impact stories, campaigns, team, documents, milestones).
+    const [
+        projects,
+        events,
+        news,
+        stories,
+        campaigns,
+        teamMembers,
+        documents,
+        milestones,
+    ] = await Promise.all([
         getPublicProjectSlugs(),
         getPublicEventSlugs(),
         getPublicNewsSlugs(),
         getPublicImpactStorySlugs(),
+        getPublicCampaignSlugs(),
+        getPublicTeamMemberSlugs(),
+        getPublicDocumentSlugs(),
+        getPublicMilestoneSlugs(),
     ]);
 
     for (const locale of routing.locales) {
@@ -82,6 +96,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 lastModified: s.updated_at ? new Date(s.updated_at) : undefined,
                 changeFrequency: 'weekly',
                 priority: 0.6,
+            });
+        }
+        for (const c of campaigns.data ?? []) {
+            sitemapEntries.push({
+                url: `${baseUrl}/${locale}/public/campaigns/${encodeURIComponent(c.slug)}`,
+                lastModified: c.updated_at ? new Date(c.updated_at) : undefined,
+                changeFrequency: 'weekly',
+                priority: 0.6,
+            });
+        }
+        for (const t of teamMembers.data ?? []) {
+            sitemapEntries.push({
+                url: `${baseUrl}/${locale}/public/about/team/${encodeURIComponent(t.slug)}`,
+                lastModified: t.updated_at ? new Date(t.updated_at) : undefined,
+                changeFrequency: 'monthly',
+                priority: 0.5,
+            });
+        }
+        for (const d of documents.data ?? []) {
+            sitemapEntries.push({
+                url: `${baseUrl}/${locale}/public/about/financials/${encodeURIComponent(d.slug)}`,
+                lastModified: d.updated_at ? new Date(d.updated_at) : undefined,
+                changeFrequency: 'monthly',
+                priority: 0.5,
+            });
+        }
+        for (const m of milestones.data ?? []) {
+            sitemapEntries.push({
+                url: `${baseUrl}/${locale}/public/about/${encodeURIComponent(m.slug)}`,
+                lastModified: m.updated_at ? new Date(m.updated_at) : undefined,
+                changeFrequency: 'monthly',
+                priority: 0.5,
             });
         }
     }

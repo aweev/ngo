@@ -10,6 +10,7 @@ import { ImpactInterstitial } from "@/components/stories/impact-interstitial";
 import { Button } from "@/components/ui/button";
 import { getPublicImpactStories, getPublicStats } from "@/actions/public";
 import { toStoryViewModel } from "@/lib/content/public-mappers";
+import { buildPublicMetadata } from "@/lib/seo";
 
 // ISR: story publishing is an editorial event, purged by
 // revalidatePublicContentRoutes() on admin writes.
@@ -20,10 +21,18 @@ export const revalidate = 300;
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Stories.Hero" });
-    return {
+    return buildPublicMetadata({
+        locale,
+        path: '/public/stories',
         title: t("headline"),
-        description: t("subheadline")
-    };
+        description: t("subheadline"),
+        ogImage: undefined,
+        publishedTime: undefined,
+        modifiedTime: undefined,
+        authors: undefined,
+        section: 'Stories',
+        tags: ['stories', 'impact', 'testimonials', 'success stories', 'beneficiaries'],
+    });
 }
 
 /**

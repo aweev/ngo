@@ -3509,8 +3509,31 @@
     "no_referrals": "Noch keine Überweisungen.",
     "household_members": "Haushalt",
     "not_linked": "Kein Haushalt",
-    "member_details": "Mitglied {n}",
+"member_details": "Mitglied {n}",
     "remove_member": "Entfernen",
-    "field_login_required": "Zum Außendienst anmelden."
-  }
+    "field_login_required": "Zum Außendienst anmelden.",
+    "MediaCarousel": {
+        "carousel_label": "Medien-Karussell",
+        "thumbnails_label": "Vorschaubilder",
+        "pagination_label": "Seitensteuerung",
+        "expanded_label": "Erweiterte Ansicht",
+        "previous": "Zurück",
+        "next": "Weiter",
+        "close": "Schließen",
+        "slide": "Slide",
+        "expand": "Erweitern"
+    },
+    "MediaUpload": {
+        "drop_single": "Bild oder Video hierher ziehen oder klicken zum Auswählen",
+        "drop_multiple": "Bilder oder Videos hierher ziehen oder klicken zum Auswählen",
+        "formats": "Unterstützt: {accept}. Max. Größe: {maxSize}MB",
+        "uploading": "Lade hoch {file}…",
+        "error_size": "Datei zu groß (max {max}MB)",
+        "error_type": "Nicht unterstütztes Dateiformat",
+        "error_upload": "Upload fehlgeschlagen. Bitte erneut versuchen.",
+        "uploaded": "Hochgeladen ({count})",
+        "remove": "Entfernen",
+        "set_focal_point": "Klicken um Fokuspunkt zu setzen"
+    }
+}
 }

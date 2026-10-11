@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
@@ -10,6 +10,8 @@ export type TimelineMilestone = { year: string; title: string; description: stri
 
 export function HistoryTimeline({ milestones }: { milestones?: TimelineMilestone[] } = {}) {
     const t = useTranslations("About.Timeline");
+    const locale = useLocale();
+    const isRTL = locale === 'ar';
 
     // Admin-driven milestones (content category `milestone`); i18n years only when DB is empty.
     const items: TimelineMilestone[] = milestones && milestones.length > 0
@@ -34,8 +36,8 @@ export function HistoryTimeline({ milestones }: { milestones?: TimelineMilestone
                 </div>
 
                 <div className="relative">
-                    {/* Vertical Line */}
-                    <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2" />
+                    {/* Vertical Line - centered, works for both LTR and RTL */}
+                    <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2" />
 
                     <div className="space-y-12">
                         {years.map((year, index) => {
@@ -45,11 +47,11 @@ export function HistoryTimeline({ milestones }: { milestones?: TimelineMilestone
                             return (
                                 <div key={year} className="relative flex flex-col md:flex-row items-center">
 
-                                    {/* Node */}
+                                    {/* Node - centered, works for both LTR and RTL */}
                                     <button
                                         onClick={() => setActiveYear(isActive ? null : year)}
                                         className={cn(
-                                            "absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-4 z-10 transition-all duration-300 flex items-center justify-center",
+                                            "absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-4 z-10 transition-all duration-300 flex items-center justify-center",
                                             isActive
                                                 ? "bg-white border-primary scale-125 shadow-lg shadow-primary/20"
                                                 : "bg-background border-muted-foreground hover:border-primary"
@@ -60,10 +62,12 @@ export function HistoryTimeline({ milestones }: { milestones?: TimelineMilestone
                                         <div className={cn("w-2 h-2 rounded-full", isActive ? "bg-primary" : "bg-transparent")} />
                                     </button>
 
-                                    {/* Content Wrapper */}
+                                    {/* Content Wrapper - RTL aware */}
                                     <div className={cn(
                                         "w-full md:w-1/2 pl-12 md:pl-0",
-                                        isEven ? "md:pr-12 md:text-right" : "md:ml-auto md:pl-12"
+                                        isRTL
+                                            ? (isEven ? "md:ml-auto md:pl-12" : "md:pr-12 md:text-right")
+                                            : (isEven ? "md:pr-12 md:text-right" : "md:ml-auto md:pl-12")
                                     )}>
                                         <motion.div
                                             initial={{ opacity: 0, y: 20 }}
@@ -77,7 +81,9 @@ export function HistoryTimeline({ milestones }: { milestones?: TimelineMilestone
                                         >
                                             <div className={cn(
                                                 "flex items-center gap-4 mb-2",
-                                                isEven ? "md:flex-row-reverse" : "flex-row"
+                                                isRTL
+                                                    ? (isEven ? "md:flex-row-reverse" : "flex-row")
+                                                    : (isEven ? "flex-row" : "md:flex-row-reverse")
                                             )}>
                                                 <span className="text-2xl font-bold text-primary font-serif">{year}</span>
                                                 <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform", isActive && "rotate-180")} />

@@ -620,6 +620,102 @@ export async function subscribeToNewsletter(
 }
 
 /**
+ * Confirm newsletter subscription (double opt-in)
+ * Called via email link with a token
+ */
+export async function confirmNewsletterSubscription(token: string): Promise<{ success: boolean; error: string | null }> {
+    const parsed = z.string().uuid().safeParse(token);
+    if (!parsed.success) {
+        return { success: false, error: 'Invalid confirmation token.' };
+    }
+
+    const supabase = await createSupabaseServerClient();
+
+    // Find the subscriber with this token (we'll store token in a separate table or use the id)
+    // For now, we'll use the id as the token since it's a UUID
+    const { data: subscriber, error } = await supabase
+        .from('newsletter_subscribers')
+        .select('id, email, status')
+        .eq('id', token)
+        .maybeSingle();
+
+    if (error || !subscriber) {
+        return { success: false, error: 'Invalid or expired confirmation link.' };
+    }
+
+    if (subscriber.status === 'subscribed') {
+        return { success: true, error: null }; // Already confirmed
+    }
+
+    const { error: updateError } = await supabase
+        .from('newsletter_subscribers')
+        .update({ status: 'subscribed', subscribed_at: new Date().toISOString() })
+        .eq('id', token);
+
+    if (updateError) {
+        console.error('[confirmNewsletterSubscription]', updateError.message);
+        return { success: false, error: 'Unable to confirm subscription. Please try again.' };
+    }
+
+    return { success: true, error: null };
+}
+
+/**
+ * Unsubscribe from newsletter
+ * Called via unsubscribe link with email or token
+ */
+export async function unsubscribeNewsletter(input: { email?: string; token?: string }): Promise<{ success: boolean; error: string | null }> {
+    const { email, token } = input;
+
+    if (!email && !token) {
+        return { success: false, error: 'Email or token required.' };
+    }
+
+    const supabase = await createSupabaseServerClient();
+
+    let query = supabase
+        .from('newsletter_subscribers')
+        .select('id, email, status')
+        .eq('status', 'subscribed');
+
+    if (token) {
+        const parsed = z.string().uuid().safeParse(token);
+        if (!parsed.success) {
+            return { success: false, error: 'Invalid token.' };
+        }
+        query = query.eq('id', token);
+    } else if (email) {
+        query = query.eq('email', email.trim().toLowerCase());
+    }
+
+    const { data: subscriber, error } = await query.maybeSingle();
+
+    if (error || !subscriber) {
+        return { success: false, error: 'Subscription not found.' };
+    }
+
+    const { error: updateError } = await supabase
+        .from('newsletter_subscribers')
+        .update({ status: 'unsubscribed', unsubscribed_at: new Date().toISOString() })
+        .eq('id', subscriber.id);
+
+    if (updateError) {
+        console.error('[unsubscribeNewsletter]', updateError.message);
+        return { success: false, error: 'Unable to unsubscribe. Please try again.' };
+    }
+
+    // Send confirmation email
+    try {
+        const { sendNewsletterUnsubscribe } = await import('@/lib/email');
+        await sendNewsletterUnsubscribe({ to: subscriber.email, email: subscriber.email });
+    } catch {
+        // Non-fatal
+    }
+
+    return { success: true, error: null };
+}
+
+/**
  * Submit a public form (contact, safeguarding, corporate inquiry, ...)
  * No authentication required - backed by public INSERT RLS policy.
  *
@@ -1690,4 +1786,73 @@ export async function getPublicNewsSlugs() {
 }
 export async function getPublicImpactStorySlugs() {
     return fetchSlugEntries('public_impact_stories');
+}
+export async function getPublicCampaignSlugs() {
+    return fetchSlugEntries('public_campaigns');
+}
+export async function getPublicTeamMemberSlugs() {
+    try {
+        const supabase = createSupabasePublicClient();
+        const { data, error } = await supabase
+            .from('public_content_pages')
+            .select('slug, updated_at')
+            .eq('status', 'published')
+            .contains('content', { category: 'team_member' });
+        if (error) return { data: [], error: null };
+        const rows = (data ?? []) as Array<Record<string, unknown>>;
+        return {
+            data: rows.flatMap((row) => {
+                const slug = typeof row.slug === 'string' ? row.slug : null;
+                if (!slug) return [];
+                return [{ slug, updated_at: typeof row.updated_at === 'string' ? row.updated_at : null, category: 'team_member' }];
+            }),
+            error: null,
+        };
+    } catch {
+        return { data: [], error: null };
+    }
+}
+export async function getPublicDocumentSlugs() {
+    try {
+        const supabase = createSupabasePublicClient();
+        const { data, error } = await supabase
+            .from('public_content_pages')
+            .select('slug, updated_at')
+            .eq('status', 'published')
+            .contains('content', { category: 'document' });
+        if (error) return { data: [], error: null };
+        const rows = (data ?? []) as Array<Record<string, unknown>>;
+        return {
+            data: rows.flatMap((row) => {
+                const slug = typeof row.slug === 'string' ? row.slug : null;
+                if (!slug) return [];
+                return [{ slug, updated_at: typeof row.updated_at === 'string' ? row.updated_at : null, category: 'document' }];
+            }),
+            error: null,
+        };
+    } catch {
+        return { data: [], error: null };
+    }
+}
+export async function getPublicMilestoneSlugs() {
+    try {
+        const supabase = createSupabasePublicClient();
+        const { data, error } = await supabase
+            .from('public_content_pages')
+            .select('slug, updated_at')
+            .eq('status', 'published')
+            .contains('content', { category: 'milestone' });
+        if (error) return { data: [], error: null };
+        const rows = (data ?? []) as Array<Record<string, unknown>>;
+        return {
+            data: rows.flatMap((row) => {
+                const slug = typeof row.slug === 'string' ? row.slug : null;
+                if (!slug) return [];
+                return [{ slug, updated_at: typeof row.updated_at === 'string' ? row.updated_at : null, category: 'milestone' }];
+            }),
+            error: null,
+        };
+    } catch {
+        return { data: [], error: null };
+    }
 }

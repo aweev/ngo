@@ -3509,8 +3509,31 @@
     "no_referrals": "Sin derivaciones.",
     "household_members": "Hogar",
     "not_linked": "Sin hogar",
-    "member_details": "Miembro {n}",
+"member_details": "Miembro {n}",
     "remove_member": "Quitar",
-    "field_login_required": "Inicie sesión para el campo."
-  }
+    "field_login_required": "Inicie sesión para el campo.",
+    "MediaCarousel": {
+        "carousel_label": "Carrusel multimedia",
+        "thumbnails_label": "Miniaturas",
+        "pagination_label": "Paginación",
+        "expanded_label": "Vista expandida",
+        "previous": "Anterior",
+        "next": "Siguiente",
+        "close": "Cerrar",
+        "slide": "Diapositiva",
+        "expand": "Expandir"
+    },
+    "MediaUpload": {
+        "drop_single": "Arrastra y suelta una imagen o video aquí, o haz clic para examinar",
+        "drop_multiple": "Arrastra y suelta imágenes o videos aquí, o haz clic para examinar",
+        "formats": "Soportados: {accept}. Tamaño máx: {maxSize}MB",
+        "uploading": "Subiendo {file}…",
+        "error_size": "Archivo demasiado grande (máx {max}MB)",
+        "error_type": "Tipo de archivo no soportado",
+        "error_upload": "Error al subir. Intenta de nuevo.",
+        "uploaded": "Subidos ({count})",
+        "remove": "Eliminar",
+        "set_focal_point": "Clic para establecer punto focal"
+    }
+}
 }

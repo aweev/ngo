@@ -4,7 +4,7 @@ const locales = ['en', 'de', 'fr', 'es', 'ar'];
 
 /**
  * Every route is locale-prefixed (routing.localePrefix === 'always' in
- * src/lib/navigation.ts), so a bare '/' is a redirect and '/about' is a 404.
+ * src/lib/navigation.ts), so a bare '/' is a redirect and /about is a 404.
  * Assertions here used to be `toHaveTitle(/./)` and
  * `toBeGreaterThanOrEqual(0)`, which pass against an error page - they are
  * replaced with real content checks.

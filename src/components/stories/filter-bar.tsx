@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -15,11 +15,14 @@ import {
 import { useState, useEffect } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { STORY_FORMATS, STORY_ROLES } from "@/types/domain-adapters"; // Import constants
+import { cn } from "@/lib/utils";
 
 const PROGRAMS = ["education", "health", "economic-empowerment", "social-integration"] as const;
 
 export function FilterBar() {
     const t = useTranslations("Stories.Filters");
+    const locale = useLocale();
+    const isRTL = locale === 'ar';
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -64,10 +67,16 @@ export function FilterBar() {
 
                     {/* Search Input */}
                     <div className="relative w-full lg:w-96 group">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                        <Search className={cn(
+                            "absolute top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors",
+                            isRTL ? "right-3" : "left-3"
+                        )} />
                         <Input
                             placeholder={t("search_placeholder")}
-                            className="pl-9 bg-background rounded-full border-border/60 focus-visible:ring-primary/20 transition-all"
+                            className={cn(
+                                "bg-background rounded-full border-border/60 focus-visible:ring-primary/20 transition-all",
+                                isRTL ? "pr-9" : "pl-9"
+                            )}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
@@ -131,7 +140,7 @@ export function FilterBar() {
                                 onClick={clearFilters}
                                 className="text-muted-foreground hover:text-destructive rounded-full hover:bg-destructive/10"
                             >
-                                <X className="w-4 h-4 mr-1" />
+                                <X className="w-4 h-4 mr-1 rtl:-mr-1 rtl:ml-1" />
                                 <span className="hidden sm:inline">{t("clear")}</span>
                             </Button>
                         )}

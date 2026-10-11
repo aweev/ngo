@@ -14,7 +14,7 @@ import AxeBuilder from '@axe-core/playwright';
  */
 /**
  * Routes carry the locale prefix explicitly. Public content lives under
- * /public/* (see src/app/[locale]/public), so '/about' is a 404 - a previous
+ * /public/* (see src/app/[locale]/public), so /about is a 404 - a previous
  * version of this list navigated there, which meant the WCAG gate was auditing
  * error pages and passing. scripts/verify-cta-links.mjs now scans this file,
  * and expectRealPage() below fails loudly rather than silently.

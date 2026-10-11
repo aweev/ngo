@@ -4,14 +4,23 @@ import { PathCard } from "@/components/get-involved/path-card";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/lib/navigation";
 import { Mail } from "lucide-react";
+import { buildPublicMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "GetInvolved.Hub" });
-    return {
+    return buildPublicMetadata({
+        locale,
+        path: '/public/get-involved',
         title: t("title"),
-        description: t("subtitle")
-    };
+        description: t("subtitle"),
+        ogImage: undefined,
+        publishedTime: undefined,
+        modifiedTime: undefined,
+        authors: undefined,
+        section: 'Get Involved',
+        tags: ['volunteer', 'donate', 'partnership', 'get involved', 'support'],
+    });
 }
 
 export default async function GetInvolvedPage({ params }: { params: Promise<{ locale: string }> }) {

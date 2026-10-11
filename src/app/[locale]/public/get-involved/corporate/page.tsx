@@ -7,14 +7,23 @@ import { BusinessCase } from "@/components/corporate/business-case";
 import { PartnershipTiers } from "@/components/corporate/partnership-tiers";
 import { CaseStudySlider } from "@/components/corporate/case-study-slider";
 import { InquiryForm } from "@/components/corporate/inquiry-form";
+import { buildPublicMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Corporate.Hero" });
-    return {
+    return buildPublicMetadata({
+        locale,
+        path: '/public/get-involved/corporate',
         title: t("headline"),
-        description: t("subheadline")
-    };
+        description: t("subheadline"),
+        ogImage: undefined,
+        publishedTime: undefined,
+        modifiedTime: undefined,
+        authors: undefined,
+        section: 'Corporate Partnerships',
+        tags: ['corporate', 'partnership', 'csr', 'business', 'sponsorship'],
+    });
 }
 
 const caseStudies: CaseStudyViewModel[] = [

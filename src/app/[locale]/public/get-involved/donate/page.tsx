@@ -17,6 +17,7 @@ import {
     getPublicDocuments,
     getPublicTestimonials,
 } from "@/actions/public";
+import { buildPublicMetadata } from "@/lib/seo";
 
 /**
  * Transparency figures come from the database, never from a literal.
@@ -89,10 +90,18 @@ async function getFeaturedTestimonial(locale: string): Promise<RealTestimonial |
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Donation.Page" });
-    return {
+    return buildPublicMetadata({
+        locale,
+        path: '/public/get-involved/donate',
         title: t("title"),
-        description: t("description")
-    };
+        description: t("description"),
+        ogImage: undefined,
+        publishedTime: undefined,
+        modifiedTime: undefined,
+        authors: undefined,
+        section: 'Donate',
+        tags: ['donate', 'donation', 'support', 'charity', 'nonprofit'],
+    });
 }
 
 export const revalidate = 300;

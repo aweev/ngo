@@ -3509,8 +3509,31 @@
     "no_referrals": "لا إحالات بعد.",
     "household_members": "أسرة",
     "not_linked": "بلا أسرة",
-    "member_details": "الفرد {n}",
+"member_details": "الفرد {n}",
     "remove_member": "إزالة",
-    "field_login_required": "سجّل الدخول لاستخدام الميدان."
-  }
+    "field_login_required": "سجّل الدخول لاستخدام الميدان.",
+    "MediaCarousel": {
+        "carousel_label": "معرض الوسائط",
+        "thumbnails_label": "الصور المصغرة",
+        "pagination_label": "التنقل",
+        "expanded_label": "العرض الموسع",
+        "previous": "السابق",
+        "next": "التالي",
+        "close": "إغلاق",
+        "slide": "الشريحة",
+        "expand": "توسيع"
+    },
+    "MediaUpload": {
+        "drop_single": "اسحب وأفلِت صورة أو فيديو هنا، أو انقر للاستعراض",
+        "drop_multiple": "اسحب وأفلِت صورًا أو فيديوهات هنا، أو انقر للاستعراض",
+        "formats": "مدعومة: {accept}. الحد الأقصى للحجم: {maxSize} ميجابايت",
+        "uploading": "جاري رفع {file}…",
+        "error_size": "الملف كبير جدًا (الحد الأقصى {max} ميجابايت)",
+        "error_type": "نوع ملف غير مدعوم",
+        "error_upload": "فشل الرفع. يرجى المحاولة مرة أخرى.",
+        "uploaded": "تم الرفع ({count})",
+        "remove": "إزالة",
+        "set_focal_point": "انقر لتعيين نقطة التركيز"
+    }
+}
 }

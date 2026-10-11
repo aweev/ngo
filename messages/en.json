@@ -3511,6 +3511,29 @@
     "not_linked": "No household",
     "member_details": "Member {n}",
     "remove_member": "Remove",
-    "field_login_required": "Sign in to use the field app."
-  }
+"field_login_required": "Sign in to use the field app.",
+    "MediaCarousel": {
+        "carousel_label": "Media carousel",
+        "thumbnails_label": "Thumbnails",
+        "pagination_label": "Pagination",
+        "expanded_label": "Expanded view",
+        "previous": "Previous",
+        "next": "Next",
+        "close": "Close",
+        "slide": "Slide",
+        "expand": "Expand"
+    },
+    "MediaUpload": {
+        "drop_single": "Drag & drop an image or video here, or click to browse",
+        "drop_multiple": "Drag & drop images or videos here, or click to browse",
+        "formats": "Supported: {accept}. Max size: {maxSize}MB",
+        "uploading": "Uploading {file}…",
+        "error_size": "File too large (max {max}MB)",
+        "error_type": "Unsupported file type",
+        "error_upload": "Upload failed. Please try again.",
+        "uploaded": "Uploaded ({count})",
+        "remove": "Remove",
+        "set_focal_point": "Click to set focal point"
+    }
+}
 }

@@ -8,6 +8,7 @@ import { RoleFinder } from "@/components/volunteer/role-finder";
 import { VolunteerJourney } from "@/components/volunteer/volunteer-journey";
 import { getPublicVolunteerRoles } from "@/actions/public";
 import { toVolunteerRole } from "@/lib/content/public-mappers";
+import { buildPublicMetadata } from "@/lib/seo";
 
 // ISR: role board changes only when staff edit it, purged via
 // revalidatePublicVolunteerRoutes().
@@ -18,10 +19,18 @@ export const revalidate = 300;
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Volunteer.Hero" });
-    return {
+    return buildPublicMetadata({
+        locale,
+        path: '/public/get-involved/volunteer',
         title: t("headline"),
-        description: t("subheadline")
-    };
+        description: t("subheadline"),
+        ogImage: undefined,
+        publishedTime: undefined,
+        modifiedTime: undefined,
+        authors: undefined,
+        section: 'Volunteer',
+        tags: ['volunteer', 'volunteering', 'opportunities', 'join', 'nonprofit'],
+    });
 }
 
 /**

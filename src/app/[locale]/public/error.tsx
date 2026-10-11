@@ -1,34 +1,45 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { Link } from '@/lib/navigation';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Link } from "@/lib/navigation";
+import { useTranslations } from "next-intl";
+import { RefreshCw, Home, AlertCircle } from "lucide-react";
 
-export default function PublicError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
-    useEffect(() => {
-        // Keep the boundary quiet for visitors while Next.js still captures the error.
-        console.error('Public route failed to render');
-    }, []);
+export default function PublicError({
+    error,
+    reset,
+}: {
+    error: Error & { digest?: string };
+    reset: () => void;
+}) {
+    const t = useTranslations("Error");
 
     return (
-        <main className="min-h-[60vh] pt-20" role="alert">
-            <div className="container mx-auto flex min-h-[60vh] items-center justify-center px-4 text-center">
-                <div className="max-w-lg space-y-6">
-                    <AlertTriangle className="mx-auto h-10 w-10 text-primary" aria-hidden="true" />
-                    <h1 className="text-3xl font-serif font-bold text-foreground">Something went wrong</h1>
-                    <p className="text-muted-foreground">This page could not be loaded. Please try again or return to the homepage.</p>
-                    <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                        <Button type="button" onClick={reset}>
-                            <RefreshCw className="mr-2 h-4 w-4" aria-hidden="true" />
-                            Try again
-                        </Button>
-                        <Button asChild variant="outline">
-                            <Link href="/">Return home</Link>
-                        </Button>
-                    </div>
+        <div className="flex min-h-[60dvh] items-center justify-center px-4 pt-28">
+            <div className="text-center space-y-6 max-w-md">
+                <AlertCircle className="h-16 w-16 text-destructive/50 mx-auto" />
+                <div className="space-y-2">
+                    <h1 className="text-3xl font-bold text-foreground">{t("title")}</h1>
+                    <p className="text-muted-foreground">{t("description")}</p>
                 </div>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button onClick={reset} className="gap-2" size="lg">
+                        <RefreshCw className="h-4 w-4" />
+                        {t("retry")}
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="gap-2">
+                        <Link href="/public">
+                            <Home className="h-4 w-4" />
+                            {t("home")}
+                        </Link>
+                    </Button>
+                </div>
+                {error.digest && (
+                    <p className="text-xs text-muted-foreground font-mono">
+                        {t("error_id")}: {error.digest}
+                    </p>
+                )}
             </div>
-        </main>
+        </div>
     );
 }

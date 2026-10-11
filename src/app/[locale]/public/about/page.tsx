@@ -14,6 +14,7 @@ import {
     getPublicMilestones,
     type PublicContentPage,
 } from "@/actions/public";
+import { buildPublicMetadata } from "@/lib/seo";
 
 export const revalidate = 300;
 
@@ -152,24 +153,32 @@ function buildTheoryContent(page: PublicContentPage | null) {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "About.Hero" });
+    let title = `About Us - ${t("headline")}`;
+    let description = t("lead");
     try {
         const { data: heroPage } = await getPublicContentPage("about-hero", locale);
         const c = (heroPage?.content ?? {}) as Record<string, unknown>;
-        const title = str(c, "headline") ?? heroPage?.title;
-        const description = str(c, "lead", "subheadline", "subtitle", "description") ?? heroPage?.meta_description;
-        if (title || description) {
-            return {
-                title: title ? `About Us - ${title}` : `About Us - ${t("headline")}`,
-                description: description ?? t("lead"),
-            };
+        const pageTitle = str(c, "headline") ?? heroPage?.title;
+        const pageDescription = str(c, "lead", "subheadline", "subtitle", "description") ?? heroPage?.meta_description;
+        if (pageTitle || pageDescription) {
+            title = pageTitle ? `About Us - ${pageTitle}` : `About Us - ${t("headline")}`;
+            description = pageDescription ?? t("lead");
         }
     } catch {
         // fall through to i18n defaults
     }
-    return {
-        title: `About Us - ${t("headline")}`,
-        description: t("lead"),
-    };
+    return buildPublicMetadata({
+        locale,
+        path: '/public/about',
+        title,
+        description,
+        ogImage: undefined, // Could be set from hero page cover_image_url
+        publishedTime: undefined,
+        modifiedTime: undefined,
+        authors: undefined,
+        section: 'About',
+        tags: ['about', 'mission', 'vision', 'values', 'history', 'team'],
+    });
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {

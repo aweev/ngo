@@ -3509,8 +3509,31 @@
     "no_referrals": "Aucune orientation.",
     "household_members": "Ménage",
     "not_linked": "Sans ménage",
-    "member_details": "Membre {n}",
+"member_details": "Membre {n}",
     "remove_member": "Retirer",
-    "field_login_required": "Connectez-vous pour le terrain."
-  }
+    "field_login_required": "Connectez-vous pour le terrain.",
+    "MediaCarousel": {
+        "carousel_label": "Carrousel média",
+        "thumbnails_label": "Vignettes",
+        "pagination_label": "Pagination",
+        "expanded_label": "Vue agrandie",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "close": "Fermer",
+        "slide": "Diapositive",
+        "expand": "Agrandir"
+    },
+    "MediaUpload": {
+        "drop_single": "Glissez-déposez une image ou vidéo ici, ou cliquez pour parcourir",
+        "drop_multiple": "Glissez-déposez des images ou vidéos ici, ou cliquez pour parcourir",
+        "formats": "Supportés : {accept}. Taille max : {maxSize} Mo",
+        "uploading": "Téléchargement de {file}…",
+        "error_size": "Fichier trop volumineux (max {max} Mo)",
+        "error_type": "Type de fichier non supporté",
+        "error_upload": "Échec du téléchargement. Veuillez réessayer.",
+        "uploaded": "Téléchargés ({count})",
+        "remove": "Retirer",
+        "set_focal_point": "Cliquer pour définir le point focal"
+    }
+}
 }
