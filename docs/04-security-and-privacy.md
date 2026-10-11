@@ -1,7 +1,7 @@
 # 04 — Security & Privacy
 
-Owner: engineering + Data Protection Officer. Review quarterly and after any
-incident (see `09-operations.md`).
+Owner: engineering + **Data Protection Officer (DPO — must be appointed before Phase 3)**. Review quarterly and after any
+incident (see `09-operations.md` §GDPR Compliance Prerequisites).
 
 ## Authentication
 
@@ -54,7 +54,7 @@ incident (see `09-operations.md`).
 | Anonymized reporting | Aggregates + counts in public views; no PII in snapshots/exports | Live |
 | Archival | `is_archived` + `deleted_at` soft delete | Live |
 | Hard deletion / DSAR execution | Retention executor + subject erasure job | **Phase 3 — not built** (status flips exist; the executor does not) |
-| Breach notification playbook | — | **Open: needs owner + 72h procedure** (see `12-roadmap.md` Q7) |
+| Breach notification playbook | Documented in `09-operations.md` §GDPR Compliance Prerequisites; 72h procedure with templates; drills quarterly | **Phase 3 gate — must complete before Phase 3 ships** |
 
 Key fingerprint discipline: the seed script prints the PII key fingerprint;
 the app must run with the same `ENCRYPTION_KEY` or seeded names will not

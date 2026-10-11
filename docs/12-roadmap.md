@@ -36,26 +36,15 @@ RBAC builder + role-requests + portal-experience, governance/HR/reviews,
 tags, AI copilot, notification template builder, CMS depth
 (revisions/preview/entity-translations); merge workers/volunteers into one
 directory; drop embla/cmdk/framer-motion-critical-paths/recharts-public;
-freeze public site to Home/About/Financials (or extract to a static repo).
+**public site extracted to `apps/web-public` (static repo) — see `PUBLIC_SITE_EXTRACTION_PLAN.md`**.
 
 ## Later — Phase 5: adoption
 
-CSV/XLSX importer with dry-run, 7→3-step onboarding, Swahili/Hausa field
-strings (current de/es serve donors, not field staff), one error tracker,
-backup/PITR drill record, support path with named owner, hosting-cost sheet.
+CSV/XLSX importer with dry-run, 7→3-step onboarding, **Swahili/Hausa field strings implemented** (decided: field app locales en/sw/ha/fr/ar), one error tracker, backup/PITR drill record, support path with named owner, hosting-cost sheet.
 
 ## Open questions for leadership (decisions required)
 
-1. Split the marketing site out of this repo? (Recommended: yes, static.)
-2. Single-currency enforcement stays until real multi-currency UX ships?
-   (Recommended: yes — current hard block.)
-3. Household-vs-individual MVP scope per sector (health/protection need the
-   hardest PII handling — determines columns)?
-4. `de`/`es` → `sw`/`ha` locale swap for field?
-5. Ledger boundary: CSV-first for 12 months, no accounting integrations?
-   (Recommended: yes.)
-6. Who answers when sync breaks in a village with no IT (funded support)?
-7. DPO named? Supabase region documented? Breach drill dated?
+*All resolved 2026-10-11 — see Decision Log above.*
 
 ## Decision log (append, never rewrite)
 
@@ -67,3 +56,10 @@ backup/PITR drill record, support path with named owner, hosting-cost sheet.
 | Phase 1 | Duplicates flagged, never auto-merged | Merge is a human safeguarding decision |
 | Phase 2 | Unmapped IATI nodes omitted with warnings | Invented sectors/funders are audit fraud |
 | Fonts | System stacks, Google Fonts removed | Build/dev/field must all work with zero egress |
+| 2026-10-11 | Split public marketing site to separate repo (`apps/web-public`) | Zero shared runtime logic with NGO OS; deployment/bundle/security isolation; static SSG + ISR via webhook revalidation |
+| 2026-10-11 | Single-currency hard block until Phase 6+ | Finance integrity invariants (spent rollups, approvals, IATI) depend on single-currency guarantees; multi-currency = Phase 6 scope |
+| 2026-10-11 | Registration mode configurable per project (`project.registration_mode`) | Schema supports both household/individual; sector drives default (health/protection → individual; cash/voucher → household) |
+| 2026-10-11 | Field app locales: en/sw/ha/fr/ar (donor-facing: en/de/fr/es/ar) | Disjoint audiences — field officers need Swahili/Hausa; donors need German/Spanish; `next-intl` per-route config supports this |
+| 2026-10-11 | CSV-first ledger for 12 months (no accounting integrations) | Reconcile + query-hashed CSV + IATI = audit-grade; Xero/QB/Sage sync is brittle, vendor-locked, distracts from core workflows |
+| 2026-10-11 | Funded support retainer for field sync incidents (SLA: <4h field ops) | Operational requirement, not technical; named on-call, runbook, budget line in grants; volunteer devs unacceptable for beneficiary-facing ops |
+| 2026-10-11 | DPO appointed + Supabase region documented + breach drill dated before Phase 3 | GDPR Art. 37/33/30 compliance prerequisite for high-risk beneficiary PII processing; no "later" acceptable |

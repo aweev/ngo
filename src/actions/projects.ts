@@ -135,3 +135,34 @@ export async function getProjectsStats(): Promise<{
         error: null,
     };
 }
+
+/** Get active projects for the field app (minimal fields, includes registration_mode). */
+export async function getProjectsForField(): Promise<{ data: { id: string; name: string; slug: string; category: string | null; registration_mode: string }[] | null; error: string | null }> {
+    const auth = await authorizePermission(PERMISSIONS.projects.read);
+    if (!auth.ok) return { data: null, error: auth.error };
+
+    const { data, error } = await auth.context.supabase
+        .from(TABLE)
+        .select('id, name, slug, category, registration_mode')
+        .eq('organization_id', auth.organizationId)
+        .eq('status', 'active')
+        .order('name', { ascending: true });
+
+    if (error) return { data: null, error: 'Unable to load projects.' };
+    return { data: data ?? [], error: null };
+}
+
+/** Determine default registration_mode based on project category. */
+export function getDefaultRegistrationMode(category: string | null): 'household' | 'individual' | 'both' {
+    if (!category) return 'household';
+    const cat = category.toLowerCase();
+    // Health/protection sectors → individual registration
+    if (cat.includes('health') || cat.includes('protection') || cat.includes('nutrition') || cat.includes('wash')) {
+        return 'individual';
+    }
+    // Cash/voucher/food/livelihoods → household registration
+    if (cat.includes('cash') || cat.includes('voucher') || cat.includes('food') || cat.includes('livelihood') || cat.includes('shelter')) {
+        return 'household';
+    }
+    return 'household';
+}

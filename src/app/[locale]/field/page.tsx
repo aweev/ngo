@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { ClipboardList, HandHeart, HelpCircle, RefreshCw, UserPlus } from 'lucide-react';
-import { Link } from '@/lib/navigation';
+import { FieldLink } from '@/lib/navigation-field';
+import { normalizeFieldLocale } from '@/lib/i18n/locales';
 import { getBeneficiaries } from '@/actions/beneficiaries';
 import { getReferrals, getServices } from '@/actions/services';
 
@@ -18,7 +19,8 @@ const CARDS = [
 ];
 
 export default async function FieldHomePage({ params }: { params: Promise<{ locale: string }> }) {
-    const { locale } = await params;
+    const { locale: rawLocale } = await params;
+    const locale = normalizeFieldLocale(rawLocale);
     const t = await getTranslations({ locale, namespace: 'Field' });
     const [{ data: beneficiaries }, { data: services }, { data: referrals }] = await Promise.all([
         getBeneficiaries({ limit: 1 }),
@@ -35,7 +37,7 @@ export default async function FieldHomePage({ params }: { params: Promise<{ loca
 
             <div className="grid grid-cols-2 gap-3">
                 {CARDS.map(({ href, key, desc, Icon }) => (
-                    <Link
+                    <FieldLink
                         key={href}
                         href={href}
                         className="flex min-h-28 flex-col justify-between rounded-2xl border bg-card p-4 active:bg-muted"
@@ -45,7 +47,7 @@ export default async function FieldHomePage({ params }: { params: Promise<{ loca
                             <div className="font-bold">{t(key)}</div>
                             <div className="text-xs text-muted-foreground">{t(desc)}</div>
                         </div>
-                    </Link>
+                    </FieldLink>
                 ))}
             </div>
 
@@ -64,13 +66,13 @@ export default async function FieldHomePage({ params }: { params: Promise<{ loca
                 </div>
             </div>
 
-            <Link
+            <FieldLink
                 href="/field/beneficiaries"
                 className="flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-primary font-bold text-primary-foreground"
             >
                 <ClipboardList className="h-5 w-5" aria-hidden="true" />
                 {t('log_service')}
-            </Link>
+            </FieldLink>
         </div>
     );
 }

@@ -8,6 +8,8 @@ export interface ProjectDocument {
   uploaded_at: string
 }
 
+export type RegistrationMode = 'household' | 'individual' | 'both';
+
 export interface Project {
   id: string
   organization_id: string
@@ -30,6 +32,7 @@ export interface Project {
   gallery_urls: string[]
   documents: ProjectDocument[]
   tags: string[]
+  registration_mode: RegistrationMode
   created_at: string
   updated_at: string
 }
@@ -56,6 +59,7 @@ export interface ProjectInsert {
   gallery_urls?: string[]
   documents?: ProjectDocument[]
   tags?: string[]
+  registration_mode?: RegistrationMode
   created_at?: string
   updated_at?: string
 }
@@ -82,6 +86,7 @@ export interface ProjectUpdate {
   gallery_urls?: string[]
   documents?: ProjectDocument[]
   tags?: string[]
+  registration_mode?: RegistrationMode
   created_at?: string
   updated_at?: string
 }

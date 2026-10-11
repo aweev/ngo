@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { getTranslations } from 'next-intl/server';
 import { auth } from '@/auth';
-import { Link, redirect } from '@/lib/navigation';
+import { FieldLink, fieldRedirect } from '@/lib/navigation-field';
+import { normalizeFieldLocale } from '@/lib/i18n/locales';
 import { FieldSyncBadge } from '@/components/field/sync-badge';
 
 interface FieldLayoutProps {
@@ -17,10 +18,11 @@ interface FieldLayoutProps {
 export const dynamic = 'force-dynamic';
 
 export default async function FieldLayout({ children, params }: FieldLayoutProps) {
-    const { locale } = await params;
+    const { locale: rawLocale } = await params;
+    const locale = normalizeFieldLocale(rawLocale);
     const session = await auth();
     if (!session?.user) {
-        redirect({ href: '/auth/login', locale });
+        fieldRedirect({ href: '/auth/login', locale });
         return null;
     }
     const t = await getTranslations({ locale, namespace: 'Field' });
@@ -29,9 +31,9 @@ export default async function FieldLayout({ children, params }: FieldLayoutProps
         <div className="min-h-screen bg-background">
             <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
                 <div className="mx-auto flex h-14 max-w-2xl items-center justify-between gap-2 px-4">
-                    <Link href="/field" className="text-base font-bold">
+                    <FieldLink href="/field" className="text-base font-bold">
                         {t('field_home')}
-                    </Link>
+                    </FieldLink>
                     <FieldSyncBadge />
                 </div>
             </header>

@@ -1,9 +1,11 @@
 import { getTranslations } from 'next-intl/server';
+import { normalizeFieldLocale } from '@/lib/i18n/locales';
 
 export const dynamic = 'force-dynamic';
 
 export default async function FieldHelpPage({ params }: { params: Promise<{ locale: string }> }) {
-    const { locale } = await params;
+    const { locale: rawLocale } = await params;
+    const locale = normalizeFieldLocale(rawLocale);
     const t = await getTranslations({ locale, namespace: 'Field' });
 
     return (

@@ -55,7 +55,109 @@ guide is the narrative that binds them.
 Breach readiness gap (open): a named DPO and a 72-hour notification procedure
 are still required — see `04-security-and-privacy.md` and `12-roadmap.md` Q7.
 
-## Support model (small-NGO reality)
+---
+
+## GDPR Compliance Prerequisites (Must Complete Before Phase 3)
+
+### 1. Data Protection Officer (DPO) — Required by GDPR Art. 37
+**Status:** NOT APPOINTED — **Blocker for Phase 3**
+
+| Requirement | Detail | Owner | Due |
+|-------------|--------|-------|-----|
+| DPO appointed | Internal staff or external contractor with GDPR expertise | Leadership | Before Phase 3 kickoff |
+| DPO contact published | In privacy policy, Supabase project settings, breach procedure | DPO | Before Phase 3 kickoff |
+| DPO independence | No conflict of interest (not CTO, not lead dev) | Leadership | Before Phase 3 kickoff |
+| DPO resources | Budget for training, tools, legal counsel | Leadership | Before Phase 3 kickoff |
+
+### 2. Supabase Region & Data Residency — Required by GDPR Art. 28 (DPA)
+**Status:** NOT DOCUMENTED — **Blocker for Phase 3**
+
+| Item | Required Value | Current | Action |
+|------|----------------|---------|--------|
+| Supabase project region | `eu-west-1` (Ireland) or `eu-central-1` (Frankfurt) for EU data subjects | [TBD] | Document in Supabase dashboard + this file |
+| Data Processing Addendum (DPA) | Signed with Supabase | [TBD] | Execute via Supabase dashboard |
+| Sub-processor list | Reviewed and accepted | [TBD] | DPO to review quarterly |
+| Transfer mechanism | Standard Contractual Clauses (SCCs) for any non-EU sub-processors | [TBD] | DPO to verify |
+
+**Current Supabase Project:** `web` (see `supabase/config.toml`)
+**Region Verification:** Run `supabase projects list` → confirm region column
+
+### 3. Breach Notification Procedure — Required by GDPR Art. 33/34
+**Status:** NOT DOCUMENTED — **Blocker for Phase 3**
+
+#### 3.1 Breach Drill Requirements
+| Drill | Frequency | Participants | Success Criteria |
+|-------|-----------|--------------|------------------|
+| Tabletop exercise | Quarterly | DPO, CTO, On-call, Field Ops Lead, Legal | Decision log completed in <2h |
+| Technical simulation | Bi-annual | Engineering, DPO | Breach detected → contained → reported in <72h |
+| Full notification test | Annual | DPO, Legal, Comms, Supervisory Authority contact | Draft notification to SA + data subjects ready in <48h |
+
+#### 3.2 Breach Notification Procedure (72-Hour Clock)
+
+```
+T+0h    Breach detected (automated alert OR manual report)
+        ↓
+T+0.5h  On-call acknowledges → pages DPO + CTO
+        ↓
+T+1h    Containment: revoke sessions, freeze affected tables, preserve logs
+        ↓
+T+2h    DPO assesses: personal data involved? Likely risk to rights/freedoms?
+        ↓
+T+4h    If YES → Draft SA notification (Art. 33)
+        If HIGH RISK → Draft data subject notification (Art. 34)
+        ↓
+T+24h   Internal review: legal counsel validates notifications
+        ↓
+T+48h   Notifications sent (SA + data subjects if required)
+        ↓
+T+72h   DEADLINE: All notifications submitted
+        ↓
+T+7d    Post-incident review → action items → roadmap decision log
+```
+
+#### 3.3 Breach Notification Templates
+
+**Supervisory Authority (Art. 33):**
+- Nature of breach (categories, approx. number of data subjects/records)
+- DPO contact details
+- Likely consequences
+- Measures taken/proposed to address/mitigate
+
+**Data Subjects (Art. 34, if high risk):**
+- Plain language description
+- DPO contact details
+- Likely consequences
+- Measures taken to mitigate
+- Steps data subject can take (e.g., monitor accounts)
+
+### 4. Records of Processing Activities (ROPA) — Required by GDPR Art. 30
+**Status:** PARTIAL (audit_events covers some) — **Complete Before Phase 3**
+
+| Processing Activity | Purpose | Legal Basis | Data Categories | Recipients | Retention | Third Country Transfer |
+|---------------------|---------|-------------|-----------------|------------|-----------|------------------------|
+| Beneficiary registration | Humanitarian aid delivery | Legitimate interest / Consent | Name (encrypted), sex, age_band, disability, location, phone (encrypted) | Field staff, partner orgs (anonymized) | 7y after last contact | No (EU region) |
+| Service delivery tracking | Program monitoring | Legitimate interest | Service type, quantity, date, beneficiary link | Donors (aggregated), auditors | 7y | No |
+| Donor management | Fundraising compliance | Contract / Legitimate interest | Name, email, amount, payment ref | Payment processor (Stripe), tax authority | 10y (financial regs) | Stripe (US) — SCCs |
+| Staff/volunteer management | HR operations | Contract / Legal obligation | Name, email, role, hours | Payroll (if applicable) | 7y post-employment | No |
+| Field sync (offline queue) | Offline-first operations | Legitimate interest | Encrypted PII queue, device ID | Device only (local) | Until synced + 30d | No |
+
+---
+
+## Compliance Checklist (Gate for Phase 3)
+
+- [ ] DPO appointed and contact published
+- [ ] Supabase region confirmed as EU (Ireland/Frankfurt)
+- [ ] DPA with Supabase executed and stored
+- [ ] Breach procedure documented, tested, drill dated
+- [ ] ROPA complete for all processing activities
+- [ ] Privacy policy updated with DPO contact, lawful bases, retention
+- [ ] Consent records schema supports withdrawal evidence (`consent_records` table)
+- [ ] DSAR workflow implemented (Phase 3: retention executor + erasure path)
+- [ ] Encryption key rotation procedure documented (Phase 3: envelope encryption)
+
+---
+
+## Cost & sustainability posture
 
 - **Field breakage** (sync stuck, lost phone): the sync screen states the
   reason per record — train one "sync champion" per site to read it. Remote
