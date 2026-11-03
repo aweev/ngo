@@ -5,7 +5,9 @@
   },
   "NotFound": {
     "title": "Seite nicht gefunden",
-    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben."
+    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "home": "Zurück zur Startseite",
+    "about": "Über uns"
   },
   "Navigation": {
     "back_home": "Zurück zur Startseite",
@@ -476,8 +478,12 @@
     },
     "Success": {
       "title": "Erfolg!",
-      "message": "Willkommen in unserer Gemeinschaft von Changemakern."
+      "message": "Willkommen in unserer Gemeinschaft von Changemakern.",
+      "confirm_inbox": "Bitte prüfen Sie Ihr Postfach und klicken Sie auf den Bestätigungslink."
     },
+    "consent_label": "Ich stimme dem Newsletter und der Datenschutzerklärung zu.",
+    "consent_required": "Bitte akzeptieren Sie die Datenschutzbedingungen.",
+    "error_generic": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es später erneut.",
     "Stats": {
       "subscribers": "Abonnenten",
       "countries": "Länder",
@@ -571,7 +577,8 @@
     "description": "Wir entschuldigen uns für die Unannehmlichkeiten. Ein kritischer Fehler ist aufgetreten.",
     "retry": "Erneut versuchen",
     "reload": "Seite neu laden",
-    "home": "Zur Startseite"
+    "home": "Zur Startseite",
+    "error_id": "Fehlerreferenz"
   },
   "Common": {
     "cta_donate": "Jetzt spenden",
@@ -803,7 +810,12 @@
       "impact_default": "Ressourcen, wo sie am dringendsten benötigt werden",
       "payment_header": "Zahlungsdetails",
       "email_label": "E-Mail-Adresse",
+      "name_label": "Vollständiger Name (für Spendenquittung)",
+      "name_placeholder": "Jane Doe",
       "receipt_check": "Ich benötige eine Spendenquittung",
+      "consent_label": "Ich stimme den Spendenbedingungen und der Datenverarbeitung zu.",
+      "consent_required": "Bitte akzeptieren Sie die Spendenbedingungen.",
+      "marketing_consent_label": "Informieren Sie mich über Wirkung und Kampagnen (optional).",
       "submit_btn": "€{amount} spenden",
       "secure_footer": "Verschlüsselt & Sicher via Stripe",
       "error_title": "Ihre Spende konnte nicht verarbeitet werden",
@@ -988,7 +1000,8 @@
         "donation": "Hilfe bei Spenden",
         "volunteer": "Freiwilligenarbeit",
         "partner": "Partnerschaft",
-        "report": "Problem melden"
+        "report": "Problem melden",
+        "privacy": "Datenschutz (DSAR)"
       },
       "hints": {
         "volunteer": "Suchen Sie nach offenen Stellen? Prüfen Sie unser Freiwilligen-Portal für eine schnellere Bewerbung.",
@@ -1208,7 +1221,10 @@
       "complete_title": "Du bist bereit, etwas zu bewirken",
       "complete_subtitle": "Deine Angaben sind gespeichert. Willkommen bei AWE.",
       "dashboard": "Zum Dashboard",
-      "start_over": "Neu beginnen"
+      "start_over": "Neu beginnen",
+      "account_name": "Kontoname",
+      "account_name_missing": "Noch kein Name festgelegt",
+      "account_name_note": "Wird Koordinatoren angezeigt, wenn du an Aktivitäten teilnimmst."
     },
     "Register": {
       "title": "Konto erstellen",
@@ -1738,6 +1754,7 @@
       "badge": "NGO OS v2.0",
       "collapse": "Menü einklappen",
       "items": {
+        "templates": "Vorlagen",
         "commandCenter": "Kommandozentrale",
         "teamInvites": "Team & Einladungen",
         "workers": "Mitarbeiter",
@@ -1926,6 +1943,8 @@
       "load_failed": "{entity} konnte nicht geladen werden: {error}"
     },
     "Automations": {
+      "templates_hint": "Suchen Sie einen Ausgangspunkt? Durchsuchen Sie fertige Vorlagen.",
+      "browse_templates": "Starter-Vorlagen",
       "title": "Automatisierungen & IFTTT-Engine",
       "description": "Automatisierte Regeln, Auslöser, Bedingungen und Aktionen für Ihre Organisation konfigurieren.",
       "create_rule": "Regel erstellen",
@@ -2026,7 +2045,8 @@
         "trigger_select_ph": "Auslöser wählen",
         "cond_desc": "Alle Bedingungen müssen erfüllt sein, damit die Aktionen ausgeführt werden. Leer lassen, um immer auszuführen.",
         "cond_none": "Keine Bedingungen — diese Regel wird bei jedem Auslöser ausgeführt.",
-        "actions_desc": "Werden der Reihe nach ausgeführt, wenn Auslöser und Bedingungen erfüllt sind. Optionale Verzögerung pro Aktion."
+        "actions_desc": "Werden der Reihe nach ausgeführt, wenn Auslöser und Bedingungen erfüllt sind. Optionale Verzögerung pro Aktion.",
+        "field_ph": "z. B. status"
       }
     },
     "Workflows": {
@@ -2600,7 +2620,11 @@
         "approved": "Approved",
         "in_review": "In review",
         "rejected": "Changes requested",
-        "draft": "Draft — not approved"
+        "draft": "Draft — not approved",
+        "published": "Published",
+        "archived": "Archived",
+        "translation_pending": "Translation pending",
+        "changes_requested": "Changes requested"
       },
       "Locale": {
         "missing": "EN only — no translations",
@@ -2637,7 +2661,13 @@
         "slug_fix_required": "Fix the slug before saving.",
         "cancel": "Cancel",
         "creating": "Creating…",
-        "create_draft": "Create draft"
+        "create_draft": "Create draft",
+        "unable_to_create": "Seite konnte nicht erstellt werden. Bitte erneut versuchen.",
+        "page_details": "Seitendetails",
+        "title_label": "Seitentitel",
+        "slug_label": "URL-Slug",
+        "slug_checking": "Verfügbarkeit wird geprüft…",
+        "seo_description": "Such- & Social-Vorschau für diese Seite."
       },
       "Editor": {
         "saving": "Saving…",
@@ -2659,7 +2689,8 @@
         "add_field": "Add field",
         "remove": "Remove",
         "field_key_placeholder": "key",
-        "field_value_placeholder": "value"
+        "field_value_placeholder": "value",
+        "body_placeholder": "Seiteninhalt (Markdown unterstützt)…"
       },
       "Blocks": {
         "title": "Content blocks",
@@ -2703,7 +2734,15 @@
         "restore_confirm": "Restore this revision? Current content is snapshotted first, so restore is reversible.",
         "approval_title": "Approval history",
         "approval_desc": "Review requests, approvals, and change requests with reviewer identity.",
-        "no_approvals": "No review activity yet."
+        "no_approvals": "No review activity yet.",
+        "rotate_confirm": "Vorschau-Token rotieren? Bestehende Vorschau-Links werden ungültig.",
+        "copy_failed": "Kopieren fehlgeschlagen — bitte Link manuell kopieren.",
+        "copy_link": "Link kopieren",
+        "preview_title": "Entwurfsvorschau",
+        "preview_description": "Diesen Link zur Prüfung teilen. Er zeigt den aktuellen Entwurf, keine Anmeldung erforderlich.",
+        "rotating": "Wird rotiert…",
+        "rotate": "Token rotieren",
+        "missing_migration": "Vorschau-Links erfordern Migration 24."
       },
       "Preview": {
         "title": "Draft preview link",
@@ -2736,7 +2775,10 @@
         "save": "Save",
         "edit_alt": "Edit alt",
         "use_as_cover": "Use as cover",
-        "alt_missing_label": "Missing alt text"
+        "alt_missing_label": "Missing alt text",
+        "uploading": "Wird hochgeladen…",
+        "upload": "Hochladen",
+        "cover_url_placeholder": "https://…"
       },
       "Translations": {
         "title": "Translations",
@@ -2772,7 +2814,8 @@
         "invalid_file": "Invalid translation file.",
         "imported": "Imported translations saved as drafts — review each locale before approving.",
         "read_failed": "Could not read that file. Expected a translation export JSON.",
-        "status_missing": "missing"
+        "status_missing": "missing",
+        "title_required": "Titel ist erforderlich ({locale})."
       },
       "Workflow": {
         "title": "Workflow & publishing",
@@ -2905,7 +2948,8 @@
           "ent_funds": "Fonds",
           "ent_households": "Haushalte",
           "ent_referrals": "Überweisungen"
-        }
+        },
+        "required": "Berichtsname und URL-Slug sind erforderlich."
       },
       "Edit": {
         "def_title": "Berichtsdefinition",
@@ -2971,10 +3015,81 @@
         "iati_warnings": "Weggelassen"
       }
     },
+    "Templates": {
+      "title": "Starter-Vorlagen",
+      "description": "Ein-Klick-Starter für Rollen und Automatisierungen. Alles wird als Entwurf erstellt, den Sie vor dem Aktivieren prüfen.",
+      "tab_roles": "Rollen",
+      "tab_automations": "Automatisierungen",
+      "roles_title": "Rollen-Vorlagen",
+      "roles_description": "Erstellen Sie eine benutzerdefinierte Rolle mit vorbelegtem Berechtigungspaket und passen Sie sie an.",
+      "permission_count": "{count} Berechtigungen",
+      "use_role": "Rolle erstellen",
+      "using": "Wird ausgeführt...",
+      "role_created": "Rolle aus der Vorlage erstellt.",
+      "role_failed": "Die Rolle konnte nicht aus dieser Vorlage erstellt werden.",
+      "bundles_title": "Automatisierungs-Pakete",
+      "bundles_description": "Fertige Regeln zur Installation mit einem Klick. Regeln werden deaktiviert zur Prüfung erstellt.",
+      "creates_workflow": "Erstellt auch eine Workflow-Kette",
+      "use_bundle": "Installieren",
+      "bundle_created": "Paket als deaktivierte Regel installiert.",
+      "bundle_failed": "Dieses Paket konnte nicht installiert werden.",
+      "templates_title": "Regel-Vorlagen",
+      "templates_description": "Einzelregel-Starter aus der Plattformbibliothek.",
+      "use_template": "Verwenden",
+      "template_created": "Vorlage als deaktivierte Regel hinzugefügt.",
+      "template_failed": "Diese Vorlage konnte nicht verwendet werden.",
+      "review": "Prüfen",
+      "cancel": "Abbrechen",
+      "preview_description": "Nichts läuft, bis Sie es aktivieren. Das erstellt dieses Bundle genau.",
+      "preview_trigger": "Auslöser",
+      "preview_conditions": "Nur wenn",
+      "preview_actions": "Aktionen",
+      "preview_workflow": "Folge-Workflow",
+      "install_disabled": "Installieren (deaktiviert)",
+      "install_activate": "Installieren & aktivieren",
+      "bundle_activated": "Bundle installiert und aktiviert.",
+      "action_send_notification": "Benachrichtigung senden",
+      "action_send_email": "E-Mail senden",
+      "action_create_task": "Aufgabe erstellen",
+      "action_update_field": "Feld aktualisieren",
+      "action_trigger_webhook": "Webhook aufrufen",
+      "action_start_workflow": "Workflow starten",
+      "action_create_record": "Datensatz erstellen",
+      "action_custom": "Benutzerdefinierte Aktion"
+    },
     "Rbac": {
       "title": "Rollen- & Berechtigungsmatrix",
       "description": "Verwalten Sie granulare Zugriffskontrolle, Systemrollen und Abteilungsberechtigungen.",
       "create_role": "Rolle erstellen",
+      "roleDetail": {
+        "back": "Zurück zu den Rollen",
+        "systemRole": "Systemrolle",
+        "customRole": "Benutzerdefinierte Rolle"
+      },
+      "editor": {
+        "permissions": "Berechtigungen",
+        "granted_summary": "{granted} von {total} Berechtigungen gewährt. Systemrollen sind schreibgeschützt.",
+        "system_note": "Dies ist eine Systemrolle. Ihre Berechtigungen werden von der Plattform verwaltet und können nicht geändert werden.",
+        "save": "Berechtigungen speichern",
+        "saving": "Wird gespeichert..."
+      },
+      "assignments": {
+        "title": "Zugewiesene Mitglieder",
+        "description": "Weisen Sie diese Rolle Mitgliedern Ihrer Organisation zu. Jede Zuweisung kommt zusätzlich zur Basisrolle hinzu.",
+        "member_label": "Mitglied",
+        "select_placeholder": "Mitglied auswählen",
+        "no_members": "Alle haben diese Rolle bereits",
+        "assign": "Rolle zuweisen",
+        "assigning": "Wird zugewiesen...",
+        "remove": "Entfernen",
+        "empty": "Dieser Rolle ist noch niemand zugewiesen.",
+        "assigned": "Rolle zugewiesen.",
+        "assign_failed": "Die Rolle konnte nicht zugewiesen werden.",
+        "removed": "Rollenzuweisung entfernt.",
+        "remove_failed": "Die Zuweisung konnte nicht entfernt werden.",
+        "no_expiry": "Kein Ablauf",
+        "expires_on": "Läuft ab am {date}"
+      },
       "New": {
         "back": "Zurück zu den Rollen",
         "title": "Rolle erstellen",
@@ -3328,6 +3443,25 @@
       "consent_status_declined": "Abgelehnt"
     }
   },
+  "Briefing": {
+    "greeting_morning": "Guten Morgen, {name}",
+    "greeting_afternoon": "Guten Tag, {name}",
+    "greeting_evening": "Guten Abend, {name}",
+    "someone": "zusammen",
+    "subtitle": "Das braucht heute Ihre Aufmerksamkeit — {date}.",
+    "attention_title": "Morgen-Briefing",
+    "attention_desc": "Genehmigungen und Warnungen, die auf Sie warten.",
+    "all_clear": "Alles erledigt — nichts braucht gerade Ihre Aufmerksamkeit.",
+    "items": {
+      "failed_automations": "Fehlgeschlagene Automatisierungen",
+      "pending_workflows": "Workflows mit offener Aktion",
+      "unread_notifications": "Ungelesene Benachrichtigungen",
+      "pending_access_requests": "Zugriffsanfragen zur Prüfung",
+      "expenses_approval": "Ausgaben zur Genehmigung",
+      "field_reports_review": "Feldberichte zur Prüfung",
+      "paused_automations": "Pausierte Automatisierungen zur Prüfung"
+    }
+  },
   "Dashboard": {
     "Overview": {
       "member_title": "Ihr Arbeitsbereich",
@@ -3509,31 +3643,61 @@
     "no_referrals": "Noch keine Überweisungen.",
     "household_members": "Haushalt",
     "not_linked": "Kein Haushalt",
-"member_details": "Mitglied {n}",
+    "member_details": "Mitglied {n}",
     "remove_member": "Entfernen",
     "field_login_required": "Zum Außendienst anmelden.",
     "MediaCarousel": {
-        "carousel_label": "Medien-Karussell",
-        "thumbnails_label": "Vorschaubilder",
-        "pagination_label": "Seitensteuerung",
-        "expanded_label": "Erweiterte Ansicht",
-        "previous": "Zurück",
-        "next": "Weiter",
-        "close": "Schließen",
-        "slide": "Slide",
-        "expand": "Erweitern"
+      "carousel_label": "Medien-Karussell",
+      "thumbnails_label": "Vorschaubilder",
+      "pagination_label": "Seitensteuerung",
+      "expanded_label": "Erweiterte Ansicht",
+      "previous": "Zurück",
+      "next": "Weiter",
+      "close": "Schließen",
+      "slide": "Slide",
+      "expand": "Erweitern"
     },
     "MediaUpload": {
-        "drop_single": "Bild oder Video hierher ziehen oder klicken zum Auswählen",
-        "drop_multiple": "Bilder oder Videos hierher ziehen oder klicken zum Auswählen",
-        "formats": "Unterstützt: {accept}. Max. Größe: {maxSize}MB",
-        "uploading": "Lade hoch {file}…",
-        "error_size": "Datei zu groß (max {max}MB)",
-        "error_type": "Nicht unterstütztes Dateiformat",
-        "error_upload": "Upload fehlgeschlagen. Bitte erneut versuchen.",
-        "uploaded": "Hochgeladen ({count})",
-        "remove": "Entfernen",
-        "set_focal_point": "Klicken um Fokuspunkt zu setzen"
+      "drop_single": "Bild oder Video hierher ziehen oder klicken zum Auswählen",
+      "drop_multiple": "Bilder oder Videos hierher ziehen oder klicken zum Auswählen",
+      "formats": "Unterstützt: {accept}. Max. Größe: {maxSize}MB",
+      "uploading": "Lade hoch {file}…",
+      "error_size": "Datei zu groß (max {max}MB)",
+      "error_type": "Nicht unterstütztes Dateiformat",
+      "error_upload": "Upload fehlgeschlagen. Bitte erneut versuchen.",
+      "uploaded": "Hochgeladen ({count})",
+      "remove": "Entfernen",
+      "set_focal_point": "Klicken um Fokuspunkt zu setzen"
     }
-}
+  },
+  "CampaignTheme": {
+    "label": "Kampagne",
+    "year-end": {
+      "message": "Jahresendspende: Helfen Sie uns, das Jahr stark zu beenden."
+    },
+    "community-week": {
+      "message": "Community-Woche: Nimm an Veranstaltungen in deiner Nähe teil."
+    }
+  },
+  "MediaCarousel": {
+    "carousel_label": "Mediengalerie",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "expand": "Vergrößern",
+    "thumbnails_label": "Miniaturansichten",
+    "slide": "Folie",
+    "pagination_label": "Galerie-Navigation",
+    "expanded_label": "Vergrößerte Ansicht",
+    "close": "Schließen"
+  },
+  "MediaUpload": {
+    "error_size": "Datei überschreitet {max} MB.",
+    "error_type": "Nicht unterstützter Dateityp.",
+    "error_upload": "Upload fehlgeschlagen. Bitte erneut versuchen.",
+    "formats": "{accept} · max. {maxSize} MB",
+    "uploading": "{file} wird hochgeladen…",
+    "uploaded": "Hochgeladen ({count})",
+    "set_focal_point": "Fokuspunkt festlegen",
+    "remove": "Entfernen"
+  }
 }

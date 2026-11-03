@@ -105,14 +105,47 @@ try {
     process.exit(1);
 }
 
+// pnpm reports its own failures as {"error": {"code", "message"}} — e.g.
+// ERR_PNPM_LICENSES_NO_LOCKFILE when the working directory has no lockfile
+// (notably on Windows, where cmd.exe cannot cwd into a UNC share and falls
+// back to C:\Windows). Fail loudly instead of crashing on the envelope.
+if (grouped && typeof grouped === 'object' && grouped.error && typeof grouped.error === 'object') {
+    console.error(`FAIL: pnpm licenses failed (${grouped.error.code ?? 'unknown'}): ${grouped.error.message ?? 'no message'}`);
+    console.error('Hint: run this gate where pnpm can see pnpm-lock.yaml (WSL/Linux shell or CI).');
+    process.exit(1);
+}
+
+/**
+ * Normalises one license-group value to an entry array across pnpm shapes:
+ *   pnpm 9:  { "MIT": [ {name, versions, ...} ] }
+ *   other:   { "MIT": { packages: [ ... ] } }  (nested maps are flattened)
+ * Anything else is a hard error — silently skipping an unknown shape would
+ * let a disallowed license through.
+ */
+function entriesOf(expression, group) {
+    if (Array.isArray(group)) return group;
+    if (group && typeof group === 'object') {
+        const found = [];
+        const queue = [group];
+        while (queue.length > 0) {
+            const cur = queue.pop();
+            if (Array.isArray(cur)) found.push(...cur);
+            else if (cur && typeof cur === 'object') queue.push(...Object.values(cur));
+        }
+        if (found.length > 0) return found;
+    }
+    console.error(`FAIL: unrecognised license-report shape for "${expression}": ${JSON.stringify(group)?.slice(0, 200)}`);
+    process.exit(1);
+}
+
 const violations = [];
 let packagesChecked = 0;
 
-for (const [expression, entries] of Object.entries(grouped)) {
+for (const [expression, group] of Object.entries(grouped)) {
     if (allowlist.has(expression)) continue;
     if (expressionAllowed(expression)) continue;
 
-    for (const entry of entries ?? []) {
+    for (const entry of entriesOf(expression, group)) {
         packagesChecked += 1;
         const versions = Array.isArray(entry.versions) ? entry.versions.join(', ') : '';
         violations.push(`${entry.name}${versions ? `@${versions}` : ''} — ${expression}`);
@@ -120,9 +153,9 @@ for (const [expression, entries] of Object.entries(grouped)) {
 }
 
 // Packages under allowed licenses are counted too, for an honest total.
-for (const [expression, entries] of Object.entries(grouped)) {
+for (const [expression, group] of Object.entries(grouped)) {
     if (allowlist.has(expression) || expressionAllowed(expression)) {
-        for (const entry of entries ?? []) {
+        for (const entry of entriesOf(expression, group)) {
             if (entry?.name) packagesChecked += 1;
         }
     }

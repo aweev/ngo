@@ -6,6 +6,9 @@ import { SmartContactForm } from "@/components/contact/smart-form";
 import { FAQAndMap } from "@/components/contact/faq-map";
 import { SafeguardingFooter } from "@/components/contact/safeguarding-footer";
 
+// P0: ISR — contact shell is static; form posts are dynamic actions.
+export const revalidate = 300;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Contact.Hero" });

@@ -119,9 +119,11 @@ export async function sendNewsletterDoubleOptIn(params: {
     to: string;
     email: string;
     token: string;
+    locale?: string;
 }): Promise<{ success: boolean; error: string | null }> {
     const appUrl = (ENV.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/$/, '');
-    const confirmUrl = `${appUrl}/public/subscribe/confirm?token=${encodeURIComponent(params.token)}`;
+    const loc = params.locale && params.locale.length >= 2 ? params.locale : 'en';
+    const confirmUrl = `${appUrl}/${loc}/public/subscribe/confirm?token=${encodeURIComponent(params.token)}`;
     const html = `
         <h1>Confirm your newsletter subscription</h1>
         <p>Click the link below to confirm your subscription:</p>

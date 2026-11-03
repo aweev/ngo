@@ -42,6 +42,7 @@ async function linkDonorByEmail(
                 name: donation.donor_name?.trim() || email,
                 email,
                 status: 'active',
+                marketing_consent: false,
             })
             .select('id')
             .single();
@@ -74,13 +75,22 @@ export async function handleInvoiceEvent(
     if (seen) return { kind: 'duplicate' };
 
     let organizationId: string | null = null;
+    let needsReceipt = false;
+    let donorEmail: string | null = invoice.customer_email ?? null;
+    let donorName: string | null = null;
     if (subscriptionRef) {
         const { data: prior } = await supabase
             .from('donations')
-            .select('organization_id')
+            .select('organization_id,email,donor_name,needs_receipt')
             .eq('subscription_ref', subscriptionRef)
+            .order('created_at', { ascending: false })
+            .limit(1)
             .maybeSingle();
-        organizationId = ((prior as { organization_id?: string } | null)?.organization_id as string | undefined) ?? null;
+        const p = prior as { organization_id?: string; email?: string | null; donor_name?: string | null; needs_receipt?: boolean } | null;
+        organizationId = p?.organization_id ?? null;
+        if (p?.email) donorEmail = p.email;
+        donorName = p?.donor_name ?? null;
+        needsReceipt = Boolean(p?.needs_receipt);
     }
     if (!organizationId) {
         const { data: orgId } = await supabase.rpc('public_default_org_id');
@@ -102,14 +112,48 @@ export async function handleInvoiceEvent(
             subscription_ref: subscriptionRef,
             stripe_invoice_id: invoiceId,
             stripe_customer_id: typeof invoice.customer === 'string' ? invoice.customer : null,
-            email: invoice.customer_email ?? null,
-            needs_receipt: false,
+            email: donorEmail,
+            donor_name: donorName,
+            needs_receipt: needsReceipt,
+            consent_given: true,
+            consent_at: new Date().toISOString(),
         })
-        .select('id,organization_id,email,donor_name')
+        .select('id,organization_id,email,donor_name,amount,currency,needs_receipt')
         .single();
     if (error || !created) return { kind: 'failed', message: 'insert failed' };
     const row = created as { id: string; organization_id: string | null; email: string | null; donor_name: string | null };
     await linkDonorByEmail(supabase, row);
+    // P0: recurring receipts — the webhook early-returns on `created`, so send
+    // the donor email here (idempotent per stripe_invoice_id).
+    if (nextStatus === 'completed' && donorEmail) {
+        try {
+            const { sendDonationReceipt, sendTaxReceipt } = await import('@/lib/email');
+            const { receiptUrlFor } = await import('@/lib/receipts');
+            const receiptUrl = receiptUrlFor(row.id, donorEmail, 'receipt') ?? undefined;
+            const taxReceiptUrl = receiptUrlFor(row.id, donorEmail, 'tax') ?? undefined;
+            await supabase.from('donations').update({ receipt_url: receiptUrl, tax_receipt_url: taxReceiptUrl }).eq('id', row.id);
+            await sendDonationReceipt({
+                to: donorEmail,
+                donorName: donorName ?? 'Thank you',
+                amount,
+                currency,
+                donationId: row.id,
+                receiptUrl,
+            });
+            if (needsReceipt && donorName) {
+                await sendTaxReceipt({
+                    to: donorEmail,
+                    donorName,
+                    amount,
+                    currency,
+                    donationId: row.id,
+                    taxReceiptUrl,
+                });
+            }
+        } catch (mailErr) {
+            console.error('[stripe-invoices] recurring receipt email failed (non-fatal):', mailErr instanceof Error ? mailErr.message : mailErr);
+        }
+    }
     return { kind: 'created', donationId: row.id };
 }
 

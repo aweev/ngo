@@ -54,7 +54,7 @@ export function AggregatedImpact({ data }: DashboardProps) {
                             className="inline-flex items-center font-bold text-primary hover:underline underline-offset-4 group"
                         >
                             {t("transparency_link")}
-                            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                            <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
                         </Link>
                     </div>
 

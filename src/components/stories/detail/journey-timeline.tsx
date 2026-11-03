@@ -13,12 +13,12 @@ export function JourneyTimeline({ events }: { events: StoryTimelineEvent[] }) {
             <h3 className="text-xl font-serif font-bold mb-6">{t("title")}</h3>
 
             <div className="space-y-8 relative">
-                {/* Vertical Line */}
-                <div className="absolute left-3.5 top-2 bottom-2 w-0.5 bg-border" />
+                {/* Vertical Line — logical properties mirror it in RTL */}
+                <div className="absolute start-3.5 top-2 bottom-2 w-0.5 bg-border" />
 
                 {events.map((event, index) => (
-                    <div key={index} className="relative pl-10">
-                        <div className="absolute left-0 top-1.5 w-7 h-7 rounded-full bg-background border-4 border-muted-foreground/20 flex items-center justify-center z-10">
+                    <div key={index} className="relative ps-10">
+                        <div className="absolute start-0 top-1.5 w-7 h-7 rounded-full bg-background border-4 border-muted-foreground/20 flex items-center justify-center z-10">
                             <div className="w-2 h-2 bg-primary rounded-full" />
                         </div>
 

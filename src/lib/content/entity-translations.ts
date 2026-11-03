@@ -13,6 +13,9 @@ import { SUPPORTED_LOCALES, type SupportedLocale } from '@/lib/i18n/locales';
  * | impact_metric| name       | description| unit_label |
  * | org_event    | title      | description| location, city, country |
  * | organization | name       | description| mission, vision |
+ * | news_article | title      | excerpt    | author_name |
+ * | impact_story | title      | summary    | program, role |
+ * | volunteer_role| title     | description| location, category, commitment |
  *
  * Numbers, dates, currencies, images, URLs (except CTA text links),
  * and taxonomy IDs are NEVER translated — only display strings.
@@ -25,6 +28,9 @@ export const ENTITY_TYPES = [
   'impact_metric',
   'org_event',
   'organization',
+  'news_article',
+  'impact_story',
+  'volunteer_role',
 ] as const;
 export type TranslatableEntityType = (typeof ENTITY_TYPES)[number];
 
@@ -36,12 +42,17 @@ export const ENTITY_DISPLAY_FIELD: Record<TranslatableEntityType, 'name' | 'titl
   impact_metric: 'name',
   org_event: 'title',
   organization: 'name',
+  news_article: 'title',
+  impact_story: 'title',
+  volunteer_role: 'title',
 };
 
 const baseFields = {
   name: z.string().max(300).optional().nullable(),
   title: z.string().max(300).optional().nullable(),
   description: z.string().max(5000).optional().nullable(),
+  excerpt: z.string().max(2000).optional().nullable(),
+  summary: z.string().max(2000).optional().nullable(),
 };
 
 export const entityFieldsSchemas: Record<TranslatableEntityType, z.ZodTypeAny> = {
@@ -71,6 +82,21 @@ export const entityFieldsSchemas: Record<TranslatableEntityType, z.ZodTypeAny> =
     ...baseFields,
     mission: z.string().max(5000).optional().nullable(),
     vision: z.string().max(5000).optional().nullable(),
+  }),
+  news_article: z.object({
+    ...baseFields,
+    author_name: z.string().max(200).optional().nullable(),
+  }),
+  impact_story: z.object({
+    ...baseFields,
+    program: z.string().max(200).optional().nullable(),
+    role: z.string().max(120).optional().nullable(),
+  }),
+  volunteer_role: z.object({
+    ...baseFields,
+    location: z.string().max(300).optional().nullable(),
+    category: z.string().max(120).optional().nullable(),
+    commitment: z.string().max(300).optional().nullable(),
   }),
 };
 
@@ -114,6 +140,9 @@ export const ENTITY_MANAGE_PERMISSIONS: Record<TranslatableEntityType, string> =
   impact_metric: 'impact.manage',
   org_event: 'events.manage',
   organization: 'settings.manage',
+  news_article: 'content.manage',
+  impact_story: 'content.manage',
+  volunteer_role: 'content.manage',
 };
 
 export function isEntityType(value: string): value is TranslatableEntityType {

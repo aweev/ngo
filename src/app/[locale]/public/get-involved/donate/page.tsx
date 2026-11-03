@@ -17,7 +17,7 @@ import {
     getPublicDocuments,
     getPublicTestimonials,
 } from "@/actions/public";
-import { buildPublicMetadata } from "@/lib/seo";
+import { buildPublicMetadata, buildDonationSchema } from "@/lib/seo";
 
 /**
  * Transparency figures come from the database, never from a literal.
@@ -116,6 +116,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
 
     return (
         <main className="bg-background min-h-screen pt-28 pb-24">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(buildDonationSchema()) }} />
 
             <div className="container mx-auto px-4">
                 <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">

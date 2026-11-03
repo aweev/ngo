@@ -34,7 +34,7 @@ export function ExploreNav() {
                                 {t(`${card.key}.desc`)}
                             </p>
                             <div className="flex items-center text-sm font-bold text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-                                {tCommon("explore")} <ArrowRight className="w-4 h-4 ml-2" />
+                                {tCommon("explore")} <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180" />
                             </div>
                         </Link>
                     ))}

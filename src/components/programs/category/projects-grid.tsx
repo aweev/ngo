@@ -80,7 +80,7 @@ export function ProjectsGrid({ projects, category }: ProjectsGridProps) {
 
                                         <div className={`flex items-center text-sm font-bold ${theme.primary} mt-auto`}>
                                             {t("view_project")}
-                                            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                                            <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-transform" />
                                         </div>
                                     </div>
                                 </article>

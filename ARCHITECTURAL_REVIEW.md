@@ -145,6 +145,10 @@ This pays off when: (a) spinning up a static marketing site (roadmap Q1), (b) wh
 
 ### 3.2 Decisions for Phase 4 (Cut the Bloat)
 
+> **Superseded in part (2026-11-03, ADR-0001):** the *automations/workflows*
+> and *RBAC builder* rows below are **reversed** — those systems are kept and
+> invested in. See `docs/14-architecture-decisions.md`.
+
 | Item | Action | Signal |
 |------|--------|--------|
 | Campaigns/Events → `projects.kind` | Merge; deprecate `campaigns`/`org_events` tables | Overlap confirmed in `data-model.md` L62-63 |
@@ -278,8 +282,8 @@ This pays off when: (a) spinning up a static marketing site (roadmap Q1), (b) wh
 | Week | Target |
 |------|--------|
 | 1-2 | Merge campaigns/events → `projects.kind`; drop `campaigns`/`org_events` |
-| 3-4 | Consolidate automations/workflows/integrations → `scheduled_jobs` |
-| 5-6 | Delete integrations/webhooks builder, RBAC builder, role-requests, portal-experience |
+| 3-4 | ~~Consolidate automations/workflows/integrations → `scheduled_jobs`~~ — **reversed (ADR-0001)**: keep + finish the event spine |
+| 5-6 | Delete integrations/webhooks builder, role-requests, portal-experience (**RBAC builder kept — ADR-0001**) |
 | 7-8 | Delete governance/HR/reviews, tags, AI copilot, notification templates |
 | 9-10 | Merge workers/volunteers → `people` directory; drop heavy deps from public site |
 | 11-12 | Freeze CMS depth; extract public site to static repo (if not done) |

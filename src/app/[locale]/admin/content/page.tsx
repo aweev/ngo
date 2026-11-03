@@ -50,6 +50,35 @@ function localeCoverage(
 }
 
 function approvalBadge(page: PageRow, t: (key: string) => string) {
+    // P0: workflow_state is the source of truth; legacy approval_status is
+    // fallback for pre-migration rows. All 7 workflow states have labels.
+    const workflow = page.workflow_state;
+    if (workflow) {
+        if (workflow === 'published') {
+            return (
+                <Badge variant="outline" className="gap-1 text-[11px]">
+                    {t("Approval.published")}
+                </Badge>
+            );
+        }
+        if (workflow === 'approved') {
+            return (
+                <Badge variant="outline" className="gap-1 text-[11px]">
+                    {t("Approval.approved")}
+                </Badge>
+            );
+        }
+        if (workflow === 'in_review' || workflow === 'translation_pending') {
+            return <Badge variant="secondary" className="text-[11px]">{t("Approval.in_review")}</Badge>;
+        }
+        if (workflow === 'changes_requested') {
+            return <Badge variant="destructive" className="text-[11px]">{t("Approval.rejected")}</Badge>;
+        }
+        if (workflow === 'archived') {
+            return <Badge variant="secondary" className="text-[11px]">{t("Approval.archived")}</Badge>;
+        }
+        return <Badge variant="secondary" className="text-[11px]">{t("Approval.draft")}</Badge>;
+    }
     const approval = page.approval_status ?? (page.status === "published" ? "approved" : "draft");
     if (approval === "approved") {
         return (

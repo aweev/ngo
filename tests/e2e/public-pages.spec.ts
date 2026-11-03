@@ -56,4 +56,24 @@ test.describe('Public pages', () => {
         const response = await page.goto('/en/public/news/this-slug-does-not-exist');
         expect(response?.status()).toBe(404);
     });
+
+    test('SEO + ops endpoints are live (P0 smoke)', async ({ request }) => {
+        const sitemap = await request.get('/sitemap.xml');
+        expect(sitemap.status(), `sitemap ${sitemap.status()}`).toBeLessThan(400);
+        const sitemapBody = await sitemap.text();
+        expect(sitemapBody).toContain('/en/public');
+        expect(sitemapBody).not.toContain('/public/campaigns/');
+
+        const robots = await request.get('/robots.txt');
+        expect(robots.status()).toBeLessThan(400);
+
+        const health = await request.get('/api/health');
+        expect([200, 503]).toContain(health.status());
+    });
+
+    test('newsletter confirm page handles invalid tokens', async ({ page }) => {
+        const response = await page.goto('/en/public/subscribe/confirm?token=00000000-0000-0000-0000-000000000000');
+        expect(response?.status()).toBeLessThan(400);
+        await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
+    });
 });

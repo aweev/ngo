@@ -13,6 +13,9 @@ import { ProjectsGrid } from "@/components/programs/category/projects-grid";
 import { CoordinatorSpotlight } from "@/components/programs/category/coordinator-spotlight";
 import { CategoryCTA } from "@/components/programs/category/category-cta";
 
+// P0: ISR — category pages revalidate via CMS tag.
+export const revalidate = 300;
+
 // Valid Categories matching your translations
 const VALID_CATEGORIES: ProgramCategory[] = ["economic-empowerment", "education", "health", "social-integration"];
 

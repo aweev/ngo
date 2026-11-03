@@ -30,12 +30,16 @@
 
 ## Later — Phase 4: cut the bloat (each item: export → flag-hide → drop)
 
-Merge campaigns/events into `projects.kind`; collapse the three rule engines
-into `scheduled_jobs`; delete the generic integrations/webhooks builder UI,
-RBAC builder + role-requests + portal-experience, governance/HR/reviews,
-tags, AI copilot, notification template builder, CMS depth
-(revisions/preview/entity-translations); merge workers/volunteers into one
-directory; drop embla/cmdk/framer-motion-critical-paths/recharts-public;
+> **Revised 2026-11-03 (ADR-0001):** automations, workflows, and custom RBAC are
+> **no longer** cut targets — they are core differentiators and are being
+> finished instead. See `14-architecture-decisions.md`. The remaining items
+> below stand.
+
+Merge campaigns/events into `projects.kind`; delete the generic
+integrations/webhooks builder UI, governance/HR/reviews, tags, AI copilot,
+notification template builder, CMS depth (revisions/preview/entity-translations);
+merge workers/volunteers into one directory; drop
+embla/cmdk/framer-motion-critical-paths/recharts-public;
 **public site extracted to `apps/web-public` (static repo) — see `PUBLIC_SITE_EXTRACTION_PLAN.md`**.
 
 ## Later — Phase 5: adoption
@@ -63,3 +67,4 @@ CSV/XLSX importer with dry-run, 7→3-step onboarding, **Swahili/Hausa field str
 | 2026-10-11 | CSV-first ledger for 12 months (no accounting integrations) | Reconcile + query-hashed CSV + IATI = audit-grade; Xero/QB/Sage sync is brittle, vendor-locked, distracts from core workflows |
 | 2026-10-11 | Funded support retainer for field sync incidents (SLA: <4h field ops) | Operational requirement, not technical; named on-call, runbook, budget line in grants; volunteer devs unacceptable for beneficiary-facing ops |
 | 2026-10-11 | DPO appointed + Supabase region documented + breach drill dated before Phase 3 | GDPR Art. 37/33/30 compliance prerequisite for high-risk beneficiary PII processing; no "later" acceptable |
+| 2026-11-03 | Keep + finish automations/workflows/custom RBAC (reverse their Phase-4 deletion) | Event-driven automation is how we remove the manual coordination bottlenecks NGO staff face; the engine is ~90% built (ADR-0001) |

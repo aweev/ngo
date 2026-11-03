@@ -22,7 +22,7 @@ export function FAQAndMap() {
                 <Accordion type="single" collapsible className="w-full">
                     {['q1', 'q2', 'q3'].map((key) => (
                         <AccordionItem key={key} value={key} className="border-b border-border/50">
-                            <AccordionTrigger className="text-left font-semibold hover:text-primary transition-colors py-4 text-foreground">
+                            <AccordionTrigger className="text-start font-semibold hover:text-primary transition-colors py-4 text-foreground">
                                 {t(`FAQ.${key}`)}
                             </AccordionTrigger>
                             <AccordionContent className="text-muted-foreground pb-4">

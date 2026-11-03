@@ -11,7 +11,7 @@
 
 | Data Category | Description | Retention Period | Legal Basis | Deletion Method |
 |--------------|-------------|------------------|-------------|-----------------|
-| **Newsletter Subscribers** | Email, locale, subscription status, source, timestamps | 2 years after unsubscribe / bounce | GDPR Art. 6(1)(a) Consent | Soft delete → anonymize after 30 days |
+| **Newsletter Subscribers** | Email, locale, subscription status, source, timestamps | 2 years after unsubscribe / bounce | GDPR Art. 6(1)(a) Consent | Soft delete → anonymize after 30 days. Unconfirmed double-opt-in (`pending`) rows carry no consent and are purged after 48h token expiry |
 | **Contact Form Submissions** | Name, email, topic, message, consent, locale | 3 years after resolution | GDPR Art. 6(1)(f) Legitimate interest | Hard delete |
 | **Safeguarding Reports** | Anonymous or identified reports, category, message | 7 years (legal hold) | GDPR Art. 6(1)(c) Legal obligation; Art. 9(2)(g) Substantial public interest | Encrypted archive; access-controlled |
 | **Corporate Inquiries** | Company, contact person, email, industry, budget, goals | 3 years after last contact | GDPR Art. 6(1)(f) Legitimate interest | Hard delete |

@@ -87,7 +87,7 @@ export function PillarsGrid() {
 
                                 <span className="inline-flex items-center px-8 py-3 rounded-full bg-white text-black font-bold text-sm hover:bg-white/90 transition-colors shadow-lg">
                                     {t("explore")}
-                                    <ArrowRight className="w-4 h-4 ml-2" />
+                                    <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180" />
                                 </span>
                             </div>
                         </div>

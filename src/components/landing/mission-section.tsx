@@ -33,7 +33,7 @@ export function MissionSection({ content }: { content: MissionViewModel }) {
                             {content.imageSrc ? <Image src={content.imageSrc} alt="AWE e.V. Community Work" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover hover:scale-105 transition-transform duration-[1.5s]" /> : <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_35%_30%,hsl(var(--primary)/.28),transparent_45%),linear-gradient(145deg,hsl(var(--muted)),hsl(var(--background)))]"><Users className="h-20 w-20 text-primary/40" aria-hidden="true" /></div>}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
                             <div className="absolute bottom-8 left-8 right-8">
-                                <div className="bg-background/95 backdrop-blur-md p-6 rounded-2xl shadow-lg border-l-4 border-primary">
+                                <div className="bg-background/95 backdrop-blur-md p-6 rounded-2xl shadow-lg border-s-4 border-primary">
                                     <p className="font-serif italic text-foreground text-lg leading-relaxed">
                                         &quot;Dignity is not a gift we give, but a right we uphold.&quot;
                                     </p>
@@ -51,7 +51,7 @@ export function MissionSection({ content }: { content: MissionViewModel }) {
                             transition={{ duration: 0.6 }}
                             className="space-y-6"
                         >
-                            <span className="text-primary font-bold tracking-widest uppercase text-sm pl-4 border-l-2 border-primary">
+                            <span className="text-primary font-bold tracking-widest uppercase text-sm ps-4 border-s-2 border-primary">
                                 {content.preheadline}
                             </span>
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-[1.1]">

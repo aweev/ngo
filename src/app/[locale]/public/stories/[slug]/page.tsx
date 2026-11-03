@@ -12,6 +12,7 @@ import { StoryCard } from "@/components/stories/story-card";
 import { getPublicImpactStoryBySlug, getPublicImpactStories } from "@/actions/public";
 import { toStoryDeepDiveViewModel, toStoryViewModel } from "@/lib/content/public-mappers";
 import { buildPublicMetadata, buildArticleSchema } from "@/lib/seo";
+import { ENV } from "@/lib/env";
 
 // ISR: purged by revalidatePublicContentRoutes() whenever a story is
 // published, unpublished or edited in /admin/content/stories.
@@ -68,8 +69,23 @@ export default async function StoryDetailPage({ params }: { params: Promise<{ lo
 
     if (!story) notFound();
 
+    const siteUrl = (ENV.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+    const storyJsonLd = buildArticleSchema({
+        title: story.title,
+        description: story.summary,
+        url: `${siteUrl}/${locale}/public/stories/${story.slug}`,
+        image: story.imageSrc,
+        publishedTime: story.publishedAt,
+        modifiedTime: story.publishedAt,
+        authors: [story.author.name],
+        section: story.program,
+        tags: [story.type, story.role].filter(Boolean),
+        locale,
+    });
+
     return (
         <main className="bg-background min-h-screen pb-24">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(storyJsonLd) }} />
             <StoryHeader story={story} />
 
             <MediaPlayer story={story} />

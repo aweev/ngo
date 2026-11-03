@@ -152,17 +152,5 @@ export async function getProjectsForField(): Promise<{ data: { id: string; name:
     return { data: data ?? [], error: null };
 }
 
-/** Determine default registration_mode based on project category. */
-export function getDefaultRegistrationMode(category: string | null): 'household' | 'individual' | 'both' {
-    if (!category) return 'household';
-    const cat = category.toLowerCase();
-    // Health/protection sectors → individual registration
-    if (cat.includes('health') || cat.includes('protection') || cat.includes('nutrition') || cat.includes('wash')) {
-        return 'individual';
-    }
-    // Cash/voucher/food/livelihoods → household registration
-    if (cat.includes('cash') || cat.includes('voucher') || cat.includes('food') || cat.includes('livelihood') || cat.includes('shelter')) {
-        return 'household';
-    }
-    return 'household';
-}
+// NOTE: getDefaultRegistrationMode lives in src/lib/registration-mode.ts.
+// Pure helpers must not be exported from action modules (verify:actions).

@@ -307,16 +307,16 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                     {draft.conditions.map((condition, index) => (
                         <div key={index} className="flex flex-wrap items-end gap-2 rounded-lg border p-3">
                             <div className="w-44 space-y-1">
-                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("cond_field_label")}</label>
+                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("field_label")}</label>
                                 <Input
                                     value={condition.field}
                                     onChange={(e) => patchCondition(index, { field: e.target.value })}
-                                    placeholder={t("cond_field_ph")}
+                                    placeholder={t("field_ph")}
                                     className="h-9 font-mono text-xs"
                                 />
                             </div>
                             <div className="w-44 space-y-1">
-                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("cond_operator_label")}</label>
+                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("operator_label")}</label>
                                 <Select
                                     value={condition.operator}
                                     onValueChange={(value) => patchCondition(index, { operator: value as AutomationCondition["operator"] })}
@@ -334,7 +334,7 @@ export function AutomationRuleBuilder({ initial, ruleId, backHref = "/admin/auto
                                 </Select>
                             </div>
                             <div className="min-w-32 flex-1 space-y-1">
-                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("cond_value_label")}</label>
+                                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("value_label")}</label>
                                 <Input
                                     value={String(condition.value ?? "")}
                                     disabled={condition.operator === "is_empty" || condition.operator === "is_not_empty"}

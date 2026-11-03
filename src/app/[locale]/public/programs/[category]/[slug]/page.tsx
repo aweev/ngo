@@ -12,6 +12,9 @@ import { ActionSidebar } from "@/components/programs/project/action-sidebar";
 import { UpdatesGallery } from "@/components/programs/project/updates-gallery";
 import { ProjectsGrid } from "@/components/programs/category/projects-grid";
 
+// P0: ISR — project detail revalidates via CMS tag.
+export const revalidate = 300;
+
 // --- Data Fetching ---
 
 async function getProjectDetails(slug: string, category: string, locale = 'en'): Promise<ProjectDeepDiveViewModel | null> {

@@ -7,6 +7,11 @@ import { ArrowLeft, CalendarDays, Clock, MapPin, Tag, Users, Video } from "lucid
 import { Link } from "@/lib/navigation";
 import { getPublicEventBySlug } from "@/actions/public";
 import { formatPublicDate, formatPublicDateTime, formatPublicNumber } from "@/lib/i18n/format";
+import { buildEventSchemaFromData } from "@/lib/seo";
+import { ENV } from "@/lib/env";
+
+// P0: ISR — event detail revalidates via CMS tag; 300s default.
+export const revalidate = 300;
 
 type Props = {
     params: Promise<{ locale: string; slug: string }>;
@@ -41,8 +46,25 @@ export default async function EventDetailPage({ params }: Props) {
     const isVirtual = Boolean(event.virtual_link);
     const eventType = event.type ? event.type.charAt(0).toUpperCase() + event.type.slice(1) : null;
 
+    const siteUrl = (ENV.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+    const eventJsonLd = buildEventSchemaFromData({
+        title: event.title,
+        description: event.description ?? event.title,
+        url: `${siteUrl}/${locale}/public/events/${slug}`,
+        image: event.cover_image_url ?? `${siteUrl}/og-default.png`,
+        startDate: event.start_date,
+        endDate: event.end_date ?? undefined,
+        location: venue ?? place ?? '',
+        city: event.city ?? '',
+        country: event.country ?? '',
+        virtualLink: event.virtual_link ?? undefined,
+        maxAttendees: event.max_attendees ?? undefined,
+        locale,
+    });
+
     return (
         <main className="bg-background min-h-screen pb-24">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }} />
             {/* Cover image — rendered only when the admin set one (no placeholders) */}
             {event.cover_image_url && (
                 <div className="relative h-[40vh] md:h-[50vh] w-full">
@@ -66,7 +88,7 @@ export default async function EventDetailPage({ params }: Props) {
                     {t("back_to_events")}
                 </Link>
 
-                <span className="inline-flex items-center gap-2 text-primary font-bold tracking-widest uppercase text-sm pl-4 border-l-2 border-primary mb-4">
+                <span className="inline-flex items-center gap-2 text-primary font-bold tracking-widest uppercase text-sm ps-4 border-s-2 border-primary mb-4">
                     {t("badge")}
                 </span>
                 <h1 className="text-3xl md:text-5xl font-serif font-bold text-foreground mb-6 leading-tight max-w-3xl">

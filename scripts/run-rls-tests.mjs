@@ -50,9 +50,13 @@ if (!/:\/\/[^@/]*:[^@/]*@/.test(url)) {
 
 let Client;
 try {
-    ({ default: Client } = await import('pg'));
+    ({ Client } = await import('pg'));
 } catch {
     console.error('Missing dependency "pg". Install it with: pnpm add -D pg');
+    process.exit(1);
+}
+if (typeof Client !== 'function') {
+    console.error('The "pg" module did not export a Client constructor.');
     process.exit(1);
 }
 
@@ -63,7 +67,11 @@ const body = readFileSync(testFile, 'utf8')
     .replace(/^\s*BEGIN\s*;\s*$/im, '')
     .replace(/^\s*ROLLBACK\s*;\s*$/im, '');
 
-const client = new Client({ connectionString: url, ssl: { rejectUnauthorized: false } });
+const client = new Client({
+    connectionString: url,
+    // Local stacks (supabase start / plain Postgres) serve no TLS.
+    ssl: /@(localhost|127\.0\.0\.1):/.test(url) ? undefined : { rejectUnauthorized: false },
+});
 
 try {
     await client.connect();

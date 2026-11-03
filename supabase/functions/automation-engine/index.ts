@@ -77,6 +77,14 @@ function evaluateConditions(
     return result;
 }
 
+/** Replace `{{dot.path}}` placeholders in template copy with payload values. */
+function interpolate(template: string, payload: Record<string, unknown>): string {
+    return template.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (_match, path: string) => {
+        const value = getPath(payload, path);
+        return value === undefined || value === null ? "" : String(value);
+    });
+}
+
 Deno.serve(async (req: Request): Promise<Response> => {
     if (req.method === "OPTIONS") return jsonResponse({ error: "Method not allowed" }, 405);
     if (req.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
@@ -147,20 +155,55 @@ Deno.serve(async (req: Request): Promise<Response> => {
                 switch (action.type) {
                     case "send_notification":
                     case "send_email": {
-                        const { error } = await supabase.from("notifications").insert({
-                            organization_id: rule.organization_id,
-                            recipient_id: (config.recipient_id as string | undefined) ?? null,
-                            recipient_email: (config.recipient_email as string | undefined) ?? null,
-                            template_id: (config.template_id as string | undefined) ?? null,
-                            channel: (config.channel as string | undefined) ?? "email",
-                            subject: (config.subject as string | undefined) ?? null,
-                            body: (config.body as string | undefined) ?? `Automation "${rule.name}" fired.`,
-                            status: "pending",
-                            entity_type: (config.entity_type as string | undefined) ?? null,
-                            entity_id: (config.entity_id as string | undefined) ?? null,
-                        });
-                        if (error) throw new Error(`notification insert failed: ${error.message}`);
-                        actionResults.push({ type: action.type, status: "queued" });
+                        // Recipient resolution (ADR-0001): an explicit
+                        // recipient_id wins; otherwise a recipient_role fans
+                        // out to one notification per matching member (e.g.
+                        // "owner" = the executive director); otherwise the row
+                        // carries recipient_email only.
+                        const recipientRole = config.recipient_role as string | undefined;
+                        let recipientIds: (string | null)[] = [];
+                        if (config.recipient_id) {
+                            recipientIds = [config.recipient_id as string];
+                        } else if (recipientRole) {
+                            const { data: members } = await supabase
+                                .from("organization_members")
+                                .select("user_id")
+                                .eq("organization_id", rule.organization_id)
+                                .eq("role", recipientRole);
+                            recipientIds = (members ?? []).map((m) => m.user_id as string);
+                            if (recipientIds.length === 0) {
+                                actionResults.push({ type: action.type, status: "no_recipient", role: recipientRole });
+                                break;
+                            }
+                        } else {
+                            recipientIds = [null];
+                        }
+
+                        const subject = interpolate(
+                            (config.subject as string | undefined) ?? `Automation "${rule.name}"`,
+                            payload,
+                        );
+                        const bodyCopy = interpolate(
+                            (config.body as string | undefined) ?? `Automation "${rule.name}" fired.`,
+                            payload,
+                        );
+
+                        for (const recipientId of recipientIds) {
+                            const { error } = await supabase.from("notifications").insert({
+                                organization_id: rule.organization_id,
+                                recipient_id: recipientId,
+                                recipient_email: (config.recipient_email as string | undefined) ?? null,
+                                template_id: (config.template_id as string | undefined) ?? null,
+                                channel: (config.channel as string | undefined) ?? "email",
+                                subject,
+                                body: bodyCopy,
+                                status: "pending",
+                                entity_type: (config.entity_type as string | undefined) ?? null,
+                                entity_id: (config.entity_id as string | undefined) ?? null,
+                            });
+                            if (error) throw new Error(`notification insert failed: ${error.message}`);
+                        }
+                        actionResults.push({ type: action.type, status: "queued", recipients: recipientIds.length });
                         break;
                     }
                     case "trigger_webhook": {

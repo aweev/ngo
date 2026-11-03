@@ -6,6 +6,9 @@ import { Link } from "@/lib/navigation";
 import { Mail } from "lucide-react";
 import { buildPublicMetadata } from "@/lib/seo";
 
+// P0: ISR — get-involved hub revalidates via CMS tag.
+export const revalidate = 300;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "GetInvolved.Hub" });

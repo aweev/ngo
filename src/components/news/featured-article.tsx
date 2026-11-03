@@ -64,7 +64,7 @@ export function FeaturedArticle({ article }: { article: NewsViewModel }) {
 
                         <Link href={`/public/news/${article.slug}`} className="inline-flex items-center text-primary font-bold hover:underline underline-offset-4">
                             {t("read_full")}
-                            <ArrowRight className="w-4 h-4 ml-2" />
+                            <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180" />
                         </Link>
                     </div>
                 </div>

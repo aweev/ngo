@@ -80,6 +80,7 @@ export function SmartContactForm() {
                             <SelectItem value="volunteer">{t("Topics.volunteer")}</SelectItem>
                             <SelectItem value="partner">{t("Topics.partner")}</SelectItem>
                             <SelectItem value="report">{t("Topics.report")}</SelectItem>
+                            <SelectItem value="privacy">{t("Topics.privacy")}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -131,7 +132,7 @@ export function SmartContactForm() {
                 {errors.consent && <span className="text-xs text-red-500 block">Required</span>}
 
                 <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                    {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin me-2" /> : null}
                     {t("submit")}
                 </Button>
             </form>

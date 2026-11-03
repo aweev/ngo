@@ -53,7 +53,7 @@ export function PartnershipCTA({ deckHref }: { deckHref?: string }) {
                                 {deckHref && (
                                     <Button asChild size="lg" className="h-14 px-8 rounded-full text-base font-bold shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform">
                                         <a href={deckHref} download target="_blank" rel="noreferrer">
-                                            <Download className="w-5 h-5 mr-2" />
+                                            <Download className="w-5 h-5 me-2" />
                                             {t("btn_deck")}
                                         </a>
                                     </Button>
@@ -62,7 +62,7 @@ export function PartnershipCTA({ deckHref }: { deckHref?: string }) {
                                 {/* Secondary Action */}
                                 <Button asChild variant="outline" size="lg" className="h-14 px-8 rounded-full text-base font-bold border-2 hover:bg-muted transition-colors">
                                     <Link href="/public/contact?subject=partnership">
-                                        <Mail className="w-5 h-5 mr-2" />
+                                        <Mail className="w-5 h-5 me-2" />
                                         {t("btn_contact")}
                                     </Link>
                                 </Button>

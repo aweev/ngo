@@ -145,7 +145,7 @@ export default function HistoryPanel({
                             <div className="flex gap-2">
                                 <Input readOnly value={`/${locale}/public/preview/${previewToken}`} className="font-mono text-xs" />
                                 <Button size="sm" variant="outline" className="gap-1" onClick={copyPreview}>
-                                    <Copy className="h-3.5 w-3.5" /> Copy
+                                    <Copy className="h-3.5 w-3.5" /> {t("copy_link")}
                                 </Button>
                             </div>
                             <Button size="sm" variant="outline" className="gap-1" disabled={busy !== null} onClick={rotate}>

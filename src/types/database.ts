@@ -1097,6 +1097,8 @@ export type Database = {
           amount: number
           campaign_id: string | null
           cancelled_at: string | null
+          consent_at: string | null
+          consent_given: boolean
           created_at: string
           currency: string
           dedication: string | null
@@ -1107,6 +1109,7 @@ export type Database = {
           email: string | null
           id: string
           is_anonymous: boolean
+          marketing_consent: boolean
           needs_receipt: boolean
           notes: string | null
           organization_id: string
@@ -1115,6 +1118,7 @@ export type Database = {
           payment_provider: string | null
           payment_ref: string | null
           payment_reference: string | null
+          pledge_notified_at: string | null
           project_id: string | null
           receipt_url: string | null
           status: string
@@ -1129,6 +1133,8 @@ export type Database = {
           amount: number
           campaign_id?: string | null
           cancelled_at?: string | null
+          consent_at?: string | null
+          consent_given?: boolean
           created_at?: string
           currency?: string
           dedication?: string | null
@@ -1139,6 +1145,7 @@ export type Database = {
           email?: string | null
           id?: string
           is_anonymous?: boolean
+          marketing_consent?: boolean
           needs_receipt?: boolean
           notes?: string | null
           organization_id: string
@@ -1147,6 +1154,7 @@ export type Database = {
           payment_provider?: string | null
           payment_ref?: string | null
           payment_reference?: string | null
+          pledge_notified_at?: string | null
           project_id?: string | null
           receipt_url?: string | null
           status?: string
@@ -1161,6 +1169,8 @@ export type Database = {
           amount?: number
           campaign_id?: string | null
           cancelled_at?: string | null
+          consent_at?: string | null
+          consent_given?: boolean
           created_at?: string
           currency?: string
           dedication?: string | null
@@ -1171,6 +1181,7 @@ export type Database = {
           email?: string | null
           id?: string
           is_anonymous?: boolean
+          marketing_consent?: boolean
           needs_receipt?: boolean
           notes?: string | null
           organization_id?: string
@@ -1179,6 +1190,7 @@ export type Database = {
           payment_provider?: string | null
           payment_ref?: string | null
           payment_reference?: string | null
+          pledge_notified_at?: string | null
           project_id?: string | null
           receipt_url?: string | null
           status?: string
@@ -1260,6 +1272,7 @@ export type Database = {
           address: string | null
           city: string | null
           communication_preferences: Json
+          consent_at: string | null
           country: string | null
           created_at: string
           currency: string
@@ -1267,6 +1280,7 @@ export type Database = {
           first_donation_date: string | null
           id: string
           last_donation_date: string | null
+          marketing_consent: boolean
           name: string
           notes: string | null
           organization_id: string
@@ -1282,6 +1296,7 @@ export type Database = {
           address?: string | null
           city?: string | null
           communication_preferences?: Json
+          consent_at?: string | null
           country?: string | null
           created_at?: string
           currency?: string
@@ -1289,6 +1304,7 @@ export type Database = {
           first_donation_date?: string | null
           id?: string
           last_donation_date?: string | null
+          marketing_consent?: boolean
           name: string
           notes?: string | null
           organization_id: string
@@ -1304,6 +1320,7 @@ export type Database = {
           address?: string | null
           city?: string | null
           communication_preferences?: Json
+          consent_at?: string | null
           country?: string | null
           created_at?: string
           currency?: string
@@ -1311,6 +1328,7 @@ export type Database = {
           first_donation_date?: string | null
           id?: string
           last_donation_date?: string | null
+          marketing_consent?: boolean
           name?: string
           notes?: string | null
           organization_id?: string
@@ -1714,36 +1732,48 @@ export type Database = {
       }
       form_submissions: {
         Row: {
+          assignee: string | null
           created_at: string
+          escalated_at: string | null
           form_id: string | null
           form_slug: string
           id: string
           locale: string | null
+          notified_at: string | null
           organization_id: string | null
+          severity: string
           status: string
           submission_data: Json
           submitted_at: string
           updated_at: string
         }
         Insert: {
+          assignee?: string | null
           created_at?: string
+          escalated_at?: string | null
           form_id?: string | null
           form_slug: string
           id?: string
           locale?: string | null
+          notified_at?: string | null
           organization_id?: string | null
+          severity?: string
           status?: string
           submission_data?: Json
           submitted_at?: string
           updated_at?: string
         }
         Update: {
+          assignee?: string | null
           created_at?: string
+          escalated_at?: string | null
           form_id?: string | null
           form_slug?: string
           id?: string
           locale?: string | null
+          notified_at?: string | null
           organization_id?: string | null
+          severity?: string
           status?: string
           submission_data?: Json
           submitted_at?: string
@@ -2546,6 +2576,12 @@ export type Database = {
       }
       newsletter_subscribers: {
         Row: {
+          confirmation_expires_at: string | null
+          confirmation_token: string | null
+          confirmed_at: string | null
+          consent_at: string | null
+          consent_given: boolean
+          consent_source: string
           created_at: string
           email: string
           id: string
@@ -2558,6 +2594,12 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          confirmation_expires_at?: string | null
+          confirmation_token?: string | null
+          confirmed_at?: string | null
+          consent_at?: string | null
+          consent_given?: boolean
+          consent_source?: string
           created_at?: string
           email: string
           id?: string
@@ -2570,6 +2612,12 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          confirmation_expires_at?: string | null
+          confirmation_token?: string | null
+          confirmed_at?: string | null
+          consent_at?: string | null
+          consent_given?: boolean
+          consent_source?: string
           created_at?: string
           email?: string
           id?: string

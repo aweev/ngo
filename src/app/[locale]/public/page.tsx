@@ -35,6 +35,7 @@ import {
     type PublicContentPage,
 } from '@/actions/public';
 import { buildPublicMetadata } from '@/lib/seo';
+import { JsonLd } from '@/components/seo/json-ld';
 
 export const revalidate = 300;
 
@@ -441,6 +442,12 @@ export default async function HomePage({ params }: Props) {
 
     return (
         <div className="flex flex-col w-full overflow-x-hidden">
+            <JsonLd
+                locale={locale}
+                path="/public"
+                title={t('Hero.default_headline')}
+                description={t('Hero.default_subhead')}
+            />
             {/* 1. HERO — admin: content `homepage-hero` → campaigns */}
             <HeroSection
                 content={heroContent}
@@ -474,7 +481,7 @@ export default async function HomePage({ params }: Props) {
                     <div className="container mx-auto px-4 md:px-6">
                         <div className="flex items-end justify-between gap-6 mb-8">
                             <div>
-                                <span className="text-primary font-bold tracking-widest uppercase text-sm pl-4 border-l-2 border-primary mb-3 block">
+                                <span className="text-primary font-bold tracking-widest uppercase text-sm ps-4 border-s-2 border-primary mb-3 block">
                                     {t('Events.badge')}
                                 </span>
                                 <h2 className="text-3xl md:text-4xl font-serif font-bold">{t('Events.title')}</h2>

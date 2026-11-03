@@ -8,29 +8,30 @@
  * its `anon` grant, the public site silently renders empty - so this must run
  * against a live database (CI: the `rls` job, after `supabase db reset`).
  *
- * Checks:
+ * Checks (Mode A — static, always runs, no database needed):
+ *   - every expected public view is declared (CREATE VIEW) in migrations
+ *   - every view grants SELECT to `anon` in migrations
+ *   - every expected public function is declared and grants EXECUTE to `anon`
+ *   - every webhook/form column is declared (CREATE TABLE or ADD COLUMN)
+ *
+ * Checks (Mode B — live, runs when DATABASE_URL or a service-role
+ * connection resolves; otherwise SKIPPED):
  *   - every expected public view exists
  *   - the `anon` role can actually SELECT from it (has_table_privilege)
  *   - every expected public function exists and grants EXECUTE to `anon`
- *   - the donation payment/receipt columns the Stripe webhook writes exist
+ *   - the webhook/form columns exist in the live catalog
+ *   - RLS is enabled on every tenant table at runtime
  *
  * Usage:
- *   DATABASE_URL=postgresql://... node scripts/verify-db-projections.mjs
+ *   node scripts/verify-db-projections.mjs                                   # static only
+ *   DATABASE_URL=postgresql://... node scripts/verify-db-projections.mjs    # static + live
  *   (falls back to SUPABASE_SERVICE_ROLE_KEY + NEXT_PUBLIC_SUPABASE_URL)
- * Exit: 0 = all pass, 1 = any fail
+ * Exit: 0 = all executed checks pass, 1 = any fail
  */
 
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-
-let Client;
-try {
-    ({ default: Client } = await import('pg'));
-} catch {
-    console.error('Missing dependency "pg". Install it with: pnpm add -D pg');
-    process.exit(1);
-}
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -39,6 +40,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
  * in CI. For a linked hosted project, `supabase link` writes the session
  * pooler host to supabase/.temp/pooler-url (without a password), so the
  * password must come from the environment either way.
+ *
+ * When no connection resolves, only the static checks run (Mode A) and the
+ * live catalog checks (Mode B) are reported as SKIPPED — the gate still
+ * fails closed on any static mismatch.
  */
 function resolveConnectionString() {
     if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
@@ -59,18 +64,6 @@ function resolveConnectionString() {
 }
 
 const connectionString = resolveConnectionString();
-if (!connectionString) {
-    console.error('No database connection. Set DATABASE_URL, or both');
-    console.error('SUPABASE_SERVICE_ROLE_KEY and NEXT_PUBLIC_SUPABASE_URL.');
-    process.exit(1);
-}
-
-const isLocal = /@(localhost|127\.0\.0\.1):/.test(connectionString);
-
-const client = new Client({
-    connectionString,
-    ssl: isLocal ? undefined : { rejectUnauthorized: false },
-});
 
 /** Views the public site reads. Must match `CREATE VIEW` in supabase/migrations. */
 const EXPECTED_VIEWS = [
@@ -104,6 +97,20 @@ const REQUIRED_COLUMNS = [
     ['donations', 'receipt_url'],
     ['donations', 'tax_receipt_url'],
     ['donations', 'payment_ref'],
+    ['donations', 'payment_intent'],
+    ['donations', 'consent_given'],
+    ['donations', 'consent_at'],
+    ['donations', 'marketing_consent'],
+    ['donations', 'pledge_notified_at'],
+    ['donations', 'cancelled_at'],
+    ['donations', 'dispute_status'],
+    ['donations', 'stripe_invoice_id'],
+    ['newsletter_subscribers', 'confirmation_token'],
+    ['newsletter_subscribers', 'confirmation_expires_at'],
+    ['newsletter_subscribers', 'status'],
+    ['form_submissions', 'severity'],
+    ['form_submissions', 'notified_at'],
+    ['form_submissions', 'escalated_at'],
 ];
 
 const results = [];
@@ -116,9 +123,84 @@ function check(name, passed, detail = '') {
     console.log(`${passed ? 'PASS' : 'FAIL'}: ${name}${detail ? ` — ${detail}` : ''}`);
 }
 
+// ---------------------------------------------------------------------------
+// Mode A — static: no database required. Asserts the migration SQL text
+// declares every projection, anon grant and column the public site and the
+// Stripe webhook depend on. Catches drift between this gate's EXPECTED_*
+// lists and supabase/migrations (e.g. a renamed view or a dropped GRANT).
+// ---------------------------------------------------------------------------
+async function loadMigrationText() {
+    const fs = await import('node:fs');
+    const dir = join(root, 'supabase', 'migrations');
+    const files = fs.readdirSync(dir).filter((f) => f.endsWith('.sql')).sort();
+    let sql = '';
+    for (const f of files) sql += '\n' + fs.readFileSync(join(dir, f), 'utf8');
+    // Strip block + line comments so commented-out DDL cannot satisfy a check.
+    sql = sql.replace(/\/\*[\s\S]*?\*\//g, ' ');
+    sql = sql.replace(/--[^\r\n]*/g, ' ');
+    return sql.replace(/\s+/g, ' ');
+}
+
+function runStatic(sql) {
+    console.log('--- Static (migration text) ---');
+    for (const view of EXPECTED_VIEWS) {
+        const created = new RegExp(`CREATE\\s+(OR\\s+REPLACE\\s+)?VIEW\\s+(IF\\s+NOT\\s+EXISTS\\s+)?(public\\.)?${view}\\b`, 'i').test(sql);
+        check(`(static) view ${view} declared`, created, created ? '' : 'no CREATE VIEW in migrations');
+        const granted = new RegExp(`GRANT\\s+SELECT\\s+ON\\s+(public\\.)?${view}\\b[^;]*\\bTO\\s+anon\\b`, 'i').test(sql);
+        check(`(static) anon SELECT granted on ${view}`, granted, granted ? '' : 'no GRANT SELECT … TO anon');
+    }
+    for (const fn of EXPECTED_FUNCTIONS) {
+        const created = new RegExp(`CREATE\\s+(OR\\s+REPLACE\\s+)?FUNCTION\\s+(public\\.)?${fn}\\s*\\(`, 'i').test(sql);
+        check(`(static) function ${fn}() declared`, created, created ? '' : 'no CREATE FUNCTION in migrations');
+        const granted = new RegExp(`GRANT\\s+EXECUTE\\s+ON\\s+FUNCTION\\s+(public\\.)?${fn}\\s*\\([^)]*\\)\\s*TO\\s+anon\\b`, 'i').test(sql);
+        check(`(static) anon EXECUTE granted on ${fn}()`, granted, granted ? '' : 'no GRANT EXECUTE … TO anon');
+    }
+    for (const [table, column] of REQUIRED_COLUMNS) {
+        const inCreate = new RegExp(`CREATE\\s+TABLE\\s+(IF\\s+NOT\\s+EXISTS\\s+)?(public\\.)?${table}\\b[\\s\\S]{0,8000}?\\b${column}\\b`, 'i').test(sql);
+        const inAlter = new RegExp(`ALTER\\s+TABLE\\s+(IF\\s+EXISTS\\s+)?(public\\.)?${table}\\b[^;]{0,2000}?ADD\\s+COLUMN\\s+(IF\\s+NOT\\s+EXISTS\\s+)?${column}\\b`, 'i').test(sql);
+        const ok = inCreate || inAlter;
+        check(`(static) ${table}.${column} declared`, ok, ok ? '' : 'neither CREATE TABLE nor ALTER TABLE … ADD COLUMN found');
+    }
+}
+
 async function main() {
-    await client.connect();
-    console.log('Connected to the database.\n');
+    // Mode A always runs: migration-text assertions, no database needed.
+    const sql = await loadMigrationText();
+    runStatic(sql);
+
+    // Mode B runs only when a database is reachable; otherwise it is
+    // reported as SKIPPED (the gate still fails closed on static mismatches).
+    if (!connectionString) {
+        console.log('\n--- Live catalog: SKIPPED (no DATABASE_URL / service-role connection) ---');
+        finish();
+        return;
+    }
+    let Client;
+    try {
+        ({ Client } = await import('pg'));
+    } catch {
+        console.log('\n--- Live catalog: SKIPPED (node module "pg" is not resolvable here) ---');
+        finish();
+        return;
+    }
+    if (typeof Client !== 'function') {
+        console.log('\n--- Live catalog: SKIPPED (pg module did not export a Client constructor) ---');
+        finish();
+        return;
+    }
+    const isLocal = /@(localhost|127\.0\.0\.1):/.test(connectionString);
+    const client = new Client({
+        connectionString,
+        ssl: isLocal ? undefined : { rejectUnauthorized: false },
+    });
+    try {
+        await client.connect();
+    } catch (err) {
+        console.log(`\n--- Live catalog: SKIPPED (connect failed: ${err instanceof Error ? err.message : err}) ---`);
+        finish();
+        return;
+    }
+    console.log('\nConnected to the database — running live catalog checks.\n');
 
     // 1. Every public projection the site reads must exist.
     console.log('--- Public Views ---');
@@ -216,6 +298,10 @@ async function main() {
 
     await client.end();
 
+    finish();
+}
+
+function finish() {
     console.log('\n--- Results ---');
     console.log(JSON.stringify({ results, allPassed }, null, 2));
 

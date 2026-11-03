@@ -5,7 +5,9 @@
   },
   "NotFound": {
     "title": "Page Not Found",
-    "description": "The page you are looking for does not exist or has been moved."
+    "description": "The page you are looking for does not exist or has been moved.",
+    "home": "Back to home",
+    "about": "About us"
   },
   "Navigation": {
     "back_home": "Back to Home",
@@ -362,8 +364,12 @@
     },
     "Success": {
       "title": "Success!",
-      "message": "Welcome to our community of changemakers."
+      "message": "Welcome to our community of changemakers.",
+      "confirm_inbox": "Please check your inbox and click the confirmation link to activate your subscription."
     },
+    "consent_label": "I agree to receive the newsletter and accept the privacy policy.",
+    "consent_required": "Please accept the privacy terms to subscribe.",
+    "error_generic": "Subscription failed. Please try again later.",
     "Stats": {
       "subscribers": "Subscribers",
       "countries": "Countries",
@@ -457,7 +463,8 @@
     "description": "We apologize for the inconvenience. The application encountered a critical error.",
     "retry": "Try again",
     "reload": "Reload Page",
-    "home": "Return Home"
+    "home": "Return Home",
+    "error_id": "Error reference"
   },
   "Common": {
     "cta_donate": "Donate Now",
@@ -803,7 +810,12 @@
       "impact_default": "Resources where they are needed most",
       "payment_header": "Payment Details",
       "email_label": "Email Address",
+      "name_label": "Full name (for tax receipt)",
+      "name_placeholder": "Jane Doe",
       "receipt_check": "I need a tax receipt",
+      "consent_label": "I agree to the donation terms and the processing of my data for payment and receipts.",
+      "consent_required": "Please accept the donation terms to continue.",
+      "marketing_consent_label": "Keep me updated about impact and campaigns (optional).",
       "submit_btn": "Donate €{amount}",
       "secure_footer": "Encrypted & Secure via Stripe",
       "error_title": "We could not process your donation",
@@ -988,7 +1000,8 @@
         "donation": "Donation Help",
         "volunteer": "Volunteering",
         "partner": "Partnership",
-        "report": "Report an Issue"
+        "report": "Report an Issue",
+        "privacy": "Data Protection (DSAR)"
       },
       "hints": {
         "volunteer": "Looking for open roles? Check our Volunteer Portal for faster application.",
@@ -1208,7 +1221,10 @@
       "complete_title": "You are ready to make an impact",
       "complete_subtitle": "Your onboarding details are saved. Welcome to the AWE community.",
       "dashboard": "Go to dashboard",
-      "start_over": "Start over"
+      "start_over": "Start over",
+      "account_name": "Account name",
+      "account_name_missing": "No name set yet",
+      "account_name_note": "Shown to coordinators when you join activities."
     },
     "Register": {
       "title": "Create your Account",
@@ -1738,6 +1754,7 @@
       "badge": "NGO OS v2.0",
       "collapse": "Collapse menu",
       "items": {
+        "templates": "Templates",
         "commandCenter": "Command Center",
         "teamInvites": "Team & Invites",
         "workers": "Workers",
@@ -1926,6 +1943,8 @@
       "load_failed": "Failed to load {entity}: {error}"
     },
     "Automations": {
+      "templates_hint": "Looking for a starting point? Browse ready-made templates.",
+      "browse_templates": "Starter templates",
       "title": "Automations & IFTTT Engine",
       "description": "Configure automated rules, triggers, conditions, and actions for your organization.",
       "create_rule": "Create Rule",
@@ -2026,7 +2045,8 @@
         "trigger_select_ph": "Select trigger",
         "cond_desc": "All conditions must hold for the actions to run. Leave empty to always run.",
         "cond_none": "No conditions — this rule fires on every trigger.",
-        "actions_desc": "Executed in order when trigger and conditions pass. Optional delay per action."
+        "actions_desc": "Executed in order when trigger and conditions pass. Optional delay per action.",
+        "field_ph": "e.g. status"
       }
     },
     "Workflows": {
@@ -2600,7 +2620,11 @@
         "approved": "Approved",
         "in_review": "In review",
         "rejected": "Changes requested",
-        "draft": "Draft — not approved"
+        "draft": "Draft — not approved",
+        "published": "Published",
+        "archived": "Archived",
+        "translation_pending": "Translation pending",
+        "changes_requested": "Changes requested"
       },
       "Locale": {
         "missing": "EN only — no translations",
@@ -2637,7 +2661,13 @@
         "slug_fix_required": "Fix the slug before saving.",
         "cancel": "Cancel",
         "creating": "Creating…",
-        "create_draft": "Create draft"
+        "create_draft": "Create draft",
+        "unable_to_create": "Could not create the page. Please try again.",
+        "page_details": "Page details",
+        "title_label": "Page title",
+        "slug_label": "URL slug",
+        "slug_checking": "Checking availability…",
+        "seo_description": "Search & social preview for this page."
       },
       "Editor": {
         "saving": "Saving…",
@@ -2659,7 +2689,8 @@
         "add_field": "Add field",
         "remove": "Remove",
         "field_key_placeholder": "key",
-        "field_value_placeholder": "value"
+        "field_value_placeholder": "value",
+        "body_placeholder": "Page body (Markdown supported)…"
       },
       "Blocks": {
         "title": "Content blocks",
@@ -2703,7 +2734,15 @@
         "restore_confirm": "Restore this revision? Current content is snapshotted first, so restore is reversible.",
         "approval_title": "Approval history",
         "approval_desc": "Review requests, approvals, and change requests with reviewer identity.",
-        "no_approvals": "No review activity yet."
+        "no_approvals": "No review activity yet.",
+        "rotate_confirm": "Rotate the preview token? Existing preview links will stop working.",
+        "copy_failed": "Copy failed — please copy the link manually.",
+        "copy_link": "Copy link",
+        "preview_title": "Draft preview",
+        "preview_description": "Share this link for review. It shows the current draft and requires no login.",
+        "rotating": "Rotating…",
+        "rotate": "Rotate token",
+        "missing_migration": "Preview links need migration 24 applied."
       },
       "Preview": {
         "title": "Draft preview link",
@@ -2736,7 +2775,10 @@
         "save": "Save",
         "edit_alt": "Edit alt",
         "use_as_cover": "Use as cover",
-        "alt_missing_label": "Missing alt text"
+        "alt_missing_label": "Missing alt text",
+        "uploading": "Uploading…",
+        "upload": "Upload",
+        "cover_url_placeholder": "https://…"
       },
       "Translations": {
         "title": "Translations",
@@ -2772,7 +2814,8 @@
         "invalid_file": "Invalid translation file.",
         "imported": "Imported translations saved as drafts — review each locale before approving.",
         "read_failed": "Could not read that file. Expected a translation export JSON.",
-        "status_missing": "missing"
+        "status_missing": "missing",
+        "title_required": "Title is required ({locale})."
       },
       "Workflow": {
         "title": "Workflow & publishing",
@@ -2905,7 +2948,8 @@
           "ent_funds": "Funds",
           "ent_households": "Households",
           "ent_referrals": "Referrals"
-        }
+        },
+        "required": "A report name and URL slug are required."
       },
       "Edit": {
         "def_title": "Report definition",
@@ -2971,10 +3015,81 @@
         "iati_warnings": "Omitted"
       }
     },
+    "Templates": {
+      "title": "Starter templates",
+      "description": "One-click starters for roles and automations. Everything is created as a draft you review before enabling.",
+      "tab_roles": "Roles",
+      "tab_automations": "Automations",
+      "roles_title": "Role presets",
+      "roles_description": "Create a custom role pre-loaded with a permission bundle, then fine-tune it.",
+      "permission_count": "{count} permissions",
+      "use_role": "Create role",
+      "using": "Working...",
+      "role_created": "Role created from the preset.",
+      "role_failed": "Could not create the role from this preset.",
+      "bundles_title": "Automation bundles",
+      "bundles_description": "Ready-made rules you can install in one click. Rules are created disabled for review.",
+      "creates_workflow": "Also creates a workflow chain",
+      "use_bundle": "Install",
+      "bundle_created": "Bundle installed as a disabled rule.",
+      "bundle_failed": "Could not install this bundle.",
+      "templates_title": "Rule templates",
+      "templates_description": "Single-rule starters from the platform library.",
+      "use_template": "Use",
+      "template_created": "Template added as a disabled rule.",
+      "template_failed": "Could not use this template.",
+      "review": "Review",
+      "cancel": "Cancel",
+      "preview_description": "Nothing runs until you enable it. Here is exactly what this bundle creates.",
+      "preview_trigger": "Triggers on",
+      "preview_conditions": "Only when",
+      "preview_actions": "Actions",
+      "preview_workflow": "Follow-up workflow",
+      "install_disabled": "Install (disabled)",
+      "install_activate": "Install & activate",
+      "bundle_activated": "Bundle installed and activated.",
+      "action_send_notification": "Send notification",
+      "action_send_email": "Send email",
+      "action_create_task": "Create task",
+      "action_update_field": "Update field",
+      "action_trigger_webhook": "Call webhook",
+      "action_start_workflow": "Start workflow",
+      "action_create_record": "Create record",
+      "action_custom": "Custom action"
+    },
     "Rbac": {
       "title": "Roles & Permissions Matrix",
       "description": "Manage granular access control, system roles, and department permissions.",
       "create_role": "Create Role",
+      "roleDetail": {
+        "back": "Back to Roles",
+        "systemRole": "System role",
+        "customRole": "Custom role"
+      },
+      "editor": {
+        "permissions": "Permissions",
+        "granted_summary": "{granted} of {total} permissions granted. System roles are read-only.",
+        "system_note": "This is a system role. Its permissions are managed by the platform and cannot be changed.",
+        "save": "Save permissions",
+        "saving": "Saving..."
+      },
+      "assignments": {
+        "title": "Assigned members",
+        "description": "Grant this role to members of your organization. Each assignment layers on top of their base role.",
+        "member_label": "Member",
+        "select_placeholder": "Select a member",
+        "no_members": "Everyone already has this role",
+        "assign": "Assign role",
+        "assigning": "Assigning...",
+        "remove": "Remove",
+        "empty": "No one is assigned this role yet.",
+        "assigned": "Role assigned.",
+        "assign_failed": "Could not assign the role.",
+        "removed": "Role assignment removed.",
+        "remove_failed": "Could not remove the assignment.",
+        "no_expiry": "No expiry",
+        "expires_on": "Expires {date}"
+      },
       "New": {
         "back": "Back to Roles",
         "title": "Create Role",
@@ -3328,6 +3443,25 @@
       "consent_status_declined": "Declined"
     }
   },
+  "Briefing": {
+    "greeting_morning": "Good morning, {name}",
+    "greeting_afternoon": "Good afternoon, {name}",
+    "greeting_evening": "Good evening, {name}",
+    "someone": "there",
+    "subtitle": "Here is what needs your attention today — {date}.",
+    "attention_title": "Morning briefing",
+    "attention_desc": "Approvals and alerts waiting on you.",
+    "all_clear": "You are all caught up — nothing needs your attention.",
+    "items": {
+      "failed_automations": "Failed automations",
+      "pending_workflows": "Workflows awaiting action",
+      "unread_notifications": "Unread notifications",
+      "pending_access_requests": "Access requests to review",
+      "expenses_approval": "Expenses awaiting approval",
+      "field_reports_review": "Field reports to verify",
+      "paused_automations": "Paused automations to review"
+    }
+  },
   "Dashboard": {
     "Overview": {
       "member_title": "Your workspace",
@@ -3511,29 +3645,59 @@
     "not_linked": "No household",
     "member_details": "Member {n}",
     "remove_member": "Remove",
-"field_login_required": "Sign in to use the field app.",
+    "field_login_required": "Sign in to use the field app.",
     "MediaCarousel": {
-        "carousel_label": "Media carousel",
-        "thumbnails_label": "Thumbnails",
-        "pagination_label": "Pagination",
-        "expanded_label": "Expanded view",
-        "previous": "Previous",
-        "next": "Next",
-        "close": "Close",
-        "slide": "Slide",
-        "expand": "Expand"
+      "carousel_label": "Media carousel",
+      "thumbnails_label": "Thumbnails",
+      "pagination_label": "Pagination",
+      "expanded_label": "Expanded view",
+      "previous": "Previous",
+      "next": "Next",
+      "close": "Close",
+      "slide": "Slide",
+      "expand": "Expand"
     },
     "MediaUpload": {
-        "drop_single": "Drag & drop an image or video here, or click to browse",
-        "drop_multiple": "Drag & drop images or videos here, or click to browse",
-        "formats": "Supported: {accept}. Max size: {maxSize}MB",
-        "uploading": "Uploading {file}…",
-        "error_size": "File too large (max {max}MB)",
-        "error_type": "Unsupported file type",
-        "error_upload": "Upload failed. Please try again.",
-        "uploaded": "Uploaded ({count})",
-        "remove": "Remove",
-        "set_focal_point": "Click to set focal point"
+      "drop_single": "Drag & drop an image or video here, or click to browse",
+      "drop_multiple": "Drag & drop images or videos here, or click to browse",
+      "formats": "Supported: {accept}. Max size: {maxSize}MB",
+      "uploading": "Uploading {file}…",
+      "error_size": "File too large (max {max}MB)",
+      "error_type": "Unsupported file type",
+      "error_upload": "Upload failed. Please try again.",
+      "uploaded": "Uploaded ({count})",
+      "remove": "Remove",
+      "set_focal_point": "Click to set focal point"
     }
-}
+  },
+  "CampaignTheme": {
+    "label": "Campaign",
+    "year-end": {
+      "message": "Year-end appeal: help us finish the year strong."
+    },
+    "community-week": {
+      "message": "Community week: join events near you."
+    }
+  },
+  "MediaCarousel": {
+    "carousel_label": "Media gallery",
+    "previous": "Previous",
+    "next": "Next",
+    "expand": "Expand",
+    "thumbnails_label": "Thumbnails",
+    "slide": "Slide",
+    "pagination_label": "Gallery pagination",
+    "expanded_label": "Expanded view",
+    "close": "Close"
+  },
+  "MediaUpload": {
+    "error_size": "File exceeds {max} MB.",
+    "error_type": "Unsupported file type.",
+    "error_upload": "Upload failed. Please try again.",
+    "formats": "{accept} · max {maxSize} MB",
+    "uploading": "Uploading {file}…",
+    "uploaded": "Uploaded ({count})",
+    "set_focal_point": "Set focal point",
+    "remove": "Remove"
+  }
 }

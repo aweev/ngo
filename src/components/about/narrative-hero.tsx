@@ -24,7 +24,7 @@ export function NarrativeHero({ content }: {
                     animate="visible"
                     className="max-w-xl space-y-6"
                 >
-                    <span className="text-primary font-bold tracking-widest uppercase text-sm pl-4 border-l-2 border-primary">
+                    <span className="text-primary font-bold tracking-widest uppercase text-sm ps-4 border-s-2 border-primary">
                         {preheader}
                     </span>
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-[1.1]">

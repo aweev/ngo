@@ -42,7 +42,7 @@ export function ArticleHeader({ article }: { article: ArticleDeepDiveViewModel }
                                 <Image src={article.author.avatar} alt={article.author.name} fill className="object-cover" />
                             )}
                         </div>
-                        <div className="text-left">
+                        <div className="text-start">
                             <p className="font-bold text-foreground">{article.author.name}</p>
                             <p className="text-xs">{article.author.role || t("author.role")}</p>
                         </div>

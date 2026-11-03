@@ -13,6 +13,8 @@ import { NewsGrid } from "@/components/news/news-grid";
 import { NewsSubscribe } from "@/components/news/news-extras";
 import { getPublicArticleBySlug, getPublicNewsArticles } from "@/actions/public";
 import { toArticleDeepDiveViewModel, toNewsViewModel } from "@/lib/content/public-mappers";
+import { buildArticleSchema } from "@/lib/seo";
+import { ENV } from "@/lib/env";
 
 // NOTE: must stay an inline literal — Next's static segment-config
 // analysis cannot resolve imported values (300 = PUBLIC_REVALIDATE_SECONDS).
@@ -70,8 +72,21 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
 
     if (!article) notFound();
 
+    const siteUrl = (ENV.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+    const articleJsonLd = buildArticleSchema({
+        title: article.title,
+        description: article.excerpt,
+        url: `${siteUrl}/${locale}/public/news/${article.slug}`,
+        image: article.imageSrc,
+        publishedTime: article.publishedAt,
+        modifiedTime: article.publishedAt,
+        authors: article.author ? [article.author.name] : ['AWE Team'],
+        locale,
+    });
+
     return (
         <main className="bg-background min-h-screen">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
             <ShareBar title={article.title} />
 
             <ArticleHeader article={article} />
@@ -98,7 +113,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ locale
                     prose-headings:font-serif prose-headings:font-bold prose-headings:text-foreground
                     prose-p:text-muted-foreground prose-p:leading-relaxed
                     prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                    prose-blockquote:border-l-4 prose-blockquote:border-brand-radiant-gold prose-blockquote:bg-muted/20 prose-blockquote:p-6 prose-blockquote:rounded-r-xl prose-blockquote:not-italic
+                    prose-blockquote:border-s-4 prose-blockquote:border-brand-radiant-gold prose-blockquote:bg-muted/20 prose-blockquote:p-6 prose-blockquote:rounded-e-xl prose-blockquote:not-italic
                     prose-li:text-muted-foreground
                     "
                     dangerouslySetInnerHTML={{ __html: article.content }}

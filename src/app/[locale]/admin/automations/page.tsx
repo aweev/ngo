@@ -2,11 +2,9 @@ import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAutomationRules } from "@/actions/automations";
-import { TemplateGallery } from "./template-gallery";
-import { Plus, Zap, Play, CheckCircle2, AlertCircle } from "lucide-react";
+import { Plus, Zap, LayoutTemplate } from "lucide-react";
 import { Link } from "@/lib/navigation";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +30,15 @@ export default async function AutomationsPage({ params }: { params: Promise<{ lo
                 }
             />
 
-            <TemplateGallery />
+            <div className="flex flex-col gap-3 rounded-lg border bg-card px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <LayoutTemplate className="h-4 w-4 text-primary" />
+                    {t("templates_hint")}
+                </div>
+                <Button asChild variant="outline" size="sm">
+                    <Link href="/admin/templates">{t("browse_templates")}</Link>
+                </Button>
+            </div>
 
             <div className="rounded-lg border bg-card">
                 <Table>

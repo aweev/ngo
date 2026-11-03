@@ -2,15 +2,21 @@ import type { Metadata } from 'next';
 import { SUPPORTED_LOCALES } from '@/lib/i18n/locales';
 
 const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-const ORG_NAME = 'AWE e.V.';
-const ORG_URL = SITE_URL;
-const ORG_LOGO = `${SITE_URL}/logo.png`;
-const ORG_SAME_AS = [
-    'https://twitter.com/awe_ev',
-    'https://linkedin.com/org/awe-ev',
-    'https://facebook.com/awe.ev',
-    'https://instagram.com/awe_ev',
-];
+// P0: org identity is deployment config, never hardcoded marketing copy.
+// Set ORG_* env vars per deployment; fallbacks are the legacy AWE defaults.
+const ORG_NAME = process.env.NEXT_PUBLIC_ORG_NAME || 'AWE e.V.';
+const ORG_URL = process.env.NEXT_PUBLIC_ORG_URL || SITE_URL;
+const ORG_LOGO = process.env.NEXT_PUBLIC_ORG_LOGO || `${SITE_URL}/logo.png`;
+const ORG_SAME_AS = (process.env.NEXT_PUBLIC_ORG_SAME_AS || 'https://twitter.com/awe_ev,https://linkedin.com/org/awe-ev,https://facebook.com/awe.ev,https://instagram.com/awe_ev')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+const ORG_STREET = process.env.NEXT_PUBLIC_ORG_STREET || '';
+const ORG_CITY = process.env.NEXT_PUBLIC_ORG_CITY || 'Berlin';
+const ORG_COUNTRY = process.env.NEXT_PUBLIC_ORG_COUNTRY || 'DE';
+const ORG_PHONE = process.env.NEXT_PUBLIC_ORG_PHONE || '';
+const ORG_TAX_ID = process.env.NEXT_PUBLIC_ORG_TAX_ID || '';
+const ORG_DESCRIPTION = process.env.NEXT_PUBLIC_ORG_DESCRIPTION || 'Empowering communities through education, sustainable development, and unwavering support.';
 
 /**
  * Builds localized page metadata with canonical URL + hreflang alternates
@@ -74,10 +80,29 @@ export function buildPublicMetadata(options: {
             images: [ogImageUrl],
             ...(twitterHandle && { creator: twitterHandle, site: twitterHandle }),
         },
-        other: {
-            'script:ld+json': JSON.stringify(buildStructuredData({ locale, path, title, description, ogImage: ogImageUrl, publishedTime, modifiedTime, authors, section, tags })),
-        },
     };
+}
+
+/**
+ * P0: JSON-LD must render as <script type="application/ld+json">, not via
+ * metadata `other` (which emits <meta> and never executes). Call this from
+ * a server component and inline the return value:
+ *   <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdForPage(...)) }} />
+ */
+export function jsonLdForPage(options: {
+    locale: string;
+    path: string;
+    title: string;
+    description: string;
+    ogImage?: string;
+    publishedTime?: string;
+    modifiedTime?: string;
+    authors?: string[];
+    section?: string;
+    tags?: string[];
+}) {
+    const ogImageUrl = options.ogImage || `${SITE_URL}/og-default.png`;
+    return buildStructuredData({ ...options, ogImage: ogImageUrl });
 }
 
 interface StructuredDataOptions {
@@ -99,12 +124,8 @@ function buildStructuredData(options: StructuredDataOptions) {
 
     const isArticle = !!publishedTime;
     const isHome = path === '/public';
-    const isAbout = path.startsWith('/public/about');
     const isEvent = path.startsWith('/public/events/');
-    const isNews = path.startsWith('/public/news/');
-    const isStory = path.startsWith('/public/stories/');
     const isDonate = path.startsWith('/public/get-involved/donate');
-    const isProgram = path.startsWith('/public/programs/');
 
     // Organization schema (always included)
     const organization = {
@@ -114,21 +135,25 @@ function buildStructuredData(options: StructuredDataOptions) {
         url: ORG_URL,
         logo: ORG_LOGO,
         sameAs: ORG_SAME_AS,
-        description: 'Empowering communities through education, sustainable development, and unwavering support.',
+        description: ORG_DESCRIPTION,
         address: {
             '@type': 'PostalAddress',
-            streetAddress: 'Musterstraße 123',
-            addressLocality: 'Berlin',
-            addressCountry: 'DE',
+            ...(ORG_STREET ? { streetAddress: ORG_STREET } : {}),
+            addressLocality: ORG_CITY,
+            addressCountry: ORG_COUNTRY,
         },
-        contactPoint: {
-            '@type': 'ContactPoint',
-            telephone: '+49-30-12345678',
-            contactType: 'customer service',
-            availableLanguage: ['German', 'English', 'French', 'Spanish', 'Arabic'],
-        },
+        ...(ORG_PHONE
+            ? {
+                contactPoint: {
+                    '@type': 'ContactPoint',
+                    telephone: ORG_PHONE,
+                    contactType: 'customer service',
+                    availableLanguage: ['German', 'English', 'French', 'Spanish', 'Arabic'],
+                },
+            }
+            : {}),
         nonprofitStatus: 'Registered Non-Profit',
-        taxID: 'DE123456789',
+        ...(ORG_TAX_ID ? { taxID: ORG_TAX_ID } : {}),
     };
 
     // WebSite schema (homepage only)
@@ -192,41 +217,10 @@ function buildStructuredData(options: StructuredDataOptions) {
 }
 
 function buildEventSchema() {
-    // Event data would need to be passed in from the page
-    // This is a template - actual data should be passed from the page component
-    return {
-        '@context': 'https://schema.org',
-        '@type': 'Event',
-        name: 'Event Title',
-        description: 'Event Description',
-        startDate: '2026-01-01T18:00:00+01:00',
-        endDate: '2026-01-01T20:00:00+01:00',
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-        location: {
-            '@type': 'Place',
-            name: 'Event Location',
-            address: {
-                '@type': 'PostalAddress',
-                streetAddress: '',
-                addressLocality: 'Berlin',
-                addressCountry: 'DE',
-            },
-        },
-        organizer: {
-            '@type': 'Organization',
-            name: ORG_NAME,
-            url: ORG_URL,
-        },
-        offers: {
-            '@type': 'Offer',
-            url: `${SITE_URL}/register`,
-            price: '0',
-            priceCurrency: 'EUR',
-            availability: 'https://schema.org/InStock',
-            validFrom: '2026-01-01T00:00:00+01:00',
-        },
-    };
+    // P0: no placeholder structured data. Event JSON-LD is emitted only via
+    // buildEventSchemaFromData() with real CMS data. Returning null keeps the
+    // graph clean instead of indexing "Event Title / 2026-01-01" fixtures.
+    return null;
 }
 
 export function buildDonationSchema() {

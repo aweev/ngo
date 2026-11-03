@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import {
     Users, HandHeart, HandCoins, Megaphone, FolderKanban,
     Zap, GitBranch, Clock, ClipboardList, Wallet, FileBarChart,
-    CalendarDays, TrendingUp, ShieldCheck, Settings, ArrowUpRight, AlertTriangle
+    CalendarDays, TrendingUp, ShieldCheck, Settings, ArrowUpRight
 } from "lucide-react";
 import { Link } from "@/lib/navigation";
 import { getWorkersStats } from "@/actions/workers";
@@ -16,6 +16,7 @@ import { getWorkflowDefinitions } from "@/actions/workflows";
 import { getScheduledJobs } from "@/actions/scheduling";
 import { StatCard } from "@/components/manage/stat-card";
 import { PageHeader } from "@/components/manage/page-header";
+import { MorningBriefing } from "@/components/manage/morning-briefing";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -100,19 +101,6 @@ export default async function AdminOverviewPage({ params }: { params: Promise<{ 
         { title: t("modules.rbac"), desc: t("modules.rbac_desc"), href: "/admin/rbac", icon: ShieldCheck, color: "text-orange-500" },
     ];
 
-    // Next best action (audit Wave 4): exceptions first — failed jobs and
-    // switched-off rules are what an operator should handle before browsing
-    // vanity stats.
-    const failedJobs = (jobs.data ?? []).filter((j) => j.last_run_status === "failure").length;
-    const disabledRules = (automations.data ?? []).filter((r) => !r.is_enabled).length;
-    const attentionItems: { text: string; href: string }[] = [];
-    if (failedJobs > 0) {
-        attentionItems.push({ text: t("attention_failed_jobs", { count: failedJobs }), href: "/admin/scheduling" });
-    }
-    if (disabledRules > 0) {
-        attentionItems.push({ text: t("attention_disabled_rules", { count: disabledRules }), href: "/admin/automations" });
-    }
-
     return (
         <div className="space-y-8">
             <PageHeader
@@ -120,35 +108,7 @@ export default async function AdminOverviewPage({ params }: { params: Promise<{ 
                 description={t("description")}
             />
 
-            {/* Needs attention — the next best action for this workspace */}
-            <Card>
-                <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-sm font-semibold">
-                        <AlertTriangle className="h-4 w-4 text-amber-500" aria-hidden="true" />
-                        {t("attention_title")}
-                    </CardTitle>
-                    <CardDescription className="text-xs">{t("attention_desc")}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    {attentionItems.length === 0 ? (
-                        <p className="text-xs text-muted-foreground">{t("attention_empty")}</p>
-                    ) : (
-                        <ul className="space-y-2">
-                            {attentionItems.map((item) => (
-                                <li key={item.href}>
-                                    <Link
-                                        href={item.href}
-                                        className="flex items-center justify-between gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 transition-colors hover:bg-amber-100 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200 dark:hover:bg-amber-500/20"
-                                    >
-                                        <span>{item.text}</span>
-                                        <ArrowUpRight className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </CardContent>
-            </Card>
+            <MorningBriefing locale={locale} />
 
             {/* Core Stats Grid */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

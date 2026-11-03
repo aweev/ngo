@@ -18,6 +18,7 @@ transparency. Start here; each guide is self-contained for its reader.
 | 11 | [Seeding & demo](11-seeding-and-demo.md) | Engineers, sales, trainers | Personas, master dataset, demo walkthrough |
 | 12 | [Roadmap](12-roadmap.md) | Product, leadership | What shipped, what is deferred, decision log |
 | 13 | [Glossary](13-glossary.md) | Everyone | Terms, states, and fund types in one place |
+| 14 | [Architecture decisions](14-architecture-decisions.md) | Engineers, product, leadership | ADRs; supersedes/annotates the roadmap's cut list |
 
 Older planning material lives in `planning/` and `runbooks/` (operational
 procedures). `production-readiness-notes.md` and `programs-production-plan.md`

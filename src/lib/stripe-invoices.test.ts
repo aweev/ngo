@@ -15,7 +15,10 @@ interface MockChain {
     insert: (p: Row) => MockChain;
     update: (p: Row) => MockChain;
     eq: (col: string, v: unknown) => MockChain;
+    neq: (col: string, v: unknown) => MockChain;
     is: (col: string, v: unknown) => MockChain;
+    order: (_col: string, _opts?: { ascending?: boolean }) => MockChain;
+    limit: (_n: number) => MockChain;
     maybeSingle: () => Promise<{ data: unknown; error: unknown }>;
     single: () => Promise<{ data: unknown; error: unknown }>;
     then: (resolve: (v: unknown) => void) => void;
@@ -27,7 +30,11 @@ function makeMockSupabase(state: { donations: Row[]; donors: Row[]; rpcOrgId?: s
     const tableRows = (t: string): Row[] => (state as Record<string, Row[] | null | undefined>)[t] ?? [];
     // SQL NULL semantics: a missing key counts as NULL for `.is(col, null)`.
     const matchRow = (r: Row, filters: Array<[string, string, unknown]>): boolean =>
-        filters.every(([kind, c, v]) => (kind === 'is' && v === null ? r[c] == null : r[c] === v));
+        filters.every(([kind, c, v]) => {
+            if (kind === 'is' && v === null) return r[c] == null;
+            if (kind === 'neq') return r[c] !== v;
+            return r[c] === v;
+        });
 
     function builder(table: string) {
         const op = { type: 'select', filters: [] as Array<[string, string, unknown]>, payload: null as Row | null };
@@ -38,7 +45,10 @@ function makeMockSupabase(state: { donations: Row[]; donors: Row[]; rpcOrgId?: s
             insert: (p: Row) => { op.type = 'insert'; op.payload = p; return b; },
             update: (p: Row) => { op.type = 'update'; op.payload = p; return b; },
             eq: (col: string, v: unknown) => { op.filters.push(['eq', col, v]); return b; },
+            neq: (col: string, v: unknown) => { op.filters.push(['neq', col, v]); return b; },
             is: (col: string, v: unknown) => { op.filters.push(['is', col, v]); return b; },
+            order: () => b,
+            limit: () => b,
             maybeSingle: async () => {
                 calls.push(`${table}:${op.type}`);
                 const rows = tableRows(table);

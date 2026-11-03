@@ -38,7 +38,7 @@ export function StoriesHero() {
                         <Button asChild size="lg" className="rounded-full px-8 shadow-xl">
                             {/* Routes to Member Portal */}
                             <Link href="/auth/login?redirect=/dashboard/stories/new">
-                                <PenTool className="w-4 h-4 mr-2" />
+                                <PenTool className="w-4 h-4 me-2" />
                                 {t("cta")}
                             </Link>
                         </Button>

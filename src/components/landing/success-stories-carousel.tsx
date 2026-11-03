@@ -92,7 +92,7 @@ export function SuccessStoriesCarousel({ stories }: SuccessStoriesCarouselProps)
                     viewport={{ once: true }}
                     className="mb-12 md:mb-20"
                 >
-                    <span className="text-primary font-bold tracking-widest uppercase text-sm pl-4 border-l-2 border-primary mb-4 block">
+                    <span className="text-primary font-bold tracking-widest uppercase text-sm ps-4 border-s-2 border-primary mb-4 block">
                         {t("subtitle")}
                     </span>
                     <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground leading-[1.1]">
@@ -181,7 +181,7 @@ export function SuccessStoriesCarousel({ stories }: SuccessStoriesCarouselProps)
                                         </div>
 
                                         {/* Meta Data */}
-                                        <div className="border-l-4 border-brand-radiant-gold pl-4 py-1">
+                                        <div className="border-s-4 border-brand-radiant-gold ps-4 py-1">
                                             <h3 className="text-xl font-bold">{story.name}</h3>
                                             <p className="text-muted-foreground">{story.role}</p>
                                             <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
@@ -195,7 +195,7 @@ export function SuccessStoriesCarousel({ stories }: SuccessStoriesCarouselProps)
                                             <Button asChild size="lg" className="rounded-full px-8 group">
                                                 <Link href={`/public/stories/${story.slug}`}>
                                                     {t("read_story")}
-                                                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                                                     <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
                                                 </Link>
                                             </Button>
                                         </div>

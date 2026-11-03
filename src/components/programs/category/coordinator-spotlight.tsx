@@ -30,12 +30,12 @@ export function CoordinatorSpotlight({ quote, name, role, imageSrc, category }: 
                                 fill
                                 className={`object-cover rounded-full border-4 shadow-lg ${theme.border} bg-muted`}
                             />
-                            <div className={`absolute -bottom-2 -right-2 w-12 h-12 rounded-full ${theme.bg} flex items-center justify-center border-4 border-background`}>
+                            <div className={`absolute -bottom-2 -end-2 w-12 h-12 rounded-full ${theme.bg} flex items-center justify-center border-4 border-background`}>
                                 <Quote className={`w-5 h-5 ${theme.primary}`} />
                             </div>
                         </div>
 
-                        <div className="text-center md:text-left">
+                        <div className="text-center md:text-start">
                             <blockquote className="text-2xl md:text-3xl font-serif font-medium text-foreground leading-relaxed mb-6">
                                 &quot;{quote}&quot;
                             </blockquote>

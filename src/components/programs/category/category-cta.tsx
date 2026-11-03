@@ -23,14 +23,14 @@ export function CategoryCTA({ category }: { category: ProgramCategory }) {
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <Button asChild size="lg" className="rounded-full px-8 h-14 text-lg shadow-xl shadow-primary/20">
                         <Link href={donationPath({ fund: category })}>
-                            <Heart className="w-5 h-5 mr-2 fill-current" />
+                            <Heart className="w-5 h-5 me-2 fill-current" />
                             {t("donate", { category: category.replace('-', ' ') })}
                         </Link>
                     </Button>
 
                     <Button asChild variant="outline" size="lg" className="rounded-full px-8 h-14 text-lg bg-background/50 backdrop-blur-sm border-2">
                         <Link href={volunteerPath({ interest: category })}>
-                            <HandHeart className="w-5 h-5 mr-2" />
+                            <HandHeart className="w-5 h-5 me-2" />
                             {t("volunteer", { category: category.replace('-', ' ') })}
                         </Link>
                     </Button>

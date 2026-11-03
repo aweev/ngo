@@ -34,9 +34,13 @@ export function DonationWidget() {
     const [email, setEmail] = useState("");
     const [fullName, setFullName] = useState("");
     const [needsReceipt, setNeedsReceipt] = useState(false);
+    const [consent, setConsent] = useState(false);
+    const [marketingConsent, setMarketingConsent] = useState(false);
+    const [honeypot, setHoneypot] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [amountError, setAmountError] = useState<string | null>(null);
     const [emailError, setEmailError] = useState<string | null>(null);
+    const [consentError, setConsentError] = useState<string | null>(null);
 
     const handleAmountSelect = (val: number) => {
         setAmount(val);
@@ -80,14 +84,21 @@ export function DonationWidget() {
                 ? t("amount_invalid", { min: MIN_AMOUNT, max: MAX_AMOUNT })
                 : null;
         const nextEmailError = !EMAIL_RE.test(email.trim()) ? t("email_invalid") : null;
+        const nextConsentError = !consent ? t("consent_required") : null;
         setAmountError(nextAmountError);
         setEmailError(nextEmailError);
-        return !nextAmountError && !nextEmailError;
+        setConsentError(nextConsentError);
+        return !nextAmountError && !nextEmailError && !nextConsentError;
     };
 
     const handleDonate = async () => {
         if (isLoading) return;
         if (!validate()) return;
+        // Honeypot: bots fill hidden fields; humans never see it.
+        if (honeypot.trim().length > 0) {
+            toast.error(t("error_title"), { description: t("error_description") });
+            return;
+        }
         setIsLoading(true);
 
         try {
@@ -98,6 +109,9 @@ export function DonationWidget() {
                 email,
                 fullName: fullName.trim() || undefined,
                 needsReceipt,
+                consent,
+                marketingConsent,
+                honeypot,
             });
 
             if (!res.success) {
@@ -118,6 +132,8 @@ export function DonationWidget() {
             });
             setEmail("");
             setFullName("");
+            setConsent(false);
+            setMarketingConsent(false);
         } catch (err) {
             toast.error(t("error_title"), {
                 description: err instanceof Error && err.message ? err.message : t("error_description"),
@@ -219,6 +235,19 @@ export function DonationWidget() {
                 {/* Payment Fields */}
                 <div className="space-y-4 mb-8">
                     <div className="space-y-2">
+                        <Label htmlFor="donor-name" className="font-bold">{t("name_label")}</Label>
+                        <Input
+                            id="donor-name"
+                            name="fullName"
+                            type="text"
+                            autoComplete="name"
+                            placeholder={t("name_placeholder")}
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            className="h-12 rounded-xl"
+                        />
+                    </div>
+                    <div className="space-y-2">
                         <Label htmlFor="email" className="font-bold">{t("email_label")}</Label>
                         <Input
                             id="email"
@@ -241,6 +270,17 @@ export function DonationWidget() {
                             </p>
                         )}
                     </div>
+                    {/* Honeypot — invisible to humans, fatal to bots. */}
+                    <input
+                        type="text"
+                        name="company_website"
+                        value={honeypot}
+                        onChange={(e) => setHoneypot(e.target.value)}
+                        className="hidden"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                    />
                     <div className="flex items-center space-x-3">
                         <Checkbox
                             id="receipt"
@@ -255,6 +295,36 @@ export function DonationWidget() {
                             {t("receipt_check")}
                         </label>
                     </div>
+                    <div className="space-y-2 rounded-xl border border-border/60 p-4">
+                        <div className="flex items-start space-x-3">
+                            <Checkbox
+                                id="donation-consent"
+                                checked={consent}
+                                onCheckedChange={(c) => { setConsent(!!c); if (c) setConsentError(null); }}
+                                aria-describedby={consentError ? "consent-error" : undefined}
+                                className="mt-0.5 rounded-md border-2 border-muted-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                            />
+                            <label htmlFor="donation-consent" className="text-sm font-medium leading-snug cursor-pointer">
+                                {t("consent_label")}
+                            </label>
+                        </div>
+                        {consentError && (
+                            <p id="consent-error" role="alert" className="text-sm font-medium text-destructive">
+                                {consentError}
+                            </p>
+                        )}
+                        <div className="flex items-start space-x-3">
+                            <Checkbox
+                                id="marketing-consent"
+                                checked={marketingConsent}
+                                onCheckedChange={(c) => setMarketingConsent(!!c)}
+                                className="mt-0.5 rounded-md border-2 border-muted-foreground data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                            />
+                            <label htmlFor="marketing-consent" className="text-sm text-muted-foreground leading-snug cursor-pointer">
+                                {t("marketing_consent_label")}
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Submit */}
@@ -266,9 +336,9 @@ export function DonationWidget() {
                         disabled={isLoading}
                     >
                         {isLoading ? (
-                            <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                            <Loader2 className="w-5 h-5 animate-spin me-2" />
                         ) : (
-                            <CreditCard className="w-5 h-5 mr-2" />
+                            <CreditCard className="w-5 h-5 me-2" />
                         )}
                         {t("submit_btn", { amount })}
                     </Button>

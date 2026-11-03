@@ -6,7 +6,6 @@ import {
     getPublicImpactStorySlugs,
     getPublicNewsSlugs,
     getPublicProjectSlugs,
-    getPublicCampaignSlugs,
     getPublicTeamMemberSlugs,
     getPublicDocumentSlugs,
     getPublicMilestoneSlugs,
@@ -22,10 +21,19 @@ const publicRoutes = [
     '/public/about/financials',
     '/public/about/partners',
     '/public/programs',
+    '/public/programs/education',
+    '/public/programs/health',
+    '/public/programs/economic-empowerment',
+    '/public/programs/social-integration',
     '/public/events',
     '/public/stories',
+    '/public/news',
     '/public/get-involved',
+    '/public/get-involved/donate',
+    '/public/get-involved/volunteer',
+    '/public/get-involved/corporate',
     '/public/contact',
+    '/public/contact/report',
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -43,13 +51,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }
     }
 
-    // Dynamic CMS entries (published projects, events, news, impact stories, campaigns, team, documents, milestones).
+    // Dynamic CMS entries (published projects, events, news, impact stories, team, documents, milestones).
+    // NOTE (P0/Phase 4): campaigns are merged into projects.kind — no standalone
+    // /public/campaigns hub exists, so campaign slugs are intentionally NOT
+    // emitted (orphan URLs would 404 and pollute the index).
     const [
         projects,
         events,
         news,
         stories,
-        campaigns,
         teamMembers,
         documents,
         milestones,
@@ -58,7 +68,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         getPublicEventSlugs(),
         getPublicNewsSlugs(),
         getPublicImpactStorySlugs(),
-        getPublicCampaignSlugs(),
         getPublicTeamMemberSlugs(),
         getPublicDocumentSlugs(),
         getPublicMilestoneSlugs(),
@@ -98,14 +107,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
                 priority: 0.6,
             });
         }
-        for (const c of campaigns.data ?? []) {
-            sitemapEntries.push({
-                url: `${baseUrl}/${locale}/public/campaigns/${encodeURIComponent(c.slug)}`,
-                lastModified: c.updated_at ? new Date(c.updated_at) : undefined,
-                changeFrequency: 'weekly',
-                priority: 0.6,
-            });
-        }
         for (const t of teamMembers.data ?? []) {
             sitemapEntries.push({
                 url: `${baseUrl}/${locale}/public/about/team/${encodeURIComponent(t.slug)}`,
@@ -123,11 +124,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             });
         }
         for (const m of milestones.data ?? []) {
+            // Milestones render inside /public/about (timeline), not as standalone
+            // /public/about/<slug> routes — link to the anchored section.
             sitemapEntries.push({
-                url: `${baseUrl}/${locale}/public/about/${encodeURIComponent(m.slug)}`,
+                url: `${baseUrl}/${locale}/public/about#milestone-${encodeURIComponent(m.slug)}`,
                 lastModified: m.updated_at ? new Date(m.updated_at) : undefined,
                 changeFrequency: 'monthly',
-                priority: 0.5,
+                priority: 0.4,
             });
         }
     }

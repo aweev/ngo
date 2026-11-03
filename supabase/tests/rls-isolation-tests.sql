@@ -38,6 +38,23 @@ EXCEPTION
 END;
 $$;
 
+-- Returns the number of rows affected by p_sql. RLS denials on UPDATE/DELETE
+-- are silent (0 rows, no error), so write-denial is asserted with
+-- tests.affected(...) = 0, while INSERT denials (which raise) use
+-- tests.expect_error(...).
+CREATE OR REPLACE FUNCTION tests.affected(p_sql text)
+RETURNS int
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_n int;
+BEGIN
+    EXECUTE p_sql;
+    GET DIAGNOSTICS v_n = ROW_COUNT;
+    RETURN v_n;
+END;
+$$;
+
 GRANT USAGE ON SCHEMA tests TO authenticated;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA tests TO authenticated;
 
@@ -50,6 +67,17 @@ BEGIN;
 INSERT INTO organizations (id, name, slug) VALUES
     ('00000000-0000-0000-0000-00000000000a', 'Org A', 'org-a'),
     ('00000000-0000-0000-0000-00000000000b', 'Org B', 'org-b')
+ON CONFLICT (id) DO NOTHING;
+
+-- organization_members.user_id references auth.users(id): the impersonated
+-- users must exist. The runner rolls everything back, so these rows are
+-- test-scoped and never leak into real data.
+INSERT INTO auth.users (id, email) VALUES
+    ('00000000-0000-0000-0000-000000000001', 'rls-owner@example.com'),
+    ('00000000-0000-0000-0000-000000000002', 'rls-admin@example.com'),
+    ('00000000-0000-0000-0000-000000000003', 'rls-manager@example.com'),
+    ('00000000-0000-0000-0000-000000000004', 'rls-member@example.com'),
+    ('00000000-0000-0000-0000-000000000005', 'rls-other@example.com')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO organization_members (organization_id, user_id, role) VALUES
@@ -83,6 +111,11 @@ INSERT INTO donations (id, organization_id, amount, currency, status) VALUES
     ('50000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-00000000000a', 50, 'EUR', 'completed')
 ON CONFLICT (id) DO NOTHING;
 
+INSERT INTO org_events (id, organization_id, title, slug, status, start_date) VALUES
+    ('60000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-00000000000a', 'Open Day A', 'open-day-a', 'published', NOW() + INTERVAL '7 days'),
+    ('60000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-00000000000b', 'Open Day B', 'open-day-b', 'published', NOW() + INTERVAL '7 days')
+ON CONFLICT (id) DO NOTHING;
+
 -- =====================================================
 -- 2. Activate RLS as the authenticated role, then impersonate.
 -- =====================================================
@@ -95,8 +128,8 @@ SET LOCAL ROLE authenticated;
 SELECT set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000004', true);
 
 SELECT tests.assert(
-    (SELECT count(*) FROM workers WHERE organization_id = '00000000-0000-0000-0000-00000000000a') = 1,
-    'member: must see rows of own org (workers A)'
+    (SELECT count(*) FROM workers WHERE organization_id = '00000000-0000-0000-0000-00000000000a') = 0,
+    'member: must NOT see workers (no workers.read)'
 );
 
 SELECT tests.assert(
@@ -121,24 +154,29 @@ SELECT tests.assert(
     'member: INSERT into workers must be denied'
 );
 
+-- RLS write denials on UPDATE/DELETE are silent (0 rows affected, no
+-- error raised) — only INSERT WITH CHECK violations raise. Assert rowcounts.
 SELECT tests.assert(
-    tests.expect_error(
-        'UPDATE workers SET first_name = ''Hacked'' WHERE id = ''10000000-0000-0000-0000-000000000001'''
-    ),
+    tests.affected('UPDATE workers SET first_name = ''Hacked'' WHERE id = ''10000000-0000-0000-0000-000000000001''') = 0,
     'member: UPDATE workers must be denied'
 );
 
 SELECT tests.assert(
-    tests.expect_error(
-        'DELETE FROM workers WHERE id = ''10000000-0000-0000-0000-000000000001'''
-    ),
+    tests.affected('DELETE FROM workers WHERE id = ''10000000-0000-0000-0000-000000000001''') = 0,
     'member: DELETE workers must be denied'
 );
 
--- Member CAN read events (events.read) in own org
+-- Member CAN read events (events.read) in own org — and only own org.
 SELECT tests.assert(
-    (SELECT count(*) FROM org_events WHERE organization_id = '00000000-0000-0000-0000-00000000000a') = 0,
-    'member: SELECT org_events (events.read) must be allowed'
+    (SELECT count(*) FROM org_events WHERE organization_id = '00000000-0000-0000-0000-00000000000a') = 1,
+    'member: SELECT org_events (events.read) must be allowed in own org'
+);
+
+SELECT tests.assert(
+    (SELECT count(*) FROM org_events WHERE organization_id = '00000000-0000-0000-0000-00000000000b') = 0,
+    'member: SELECT org_events must be denied in another org'
+);
+
 -- -----------------------------------------------------
 -- 2.2 OWNER of Org B (cross-tenant write attempt)
 -- -----------------------------------------------------
@@ -150,9 +188,7 @@ SELECT tests.assert(
 );
 
 SELECT tests.assert(
-    tests.expect_error(
-        'UPDATE workers SET first_name = ''Hacked'' WHERE id = ''10000000-0000-0000-0000-000000000001'''
-    ),
+    tests.affected('UPDATE workers SET first_name = ''Hacked'' WHERE id = ''10000000-0000-0000-0000-000000000001''') = 0,
     'org B owner: UPDATEing an Org A worker must be denied (cross-tenant)'
 );
 
@@ -166,7 +202,7 @@ SELECT tests.assert(
 -- org_id immutability
 SELECT tests.assert(
     tests.expect_error(
-        'UPDATE workers SET organization_id = ''00000000-0000-0000-0000-00000000000b'' WHERE id = ''10000000-0000-0000-0000-000000000002'''
+        'UPDATE workers SET organization_id = ''00000000-0000-0000-0000-00000000000a'' WHERE id = ''10000000-0000-0000-0000-000000000002'''
     ),
     'org_id immutability: changing organization_id must be rejected'
 );
@@ -203,9 +239,7 @@ SELECT tests.assert(
 );
 
 SELECT tests.assert(
-    tests.expect_error(
-        'UPDATE expenses SET status = ''approved'' WHERE id = ''40000000-0000-0000-0000-000000000001'''
-    ),
+    tests.affected('UPDATE expenses SET status = ''approved'' WHERE id = ''40000000-0000-0000-0000-000000000001''') = 0,
     'manager: approving an expense must be denied (finance.approve required)'
 );
 
@@ -217,6 +251,8 @@ SELECT tests.assert(
     'manager: editing content (content.manage) must be allowed'
 );
 
+-- Manager cannot publish: enforce_content_publish() trigger raises
+-- (unlike RLS USING denials, which are silent).
 SELECT tests.assert(
     tests.expect_error(
         'UPDATE content_pages SET status = ''published'' WHERE id = ''30000000-0000-0000-0000-000000000001'''
@@ -234,9 +270,7 @@ SELECT tests.assert(
 
 -- Manager cannot change member roles (members.manage required)
 SELECT tests.assert(
-    tests.expect_error(
-        'UPDATE organization_members SET role = ''owner'' WHERE user_id = ''00000000-0000-0000-0000-000000000004'''
-    ),
+    tests.affected('UPDATE organization_members SET role = ''owner'' WHERE user_id = ''00000000-0000-0000-0000-000000000004''') = 0,
     'manager: changing membership roles must be denied'
 );
 

@@ -65,6 +65,8 @@ export default async function ContentPreviewPage({
                 </p>
             )}
             {preview.cover_image_url && (
+                // Draft preview covers may be Supabase Storage URLs (not in
+                // next/image remotePatterns) — plain <img> keeps previews working.
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                     src={preview.cover_image_url}

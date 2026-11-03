@@ -53,7 +53,7 @@ export function FeaturedStory({ story }: { story: StoryViewModel }) {
                             {story.type === 'video' && <><Play className="w-4 h-4 fill-current" /> {t("watch")}</>}
                             {story.type === 'audio' && <><Headphones className="w-4 h-4" /> {t("listen")}</>}
                             {story.type === 'article' && <><span className="w-4 h-4" /> {t("read")}</>}
-                            <ArrowRight className="w-4 h-4 ml-2" />
+                            <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180" />
                         </div>
                     </div>
                 </Link>

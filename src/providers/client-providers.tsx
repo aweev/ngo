@@ -1,5 +1,6 @@
 'use client';
 
+import { MotionConfig } from 'framer-motion';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { NextIntlClientProvider, AbstractIntlMessages } from 'next-intl';
 import { Toaster } from 'sonner';
@@ -60,6 +61,8 @@ export function ClientProviders({
             >
                 <CampaignSafetyGuard />
                 <SyncProvider> {/* PWA/Offline Support */}
+                    {/* P1 a11y: respect OS reduced-motion across all framer-motion usage */}
+                    <MotionConfig reducedMotion="user">
                     <BrandThemeProvider defaultTheme={defaultBrandTheme}>
                         <ThemeProvider
                             attribute="class"
@@ -87,6 +90,7 @@ export function ClientProviders({
                             </BrandProvider>
                         </ThemeProvider>
                     </BrandThemeProvider>
+                    </MotionConfig>
                 </SyncProvider>
             </NextIntlClientProvider>
         </>

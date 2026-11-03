@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +29,7 @@ const GROUPED = groupPermissions();
 
 export function RolePermissionEditor({ role }: { role: CustomRole }) {
     const router = useRouter();
+    const t = useTranslations("Admin.Rbac.editor");
     const [grants, setGrants] = useState<Record<string, boolean>>(role.permissions ?? {});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -59,10 +61,10 @@ export function RolePermissionEditor({ role }: { role: CustomRole }) {
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
-                    <ShieldCheck className="h-4 w-4 text-emerald-500" /> Permissions
+                    <ShieldCheck className="h-4 w-4 text-emerald-500" /> {t("permissions")}
                 </CardTitle>
                 <CardDescription>
-                    {grantedCount} of {ALL_PERMISSIONS.length} permissions granted. System roles are read-only.
+                    {t("granted_summary", { granted: grantedCount, total: ALL_PERMISSIONS.length })}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -73,9 +75,7 @@ export function RolePermissionEditor({ role }: { role: CustomRole }) {
                 )}
                 {role.is_system ? (
                     <Alert>
-                        <AlertDescription>
-                            This is a system role. Its permissions are managed by the platform and cannot be changed.
-                        </AlertDescription>
+                        <AlertDescription>{t("system_note")}</AlertDescription>
                     </Alert>
                 ) : null}
                 <div className="grid gap-6 md:grid-cols-2">
@@ -103,7 +103,7 @@ export function RolePermissionEditor({ role }: { role: CustomRole }) {
                     <div className="flex justify-end">
                         <Button onClick={handleSave} disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {loading ? "Saving..." : "Save permissions"}
+                            {loading ? t("saving") : t("save")}
                         </Button>
                     </div>
                 )}

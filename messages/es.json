@@ -5,7 +5,9 @@
   },
   "NotFound": {
     "title": "Página no encontrada",
-    "description": "La página que buscas no existe o ha sido movida."
+    "description": "La página que buscas no existe o ha sido movida.",
+    "home": "Volver al inicio",
+    "about": "Quiénes somos"
   },
   "Navigation": {
     "back_home": "Volver al inicio",
@@ -476,8 +478,12 @@
     },
     "Success": {
       "title": "¡Éxito!",
-      "message": "Bienvenido a nuestra comunidad de agentes de cambio."
+      "message": "Bienvenido a nuestra comunidad de agentes de cambio.",
+      "confirm_inbox": "Revisa tu bandeja y haz clic en el enlace de confirmación."
     },
+    "consent_label": "Acepto recibir el boletín y la política de privacidad.",
+    "consent_required": "Acepta los términos de privacidad para suscribirte.",
+    "error_generic": "La suscripción falló. Inténtalo más tarde.",
     "Stats": {
       "subscribers": "Suscriptores",
       "countries": "Países",
@@ -571,7 +577,8 @@
     "description": "Nos disculpamos por el inconveniente. La aplicación encontró un error crítico.",
     "retry": "Intentar de nuevo",
     "reload": "Recargar página",
-    "home": "Volver al Inicio"
+    "home": "Volver al Inicio",
+    "error_id": "Referencia del error"
   },
   "Common": {
     "cta_donate": "Donar ahora",
@@ -803,7 +810,12 @@
       "impact_default": "Recursos donde más se necesitan",
       "payment_header": "Detalles de pago",
       "email_label": "Correo electrónico",
+      "name_label": "Nombre completo (para recibo fiscal)",
+      "name_placeholder": "Jane Doe",
       "receipt_check": "Necesito un recibo fiscal",
+      "consent_label": "Acepto los términos de donación y el tratamiento de mis datos.",
+      "consent_required": "Acepta los términos de donación para continuar.",
+      "marketing_consent_label": "Mantenme informado sobre impacto y campañas (opcional).",
       "submit_btn": "Donar {amount} €",
       "secure_footer": "Cifrado y seguro vía Stripe",
       "error_title": "No pudimos procesar tu donación",
@@ -988,7 +1000,8 @@
         "donation": "Ayuda con donaciones",
         "volunteer": "Voluntariado",
         "partner": "Alianzas",
-        "report": "Informar un problema"
+        "report": "Informar un problema",
+        "privacy": "Protección de datos (DSAR)"
       },
       "hints": {
         "volunteer": "¿Busca puestos abiertos? Consulte nuestro Portal de Voluntarios para una solicitud más rápida.",
@@ -1429,7 +1442,10 @@
       "complete_title": "You are ready to make an impact",
       "complete_subtitle": "Your onboarding details are saved. Welcome to the AWE community.",
       "dashboard": "Go to dashboard",
-      "start_over": "Start over"
+      "start_over": "Start over",
+      "account_name": "Nombre de la cuenta",
+      "account_name_missing": "Sin nombre aún",
+      "account_name_note": "Se muestra a los coordinadores cuando participas en actividades."
     },
     "Setup": {
       "meta_title": "Configura tu espacio de trabajo",
@@ -1738,6 +1754,7 @@
       "badge": "NGO OS v2.0",
       "collapse": "Contraer menú",
       "items": {
+        "templates": "Plantillas",
         "commandCenter": "Centro de mando",
         "teamInvites": "Equipo e invitaciones",
         "workers": "Trabajadores",
@@ -1926,6 +1943,8 @@
       "load_failed": "No se pudo cargar {entity}: {error}"
     },
     "Automations": {
+      "templates_hint": "¿Buscas un punto de partida? Explora plantillas listas para usar.",
+      "browse_templates": "Plantillas de inicio",
       "title": "Automatizaciones y motor IFTTT",
       "description": "Configure reglas, desencadenantes, condiciones y acciones automatizadas para su organización.",
       "create_rule": "Crear regla",
@@ -2026,7 +2045,8 @@
         "trigger_select_ph": "Elegir activador",
         "cond_desc": "Todas las condiciones deben cumplirse para que se ejecuten las acciones. Deja vacío para ejecutar siempre.",
         "cond_none": "Sin condiciones: esta regla se activa en cada evento.",
-        "actions_desc": "Se ejecutan en orden cuando el activador y las condiciones se cumplen. Retraso opcional por acción."
+        "actions_desc": "Se ejecutan en orden cuando el activador y las condiciones se cumplen. Retraso opcional por acción.",
+        "field_ph": "p. ej., status"
       }
     },
     "Workflows": {
@@ -2600,7 +2620,11 @@
         "approved": "Approved",
         "in_review": "In review",
         "rejected": "Changes requested",
-        "draft": "Draft — not approved"
+        "draft": "Draft — not approved",
+        "published": "Published",
+        "archived": "Archived",
+        "translation_pending": "Translation pending",
+        "changes_requested": "Changes requested"
       },
       "Locale": {
         "missing": "EN only — no translations",
@@ -2637,7 +2661,13 @@
         "slug_fix_required": "Fix the slug before saving.",
         "cancel": "Cancel",
         "creating": "Creating…",
-        "create_draft": "Create draft"
+        "create_draft": "Create draft",
+        "unable_to_create": "No se pudo crear la página. Inténtalo de nuevo.",
+        "page_details": "Detalles de la página",
+        "title_label": "Título de la página",
+        "slug_label": "Slug de URL",
+        "slug_checking": "Comprobando…",
+        "seo_description": "Vista previa de búsqueda y redes para esta página."
       },
       "Editor": {
         "saving": "Saving…",
@@ -2659,7 +2689,8 @@
         "add_field": "Add field",
         "remove": "Remove",
         "field_key_placeholder": "key",
-        "field_value_placeholder": "value"
+        "field_value_placeholder": "value",
+        "body_placeholder": "Cuerpo de la página (Markdown admitido)…"
       },
       "Blocks": {
         "title": "Content blocks",
@@ -2703,7 +2734,15 @@
         "restore_confirm": "Restore this revision? Current content is snapshotted first, so restore is reversible.",
         "approval_title": "Approval history",
         "approval_desc": "Review requests, approvals, and change requests with reviewer identity.",
-        "no_approvals": "No review activity yet."
+        "no_approvals": "No review activity yet.",
+        "rotate_confirm": "¿Regenerar el token de vista previa? Los enlaces existentes dejarán de funcionar.",
+        "copy_failed": "No se pudo copiar; copia el enlace manualmente.",
+        "copy_link": "Copiar enlace",
+        "preview_title": "Vista previa del borrador",
+        "preview_description": "Comparte este enlace para revisión. Muestra el borrador actual sin iniciar sesión.",
+        "rotating": "Regenerando…",
+        "rotate": "Regenerar token",
+        "missing_migration": "Los enlaces de vista previa requieren la migración 24."
       },
       "Preview": {
         "title": "Draft preview link",
@@ -2736,7 +2775,10 @@
         "save": "Save",
         "edit_alt": "Edit alt",
         "use_as_cover": "Use as cover",
-        "alt_missing_label": "Missing alt text"
+        "alt_missing_label": "Missing alt text",
+        "uploading": "Subiendo…",
+        "upload": "Subir",
+        "cover_url_placeholder": "https://…"
       },
       "Translations": {
         "title": "Translations",
@@ -2772,7 +2814,8 @@
         "invalid_file": "Invalid translation file.",
         "imported": "Imported translations saved as drafts — review each locale before approving.",
         "read_failed": "Could not read that file. Expected a translation export JSON.",
-        "status_missing": "missing"
+        "status_missing": "missing",
+        "title_required": "El título es obligatorio ({locale})."
       },
       "Workflow": {
         "title": "Workflow & publishing",
@@ -2905,7 +2948,8 @@
           "ent_funds": "Fondos",
           "ent_households": "Hogares",
           "ent_referrals": "Derivaciones"
-        }
+        },
+        "required": "El nombre del informe y el slug de URL son obligatorios."
       },
       "Edit": {
         "def_title": "Definición del informe",
@@ -2971,10 +3015,81 @@
         "iati_warnings": "Omitido"
       }
     },
+    "Templates": {
+      "title": "Plantillas de inicio",
+      "description": "Iniciadores con un clic para roles y automatizaciones. Todo se crea como borrador para revisar antes de activar.",
+      "tab_roles": "Roles",
+      "tab_automations": "Automatizaciones",
+      "roles_title": "Preajustes de roles",
+      "roles_description": "Crea un rol personalizado con un paquete de permisos predefinido y luego ajústalo.",
+      "permission_count": "{count} permisos",
+      "use_role": "Crear rol",
+      "using": "Procesando...",
+      "role_created": "Rol creado desde el preajuste.",
+      "role_failed": "No se pudo crear el rol desde este preajuste.",
+      "bundles_title": "Paquetes de automatización",
+      "bundles_description": "Reglas listas para instalar con un clic. Se crean desactivadas para su revisión.",
+      "creates_workflow": "También crea una cadena de flujo",
+      "use_bundle": "Instalar",
+      "bundle_created": "Paquete instalado como regla desactivada.",
+      "bundle_failed": "No se pudo instalar este paquete.",
+      "templates_title": "Plantillas de reglas",
+      "templates_description": "Iniciadores de una sola regla de la biblioteca de la plataforma.",
+      "use_template": "Usar",
+      "template_created": "Plantilla añadida como regla desactivada.",
+      "template_failed": "No se pudo usar esta plantilla.",
+      "review": "Revisar",
+      "cancel": "Cancelar",
+      "preview_description": "Nada se ejecuta hasta que lo actives. Esto es exactamente lo que crea este paquete.",
+      "preview_trigger": "Se activa con",
+      "preview_conditions": "Solo cuando",
+      "preview_actions": "Acciones",
+      "preview_workflow": "Flujo de seguimiento",
+      "install_disabled": "Instalar (desactivado)",
+      "install_activate": "Instalar y activar",
+      "bundle_activated": "Paquete instalado y activado.",
+      "action_send_notification": "Enviar notificación",
+      "action_send_email": "Enviar correo",
+      "action_create_task": "Crear tarea",
+      "action_update_field": "Actualizar campo",
+      "action_trigger_webhook": "Llamar webhook",
+      "action_start_workflow": "Iniciar flujo",
+      "action_create_record": "Crear registro",
+      "action_custom": "Acción personalizada"
+    },
     "Rbac": {
       "title": "Matriz de roles y permisos",
       "description": "Gestiona el control de acceso granular, los roles del sistema y los permisos por departamento.",
       "create_role": "Crear rol",
+      "roleDetail": {
+        "back": "Volver a los roles",
+        "systemRole": "Rol del sistema",
+        "customRole": "Rol personalizado"
+      },
+      "editor": {
+        "permissions": "Permisos",
+        "granted_summary": "{granted} de {total} permisos concedidos. Los roles del sistema son de solo lectura.",
+        "system_note": "Este es un rol del sistema. Sus permisos los gestiona la plataforma y no se pueden cambiar.",
+        "save": "Guardar permisos",
+        "saving": "Guardando..."
+      },
+      "assignments": {
+        "title": "Miembros asignados",
+        "description": "Concede este rol a los miembros de tu organización. Cada asignación se suma a su rol base.",
+        "member_label": "Miembro",
+        "select_placeholder": "Selecciona un miembro",
+        "no_members": "Todos ya tienen este rol",
+        "assign": "Asignar rol",
+        "assigning": "Asignando...",
+        "remove": "Quitar",
+        "empty": "Nadie tiene asignado este rol todavía.",
+        "assigned": "Rol asignado.",
+        "assign_failed": "No se pudo asignar el rol.",
+        "removed": "Asignación de rol eliminada.",
+        "remove_failed": "No se pudo eliminar la asignación.",
+        "no_expiry": "Sin caducidad",
+        "expires_on": "Caduca el {date}"
+      },
       "New": {
         "back": "Volver a los roles",
         "title": "Crear rol",
@@ -3328,6 +3443,25 @@
       "consent_status_declined": "Rechazado"
     }
   },
+  "Briefing": {
+    "greeting_morning": "Buenos días, {name}",
+    "greeting_afternoon": "Buenas tardes, {name}",
+    "greeting_evening": "Buenas noches, {name}",
+    "someone": "equipo",
+    "subtitle": "Esto es lo que necesita tu atención hoy — {date}.",
+    "attention_title": "Resumen matutino",
+    "attention_desc": "Aprobaciones y alertas que te esperan.",
+    "all_clear": "Todo al día: nada requiere tu atención ahora mismo.",
+    "items": {
+      "failed_automations": "Automatizaciones fallidas",
+      "pending_workflows": "Flujos pendientes de acción",
+      "unread_notifications": "Notificaciones sin leer",
+      "pending_access_requests": "Solicitudes de acceso por revisar",
+      "expenses_approval": "Gastos pendientes de aprobación",
+      "field_reports_review": "Informes de campo por verificar",
+      "paused_automations": "Automatizaciones en pausa por revisar"
+    }
+  },
   "Dashboard": {
     "Overview": {
       "member_title": "Su espacio de trabajo",
@@ -3509,31 +3643,61 @@
     "no_referrals": "Sin derivaciones.",
     "household_members": "Hogar",
     "not_linked": "Sin hogar",
-"member_details": "Miembro {n}",
+    "member_details": "Miembro {n}",
     "remove_member": "Quitar",
     "field_login_required": "Inicie sesión para el campo.",
     "MediaCarousel": {
-        "carousel_label": "Carrusel multimedia",
-        "thumbnails_label": "Miniaturas",
-        "pagination_label": "Paginación",
-        "expanded_label": "Vista expandida",
-        "previous": "Anterior",
-        "next": "Siguiente",
-        "close": "Cerrar",
-        "slide": "Diapositiva",
-        "expand": "Expandir"
+      "carousel_label": "Carrusel multimedia",
+      "thumbnails_label": "Miniaturas",
+      "pagination_label": "Paginación",
+      "expanded_label": "Vista expandida",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "close": "Cerrar",
+      "slide": "Diapositiva",
+      "expand": "Expandir"
     },
     "MediaUpload": {
-        "drop_single": "Arrastra y suelta una imagen o video aquí, o haz clic para examinar",
-        "drop_multiple": "Arrastra y suelta imágenes o videos aquí, o haz clic para examinar",
-        "formats": "Soportados: {accept}. Tamaño máx: {maxSize}MB",
-        "uploading": "Subiendo {file}…",
-        "error_size": "Archivo demasiado grande (máx {max}MB)",
-        "error_type": "Tipo de archivo no soportado",
-        "error_upload": "Error al subir. Intenta de nuevo.",
-        "uploaded": "Subidos ({count})",
-        "remove": "Eliminar",
-        "set_focal_point": "Clic para establecer punto focal"
+      "drop_single": "Arrastra y suelta una imagen o video aquí, o haz clic para examinar",
+      "drop_multiple": "Arrastra y suelta imágenes o videos aquí, o haz clic para examinar",
+      "formats": "Soportados: {accept}. Tamaño máx: {maxSize}MB",
+      "uploading": "Subiendo {file}…",
+      "error_size": "Archivo demasiado grande (máx {max}MB)",
+      "error_type": "Tipo de archivo no soportado",
+      "error_upload": "Error al subir. Intenta de nuevo.",
+      "uploaded": "Subidos ({count})",
+      "remove": "Eliminar",
+      "set_focal_point": "Clic para establecer punto focal"
     }
-}
+  },
+  "CampaignTheme": {
+    "label": "Campaña",
+    "year-end": {
+      "message": "Campaña de fin de año: ayúdanos a cerrar el año con fuerza."
+    },
+    "community-week": {
+      "message": "Semana comunitaria: únete a eventos cerca de ti."
+    }
+  },
+  "MediaCarousel": {
+    "carousel_label": "Galería multimedia",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "expand": "Ampliar",
+    "thumbnails_label": "Miniaturas",
+    "slide": "Diapositiva",
+    "pagination_label": "Navegación de la galería",
+    "expanded_label": "Vista ampliada",
+    "close": "Cerrar"
+  },
+  "MediaUpload": {
+    "error_size": "El archivo supera los {max} MB.",
+    "error_type": "Tipo de archivo no admitido.",
+    "error_upload": "Error al subir. Inténtalo de nuevo.",
+    "formats": "{accept} · máx. {maxSize} MB",
+    "uploading": "Subiendo {file}…",
+    "uploaded": "Subidos ({count})",
+    "set_focal_point": "Fijar punto focal",
+    "remove": "Quitar"
+  }
 }

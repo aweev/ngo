@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Heart, CalendarDays } from "lucide-react";
@@ -16,7 +16,17 @@ interface ActionSidebarProps {
 
 export function ActionSidebar({ project, category }: ActionSidebarProps) {
     const t = useTranslations("Project.Sidebar");
+    const locale = useLocale();
     const theme = PROGRAM_THEMES[category];
+    // Locale-aware goal formatting (P1-11): Intl tags per locale, never bare runtime default.
+    const goalLabel = (() => {
+        try {
+            const tag = locale === 'de' ? 'de-DE' : locale === 'fr' ? 'fr-FR' : locale === 'es' ? 'es-ES' : locale === 'ar' ? 'ar-EG' : 'en-US';
+            return new Intl.NumberFormat(tag).format(project.funding?.goal ?? 0);
+        } catch {
+            return String(project.funding?.goal ?? 0);
+        }
+    })();
 
     return (
         <div className="sticky top-24 space-y-6">
@@ -30,7 +40,7 @@ export function ActionSidebar({ project, category }: ActionSidebarProps) {
                     <h3 className="text-xl font-bold font-serif mb-2">{t("donate_title")}</h3>
                     {project.funding && (
                         <p className="text-muted-foreground text-sm mb-6">
-                            {t("donate_desc", { goal: project.funding.goal.toLocaleString() })}
+                            {t("donate_desc", { goal: goalLabel })}
                         </p>
                     )}
                     <Button asChild size="lg" className="w-full rounded-xl font-bold shadow-lg shadow-primary/20">

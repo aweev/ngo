@@ -52,7 +52,7 @@ export function CategoryHero({ category, title, lead, imageSrc }: CategoryHeroPr
                         <h1 className="text-5xl md:text-6xl font-serif font-bold text-foreground mb-6 leading-[1.1]">
                             {title}
                         </h1>
-                        <p className="text-xl text-muted-foreground leading-relaxed border-l-4 pl-6 border-border">
+                        <p className="text-xl text-muted-foreground leading-relaxed border-s-4 ps-6 border-border">
                             {lead}
                         </p>
                     </motion.div>

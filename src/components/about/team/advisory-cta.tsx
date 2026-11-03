@@ -52,7 +52,7 @@ export function AdvisoryAndCTA({ advisors }: AdvisoryProps) {
                         <Button asChild variant="outline" size="lg" className="rounded-full px-8">
                             <Link href="/public/contact">
                                 {t("Careers.button_jobs")}
-                                <ArrowRight className="w-4 h-4 ml-2" />
+                                <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180" />
                             </Link>
                         </Button>
                     </div>

@@ -149,13 +149,15 @@ const NewsletterStats: React.FC = () => {
 export function NewsletterSection({
     title,
     subtitle,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     locale
 }: NewsletterSectionProps) {
     const t = useTranslations("Newsletter");
     const [email, setEmail] = useState("");
+    const [honeypot, setHoneypot] = useState("");
+    const [consent, setConsent] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [pendingConfirm, setPendingConfirm] = useState(false);
     const [isValidEmail, setIsValidEmail] = useState(true);
     const [isFocused, setIsFocused] = useState(false);
 
@@ -200,16 +202,23 @@ export function NewsletterSection({
             setIsValidEmail(false);
             return;
         }
+        if (honeypot.trim().length > 0) return;
+        if (!consent) {
+            toast.error("Error", { description: t("consent_required") });
+            return;
+        }
 
         setIsSubmitting(true);
 
         try {
-            const response = await subscribeToNewsletter(email);
+            const response = await subscribeToNewsletter(email, locale, { honeypot, consent });
 
             if (response.success) {
                 setIsSuccess(true);
+                setPendingConfirm(Boolean(response.pending));
                 setEmail("");
-                toast.success(t("Success.title"), { description: t("Success.message") });
+                setConsent(false);
+                toast.success(t("Success.title"), { description: response.pending ? t("Success.confirm_inbox") : t("Success.message") });
             } else {
                 throw new Error(response.error || "Subscription failed");
             }
@@ -329,7 +338,7 @@ export function NewsletterSection({
                                 <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-primary/20 to-accent/20 flex items-center justify-center flex-shrink-0">
                                     <Star className="w-4 h-4 text-primary" />
                                 </div>
-                                <span className="text-sm font-medium text-foreground text-left">
+                                <span className="text-sm font-medium text-foreground text-start">
                                     {t(`benefits.${key}`)}
                                 </span>
                             </motion.div>
@@ -368,6 +377,16 @@ export function NewsletterSection({
                                             placeholder={t("placeholder")}
                                             disabled={isSubmitting}
                                             className="w-full bg-transparent focus:outline-none text-foreground placeholder:text-muted-foreground"
+                                        />
+                                        <input
+                                            type="text"
+                                            name="company_website"
+                                            value={honeypot}
+                                            onChange={(e) => setHoneypot(e.target.value)}
+                                            className="hidden"
+                                            tabIndex={-1}
+                                            autoComplete="off"
+                                            aria-hidden="true"
                                         />
                                     </div>
 
@@ -414,12 +433,26 @@ export function NewsletterSection({
                                             initial={{ opacity: 0, y: -10, height: 0 }}
                                             animate={{ opacity: 1, y: 0, height: "auto" }}
                                             exit={{ opacity: 0, y: -10, height: 0 }}
-                                            className="px-4 pb-2 text-sm text-red-500 text-left"
+                                            className="px-4 pb-2 text-sm text-red-500 text-start"
                                         >
                                             {t("error_email")}
                                         </motion.p>
                                     )}
                                 </AnimatePresence>
+                                <label className="flex items-start gap-2 px-4 pb-2 text-start text-xs text-muted-foreground">
+                                    <input
+                                        type="checkbox"
+                                        checked={consent}
+                                        onChange={(e) => setConsent(e.target.checked)}
+                                        className="mt-0.5"
+                                    />
+                                    <span>{t("consent_label")}</span>
+                                </label>
+                                {pendingConfirm && (
+                                    <p className="px-4 pb-2 text-xs text-muted-foreground text-start" role="status">
+                                        {t("Success.confirm_inbox")}
+                                    </p>
+                                )}
                             </div>
 
                             <AnimatePresence>

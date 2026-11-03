@@ -36,7 +36,7 @@ export function ProgressTracker({ project, category }: ProgressTrackerProps) {
                             <span className="text-3xl font-bold text-foreground">
                                 {format.number(project.funding.current, { style: 'currency', currency: project.funding.currency, maximumFractionDigits: 0 })}
                             </span>
-                            <span className="text-muted-foreground text-sm ml-2">
+                            <span className="text-muted-foreground text-sm ms-2">
                                 raised of {format.number(project.funding.goal, { style: 'currency', currency: project.funding.currency, maximumFractionDigits: 0 })}
                             </span>
                         </div>

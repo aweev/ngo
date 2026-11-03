@@ -59,12 +59,21 @@ function walk(dir, out = []) {
 /**
  * Finds `const <name> = (await )?use?[gG]etTranslations("NS")` bindings.
  * `useTranslations()` with no namespace is ignored (keys are absolute there).
+ * Returns bindings in source order with line numbers — files commonly declare
+ * several same-named `t` bindings (one per sub-component), so call sites are
+ * resolved against the nearest PRECEDING binding, not the last one in file.
  */
 function findBindings(source) {
-    const bindings = new Map(); // varName -> namespace
+    const bindings = []; // { varName, namespace, line }
     const re = /(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:await\s+)?(?:use|get)Translations\s*\(\s*["']([^"']+)["']\s*(?:,[^)]*)?\)/g;
     let m;
-    while ((m = re.exec(source)) !== null) bindings.set(m[1], m[2]);
+    while ((m = re.exec(source)) !== null) {
+        bindings.push({
+            varName: m[1],
+            namespace: m[2],
+            line: source.slice(0, m.index).split('\n').length,
+        });
+    }
     return bindings;
 }
 
@@ -86,7 +95,15 @@ for (const file of files) {
 
     const lines = source.split(/\r?\n/);
 
-    for (const [varName, namespace] of bindings) {
+    // Group bindings per variable; a call site resolves against the nearest
+    // preceding binding for its variable (component-level shadowing).
+    const byVar = new Map();
+    for (const b of bindings) {
+        if (!byVar.has(b.varName)) byVar.set(b.varName, []);
+        byVar.get(b.varName).push(b);
+    }
+
+    for (const [varName, list] of byVar) {
         // Matches t("key"), t.rich("key"), t.markup("key"), t.raw("key").
         const callRe = new RegExp(`\\b${varName}(?:\\.(?:rich|markup|raw|has))?\\s*\\(\\s*(["'\`])([^"'\`]*)\\1`, 'g');
         let m;
@@ -103,6 +120,11 @@ for (const file of files) {
                 continue;
             }
             checked += 1;
+            // Nearest preceding binding wins; fall back to the first binding
+            // (calls above all bindings, e.g. module-scope helpers).
+            const candidates = list.filter((b) => b.line <= line);
+            const binding = candidates.length > 0 ? candidates[candidates.length - 1] : list[0];
+            const namespace = binding.namespace;
             const path = key.includes('.') && hasPath(`${namespace}.${key}`) === false && hasPath(key)
                 ? key
                 : `${namespace}.${key}`;

@@ -87,12 +87,20 @@ async function drainOutbox(
         const attempts = ((ev.attempts as number | undefined) ?? 0) + 1;
         const maxAttempts = (ev.max_attempts as number | undefined) ?? 8;
 
-        const call = await callSibling(req, "webhook-delivery", {
+        // Every outbox event fans out to BOTH consumers (ADR-0001): external
+        // webhook subscribers AND the automation engine (which evaluates enabled
+        // event rules — conditions → notify / webhook / start_workflow).
+        const webhookCall = await callSibling(req, "webhook-delivery", {
             organization_id: ev.organization_id,
             event_type: ev.event_type,
             payload: ev.payload ?? {},
         });
-        if (call.ok) {
+        const automationCall = await callSibling(req, "automation-engine", {
+            event: ev.event_type,
+            organization_id: ev.organization_id,
+            payload: ev.payload ?? {},
+        });
+        if (webhookCall.ok && automationCall.ok) {
             await supabase.from("outbox_events").update({
                 status: "delivered",
                 attempts,
@@ -105,7 +113,11 @@ async function drainOutbox(
             continue;
         }
 
-        const message = (call.error ?? `webhook-delivery HTTP ${call.status}`).slice(0, 500);
+        const failures = [
+            webhookCall.ok ? null : `webhook-delivery: ${webhookCall.error ?? `HTTP ${webhookCall.status}`}`,
+            automationCall.ok ? null : `automation-engine: ${automationCall.error ?? `HTTP ${automationCall.status}`}`,
+        ].filter((v): v is string => v !== null).join("; ");
+        const message = failures.slice(0, 500);
         const dead = attempts >= maxAttempts;
         const patch: Record<string, unknown> = {
             status: dead ? "dead" : "pending",

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { authorizePermission } from '@/lib/auth/guards';
 import { PERMISSIONS } from '@/lib/auth/permissions';
 import type { Volunteer, VolunteerInsert, VolunteerUpdate, VolunteerHours, VolunteerHoursInsert } from '@/types/domain/volunteers';
+import { enqueueOutboxEvent } from '@/lib/reliability';
 
 const TABLE = 'volunteers';
 
@@ -53,6 +54,20 @@ export async function createVolunteer(input: Omit<VolunteerInsert, 'organization
         console.error('[createVolunteer]', error.message);
         return { data: null, error: 'Unable to create volunteer. Please check the provided data.' };
     }
+
+    // ADR-0001 / Slice A: announce the new volunteer on the event spine so
+    // automations (e.g. the seeded "Volunteer welcome") react without coupling.
+    const created = data as Record<string, unknown> | null;
+    await enqueueOutboxEvent(auth.context.supabase as never, {
+        organizationId: auth.organizationId,
+        eventType: 'volunteer.created',
+        payload: {
+            volunteer_id: created?.id ?? null,
+            name: created?.name ?? created?.full_name ?? null,
+            email: created?.email ?? null,
+        },
+        idempotencyKey: `volunteer.created:${(created?.id as string | undefined) ?? Date.now()}`,
+    });
 
     revalidatePath('/admin/volunteers');
     return { data, error: null };

@@ -3,6 +3,9 @@ import { getTranslations } from "next-intl/server";
 import { SecureReportForm } from "@/components/contact/secure-report-form";
 import { ShieldCheck, AlertTriangle, PhoneCall } from "lucide-react";
 
+// P0: safeguarding form shell is static; submissions are server actions.
+export const revalidate = 300;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Safeguarding.Hero" });

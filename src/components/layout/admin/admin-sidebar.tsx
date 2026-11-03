@@ -8,7 +8,7 @@ import {
     BarChart3, Users, UserPlus, HandHeart, HandCoins, Megaphone, FolderKanban,
     Settings, ShieldCheck, ChevronLeft, ChevronRight, Zap, GitBranch,
     Clock, ClipboardList, ClipboardCheck, Wallet, FileBarChart, Bell, MessageSquare,
-    FileText, Puzzle, Tag, CalendarDays, TrendingUp, Award, UserMinus, ScrollText
+    FileText, Puzzle, Tag, CalendarDays, TrendingUp, Award, UserMinus, ScrollText, LayoutTemplate
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isPhase0NavVisible } from "@/lib/phase0-nav";
@@ -62,6 +62,7 @@ export function AdminSidebar() {
         {
             title: tGroups("operations"),
             items: [
+                { href: "/admin/templates", label: tItems("templates"), icon: LayoutTemplate },
                 { href: "/admin/automations", label: tItems("automations"), icon: Zap },
                 { href: "/admin/workflows", label: tItems("workflows"), icon: GitBranch },
                 { href: "/admin/scheduling", label: tItems("scheduler"), icon: Clock },

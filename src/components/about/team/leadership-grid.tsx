@@ -60,8 +60,8 @@ export function LeadershipGrid({ leaders }: LeadershipGridProps) {
                             </div>
 
                             {/* Optional Quote Logic */}
-                            <div className="relative pl-8 border-l-4 border-accent/50 py-2">
-                                <Quote className="absolute top-0 left-2 w-6 h-6 text-accent/20 -translate-x-full" />
+                            <div className="relative ps-8 border-s-4 border-accent/50 py-2">
+                                <Quote className="absolute top-0 start-2 w-6 h-6 text-accent/20 -translate-x-full rtl:translate-x-full" />
                                 <p className="text-xl md:text-2xl font-serif italic text-muted-foreground">
                                     &quot;{t("ed_quote")}&quot;
                                 </p>

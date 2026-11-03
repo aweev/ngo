@@ -118,7 +118,7 @@ export function ProgramPillars({ projectCounts, totalProjects }: {
                     viewport={{ once: true }}
                     className="max-w-2xl"
                 >
-                    <span className="text-primary font-bold tracking-widest uppercase text-sm pl-4 border-l-2 border-primary mb-4 block">
+                    <span className="text-primary font-bold tracking-widest uppercase text-sm ps-4 border-s-2 border-primary mb-4 block">
                         {t("subtitle")}
                     </span>
                     <h2 className="text-4xl md:text-5xl font-serif font-bold text-foreground leading-[1.1]">

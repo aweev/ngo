@@ -83,6 +83,27 @@ const envSchema = z.object({
     ADMIN_EMAIL: z.string().email().optional(),
     RESEND_API_KEY: z.string().min(1).optional(),
     RECEIPT_HMAC_SECRET: z.string().min(32).optional(),
+
+    // ---------------------------------------------------------------------------
+    // Public org identity (P0 — no hardcoded NGO names/addresses in code).
+    // ---------------------------------------------------------------------------
+    NEXT_PUBLIC_ORG_NAME: z.string().min(1).optional(),
+    NEXT_PUBLIC_ORG_URL: z.string().url().optional(),
+    NEXT_PUBLIC_ORG_LOGO: z.string().min(1).optional(),
+    NEXT_PUBLIC_ORG_SAME_AS: z.string().min(1).optional(),
+    NEXT_PUBLIC_ORG_STREET: z.string().optional(),
+    NEXT_PUBLIC_ORG_CITY: z.string().optional(),
+    NEXT_PUBLIC_ORG_COUNTRY: z.string().optional(),
+    NEXT_PUBLIC_ORG_PHONE: z.string().optional(),
+    NEXT_PUBLIC_ORG_TAX_ID: z.string().optional(),
+    NEXT_PUBLIC_ORG_DESCRIPTION: z.string().optional(),
+
+    // ---------------------------------------------------------------------------
+    // Observability (P0 — wire before prod).
+    // ---------------------------------------------------------------------------
+    SENTRY_DSN: z.string().min(1).optional(),
+    NEXT_PUBLIC_SENTRY_DSN: z.string().min(1).optional(),
+    METRICS_TOKEN: z.string().min(1).optional(),
 });
 
 // 2. Explicitly map variables to ensure Next.js inlines them
@@ -118,6 +139,19 @@ const runtimeEnv = {
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     RECEIPT_HMAC_SECRET: process.env.RECEIPT_HMAC_SECRET,
+    NEXT_PUBLIC_ORG_NAME: process.env.NEXT_PUBLIC_ORG_NAME,
+    NEXT_PUBLIC_ORG_URL: process.env.NEXT_PUBLIC_ORG_URL,
+    NEXT_PUBLIC_ORG_LOGO: process.env.NEXT_PUBLIC_ORG_LOGO,
+    NEXT_PUBLIC_ORG_SAME_AS: process.env.NEXT_PUBLIC_ORG_SAME_AS,
+    NEXT_PUBLIC_ORG_STREET: process.env.NEXT_PUBLIC_ORG_STREET,
+    NEXT_PUBLIC_ORG_CITY: process.env.NEXT_PUBLIC_ORG_CITY,
+    NEXT_PUBLIC_ORG_COUNTRY: process.env.NEXT_PUBLIC_ORG_COUNTRY,
+    NEXT_PUBLIC_ORG_PHONE: process.env.NEXT_PUBLIC_ORG_PHONE,
+    NEXT_PUBLIC_ORG_TAX_ID: process.env.NEXT_PUBLIC_ORG_TAX_ID,
+    NEXT_PUBLIC_ORG_DESCRIPTION: process.env.NEXT_PUBLIC_ORG_DESCRIPTION,
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    METRICS_TOKEN: process.env.METRICS_TOKEN,
 };
 
 // 3. Validate
@@ -182,3 +216,34 @@ export const isAbuseAlertingConfigured = !!process.env.ABUSE_ALERT_WEBHOOK_URL;
  * deliberately per deployment.
  */
 export const isAiCopilotEnabled = process.env.AI_COPILOT_ENABLED === 'true';
+
+/**
+ * P0 production gate: fail fast when deployment-critical secrets/config are
+ * missing. Call from instrumentation / route startup in production.
+ * Returns a list of missing keys (empty = ready).
+ */
+export function productionReadinessGaps(): string[] {
+    if (process.env.NODE_ENV !== 'production') return [];
+    const gaps: string[] = [];
+    const required = [
+        'NEXT_PUBLIC_APP_URL',
+        'NEXT_PUBLIC_SUPABASE_URL',
+        'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+        'ENCRYPTION_KEY',
+        'ABUSE_HASH_SALT',
+        'RECEIPT_HMAC_SECRET',
+    ] as const;
+    for (const key of required) {
+        if (!process.env[key]) gaps.push(key);
+    }
+    if (process.env.NEXT_PUBLIC_APP_URL?.includes('localhost')) {
+        gaps.push('NEXT_PUBLIC_APP_URL (localhost in production)');
+    }
+    if (process.env.ENCRYPTION_KEY && process.env.ENCRYPTION_KEY.length < 32) {
+        gaps.push('ENCRYPTION_KEY (min 32 chars)');
+    }
+    if (process.env.RECEIPT_HMAC_SECRET && process.env.RECEIPT_HMAC_SECRET.length < 32) {
+        gaps.push('RECEIPT_HMAC_SECRET (min 32 chars)');
+    }
+    return gaps;
+}

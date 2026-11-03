@@ -9,6 +9,7 @@ import { getProjectsStats } from "@/actions/projects";
 import { getCampaignsStats } from "@/actions/campaigns";
 import { StatCard } from "@/components/manage/stat-card";
 import { PageHeader } from "@/components/manage/page-header";
+import { MorningBriefing } from "@/components/manage/morning-briefing";
 import { Card, CardContent } from "@/components/ui/card";
 import { auth } from "@/auth";
 
@@ -21,6 +22,7 @@ export default async function DashboardOverviewPage({ params }: { params: Promis
     if (session?.user.role === "member") {
         return (
             <div className="space-y-6">
+                <MorningBriefing locale={locale} />
                 <PageHeader title={t("member_title")} description={t("member_desc")} />
                 <div className="grid gap-4 sm:grid-cols-2">
                     <Card><CardContent className="space-y-2 p-6"><p className="font-medium">{t("org")}</p><p className="text-sm text-muted-foreground">{session.organizationName || t("personal")}</p></CardContent></Card>
@@ -71,7 +73,8 @@ export default async function DashboardOverviewPage({ params }: { params: Promis
     ];
 
     return (
-        <div>
+        <div className="space-y-6">
+            <MorningBriefing locale={locale} />
             <PageHeader
                 title={t("title")}
                 description={t("desc")}
@@ -85,7 +88,7 @@ export default async function DashboardOverviewPage({ params }: { params: Promis
                 ))}
             </div>
 
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2">
                 <Card>
                     <CardContent className="p-6">
                         <div className="flex items-center gap-3">

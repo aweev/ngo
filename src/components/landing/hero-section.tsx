@@ -93,7 +93,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-20 items-center"
                 >
                     {/* --- LEFT COLUMN: TEXT --- */}
-                    <div className="space-y-6 lg:space-y-8 text-center lg:text-left w-full">
+                    <div className="space-y-6 lg:space-y-8 text-center lg:text-start w-full">
                         <motion.div variants={heroAnimations.headline} className="space-y-3 lg:space-y-4">
                             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif font-bold tracking-tight text-foreground leading-[1.1]">
                                 <span className="block">{content.headlinePrimary}</span>
@@ -111,7 +111,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                         {testimonials.length > 0 && (
                             <motion.div
                                 variants={heroAnimations.floatingCard}
-                                className="bg-card/80 backdrop-blur-md rounded-xl p-4 border border-border/50 shadow-sm max-w-md mx-auto lg:mx-0 text-left"
+                                className="bg-card/80 backdrop-blur-md rounded-xl p-4 border border-border/50 shadow-sm max-w-md mx-auto lg:mx-0 text-start"
                             >
                                 <AnimatePresence mode="wait">
                                     <motion.div
@@ -143,12 +143,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                             <Button asChild size="lg" className="w-full sm:w-auto rounded-full px-8 py-6 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all group">
                                 <Link href={content.primaryCtaLink}>
                                     {content.primaryCta}
-                                    <ArrowRight className="w-4 h-4 ml-2 rtl:rotate-180 transition-transform group-hover:translate-x-1" />
+                                    <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
                                 </Link>
                             </Button>
                             <Button asChild size="lg" variant="outline" className="w-full sm:w-auto rounded-full px-8 py-6 text-base font-semibold hover:bg-card/80 transition-all">
                                 <Link href="/public/about">
-                                    <Play className="w-4 h-4 mr-2 rtl:rotate-180" />
+                                    <Play className="w-4 h-4 me-2 rtl:rotate-180" />
                                     {content.secondaryCta}
                                 </Link>
                             </Button>

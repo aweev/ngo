@@ -165,9 +165,9 @@ export function SecureReportForm() {
                     disabled={isSubmitting}
                 >
                     {isSubmitting ? (
-                        <><Loader2 className="w-4 h-4 animate-spin mr-2" /> {t("submitting")}</>
+                        <><Loader2 className="w-4 h-4 animate-spin me-2" /> {t("submitting")}</>
                     ) : (
-                        <><Lock className="w-4 h-4 mr-2" /> {t("submit")}</>
+                        <><Lock className="w-4 h-4 me-2" /> {t("submit")}</>
                     )}
                 </Button>
 

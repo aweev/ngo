@@ -78,9 +78,9 @@ export function ReportBuilder({ value, onChange }: ReportBuilderProps) {
         { value: "partners", label: t("ent_partners") },
         { value: "projects", label: t("ent_projects") },
         { value: "campaigns", label: t("ent_campaigns") },
-        { value: "org_events", label: t("ent_events") },
+        { value: "org_events", label: t("ent_org_events") },
         { value: "expenses", label: t("ent_expenses") },
-        { value: "impact_metrics", label: t("ent_impact") },
+        { value: "impact_metrics", label: t("ent_impact_metrics") },
     ];
     const [filterKey, setFilterKey] = useState("");
     const [filterValue, setFilterValue] = useState("");

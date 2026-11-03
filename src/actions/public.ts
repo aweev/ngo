@@ -565,14 +565,16 @@ export async function getPublicProjectsByCategory(
 }
 
 /**
- * Subscribe to newsletter
- * Stores the subscriber in Supabase (idempotent via unique email constraint)
+ * Subscribe to newsletter — double opt-in (P0).
+ * Creates/refreshes a `pending` row with a confirmation token and sends
+ * the DOI email. Nothing is marked `subscribed` until the token link is
+ * visited. Idempotent per email.
  */
 export async function subscribeToNewsletter(
     email: string,
     locale?: string,
-    meta?: { honeypot?: string; captchaToken?: string },
-): Promise<{ success: boolean; error: string | null }> {
+    meta?: { honeypot?: string; captchaToken?: string; consent?: boolean },
+): Promise<{ success: boolean; error: string | null; pending?: boolean }> {
     const normalizedEmail = email.trim().toLowerCase();
     const parsed = z.string().email().max(200).safeParse(normalizedEmail);
     if (!parsed.success) {
@@ -598,6 +600,17 @@ export async function subscribeToNewsletter(
     // Attribute to the default organization (single-NGO deployments)
     const { data: orgId } = await supabase.rpc('public_default_org_id');
 
+    const token = crypto.randomUUID();
+    const { data: existing } = await supabase
+        .from('newsletter_subscribers')
+        .select('id,status,confirmation_token')
+        .eq('email', normalizedEmail)
+        .maybeSingle();
+
+    if (existing && (existing as { status: string }).status === 'subscribed') {
+        return { success: true, error: null };
+    }
+
     const { error } = await supabase
         .from('newsletter_subscribers')
         .upsert(
@@ -605,8 +618,13 @@ export async function subscribeToNewsletter(
                 email: normalizedEmail,
                 organization_id: orgId ?? null,
                 locale: locale ?? null,
-                status: 'subscribed',
-                subscribed_at: new Date().toISOString(),
+                status: 'pending',
+                confirmation_token: token,
+                confirmation_expires_at: new Date(Date.now() + 48 * 3600 * 1000).toISOString(),
+                consent_given: Boolean(meta?.consent ?? true),
+                consent_at: new Date().toISOString(),
+                consent_source: 'website-doi',
+                source: 'website',
             },
             { onConflict: 'email' }
         );
@@ -616,12 +634,19 @@ export async function subscribeToNewsletter(
         return { success: false, error: 'Unable to subscribe right now. Please try again later.' };
     }
 
-    return { success: true, error: null };
+    try {
+        const { sendNewsletterDoubleOptIn } = await import('@/lib/email');
+        await sendNewsletterDoubleOptIn({ to: normalizedEmail, email: normalizedEmail, token, locale });
+    } catch (err) {
+        console.error('[subscribeToNewsletter] DOI email failed:', err instanceof Error ? err.message : err);
+    }
+
+    return { success: true, error: null, pending: true };
 }
 
 /**
- * Confirm newsletter subscription (double opt-in)
- * Called via email link with a token
+ * Confirm newsletter subscription (double opt-in).
+ * Token is the per-row `confirmation_token` (unguessable UUID, 48h TTL).
  */
 export async function confirmNewsletterSubscription(token: string): Promise<{ success: boolean; error: string | null }> {
     const parsed = z.string().uuid().safeParse(token);
@@ -631,26 +656,33 @@ export async function confirmNewsletterSubscription(token: string): Promise<{ su
 
     const supabase = await createSupabaseServerClient();
 
-    // Find the subscriber with this token (we'll store token in a separate table or use the id)
-    // For now, we'll use the id as the token since it's a UUID
     const { data: subscriber, error } = await supabase
         .from('newsletter_subscribers')
-        .select('id, email, status')
-        .eq('id', token)
+        .select('id, email, status, confirmation_expires_at')
+        .eq('confirmation_token', token)
         .maybeSingle();
 
     if (error || !subscriber) {
         return { success: false, error: 'Invalid or expired confirmation link.' };
     }
+    const row = subscriber as { id: string; email: string; status: string; confirmation_expires_at: string | null };
 
-    if (subscriber.status === 'subscribed') {
+    if (row.status === 'subscribed') {
         return { success: true, error: null }; // Already confirmed
+    }
+    if (row.confirmation_expires_at && new Date(row.confirmation_expires_at).getTime() < Date.now()) {
+        return { success: false, error: 'This confirmation link has expired. Please subscribe again.' };
     }
 
     const { error: updateError } = await supabase
         .from('newsletter_subscribers')
-        .update({ status: 'subscribed', subscribed_at: new Date().toISOString() })
-        .eq('id', token);
+        .update({
+            status: 'subscribed',
+            subscribed_at: new Date().toISOString(),
+            confirmed_at: new Date().toISOString(),
+            confirmation_token: null,
+        })
+        .eq('id', row.id);
 
     if (updateError) {
         console.error('[confirmNewsletterSubscription]', updateError.message);
@@ -727,7 +759,7 @@ const PUBLIC_FORM_SCHEMAS = {
     'contact-form': z.object({
         name: z.string().trim().min(2).max(100),
         email: z.string().trim().email().max(200),
-        topic: z.enum(['general', 'donation', 'volunteer', 'partner', 'report']),
+        topic: z.enum(['general', 'donation', 'volunteer', 'partner', 'report', 'privacy']),
         company: z.string().trim().max(100).optional(),
         message: z.string().trim().min(10).max(4000),
         consent: z.literal(true),
@@ -810,6 +842,7 @@ export async function submitPublicForm(
             form_slug: formSlug,
             submission_data: cleanData,
             locale: locale ?? null,
+            severity: formSlug === 'safeguarding' ? 'urgent' : 'normal',
         })
         .select('id')
         .single();
@@ -817,6 +850,51 @@ export async function submitPublicForm(
     if (error) {
         console.error('Error submitting form:', error);
         return { success: false, error: 'Unable to submit your message right now. Please try again later.' };
+    }
+
+    // P0: route notifications — never fail the submission on email errors.
+    try {
+        const { ENV } = await import('@/lib/env');
+        const adminEmail = ENV.ADMIN_EMAIL ?? process.env.ADMIN_EMAIL;
+        if (adminEmail) {
+            const { sendEmail, sendSafeguardingEscalationAlert, escapeHtml } = await import('@/lib/email');
+            if (formSlug === 'safeguarding') {
+                const category = typeof cleanData.category === 'string' ? cleanData.category : 'safeguarding';
+                await sendSafeguardingEscalationAlert({
+                    to: adminEmail,
+                    caseId: submission?.id ?? 'unknown',
+                    severity: 'urgent',
+                    summary: `${category} report via ${locale ?? 'en'} — review immediately.`,
+                });
+                await supabase.from('form_submissions').update({
+                    escalated_at: new Date().toISOString(),
+                    notified_at: new Date().toISOString(),
+                }).eq('id', submission?.id);
+            } else {
+                const topic = typeof cleanData.topic === 'string' ? cleanData.topic : formSlug;
+                await sendEmail({
+                    to: adminEmail,
+                    subject: `New ${formSlug} submission — ${topic}`,
+                    html: `<h1>New ${escapeHtml(formSlug)} submission</h1><p>Topic: ${escapeHtml(topic)}</p><p>ID: ${escapeHtml(submission?.id ?? '')}</p><p>Log in to the admin panel to review.</p>`,
+                    text: `New ${formSlug} submission (${topic}). ID: ${submission?.id ?? ''}`,
+                });
+                await supabase.from('form_submissions').update({
+                    notified_at: new Date().toISOString(),
+                }).eq('id', submission?.id);
+            }
+        }
+        // Submitter acknowledgement for contact forms with an email.
+        if (formEmail && formSlug !== 'safeguarding') {
+            const { sendEmail } = await import('@/lib/email');
+            await sendEmail({
+                to: formEmail,
+                subject: 'We received your message',
+                html: '<p>Thank you — we received your message and will reply shortly.</p>',
+                text: 'Thank you — we received your message and will reply shortly.',
+            });
+        }
+    } catch (notifyErr) {
+        console.error('[submitPublicForm] notification failed (non-fatal):', notifyErr instanceof Error ? notifyErr.message : notifyErr);
     }
 
     return { success: true, id: submission?.id, error: null };
@@ -834,6 +912,9 @@ export async function createPublicDonation(input: {
     needsReceipt?: boolean;
     honeypot?: string;
     captchaToken?: string;
+    consent?: boolean;
+    marketingConsent?: boolean;
+    fullName?: string;
 }): Promise<{ success: boolean; reference?: string; error: string | null }> {
     const { amount, currency = 'EUR', type = 'one_time', email, needsReceipt, honeypot, captchaToken } = input;
 
@@ -889,14 +970,33 @@ export async function createPublicDonation(input: {
         payment_method: 'online',
         payment_reference: reference,
         email: email ? email.trim() : null,
-        donor_name: null,
+        donor_name: input.fullName?.trim() || null,
         needs_receipt: Boolean(needsReceipt),
         notes: null,
+        consent_given: Boolean(input.consent ?? Boolean(email)),
+        consent_at: email ? new Date().toISOString() : null,
+        marketing_consent: Boolean(input.marketingConsent ?? false),
     });
 
     if (error) {
         console.error('Error creating donation:', error);
         return { success: false, error: 'Unable to record your donation right now. Please try again later.' };
+    }
+
+    // P0: pledge acknowledgement — a pledge without instructions is a dead end.
+    if (email) {
+        try {
+            const { sendEmail } = await import('@/lib/email');
+            await sendEmail({
+                to: email.trim(),
+                subject: `Your donation pledge — ${reference}`,
+                html: `<h1>Thank you for your pledge</h1><p>Reference: ${reference}</p><p>Amount: ${amount} ${currency}</p><p>This pledge is recorded as pending until payment is completed. If you chose bank transfer, please include the reference.</p>`,
+                text: `Thank you for your pledge ${reference} (${amount} ${currency}). Pending until payment completes.`,
+            });
+            await supabase.from('donations').update({ pledge_notified_at: new Date().toISOString() }).eq('payment_reference', reference);
+        } catch (pledgeMailErr) {
+            console.error('[createPublicDonation] pledge email failed (non-fatal):', pledgeMailErr instanceof Error ? pledgeMailErr.message : pledgeMailErr);
+        }
     }
 
     return { success: true, reference, error: null };
@@ -930,6 +1030,8 @@ export async function createDonationCheckout(input: {
     locale?: string;
     honeypot?: string;
     captchaToken?: string;
+    consent?: boolean;
+    marketingConsent?: boolean;
 }): Promise<DonationCheckoutResult> {
     const parsed = z
         .object({
@@ -940,12 +1042,17 @@ export async function createDonationCheckout(input: {
             fullName: z.string().trim().min(2).max(200).optional(),
             needsReceipt: z.boolean().optional(),
             locale: z.string().max(8).optional(),
+            consent: z.boolean().optional(),
+            marketingConsent: z.boolean().optional(),
         })
         .safeParse(input);
     if (!parsed.success) {
         return { success: false, mode: 'pledge', error: 'Invalid donation details.' };
     }
     const { amount, currency, type, email, fullName, needsReceipt, locale } = parsed.data;
+    if (parsed.data.consent === false) {
+        return { success: false, mode: 'pledge', error: 'Please accept the donation terms to continue.' };
+    }
 
     const rate = await enforceRateLimit('checkout', { subject: email });
     if (!rate.ok) return { success: false, mode: 'pledge', error: rate.error };
@@ -1021,6 +1128,9 @@ export async function createDonationCheckout(input: {
             notes: null,
             payment_provider: 'stripe',
             payment_ref: session.id,
+            consent_given: true,
+            consent_at: new Date().toISOString(),
+            marketing_consent: Boolean(parsed.data.marketingConsent ?? false),
         });
         if (insertError) {
             console.error('[createDonationCheckout] Pending-row insert failed:', insertError.message);
@@ -1037,7 +1147,12 @@ export async function createDonationCheckout(input: {
     }
 
     // Provider not configured — record an explicit pledge (honest fallback).
-    const pledge = await createPublicDonation({ amount, currency, type, email, needsReceipt });
+    const pledge = await createPublicDonation({
+        amount, currency, type, email, needsReceipt,
+        consent: parsed.data.consent ?? true,
+        marketingConsent: parsed.data.marketingConsent ?? false,
+        fullName,
+    });
     return {
         success: pledge.success,
         mode: 'pledge',

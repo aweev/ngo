@@ -14,7 +14,6 @@ export const PHASE0_HIDDEN_ADMIN_PREFIXES = [
     '/admin/automations',
     '/admin/workflows',
     '/admin/integrations',
-    '/admin/rbac',
     '/admin/governance',
     '/admin/hr',
     '/admin/reviews',

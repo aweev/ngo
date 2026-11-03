@@ -63,7 +63,7 @@ export function NewsGrid({ articles }: { articles: NewsViewModel[] }) {
 
                                     <div className="flex items-center text-sm font-bold text-primary mt-auto">
                                         {t("read_more")}
-                                        <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                                        <ArrowRight className="w-4 h-4 ms-2 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
                                     </div>
                                 </div>
                             </article>

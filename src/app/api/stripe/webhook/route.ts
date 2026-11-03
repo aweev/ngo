@@ -4,6 +4,7 @@ import { createSupabaseAdminClient } from '@/lib/supabase/server';
 import { sendDonationReceipt, sendTaxReceipt } from '@/lib/email';
 import { receiptUrlFor } from '@/lib/receipts';
 import { handleInvoiceEvent, isInvoiceEvent } from '@/lib/stripe-invoices';
+import { enqueueOutboxEvent } from '@/lib/reliability';
 
 /**
  * Stripe webhook — the only place a donation row is marked `completed`.
@@ -27,7 +28,7 @@ import { handleInvoiceEvent, isInvoiceEvent } from '@/lib/stripe-invoices';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const STATUS_BY_EVENT: Record<string, 'completed' | 'failed' | 'refunded'> = {
+const STATUS_BY_EVENT: Record<string, 'completed' | 'failed' | 'refunded' | 'cancelled'> = {
     'checkout.session.completed': 'completed',
     'checkout.session.async_payment_succeeded': 'completed',
     'checkout.session.expired': 'failed',
@@ -35,6 +36,10 @@ const STATUS_BY_EVENT: Record<string, 'completed' | 'failed' | 'refunded'> = {
     'payment_intent.payment_failed': 'failed',
     'invoice.paid': 'completed',
     'invoice.payment_failed': 'failed',
+    'customer.subscription.deleted': 'cancelled',
+    'customer.subscription.updated': 'completed',
+    'charge.dispute.created': 'failed',
+    'charge.dispute.closed': 'completed',
 };
 
 function resolveSessionId(event: Stripe.Event): string | null {
@@ -73,6 +78,7 @@ async function linkDonor(
                     name: donation.donor_name?.trim() || email,
                     email,
                     status: 'active',
+                    marketing_consent: false,
                 })
                 .select('id')
                 .single();
@@ -168,8 +174,37 @@ async function handleStripeEvent(request: Request) {
         }
     }
 
-    type DonationRow = { id: string; status: string | null; amount: number; currency: string; type: string; organization_id: string | null; email: string | null; donor_name: string | null };
+    type DonationRow = { id: string; status: string | null; amount: number; currency: string; type: string; organization_id: string | null; email: string | null; donor_name: string | null; needs_receipt?: boolean | null };
     let matched: DonationRow[] | null = null;
+
+    // Subscription lifecycle + disputes (P0): keep recurring revenue truthful.
+    if (event.type === 'customer.subscription.deleted' || event.type === 'customer.subscription.updated') {
+        const sub = event.data.object as { id?: string; status?: string; cancel_at?: number | null };
+        const subId = sub.id ?? resolveSessionId(event);
+        if (!subId) return NextResponse.json({ received: true, unmatched: event.type });
+        const patchStatus = event.type === 'customer.subscription.deleted' ? 'cancelled' : 'completed';
+        const { data, error } = await supabase
+            .from('donations')
+            .update({ status: patchStatus, cancelled_at: event.type === 'customer.subscription.deleted' ? new Date().toISOString() : undefined })
+            .eq('subscription_ref', subId)
+            .neq('status', patchStatus)
+            .select('id,status,amount,currency,type,organization_id,email,donor_name')
+            .limit(25);
+        if (error) {
+            console.error('[stripe/webhook] subscription update failed:', error);
+            return NextResponse.json({ error: 'Update failed.' }, { status: 500 });
+        }
+        return NextResponse.json({ received: true, updated: (data ?? []).length });
+    }
+    if (event.type === 'charge.dispute.created' || event.type === 'charge.dispute.closed') {
+        const dispute = event.data.object as { payment_intent?: string | string[] | null; charge?: string };
+        const pi = Array.isArray(dispute.payment_intent) ? dispute.payment_intent[0] : dispute.payment_intent;
+        const patchStatus = event.type === 'charge.dispute.created' ? 'failed' : 'completed';
+        if (typeof pi === 'string' && pi) {
+            await supabase.from('donations').update({ status: patchStatus, dispute_status: event.type }).eq('payment_intent', pi).neq('status', patchStatus);
+        }
+        return NextResponse.json({ received: true, updated: 1 });
+    }
 
     // Recurring invoices land as one donation row per invoice (P0-4).
     // Invoice events only ever map to completed/failed — narrow for the handler.
@@ -206,8 +241,10 @@ async function handleStripeEvent(request: Request) {
         if (!sessionId) {
             return NextResponse.json({ received: true, unmatched: event.type });
         }
+        // `cancelled` never arrives via session/charge paths — narrow the patch.
+        const patchStatus = nextStatus === 'cancelled' ? 'failed' : nextStatus;
         const patch: { status: string; payment_intent?: string; subscription_ref?: string; receipt_url?: string; tax_receipt_url?: string } = {
-            status: nextStatus,
+            status: patchStatus,
             payment_intent: paymentIntentId ?? undefined,
         };
 
@@ -254,10 +291,29 @@ async function handleStripeEvent(request: Request) {
     const donation = matched[0] as DonationRow;
     if (nextStatus === 'completed') {
         await linkDonor(supabase, donation);
+        // ADR-0001 / Slice A: announce the completed donation on the event spine
+        // so automations can react (e.g. the seeded "Large gift alert" notifies
+        // the executive director). Idempotent per donation, so Stripe webhook
+        // retries never double-fire; enqueueOutboxEvent never throws.
+        if (donation.organization_id) {
+            await enqueueOutboxEvent(supabase as never, {
+                organizationId: donation.organization_id,
+                eventType: 'donation.completed',
+                payload: {
+                    donation_id: donation.id,
+                    amount: donation.amount,
+                    currency: donation.currency,
+                    type: donation.type,
+                    email: donation.email,
+                    donor_name: donation.donor_name,
+                },
+                idempotencyKey: `donation.completed:${donation.id}`,
+            });
+        }
         try {
             const { data: donorData } = await supabase
                 .from('donations')
-                .select('email,donor_name')
+                .select('email,donor_name,needs_receipt')
                 .eq('id', donation.id)
                 .maybeSingle();
 
@@ -272,7 +328,8 @@ async function handleStripeEvent(request: Request) {
                     receiptUrl,
                 });
 
-                if (donation.type === 'one_time' && donorData.donor_name) {
+                const wantsTaxReceipt = Boolean((donorData as { needs_receipt?: boolean | null }).needs_receipt);
+                if (wantsTaxReceipt && donorData.donor_name) {
                     await sendTaxReceipt({
                         to: donorData.email,
                         donorName: donorData.donor_name,

@@ -24,7 +24,7 @@ export function ProblemSolution({ category, challengeText, solutionText }: Probl
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="max-w-md ml-auto"
+                        className="max-w-md ms-auto"
                     >
                         <div className="flex items-center gap-3 mb-6 text-muted-foreground">
                             <AlertCircle className="w-6 h-6" />
@@ -37,7 +37,7 @@ export function ProblemSolution({ category, challengeText, solutionText }: Probl
                 </div>
 
                 {/* Solution Column (White/Themed) */}
-                <div className="bg-background p-12 md:p-24 flex flex-col justify-center border-t md:border-t-0 md:border-l border-border relative overflow-hidden">
+                <div className="bg-background p-12 md:p-24 flex flex-col justify-center border-t md:border-t-0 md:border-s border-border relative overflow-hidden">
                     {/* Background Hint */}
                     <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl ${theme.gradient} opacity-20 blur-3xl`} />
 
@@ -45,7 +45,7 @@ export function ProblemSolution({ category, challengeText, solutionText }: Probl
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="max-w-md mr-auto relative z-10"
+                        className="max-w-md me-auto relative z-10"
                     >
                         <div className={`flex items-center gap-3 mb-6 ${theme.primary}`}>
                             <CheckCircle2 className="w-6 h-6" />

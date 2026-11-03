@@ -13,6 +13,9 @@ const AggregatedImpact = dynamic(
     { loading: () => <div className="py-24" aria-hidden="true" /> },
 );
 
+// P0: ISR — programs overview revalidates via CMS tag.
+export const revalidate = 300;
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Programs.Overview.Hero" });

@@ -94,6 +94,23 @@ check("incidents runbook documents the metrics scrape + thresholds",
     && incidents.includes("METRICS_TOKEN")
     && incidents.includes("ngo_outbox_dead"));
 
+// --- 8. Event spine wired end to end (ADR-0001) ------------------------------
+const stripeWebhook = read("src/app/api/stripe/webhook/route.ts");
+check("stripe webhook emits donation.completed to the outbox",
+    stripeWebhook !== null
+    && stripeWebhook.includes("enqueueOutboxEvent")
+    && stripeWebhook.includes("donation.completed"));
+const volunteersAction = read("src/actions/volunteers.ts");
+check("volunteer creation emits volunteer.created to the outbox",
+    volunteersAction !== null
+    && volunteersAction.includes("enqueueOutboxEvent")
+    && volunteersAction.includes("volunteer.created"));
+check("cron-runner routes outbox events to the automation engine",
+    cron !== null && cron.includes("\"automation-engine\""));
+const engine = read("supabase/functions/automation-engine/index.ts");
+check("automation engine resolves notification recipients by role",
+    engine !== null && engine.includes("recipient_role"));
+
 console.log("");
 if (failures > 0) {
     console.error(`RELIABILITY GATE FAILED: ${failures} check(s) failing.`);

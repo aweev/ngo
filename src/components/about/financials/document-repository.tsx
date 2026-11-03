@@ -54,7 +54,7 @@ export function DocumentRepository({ documents }: { documents: FinancialDocument
 
                                     <Button variant="ghost" size="sm" asChild>
                                         <a href={doc.url} download target="_blank" rel="noreferrer">
-                                            <Download className="w-4 h-4 mr-2" />
+                                            <Download className="w-4 h-4 me-2" />
                                             <span className="hidden sm:inline">{t("download")}</span>
                                         </a>
                                     </Button>
