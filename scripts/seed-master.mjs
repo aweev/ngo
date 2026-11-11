@@ -265,12 +265,12 @@ async function main() {
     async function ensureBudget(name, row) {
         return done(await ensureRow(supabase, 'budgets', { organization_id: orgId, name }, { organization_id: orgId, name, ...row }));
     }
-    async function ensureLine(budgetId, category, allocated, fundId = null) {
+    async function ensureLine(budgetId, category, allocated, fundId = null, currency = 'EUR') {
         const { data: existing } = await supabase.from('budget_lines').select('id')
             .eq('organization_id', orgId).eq('budget_id', budgetId).eq('category', category).maybeSingle();
         if (existing) { stats.reused += 1; return existing.id; }
         const { data, error } = await supabase.from('budget_lines').insert({
-            organization_id: orgId, budget_id: budgetId, category, allocated_amount: allocated, currency: 'EUR',
+            organization_id: orgId, budget_id: budgetId, category, allocated_amount: allocated, currency,
         }).select('id').single();
         if (error) throw new Error(`budget_lines insert failed: ${error.message}`);
         stats.created += 1;
@@ -295,8 +295,7 @@ async function main() {
         fiscal_year: 2026, period_type: 'project', total_amount: 10000, currency: 'USD',
         status: 'active', project_id: healthProject,
     });
-    const usLine = await ensureLine(usBudget, 'Supplies', 10000);
-    await supabase.from('budget_lines').update({ currency: 'USD' }).eq('id', usLine);
+    const usLine = await ensureLine(usBudget, 'Supplies', 10000, null, 'USD');
 
     // -- Expenses (every status of the approval lifecycle) -----------------------
     async function ensureExpense(title, amount, extra) {
