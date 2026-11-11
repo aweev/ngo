@@ -2370,7 +2370,9 @@
         "required": "يلزم العنوان والمبلغ.",
         "approve": "اعتماد",
         "reject": "رفض",
-        "approve_final": "اعتماد (نهائي)"
+        "approve_final": "اعتماد (نهائي)",
+        "title_required": "Please enter an expense title.",
+        "amount_required": "Please enter an expense amount."
       },
       "expensesPage": {
         "back": "العودة إلى المالية",
@@ -3724,7 +3726,8 @@
     "kind_household": "أسرة",
     "kind_beneficiary": "مستفيد",
     "kind_service": "خدمة",
-    "kind_referral": "إحالة"
+    "kind_referral": "إحالة",
+    "checking_dupes": "Checking for possible duplicates…"
   },
   "CampaignTheme": {
     "label": "حملة",

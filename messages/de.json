@@ -2370,7 +2370,9 @@
         "required": "Ein Titel und ein Betrag sind erforderlich.",
         "approve": "Genehmigen",
         "reject": "Ablehnen",
-        "approve_final": "Freigeben (final)"
+        "approve_final": "Freigeben (final)",
+        "title_required": "Please enter an expense title.",
+        "amount_required": "Please enter an expense amount."
       },
       "expensesPage": {
         "back": "Zurück zu den Finanzen",
@@ -3724,7 +3726,8 @@
     "kind_household": "Haushalt",
     "kind_beneficiary": "Person",
     "kind_service": "Dienstleistung",
-    "kind_referral": "Überweisung"
+    "kind_referral": "Überweisung",
+    "checking_dupes": "Checking for possible duplicates…"
   },
   "CampaignTheme": {
     "label": "Kampagne",

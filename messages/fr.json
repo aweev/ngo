@@ -2370,7 +2370,9 @@
         "required": "Un titre et un montant sont requis.",
         "approve": "Approuver",
         "reject": "Rejeter",
-        "approve_final": "Approuver (final)"
+        "approve_final": "Approuver (final)",
+        "title_required": "Please enter an expense title.",
+        "amount_required": "Please enter an expense amount."
       },
       "expensesPage": {
         "back": "Retour aux finances",
@@ -3724,7 +3726,8 @@
     "kind_household": "Foyer",
     "kind_beneficiary": "Bénéficiaire",
     "kind_service": "Service",
-    "kind_referral": "Orientation"
+    "kind_referral": "Orientation",
+    "checking_dupes": "Checking for possible duplicates…"
   },
   "CampaignTheme": {
     "label": "Campagne",
