@@ -2368,6 +2368,8 @@
         "submitting": "Submitting...",
         "submit": "Submit for approval",
         "required": "A title and amount are required.",
+        "title_required": "Please enter an expense title.",
+        "amount_required": "Please enter an expense amount.",
         "approve": "Approve",
         "reject": "Reject",
         "approve_final": "Approve (final)"
@@ -3631,6 +3633,7 @@
     "save_offline": "Save on this device",
     "saved_offline": "Saved on this device — not yet sent.",
     "possible_dupes": "Possible matches — use an existing record or create new.",
+    "checking_dupes": "Checking for possible duplicates…",
     "use_existing": "Use existing",
     "create_anyway": "Create new anyway",
     "search_title": "Beneficiaries",

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T00:00:00Z",
+  "title": "Design System: AWE System",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Laterite Earth", "canonical": "#D95D39", "tonalRamp": ["#8B2E13", "#A63A1A", "#C24A21", "#D95D39", "#E67B61", "#F09983", "#F6B6A5", "#F9D4C7"] },
+      "secondary": { "role": "secondary", "displayName": "Night Charcoal", "canonical": "#1D2129", "tonalRamp": ["#0A0B0D", "#131517", "#1D2129", "#2A2E36", "#383D46", "#464B54", "#545A62", "#626870"] },
+      "accent": { "role": "accent", "displayName": "Harvest Gold", "canonical": "#F0A202", "tonalRamp": ["#9B6E00", "#B58200", "#CF9600", "#F0A202", "#F5B533", "#F9C864", "#FEDB95", "#FFEDC6"] },
+      "neutral-bg": { "role": "neutral", "displayName": "Warm Paper", "canonical": "#F9F8F6", "tonalRamp": ["#2D2B28", "#3E3B38", "#4F4C48", "#605D59", "#716E6A", "#827F7B", "#93908C", "#A4A19D"] },
+      "neutral-fg": { "role": "neutral", "displayName": "Night Charcoal", "canonical": "#1D2129", "tonalRamp": ["#0A0B0D", "#131517", "#1D2129", "#2A2E36", "#383D46", "#464B54", "#545A62", "#626870"] },
+      "card-bg": { "role": "neutral", "displayName": "Pure White", "canonical": "#FFFFFF", "tonalRamp": ["#1A1A1A", "#2A2A2A", "#3A3A3A", "#4A4A4A", "#5A5A5A", "#6A6A6A", "#7A7A7A", "#8A8A8A"] },
+      "muted-bg": { "role": "neutral", "displayName": "Soft Ash", "canonical": "#F2F2F0", "tonalRamp": ["#2A2928", "#3B3A39", "#4C4B4A", "#5D5C5B", "#6E6D6C", "#7F7E7D", "#908F8E", "#A1A09F"] },
+      "muted-fg": { "role": "neutral", "displayName": "Slate Gray", "canonical": "#65676B", "tonalRamp": ["#2F3031", "#3D3E3F", "#4B4C4D", "#595A5B", "#676869", "#757677", "#838485", "#919293"] },
+      "destructive": { "role": "destructive", "displayName": "Alert Red", "canonical": "#dc2626", "tonalRamp": ["#7F1313", "#9B1818", "#B71D1D", "#dc2626", "#E54343", "#EE6060", "#F77D7D", "#FF9A9A"] },
+      "border": { "role": "neutral", "displayName": "Pale Border", "canonical": "#e5e7eb", "tonalRamp": ["#4E5052", "#5F6163", "#707274", "#818385", "#929496", "#A3A5A7", "#B4B6B8", "#C5C7C9"] },
+      "input": { "role": "neutral", "displayName": "Pale Border", "canonical": "#e5e7eb", "tonalRamp": ["#4E5052", "#5F6163", "#707274", "#818385", "#929496", "#A3A5A7", "#B4B6B8", "#C5C7C9"] },
+      "ring": { "role": "primary", "displayName": "Laterite Earth", "canonical": "#D95D39", "tonalRamp": ["#8B2E13", "#A63A1A", "#C24A21", "#D95D39", "#E67B61", "#F09983", "#F6B6A5", "#F9D4C7"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines and section titles only; Georgia serif." },
+      "body": { "displayName": "Body", "purpose": "Paragraph text and descriptions; system sans-serif, max 65–75ch line length." },
+      "label": { "displayName": "Label", "purpose": "Button text, chip text, navigation labels; system sans-serif, medium weight, sentence case." }
+    },
+    "shadows": [
+      { "name": "card-lift", "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)", "purpose": "Subtle lift on Card components only; flat by default elsewhere." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for state transitions (hover, focus)." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Fast transitions for interactive state changes." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "Applied under prefers-reduced-motion: reduce; freezes all animation and transition." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Primary call to action; Laterite Earth background, white text; hover darkens to 90% opacity.",
+      "html": "<button class=\"ds-btn-primary\">Save Changes</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; whitespace: nowrap; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); disabled:pointer-events-none; disabled:opacity-0.5; outline: none; padding: 0.6875rem 1rem; min-height: 2.75rem; background: #D95D39; color: #FFFFFF; border: none; } .ds-btn-primary:hover { background: rgba(217, 93, 57, 0.9); } .ds-btn-primary:focus-visible { border: #D95D39; box-shadow: 0 0 0 3px rgba(217, 93, 57, 0.5); }"
+    },
+    {
+      "name": "Destructive Button",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "Destructive action; Alert Red background, white text; hover darkens to 90% opacity.",
+      "html": "<button class=\"ds-btn-destructive\">Delete</button>",
+      "css": ".ds-btn-destructive { display: inline-flex; align-items: center; justify-content: center; gap: 8px; whitespace: nowrap; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); disabled:pointer-events-none; disabled:opacity-0.5; outline: none; padding: 0.6875rem 1rem; min-height: 2.75rem; background: #dc2626; color: #FFFFFF; border: none; } .ds-btn-destructive:hover { background: rgba(220, 38, 38, 0.9); } .ds-btn-destructive:focus-visible { border: #dc2626; box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action; Warm Paper background, Pale Border stroke, Night Charcoal text; hover shifts to Harvest Gold.",
+      "html": "<button class=\"ds-btn-outline\">Cancel</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; whitespace: nowrap; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); disabled:pointer-events-none; disabled:opacity-0.5; outline: none; padding: 0.6875rem 1rem; min-height: 2.75rem; background: #F9F8F6; color: #1D2129; border: 1px solid #e5e7eb; } .ds-btn-outline:hover { background: #F0A202; color: #1D2129; } .ds-btn-outline:focus-visible { border: #D95D39; box-shadow: 0 0 0 3px rgba(217, 93, 57, 0.5); }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Form text field; transparent background, Pale Border stroke, gently rounded; focus ring in Laterite Earth.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Enter text\">",
+      "css": ".ds-input { width: 100%; min-width: 0; border-radius: 0.5rem; border: 1px solid #e5e7eb; background: transparent; padding: 0.25rem 0.75rem; font-size: 1rem; color: #1D2129; transition: color, box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1); outline: none; min-height: 2.75rem; } .ds-input::placeholder { color: #65676B; } .ds-input:focus-visible { border: #D95D39; box-shadow: 0 0 0 3px rgba(217, 93, 57, 0.5); } .ds-input:disabled { pointer-events: none; opacity: 0.5; cursor: not-allowed; } .ds-input[aria-invalid=\"true\"] { border: #dc2626; box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Content container; Pure White background, 1px border, gently rounded (lg), subtle shadow lift.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><h2 class=\"ds-card-title\">Card Title</h2><p class=\"ds-card-description\">Card description</p></div><div class=\"ds-card-content\">Card content</div></div>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 1.5rem; border-radius: 0.75rem; border: 1px solid #e5e7eb; background: #FFFFFF; color: #1D2129; padding: 1.5rem; box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); } .ds-card-header { display: grid; grid-auto-rows: min-content; grid-template-rows: auto auto; align-items: start; gap: 0.5rem; padding: 0 1.5rem; } .ds-card-title { line-height: 1; font-weight: 600; font-size: 1.125rem; } .ds-card-description { color: #65676B; font-size: 0.875rem; } .ds-card-content { padding: 0 1.5rem; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Ntum",
+    "overview": "Ntum is an earthy, textured design system built for field officers working on shared low-end Android devices with intermittent signal, and for admin staff running programs from the command center. The visual language draws on African material culture — bogolan mud-cloth patterns, recycled paper grain, and woven overlays — rendered as lightweight inline SVG textures that require zero external image requests. The palette is anchored in two brand themes: sunset (default, earth-orange and amber-gold) and ocean (teal and sand), each with light and dark variants. System font stacks (sans-serif for UI, serif for display headings) replace webfonts entirely, keeping the build and the offline field app independent of external network calls. The aesthetic philosophy is restraint with warmth: flat surfaces by default, subtle shadows only where they communicate state, generous tap targets, icons always paired with labels, and plain language throughout. Motion is minimized and gated by prefers-reduced-motion. The system is usable in five languages (en, de, fr, es, ar, including RTL) and designed for low digital literacy — every destructive action confirms, every empty state explains, every error offers a next step.",
+    "keyCharacteristics": ["Earth-orange primary (#D95D39) and amber-gold accent (#F0A202) used sparingly, never dominant", "Dual brand themes (sunset default, ocean alternative) with light/dark mode, four combinations total", "Inline SVG textures (bogolan, paper, woven) as subtle overlays, never competing with content", "System font stacks only — Georgia serif for display, sans-serif system stack for body and labels", "Flat-by-default surfaces with shadow-sm on cards and focus-ring states on interactive elements", "Honest offline, empty, and error states in all five supported locales"],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Laterite Earth (primary) and Harvest Gold (accent) together cover no more than 10% of any given screen.", "section": "colors" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Shadows appear only as a response to state (hover, focus, elevation) and never as permanent decoration.", "section": "elevation" },
+      { "name": "The Label-With-Icon Rule", "body": "Icons never appear without an accompanying text label. Non-negotiable for low-digital-literacy users and Arabic RTL locales.", "section": "components" }
+    ],
+    "dos": [
+      "Do use Laterite Earth (#D95D39) for primary actions only; keep it under 10% of screen area (The One Accent Rule).",
+      "Do pair every icon with a text label (The Label-With-Icon Rule).",
+      "Do keep surfaces flat at rest; use shadow-sm only on cards (The Flat-By-Default Rule).",
+      "Do use system font stacks only — no webfont downloads, ever (offline-first constraint).",
+      "Do keep touch targets at least 44px; form controls use h-11 (2.75rem) height minimum."
+    ],
+    "donts": [
+      "Don't use Harvest Gold (#F0A202) as a background on large surfaces; it is an accent, not a field color.",
+      "Don't apply rounded corners beyond the sm–lg scale (0.375rem–0.75rem); no pill-shaped buttons.",
+      "Don't add ambient shadows for decoration; shadows communicate state only.",
+      "Don't use all-caps for labels or button text; sentence case throughout.",
+      "Don't load external images or fonts; textures are inline SVG data URIs and fonts are system stacks."
+    ]
+  }
+}

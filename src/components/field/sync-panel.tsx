@@ -150,23 +150,23 @@ export function SyncPanel() {
                                 {op.last_error && <p className="text-xs text-destructive">{op.last_error}</p>}
                                 <div className="flex flex-wrap gap-2">
                                     <Button
-                                        size="sm"
                                         variant="outline"
+                                        className="min-h-11"
                                         onClick={() => void retryOp(op.offline_uuid)}
                                     >
-                                        <RotateCcw className="mr-1 h-3.5 w-3.5" />
+                                        <RotateCcw className="mr-2 h-4 w-4" />
                                         {t('retry_op')}
                                     </Button>
                                     {!armed && (
                                         <Button
-                                            size="sm"
                                             variant="outline"
+                                            className="min-h-11"
                                             onClick={() => {
                                                 setDiscardArmed(op.offline_uuid);
                                                 setDiscardTyped('');
                                             }}
                                         >
-                                            <Trash2 className="mr-1 h-3.5 w-3.5" />
+                                            <Trash2 className="mr-2 h-4 w-4" />
                                             {t('discard_op')}
                                         </Button>
                                     )}
@@ -179,12 +179,12 @@ export function SyncPanel() {
                                             onChange={(e) => setDiscardTyped(e.target.value)}
                                             placeholder="DELETE"
                                             aria-label={t('discard_confirm')}
-                                            className="h-9"
+                                            className="min-h-12 text-base"
                                         />
                                         <div className="flex gap-2">
                                             <Button
-                                                size="sm"
                                                 variant="destructive"
+                                                className="min-h-11"
                                                 disabled={discardTyped !== 'DELETE'}
                                                 onClick={() => {
                                                     setDiscardArmed(null);
@@ -195,8 +195,8 @@ export function SyncPanel() {
                                                 {t('discard_btn')}
                                             </Button>
                                             <Button
-                                                size="sm"
                                                 variant="ghost"
+                                                className="min-h-11"
                                                 onClick={() => setDiscardArmed(null)}
                                             >
                                                 {t('back')}

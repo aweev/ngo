@@ -330,7 +330,7 @@ export function RegisterForm() {
                         </p>
                     </div>
 
-                    {checking && <p className="text-sm text-muted-foreground">…</p>}
+                    {checking && <p className="text-sm text-muted-foreground" aria-live="polite">{t('checking_dupes')}</p>}
                     {Object.keys(dupes).length > 0 && (
                         <div className="space-y-2 rounded-2xl border border-amber-500 bg-amber-50 p-4 dark:bg-amber-950">
                             <p className="text-sm font-bold">{t('possible_dupes')}</p>

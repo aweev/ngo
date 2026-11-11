@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Check, Loader2, Plus, X } from "lucide-react";
 
@@ -23,7 +24,7 @@ export function NewExpenseForm() {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (!title.trim() || !amount) {
-            setError(t("required"));
+            setError(title.trim() ? t("expenseForm.amount_required") : t("expenseForm.title_required"));
             return;
         }
         setLoading(true);
@@ -79,20 +80,20 @@ export function NewExpenseForm() {
                     )}
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
-                            <label htmlFor="expense-title" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("title_label")}</label>
+                            <Label htmlFor="expense-title">{t("title_label")}</Label>
                             <Input id="expense-title" required value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("title_placeholder")} />
                         </div>
                         <div className="space-y-1">
-                            <label htmlFor="expense-amount" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("amount_label")}</label>
+                            <Label htmlFor="expense-amount">{t("amount_label")}</Label>
                             <Input id="expense-amount" required type="number" min="0" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="250.00" />
                         </div>
                     </div>
                     <div className="space-y-1">
-                        <label htmlFor="expense-category" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("category_label")}</label>
+                        <Label htmlFor="expense-category">{t("category_label")}</Label>
                         <Input id="expense-category" value={category} onChange={(e) => setCategory(e.target.value)} placeholder={t("category_placeholder")} />
                     </div>
                     <div className="space-y-1">
-                        <label htmlFor="expense-description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("description_label")}</label>
+                        <Label htmlFor="expense-description">{t("description_label")}</Label>
                         <Textarea id="expense-description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder={t("description_placeholder")} />
                     </div>
                     <div className="flex justify-end gap-3">

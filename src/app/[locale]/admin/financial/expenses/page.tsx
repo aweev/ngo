@@ -70,7 +70,7 @@ export default async function ExpensesPage({ params }: { params: Promise<{ local
                                         {e.status === "pending" || e.status === "approved_first" ? (
                                             <ExpenseApprovalButtons expenseId={e.id} stage={e.status === "approved_first" ? 2 : 1} />
                                         ) : (
-                                            <span className="text-xs text-muted-foreground">{t("decided")}</span>
+                                            <span className="text-xs text-muted-foreground capitalize">{e.status}</span>
                                         )}
                                     </TableCell>
                                 </TableRow>
