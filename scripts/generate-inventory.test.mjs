@@ -5,13 +5,6 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-/**
- * Unit tests for scripts/generate-inventory.mjs
- *
- * Tests the pure logic functions that the generator uses, verified against
- * real repo data. Every assertion checks a concrete expected value.
- */
-
 function flatten(obj, prefix = '') {
     return Object.entries(obj).flatMap(([k, v]) =>
         v !== null && typeof v === 'object' ? flatten(v, `${prefix}${k}.`) : [`${prefix}${k}`],
@@ -156,7 +149,6 @@ describe('generate-inventory: tag assignment', () => {
             }
         }
         expect(actionCount).toBeGreaterThan(0);
-        // With no optional feature gates gating actions, all are core
         expect(Object.keys(gates).length).toBeGreaterThan(0);
     });
 });

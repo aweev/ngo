@@ -192,8 +192,8 @@ function readI18n() {
     const files = readdirSync(MESSAGES_DIR).filter((f) => f.endsWith('.json')).sort();
     const locales = [];
     const missingKeys = {};
-
     let baseKeys = null;
+
     for (const file of files) {
         const keys = new Set(flatten(JSON.parse(readFileSync(join(MESSAGES_DIR, file), 'utf8'))));
         locales.push({ file, keyCount: keys.size });

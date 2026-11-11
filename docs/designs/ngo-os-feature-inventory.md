@@ -6,9 +6,7 @@
 
 ## Overview
 
-NGO OS is a fullstack Next.js 16 operating system for any non-governmental organization, backed by Supabase. It is built to serve NGOs of any size, with features teams can turn on as they grow or as needs surface. It includes a public website, donor/volunteer intake, field PWA, admin command center, and Stripe donations.
-
-The codebase claims production readiness, but docs claim something else and are out of sync. There is no single source of truth showing what is actually implemented. This design produces a code-verified feature inventory for the entire codebase, flags dead code for removal, and aligns docs to match code exactly. Instead of a manually maintained inventory, code is the one authoritative record: one generator script emits a structured inventory manifest (JSON/Markdown) from existing verify scripts, and CI fails the build if committed output drifts from code.
+NGO OS is a fullstack Next.js 16 operating system for any non-governmental organization, backed by Supabase. It is built to serve NGOs of any size, with features teams add as they grow or as needs surface. It includes a public website, donor/volunteer intake, field PWA, admin command center, and Stripe donations. The codebase claims production readiness, but docs claim something else and are out of sync. There is no one authoritative record showing what is actually implemented. This design produces a code-verified feature inventory for the entire codebase, flags dead code for removal, and aligns docs to match code exactly. Instead of a manually maintained inventory, code is the one authoritative record: one generator script emits a structured inventory manifest (JSON/Markdown) from existing verify scripts, and CI fails the build if committed output drifts from code.
 
 ## The Problem
 
@@ -86,7 +84,7 @@ CI job: regenerate on every PR; fail build if committed output is stale
 
 * `pnpm verify` already runs the 12 verification scripts; the new CI job adds inventory regeneration plus drift check on top.
 * The build fails if committed docs diverge from generated output — this is the primary verification gate.
-* Version each release and tie to a git tag so auditors have a versioned artifact.
+* Version each release and tie each release to a git tag so auditors have a versioned artifact.
 
 ## Alternatives Considered
 
@@ -110,7 +108,7 @@ CI job: regenerate on every PR; fail build if committed output is stale
 
 ### Alternative D: Extend existing verify scripts to emit a structured inventory manifest in CI (selected)
 
-*   **Pros**: Near-zero marginal cost per change; cannot drift by construction; CI-gated; readable by auditors, product, and engineers; naturally expresses core vs. optional plugins from feature gates and module boundaries; versioned by git tag.
+*   **Pros**: Almost no extra work per change; CI-gated; readable by auditors, product, and engineers; naturally expresses core vs. optional plugins from feature gates and module boundaries; versioned by git tag.
 *   **Cons**: Requires writing one generator script; still needs a named owner for ongoing review cadence.
 *   **Reason for Acceptance**: Accepted — decision recorded in EGM brainstorm (egm-brainstorm session). Code remains the one authoritative record; the manifest is a derived, CI-gated view; reuses existing verify script knowledge rather than duplicating it.
 
@@ -178,6 +176,6 @@ CI job: regenerate on every PR; fail build if committed output is stale
 *   **Unit Tests**: `pnpm test` (vitest) — includes `scripts/generate-inventory.test.mjs`.
 *   **Static Analysis & Linting**: `pnpm lint` (eslint) — applies to the new `.mjs` scripts.
 *   **Test Coverage Requirement**: Generator script must be covered by unit tests for manifest emission and drift detection logic.
-*   **E2E/Integration**: `pnpm verify` — the existing static verify gates (typecheck, lint, verify-action-auth, verify-rls-isolation, verify-migrations, verify-i18n, verify-functions) continue to run; the new CI job adds inventory regeneration + drift check on top.
+*   **E2E/Integration**: `pnpm verify` — the existing static verify gates (typecheck, lint, verify-action-auth, verify-rls-isolation, verify-migrations, verify-i18n, verify-functions) continue to run; the new CI job adds inventory regeneration plus drift check on top.
 
 *Drafted with EGM*

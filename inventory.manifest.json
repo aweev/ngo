@@ -4784,9 +4784,9 @@
       "file": "messages/es.json",
       "line": null,
       "scope": "core",
-      "maturity": "implemented",
+      "maturity": "partial",
       "status": "implemented",
-      "missingKeys": 0
+      "missingKeys": 3
     },
     {
       "kind": "i18n-locale",
@@ -4794,9 +4794,9 @@
       "file": "messages/fr.json",
       "line": null,
       "scope": "core",
-      "maturity": "implemented",
+      "maturity": "partial",
       "status": "implemented",
-      "missingKeys": 0
+      "missingKeys": 3
     },
     {
       "kind": "edge-function",
@@ -4849,8 +4849,8 @@
     "edgeFunctionCount": 4,
     "coreCount": 419,
     "optionalCount": 0,
-    "implementedCount": 419,
-    "partialCount": 0,
+    "implementedCount": 417,
+    "partialCount": 2,
     "unusedCount": 0,
     "plannedCount": 0
   },

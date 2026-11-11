@@ -12,7 +12,7 @@
 - Locales: 5
 - Edge functions: 4
 - Core: 419, Optional plugin: 0
-- Maturity: implemented 419, partial 0, unused 0, planned 0
+- Maturity: implemented 417, partial 2, unused 0, planned 0
 
 ## Entries
 
@@ -431,8 +431,8 @@
 | database-table | expense_approvals | supabase/migrations/ | core | implemented | partial |
 | i18n-locale | ar | messages/ar.json | core | implemented | implemented |
 | i18n-locale | de | messages/de.json | core | implemented | implemented |
-| i18n-locale | es | messages/es.json | core | implemented | implemented |
-| i18n-locale | fr | messages/fr.json | core | implemented | implemented |
+| i18n-locale | es | messages/es.json | core | partial | implemented |
+| i18n-locale | fr | messages/fr.json | core | partial | implemented |
 | edge-function | automation-engine | supabase/functions/automation-engine/index.ts | core | implemented | implemented |
 | edge-function | cron-runner | supabase/functions/cron-runner/index.ts | core | implemented | implemented |
 | edge-function | notification-dispatcher | supabase/functions/notification-dispatcher/index.ts | core | implemented | implemented |
