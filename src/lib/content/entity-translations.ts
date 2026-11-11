@@ -47,6 +47,79 @@ export const ENTITY_DISPLAY_FIELD: Record<TranslatableEntityType, 'name' | 'titl
   volunteer_role: 'title',
 };
 
+/** One editable translatable field, in editor order. */
+export interface EntityTranslationField {
+  /** Field key as stored inside `entity_translations.fields`. */
+  key: string;
+  /** Render as a multi-line textarea instead of a single-line input. */
+  multiline?: boolean;
+}
+
+/**
+ * The translatable fields offered per entity type in the admin editor.
+ * The FIRST entry is always the display field (name/title) — it is the
+ * value the publish gate checks, so it must never be reordered casually.
+ * Mirrors the typed field shapes in `entityFieldsSchemas` above.
+ */
+export const ENTITY_TRANSLATION_FIELDS: Record<
+  TranslatableEntityType,
+  readonly EntityTranslationField[]
+> = {
+  campaign: [
+    { key: 'name' },
+    { key: 'description', multiline: true },
+    { key: 'cta_label' },
+    { key: 'cta_url' },
+  ],
+  project: [
+    { key: 'name' },
+    { key: 'description', multiline: true },
+    { key: 'category_label' },
+    { key: 'location' },
+    { key: 'country' },
+  ],
+  partner: [
+    { key: 'name' },
+    { key: 'description', multiline: true },
+  ],
+  impact_metric: [
+    { key: 'name' },
+    { key: 'description', multiline: true },
+    { key: 'unit_label' },
+  ],
+  org_event: [
+    { key: 'title' },
+    { key: 'description', multiline: true },
+    { key: 'location' },
+    { key: 'city' },
+    { key: 'country' },
+  ],
+  organization: [
+    { key: 'name' },
+    { key: 'description', multiline: true },
+    { key: 'mission', multiline: true },
+    { key: 'vision', multiline: true },
+  ],
+  news_article: [
+    { key: 'title' },
+    { key: 'excerpt', multiline: true },
+    { key: 'author_name' },
+  ],
+  impact_story: [
+    { key: 'title' },
+    { key: 'summary', multiline: true },
+    { key: 'program' },
+    { key: 'role' },
+  ],
+  volunteer_role: [
+    { key: 'title' },
+    { key: 'description', multiline: true },
+    { key: 'location' },
+    { key: 'category' },
+    { key: 'commitment' },
+  ],
+};
+
 const baseFields = {
   name: z.string().max(300).optional().nullable(),
   title: z.string().max(300).optional().nullable(),

@@ -4,6 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { revalidatePublicContentRoutes } from '@/lib/cache';
 import { authorizePermission } from '@/lib/auth/guards';
 import { PERMISSIONS } from '@/lib/auth/permissions';
+import { enqueueOutboxEvent } from '@/lib/reliability';
+import { newCorrelationId, recordAuditEvent } from '@/lib/audit-events';
 import type { ContentPage, ContentPageInsert, ContentPageUpdate } from '@/types/domain/content';
 
 const TABLE = 'content_pages';
@@ -699,6 +701,38 @@ export async function setPageTranslationStatus(
         console.error('[setPageTranslationStatus]', error.message);
         return { error: 'Unable to change translation status. Please try again.' };
     }
+
+    if (status === 'published') {
+        // Transactional outbox: the publish side effect (cache fanout,
+        // webhook delivery, notification presets) is enqueued in the same
+        // logical operation and drained by cron-runner, never fired inline.
+        // publishedAt in the payload makes each republish a fresh event while
+        // the default idempotency key still dedupes double-submits.
+        const outbox = await enqueueOutboxEvent(auth.context.supabase as never, {
+            organizationId: auth.organizationId,
+            eventType: 'content.page_locale_published',
+            payload: {
+                pageId,
+                locale,
+                publishedBy: auth.context.userId,
+                publishedAt: new Date().toISOString(),
+            },
+        });
+        if (!outbox.queued && !outbox.duplicate) {
+            console.error('[setPageTranslationStatus] Outbox enqueue failed:', outbox.error);
+        }
+
+        await recordAuditEvent(auth.context.supabase as never, {
+            organizationId: auth.organizationId,
+            actorId: auth.context.userId,
+            action: 'content.page_locale_published',
+            entityType: 'content_page_translations',
+            entityId: `${pageId}:${locale}`,
+            newValues: { status: 'published' },
+            correlationId: newCorrelationId(),
+        });
+    }
+
     revalidatePath('/admin/content');
     revalidatePath('/', 'layout');
     revalidatePublicContentRoutes();

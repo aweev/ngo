@@ -1,8 +1,4 @@
 {
-  "Metadata": {
-    "title": "AWE e.V.",
-    "description": "Crecimiento Digno y Comunidad Radiante. Empoderando comunidades a través de la educación, el apoyo y el desarrollo sostenible."
-  },
   "NotFound": {
     "title": "Página no encontrada",
     "description": "La página que buscas no existe o ha sido movida.",
@@ -795,8 +791,7 @@
       "transparency_desc": "Creemos que la confianza se gana. Aquí es exactamente a dónde va su dinero.",
       "faq_title": "Preguntas frecuentes",
       "matching_title": "Igualación de donaciones corporativas",
-      "matching_desc": "¿Su empleador iguala las donaciones? Busque a continuación.",
-      "matching_placeholder": "Busque su empresa..."
+      "matching_desc": "¿Su empleador iguala las donaciones? Pregunte a su departamento de RR. HH. — muchas empresas lo hacen. Envíenos el formulario por la página de contacto y nos encargamos del resto."
     },
     "Widget": {
       "frequency_monthly": "Donar mensualmente",
@@ -827,11 +822,11 @@
     },
     "FAQ": {
       "q1": "¿Puedo cancelar mi donación mensual?",
-      "a1": "Sí, absolutamente. Puede pausar, modificar o cancelar su donación mensual en cualquier momento a través del Portal de Donantes o contactándonos directamente.",
+      "a1": "Sí, absolutamente. Puede pausar, modificar o cancelar su donación mensual en cualquier momento — escríbanos por la página de contacto y elija \"Donación\" como tema. Procesamos el cambio en pocos días hábiles.",
       "q2": "¿Es esto deducible de impuestos?",
-      "a2": "Sí. AWE e.V. es una organización sin fines de lucro registrada. Enviamos recibos de donación anuales para fines fiscales automáticamente.",
-      "q3": "¿Aceptan PayPal?",
-      "a3": "Sí, aceptamos las principales tarjetas de crédito, PayPal, Apple Pay y Google Pay."
+      "a2": "Sí. AWE e.V. es una organización sin fines de lucro registrada. Recibirá un recibo por correo por cada donación completada, y emitimos certificados fiscales para donaciones únicas que lo permitan. ¿Necesita un resumen anual consolidado? Escríbanos por la página de contacto (tema \"Donación\").",
+      "q3": "¿Qué métodos de pago puedo usar?",
+      "a3": "Aceptamos las principales tarjetas de crédito y débito a través de Stripe. Apple Pay y Google Pay aparecen automáticamente si su dispositivo y banco los admiten. ¿Prefiere otra forma de pago? Contáctenos y buscaremos una solución."
     },
     "ImpactSlider": {
       "level_1": "Esenciales educativos",
@@ -1732,14 +1727,6 @@
       "export_csv": "Exportar CSV",
       "export_json": "Exportar JSON"
     },
-    "Guard": {
-      "unauthenticated": "Debe iniciar sesión para continuar.",
-      "no_organization": "Su cuenta aún no está vinculada a una organización. Acepte su invitación o contacte a un administrador.",
-      "forbidden": "No tiene permiso para realizar esta acción.",
-      "cross_organization": "Acceso entre organizaciones denegado.",
-      "role_required": "No tiene permiso para realizar esta acción. Rol requerido: {roles}.",
-      "permission_required": "Su rol «{role}» no incluye «{permission}». Rol requerido: {roles}."
-    },
     "Nav": {
       "groups": {
         "overview": "Resumen",
@@ -1781,7 +1768,8 @@
         "tags": "Etiquetas",
         "settings": "Ajustes",
         "governance": "Aprobaciones",
-        "trustCenter": "Centro de confianza"
+        "trustCenter": "Centro de confianza",
+        "contentTranslations": "Traducciones de contenido"
       },
       "menu": {
         "title": "Navegación",
@@ -2300,6 +2288,26 @@
         "public_label": "Público (se muestra en la sección de impacto del sitio)",
         "save": "Guardar métrica",
         "error": "No se pudo guardar la métrica."
+      },
+      "fieldReports": {
+        "title": "Verificación de informes de campo",
+        "description": "Los informes por WhatsApp/SMS llegan en cuarentena. Revíselos, vincule la métrica de impacto correcta y promueva los informes verificados a mediciones.",
+        "empty": "No hay informes en espera — la cola de entrada está vacía.",
+        "quantity": "Cantidad",
+        "project": "Código de proyecto",
+        "metric": "Métrica de impacto",
+        "review": "Enviar a revisión",
+        "verify": "Verificar",
+        "reject": "Rechazar",
+        "promote": "Promover a medición",
+        "working": "Procesando…",
+        "reason_ph": "Motivo del rechazo (opcional)",
+        "metric_ph": "Vincular a métrica de impacto…",
+        "state_quarantined": "en cuarentena",
+        "state_pending_review": "en revisión",
+        "state_verified": "verificado",
+        "state_rejected": "rechazado",
+        "state_promoted": "promovido"
       }
     },
     "Financial": {
@@ -2614,7 +2622,8 @@
         "col_locales": "Locales",
         "col_workflow": "Workflow",
         "col_approval": "Approval",
-        "col_status": "Status"
+        "col_status": "Status",
+        "btn_entities": "Todas las traducciones"
       },
       "Approval": {
         "approved": "Approved",
@@ -2833,6 +2842,59 @@
       },
       "error": {
         "load_failed": "This panel failed to load."
+      },
+      "Entities": {
+        "title": "Cobertura de traducciones",
+        "description": "Traduzca campañas, proyectos, socios, métricas de impacto, eventos y el perfil de la organización, y luego revise y publique cada idioma. Solo los idiomas publicados aparecen en el sitio público.",
+        "back": "Volver a las páginas",
+        "ai_warning": "La traducción con IA no está habilitada en este entorno. Añada las traducciones manualmente por idioma. Cuando está habilitada, el texto generado por IA siempre requiere revisión humana antes de publicarse.",
+        "group_empty": "Aún no hay nada que traducir aquí.",
+        "manage": "Gestionar traducciones",
+        "loading": "Cargando traducciones…",
+        "status_missing": "falta",
+        "no_translation": "Aún sin traducción",
+        "percent": "{pct}% traducido",
+        "version": " · v{version}",
+        "missing_fields": "Campos faltantes:",
+        "save": "Guardar",
+        "saving": "Guardando…",
+        "saved_draft": "[{locale}] guardado como borrador.",
+        "request_review": "Solicitar revisión",
+        "approve": "Aprobar",
+        "publish": "Publicar",
+        "ai_translate": "Traducir con IA",
+        "ai_working": "Traduciendo…",
+        "ai_not_configured": "IA no configurada",
+        "ai_tooltip_enabled": "Traducir la versión en inglés a este idioma con IA (sigue siendo necesaria la revisión humana).",
+        "ai_tooltip_disabled": "Configure CMS_TRANSLATION_PROVIDER y CMS_TRANSLATION_API_KEY para habilitar la traducción con IA.",
+        "ai_needs_source": "Guarde primero la traducción al inglés: la IA traduce desde el idioma de origen.",
+        "title_required": "[{locale}] El nombre es obligatorio.",
+        "type_campaign": "Campañas",
+        "type_project": "Proyectos",
+        "type_partner": "Socios",
+        "type_impact_metric": "Métricas de impacto",
+        "type_org_event": "Eventos",
+        "type_organization": "Perfil de la organización",
+        "fields": {
+          "name": "Nombre",
+          "title": "Título",
+          "description": "Descripción",
+          "excerpt": "Extracto",
+          "summary": "Resumen",
+          "cta_label": "Etiqueta CTA",
+          "cta_url": "URL CTA",
+          "category_label": "Categoría",
+          "location": "Ubicación",
+          "country": "País",
+          "city": "Ciudad",
+          "unit_label": "Unidad",
+          "mission": "Misión",
+          "vision": "Visión",
+          "author_name": "Autor",
+          "program": "Programa",
+          "role": "Rol",
+          "commitment": "Compromiso"
+        }
       }
     },
     "Error": {
@@ -3158,10 +3220,14 @@
       "info_title": "Información de la organización",
       "info_description": "Datos principales del perfil visibles en informes e invitaciones.",
       "org_name": "Nombre de la organización",
+      "registration_number": "Número de registro",
       "tax_id": "Registro / ID fiscal",
       "contact_email": "Correo de contacto principal",
       "currency": "Moneda predeterminada",
       "save_profile": "Guardar perfil de la organización",
+      "saving_profile": "Guardando…",
+      "profile_saved": "Perfil guardado.",
+      "profile_unavailable": "Inicie sesión como propietario o administrador para editar el perfil de la organización.",
       "access_title": "Solicitudes de acceso pendientes",
       "access_description": "Revisa las solicitudes de roles adicionales de la organización.",
       "exp_title": "Experiencia de autenticación e incorporación",
@@ -3646,29 +3712,19 @@
     "member_details": "Miembro {n}",
     "remove_member": "Quitar",
     "field_login_required": "Inicie sesión para el campo.",
-    "MediaCarousel": {
-      "carousel_label": "Carrusel multimedia",
-      "thumbnails_label": "Miniaturas",
-      "pagination_label": "Paginación",
-      "expanded_label": "Vista expandida",
-      "previous": "Anterior",
-      "next": "Siguiente",
-      "close": "Cerrar",
-      "slide": "Diapositiva",
-      "expand": "Expandir"
-    },
-    "MediaUpload": {
-      "drop_single": "Arrastra y suelta una imagen o video aquí, o haz clic para examinar",
-      "drop_multiple": "Arrastra y suelta imágenes o videos aquí, o haz clic para examinar",
-      "formats": "Soportados: {accept}. Tamaño máx: {maxSize}MB",
-      "uploading": "Subiendo {file}…",
-      "error_size": "Archivo demasiado grande (máx {max}MB)",
-      "error_type": "Tipo de archivo no soportado",
-      "error_upload": "Error al subir. Intenta de nuevo.",
-      "uploaded": "Subidos ({count})",
-      "remove": "Eliminar",
-      "set_focal_point": "Clic para establecer punto focal"
-    }
+    "device_loss_warning": "Estos registros existen solo en este dispositivo hasta sincronizarse. Si se pierde el teléfono antes, los registros no enviados se pierden — sincronice antes de salir del campo o exporte la cola como respaldo.",
+    "export_queue": "Exportar cola (respaldo)",
+    "export_done": "Cola exportada.",
+    "locked_records": "{count} registro(s) fueron creados por otro agente — inicie sesión como esa persona para enviarlos.",
+    "attempts": "Intentos",
+    "retry_op": "Reintentar ahora",
+    "discard_op": "Descartar",
+    "discard_confirm": "Esto elimina permanentemente el registro de este dispositivo. Escriba DELETE para confirmar.",
+    "discard_btn": "Eliminar permanentemente",
+    "kind_household": "Hogar",
+    "kind_beneficiary": "Beneficiario",
+    "kind_service": "Servicio",
+    "kind_referral": "Referencia"
   },
   "CampaignTheme": {
     "label": "Campaña",
@@ -3678,26 +3734,5 @@
     "community-week": {
       "message": "Semana comunitaria: únete a eventos cerca de ti."
     }
-  },
-  "MediaCarousel": {
-    "carousel_label": "Galería multimedia",
-    "previous": "Anterior",
-    "next": "Siguiente",
-    "expand": "Ampliar",
-    "thumbnails_label": "Miniaturas",
-    "slide": "Diapositiva",
-    "pagination_label": "Navegación de la galería",
-    "expanded_label": "Vista ampliada",
-    "close": "Cerrar"
-  },
-  "MediaUpload": {
-    "error_size": "El archivo supera los {max} MB.",
-    "error_type": "Tipo de archivo no admitido.",
-    "error_upload": "Error al subir. Inténtalo de nuevo.",
-    "formats": "{accept} · máx. {maxSize} MB",
-    "uploading": "Subiendo {file}…",
-    "uploaded": "Subidos ({count})",
-    "set_focal_point": "Fijar punto focal",
-    "remove": "Quitar"
   }
 }

@@ -1,8 +1,4 @@
 {
-  "Metadata": {
-    "title": "AWE e.V.",
-    "description": "Croissance Digne & Communauté Rayonnante. Autonomiser les communautés par l'éducation, le soutien et le développement durable."
-  },
   "NotFound": {
     "title": "Page Non Trouvée",
     "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
@@ -795,8 +791,7 @@
       "transparency_desc": "Nous croyons que la confiance se mérite. Voici exactement où va votre argent.",
       "faq_title": "Foire aux questions",
       "matching_title": "Dons jumelés par l'entreprise",
-      "matching_desc": "Votre employeur double-t-il les dons ? Recherchez ci-dessous.",
-      "matching_placeholder": "Recherchez votre entreprise..."
+      "matching_desc": "Votre employeur double les dons ? Renseignez-vous auprès de votre service RH — beaucoup d'entreprises le font. Envoyez-nous le formulaire via la page contact, nous faisons le reste."
     },
     "Widget": {
       "frequency_monthly": "Don mensuel",
@@ -827,11 +822,11 @@
     },
     "FAQ": {
       "q1": "Puis-je annuler mon don mensuel ?",
-      "a1": "Oui, absolument. Vous pouvez suspendre, modifier ou annuler votre don mensuel à tout moment via le portail des donateurs ou en nous contactant directement.",
+      "a1": "Oui, absolument. Vous pouvez suspendre, modifier ou annuler votre don mensuel à tout moment — écrivez-nous via la page contact et choisissez « Don » comme sujet. Nous traitons la demande sous quelques jours ouvrés.",
       "q2": "Est-ce déductible des impôts ?",
-      "a2": "Oui. AWE e.V. est une organisation à but non lucratif enregistrée. Nous envoyons automatiquement des reçus annuels de dons à des fins fiscales.",
-      "q3": "Acceptez-vous PayPal ?",
-      "a3": "Oui, nous acceptons les principales cartes de crédit, PayPal, Apple Pay et Google Pay."
+      "a2": "Oui. AWE e.V. est une organisation à but non lucratif enregistrée. Vous recevez un reçu par e-mail pour chaque don effectué ; les reçus fiscaux sont émis pour les dons ponctuels éligibles. Un récapitulatif annuel ? Écrivez-nous via la page contact (sujet « Don »).",
+      "q3": "Quels moyens de paiement sont acceptés ?",
+      "a3": "Nous acceptons les principales cartes de crédit et de débit via Stripe. Apple Pay et Google Pay apparaissent automatiquement quand votre appareil et votre banque les prennent en charge. Un autre mode de paiement ? Contactez-nous, nous trouverons une solution."
     },
     "ImpactSlider": {
       "level_1": "L'essentiel pour l'éducation",
@@ -1732,14 +1727,6 @@
       "export_csv": "Exporter en CSV",
       "export_json": "Exporter en JSON"
     },
-    "Guard": {
-      "unauthenticated": "Vous devez vous connecter pour continuer.",
-      "no_organization": "Votre compte n'est pas encore lié à une organisation. Veuillez accepter votre invitation ou contacter un administrateur.",
-      "forbidden": "Vous n'avez pas la permission d'effectuer cette action.",
-      "cross_organization": "Accès inter-organisation refusé.",
-      "role_required": "Vous n'avez pas la permission d'effectuer cette action. Rôle requis : {roles}.",
-      "permission_required": "Votre rôle « {role} » n'inclut pas « {permission} ». Rôle requis : {roles}."
-    },
     "Nav": {
       "groups": {
         "overview": "Vue d'ensemble",
@@ -1781,7 +1768,8 @@
         "tags": "Étiquettes",
         "settings": "Paramètres",
         "governance": "Approbations",
-        "trustCenter": "Centre de confiance"
+        "trustCenter": "Centre de confiance",
+        "contentTranslations": "Traductions de contenu"
       },
       "menu": {
         "title": "Navigation",
@@ -2300,6 +2288,26 @@
         "public_label": "Public (affiché dans la section impact du site)",
         "save": "Enregistrer l'indicateur",
         "error": "Impossible d'enregistrer l'indicateur."
+      },
+      "fieldReports": {
+        "title": "Vérification des rapports terrain",
+        "description": "Les rapports WhatsApp/SMS arrivent en quarantaine. Examinez-les, rattachez la bonne métrique d'impact, puis transformez les rapports vérifiés en mesures.",
+        "empty": "Aucun rapport en attente — la file d'entrée est vide.",
+        "quantity": "Quantité",
+        "project": "Code projet",
+        "metric": "Métrique d'impact",
+        "review": "Passer en revue",
+        "verify": "Vérifier",
+        "reject": "Rejeter",
+        "promote": "Promouvoir en mesure",
+        "working": "En cours…",
+        "reason_ph": "Motif du rejet (facultatif)",
+        "metric_ph": "Rattacher à une métrique d'impact…",
+        "state_quarantined": "en quarantaine",
+        "state_pending_review": "en revue",
+        "state_verified": "vérifié",
+        "state_rejected": "rejeté",
+        "state_promoted": "promu"
       }
     },
     "Financial": {
@@ -2614,7 +2622,8 @@
         "col_locales": "Locales",
         "col_workflow": "Workflow",
         "col_approval": "Approval",
-        "col_status": "Status"
+        "col_status": "Status",
+        "btn_entities": "Toutes les traductions"
       },
       "Approval": {
         "approved": "Approved",
@@ -2833,6 +2842,59 @@
       },
       "error": {
         "load_failed": "This panel failed to load."
+      },
+      "Entities": {
+        "title": "Couverture des traductions",
+        "description": "Traduisez les campagnes, projets, partenaires, indicateurs d'impact, événements et le profil de l'organisation, puis révisez et publiez chaque langue. Seules les langues publiées apparaissent sur le site public.",
+        "back": "Retour aux pages",
+        "ai_warning": "La traduction par IA n'est pas activée dans cet environnement. Ajoutez les traductions manuellement par langue. Lorsqu'elle est activée, le texte généré par IA nécessite toujours une relecture humaine avant publication.",
+        "group_empty": "Rien à traduire ici pour le moment.",
+        "manage": "Gérer les traductions",
+        "loading": "Chargement des traductions…",
+        "status_missing": "manquant",
+        "no_translation": "Pas encore de traduction",
+        "percent": "{pct}% traduit",
+        "version": " · v{version}",
+        "missing_fields": "Champs manquants :",
+        "save": "Enregistrer",
+        "saving": "Enregistrement…",
+        "saved_draft": "[{locale}] enregistré comme brouillon.",
+        "request_review": "Demander une relecture",
+        "approve": "Approuver",
+        "publish": "Publier",
+        "ai_translate": "Traduction IA",
+        "ai_working": "Traduction…",
+        "ai_not_configured": "IA non configurée",
+        "ai_tooltip_enabled": "Traduire la version anglaise dans cette langue avec l'IA (une relecture humaine reste requise).",
+        "ai_tooltip_disabled": "Définissez CMS_TRANSLATION_PROVIDER et CMS_TRANSLATION_API_KEY pour activer la traduction IA.",
+        "ai_needs_source": "Enregistrez d'abord la traduction anglaise — l'IA traduit depuis la langue source.",
+        "title_required": "[{locale}] Le nom est obligatoire.",
+        "type_campaign": "Campagnes",
+        "type_project": "Projets",
+        "type_partner": "Partenaires",
+        "type_impact_metric": "Indicateurs d'impact",
+        "type_org_event": "Événements",
+        "type_organization": "Profil de l'organisation",
+        "fields": {
+          "name": "Nom",
+          "title": "Titre",
+          "description": "Description",
+          "excerpt": "Extrait",
+          "summary": "Résumé",
+          "cta_label": "Libellé CTA",
+          "cta_url": "URL CTA",
+          "category_label": "Catégorie",
+          "location": "Lieu",
+          "country": "Pays",
+          "city": "Ville",
+          "unit_label": "Unité",
+          "mission": "Mission",
+          "vision": "Vision",
+          "author_name": "Auteur",
+          "program": "Programme",
+          "role": "Rôle",
+          "commitment": "Engagement"
+        }
       }
     },
     "Error": {
@@ -3158,10 +3220,14 @@
       "info_title": "Informations sur l’organisation",
       "info_description": "Détails principaux du profil visibles dans les rapports et les invitations.",
       "org_name": "Nom de l’organisation",
+      "registration_number": "Numéro d'enregistrement",
       "tax_id": "Immatriculation / N° fiscal",
       "contact_email": "E-mail de contact principal",
       "currency": "Devise par défaut",
       "save_profile": "Enregistrer le profil de l’organisation",
+      "saving_profile": "Enregistrement…",
+      "profile_saved": "Profil enregistré.",
+      "profile_unavailable": "Connectez-vous en tant que propriétaire ou administrateur pour modifier le profil de l’organisation.",
       "access_title": "Demandes d’accès en attente",
       "access_description": "Examinez les demandes de rôles supplémentaires dans l’organisation.",
       "exp_title": "Expérience d’authentification et d’intégration",
@@ -3646,29 +3712,19 @@
     "member_details": "Membre {n}",
     "remove_member": "Retirer",
     "field_login_required": "Connectez-vous pour le terrain.",
-    "MediaCarousel": {
-      "carousel_label": "Carrousel média",
-      "thumbnails_label": "Vignettes",
-      "pagination_label": "Pagination",
-      "expanded_label": "Vue agrandie",
-      "previous": "Précédent",
-      "next": "Suivant",
-      "close": "Fermer",
-      "slide": "Diapositive",
-      "expand": "Agrandir"
-    },
-    "MediaUpload": {
-      "drop_single": "Glissez-déposez une image ou vidéo ici, ou cliquez pour parcourir",
-      "drop_multiple": "Glissez-déposez des images ou vidéos ici, ou cliquez pour parcourir",
-      "formats": "Supportés : {accept}. Taille max : {maxSize} Mo",
-      "uploading": "Téléchargement de {file}…",
-      "error_size": "Fichier trop volumineux (max {max} Mo)",
-      "error_type": "Type de fichier non supporté",
-      "error_upload": "Échec du téléchargement. Veuillez réessayer.",
-      "uploaded": "Téléchargés ({count})",
-      "remove": "Retirer",
-      "set_focal_point": "Cliquer pour définir le point focal"
-    }
+    "device_loss_warning": "Ces enregistrements n'existent que sur cet appareil jusqu'à leur synchronisation. Si le téléphone est perdu avant, les enregistrements non envoyés sont perdus — synchronisez avant de quitter le terrain, ou exportez la file en sauvegarde.",
+    "export_queue": "Exporter la file (sauvegarde)",
+    "export_done": "File exportée.",
+    "locked_records": "{count} enregistrement(s) créés par un autre agent — connectez-vous sous son compte pour les envoyer.",
+    "attempts": "Tentatives",
+    "retry_op": "Réessayer maintenant",
+    "discard_op": "Abandonner",
+    "discard_confirm": "Cette action supprime définitivement l'enregistrement de cet appareil. Tapez DELETE pour confirmer.",
+    "discard_btn": "Supprimer définitivement",
+    "kind_household": "Foyer",
+    "kind_beneficiary": "Bénéficiaire",
+    "kind_service": "Service",
+    "kind_referral": "Orientation"
   },
   "CampaignTheme": {
     "label": "Campagne",
@@ -3678,26 +3734,5 @@
     "community-week": {
       "message": "Semaine communautaire : rejoignez les événements près de chez vous."
     }
-  },
-  "MediaCarousel": {
-    "carousel_label": "Galerie multimédia",
-    "previous": "Précédent",
-    "next": "Suivant",
-    "expand": "Agrandir",
-    "thumbnails_label": "Vignettes",
-    "slide": "Diapositive",
-    "pagination_label": "Navigation de la galerie",
-    "expanded_label": "Vue agrandie",
-    "close": "Fermer"
-  },
-  "MediaUpload": {
-    "error_size": "Le fichier dépasse {max} Mo.",
-    "error_type": "Type de fichier non pris en charge.",
-    "error_upload": "Échec du téléversement. Veuillez réessayer.",
-    "formats": "{accept} · {maxSize} Mo max",
-    "uploading": "Téléversement de {file}…",
-    "uploaded": "Téléversés ({count})",
-    "set_focal_point": "Définir le point focal",
-    "remove": "Retirer"
   }
 }

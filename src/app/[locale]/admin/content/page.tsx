@@ -117,6 +117,11 @@ export default async function ContentPage({ params }: { params: Promise<{ locale
                 description={t("List.description")}
                 action={
                     <div className="flex gap-2">
+                        <Button asChild variant="outline" className="gap-2 text-xs">
+                            <Link href="/admin/content/entities">
+                                <Languages className="h-4 w-4 text-purple-500" /> {t("List.btn_entities")}
+                            </Link>
+                        </Button>
                         <Button
                             variant="outline"
                             className="gap-2 text-xs"

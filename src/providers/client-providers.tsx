@@ -12,7 +12,6 @@ import { SyncProvider } from './sync-provider';
 import { GlobalConfig } from '@/types/config';
 import { DEFAULT_BRAND_THEME, type BrandThemeId } from '@/lib/brand-themes';
 import { useAuthCheck } from '@/hooks/use-auth-check';
-import { OfflineBanner } from '@/components/common/offline-banner';
 import { CampaignSafetyGuard } from './campaign-safety-guard';
 
 type Props = {
@@ -76,9 +75,6 @@ export function ClientProviders({
                             */}
                             <BrandProvider config={config}>
                                 {children}
-
-                                {/* Offline Sync Banner Indicator */}
-                                <OfflineBanner />
 
                                 {/* Global Toaster for API Success/Error messages */}
                                 <Toaster

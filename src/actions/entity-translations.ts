@@ -50,6 +50,43 @@ export async function getEntityTranslations(entityType: string, entityId: string
 }
 
 /**
+ * Batch locale-coverage map for the entities dashboard, scoped to the caller's
+ * active organization. Keyed `${entityType}:${entityId}` -> `locale -> status`
+ * so one query paints every coverage badge on `/admin/content/entities`.
+ * A missing table (migration not applied) resolves to an empty map so the
+ * dashboard degrades honestly rather than inventing coverage.
+ */
+export async function getEntityTranslationCoverage(): Promise<{
+  data: Record<string, Record<string, string>>;
+  error: string | null;
+}> {
+  const auth = await authorizeOrganization();
+  if (!auth.ok) return { data: {}, error: auth.error };
+
+  const { data, error } = await auth.context.supabase
+    .from(TABLE)
+    .select('entity_type, entity_id, locale, status')
+    .eq('organization_id', auth.organizationId);
+
+  if (error) {
+    console.error('[getEntityTranslationCoverage]', error.message);
+    return { data: {}, error: null };
+  }
+
+  const map: Record<string, Record<string, string>> = {};
+  for (const row of (data ?? []) as {
+    entity_type: string;
+    entity_id: string;
+    locale: string;
+    status: string;
+  }[]) {
+    const key = `${row.entity_type}:${row.entity_id}`;
+    (map[key] ??= {})[row.locale] = row.status;
+  }
+  return { data: map, error: null };
+}
+
+/**
  * Create/update one locale's fields. Requires the owning module's manage
  * permission (or content.manage). Never publishes — use
  * setEntityTranslationStatus for review/publish steps.

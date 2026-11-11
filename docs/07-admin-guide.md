@@ -74,9 +74,14 @@ builders are parked; manual translation remains.
 ## Scheduler, forms, settings
 
 - `scheduled_jobs` is the single durable scheduler (report/notification/
-  automation/export/sync/custom) drained by `cron-runner`.
+  automation — the job types with live handlers; `export`/`sync`/`custom`
+  are recorded as skipped placeholders until their handlers ship) drained by
+  `cron-runner`.
 - Form definitions collect structured submissions; the offline field app does
   not depend on them.
-- Settings covers branding, organization profile, and finance settings.
+- Settings covers branding, the organization profile (name, registration
+  number, tax id, contact email — currency is read-only under the
+  single-currency decision), and finance settings (which live under
+  **Financial → Reconcile**).
   Feature flags exist for the Phase 0 nav freeze (`NEXT_PUBLIC_PHASE0_FULL_NAV`
   operator escape hatch).

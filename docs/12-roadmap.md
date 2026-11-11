@@ -44,7 +44,14 @@ embla/cmdk/framer-motion-critical-paths/recharts-public;
 
 ## Later — Phase 5: adoption
 
-CSV/XLSX importer with dry-run, 7→3-step onboarding, **Swahili/Hausa field strings implemented** (decided: field app locales en/sw/ha/fr/ar), one error tracker, backup/PITR drill record, support path with named owner, hosting-cost sheet.
+CSV/XLSX importer with dry-run, 7→3-step onboarding, **Swahili/Hausa field strings** (decided: field app locales en/sw/ha/fr/ar — **en/fr/ar ship today; sw/ha catalogs are pending**, see Decision Log), one error tracker, backup/PITR drill record, support path with named owner, hosting-cost sheet.
+
+**Donor-FAQ debt (revisit when shipped):** the donate-page FAQ currently
+routes cancellations and annual-receipt requests through the contact form
+(topic "Donation", deep-linkable via `/public/contact?topic=donation`). When a
+donor-portal self-service cancellation or an annual/consolidated receipt job
+ships, update FAQ answers `Donation.FAQ.a1` / `a2` in all five locales to
+describe the self-service path instead.
 
 ## Open questions for leadership (decisions required)
 
@@ -63,7 +70,7 @@ CSV/XLSX importer with dry-run, 7→3-step onboarding, **Swahili/Hausa field str
 | 2026-10-11 | Split public marketing site to separate repo (`apps/web-public`) | Zero shared runtime logic with NGO OS; deployment/bundle/security isolation; static SSG + ISR via webhook revalidation |
 | 2026-10-11 | Single-currency hard block until Phase 6+ | Finance integrity invariants (spent rollups, approvals, IATI) depend on single-currency guarantees; multi-currency = Phase 6 scope |
 | 2026-10-11 | Registration mode configurable per project (`project.registration_mode`) | Schema supports both household/individual; sector drives default (health/protection → individual; cash/voucher → household) |
-| 2026-10-11 | Field app locales: en/sw/ha/fr/ar (donor-facing: en/de/fr/es/ar) | Disjoint audiences — field officers need Swahili/Hausa; donors need German/Spanish; `next-intl` per-route config supports this |
+| 2026-10-11 | Field app locales: en/sw/ha/fr/ar (donor-facing: en/de/fr/es/ar) | Disjoint audiences — field officers need Swahili/Hausa; donors need German/Spanish; `next-intl` per-route config supports this. **Status 2026-11-04: en/fr/ar shipped; sw/ha catalogs not yet written — `/field/sw` & `/field/ha` fall back to English messages until then.** |
 | 2026-10-11 | CSV-first ledger for 12 months (no accounting integrations) | Reconcile + query-hashed CSV + IATI = audit-grade; Xero/QB/Sage sync is brittle, vendor-locked, distracts from core workflows |
 | 2026-10-11 | Funded support retainer for field sync incidents (SLA: <4h field ops) | Operational requirement, not technical; named on-call, runbook, budget line in grants; volunteer devs unacceptable for beneficiary-facing ops |
 | 2026-10-11 | DPO appointed + Supabase region documented + breach drill dated before Phase 3 | GDPR Art. 37/33/30 compliance prerequisite for high-risk beneficiary PII processing; no "later" acceptable |

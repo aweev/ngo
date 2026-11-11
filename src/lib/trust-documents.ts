@@ -4,7 +4,7 @@
  * Plain server module (NOT 'use server') so it stays unit-testable:
  * magic-byte file-type verification, PNG/JPEG metadata stripping,
  * SHA-256 checksums, filename sanitising, and org-scoped storage paths.
- * Consumed by src/actions/documents.ts.
+ * Consumed by src/actions/media.ts.
  */
 import { createHash } from 'node:crypto';
 

@@ -9,6 +9,14 @@
 
 This is a **genuinely ambitious, well-engineered NGO operating system** that demonstrates sophisticated architectural thinking in several domains (offline-first field operations, multi-tenant RLS, audit-grade finance, PII protection). It is **not** production-ready for a general release — the CMS/localization gaps documented in `production-readiness-notes.md` are real and blocking — but the **core platform primitives (auth, RBAC, RLS, field sync, finance integrity, abuse prevention) are production-grade**.
 
+> **Update (2026-11-04):** the three CMS/localization gaps above (review §1.2
+> rows on P0 §1–§3) are closed — see the "(closed 2026-11-04)" rows in §1.2 and
+> the updated banner in `production-readiness-notes.md`. The remaining release
+> gate is seed data, donation-flow completion, five-locale E2E coverage, and
+> monitoring rollout (`12-roadmap.md` is the source of truth). The review body
+> below is preserved as of its original 2026-10-11 date and is superseded by
+> this note and the roadmap where it conflicts.
+
 The project sits at an inflection point: **Phase 3 (protection complete) and Phase 4 (cut the bloat) are the correct strategic priorities**, but they require explicit leadership decisions documented in `12-roadmap.md` §Open Questions.
 
 ---
@@ -34,9 +42,9 @@ The project sits at an inflection point: **Phase 3 (protection complete) and Pha
 
 | Gap | Location | Severity | Remediation |
 |-----|----------|----------|-------------|
-| **CMS localization model missing** | `production-readiness-notes.md` §1 | P0 | Define `content_page_translations` table or strict JSON schema; per-locale draft/published states; fallback rules |
-| **CMS workflow not implemented** | `production-readiness-notes.md` §2 | P0 | AI translation action, human review, approval states (draft → translation_pending → in_review → approved → published), notifications |
-| **Public entities unlocalized** | `production-readiness-notes.md` §3 | P0 | Campaigns, projects, partners, impact metrics, events, org profile, financial docs, team — all need translation records |
+| **CMS localization model missing** *(closed 2026-11-04)* | `production-readiness-notes.md` §1 | ~~P0~~ | Done: `content_page_translations` (migration `20240101000022`), strict per-locale schema via `localeContentSchema`, draft/in_review/approved/published states, fallback chain (`entityLocaleChain`) |
+| **CMS workflow not implemented** *(closed 2026-11-04)* | `production-readiness-notes.md` §2 | ~~P0~~ | Done: `setPageTranslationStatus` / `transitionContentWorkflow` + `requestAiTranslation` (real provider calls, honest failure when unconfigured), ED-gated publishing (`content.publish`), approval history, review notifications |
+| **Public entities unlocalized** *(closed 2026-11-04)* | `production-readiness-notes.md` §3 | ~~P0~~ | Done: `entity_translations` + `public_entity_translations`, admin editor at `/admin/content/entities`, localized public reads with EN fallback |
 | **Production seed data absent** | `production-readiness-notes.md` §4 | P0 | Complete approved content for every locale (hero, mission, CTA, testimonials, stories, news, metrics, events, team, board, partners, financials, legal) |
 | **Public content editing incomplete** | `production-readiness-notes.md` §5 | P0 | Page/block creation, rich text, media selection, alt text, preview, draft links, publish/unpublish, archive safeguards, slug validation, SEO fields, revision history |
 | **Donation flow incomplete** | `production-readiness-notes.md` §7 | P0 | Stripe Checkout integration, webhook verification, idempotency, failed/refunded handling, receipts, tax receipts, recurring, consent, fraud protection, confirmation emails |
@@ -263,9 +271,9 @@ This pays off when: (a) spinning up a static marketing site (roadmap Q1), (b) wh
 
 1. **Answer the 7 leadership decisions** in `12-roadmap.md` §Open Questions — document in `DECISIONS.md`
 2. **Extract public site to separate repo** (Decision 1) — reduces scope, clarifies CMS ownership
-3. **Implement CMS translation model** — `content_page_translations` table + admin UI (P0 §1)
-4. **Wire CMS approval workflow** — states, notifications, AI translation action (P0 §2)
-5. **Localize all public entities** — campaigns, projects, partners, metrics, events (P0 §3)
+3. ~~**Implement CMS translation model** — `content_page_translations` table + admin UI (P0 §1)~~ *(done — see §1.2, closed 2026-11-04)*
+4. ~~**Wire CMS approval workflow** — states, notifications, AI translation action (P0 §2)~~ *(done — see §1.2, closed 2026-11-04)*
+5. ~~**Localize all public entities** — campaigns, projects, partners, metrics, events (P0 §3)~~ *(done — see §1.2, closed 2026-11-04)*
 6. **Seed production content** — all 5 locales, all sections (P0 §4)
 7. **Complete donation flow** — Stripe Checkout + webhook + receipts + emails (P0 §7)
 

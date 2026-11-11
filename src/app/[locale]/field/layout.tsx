@@ -4,6 +4,7 @@ import { auth } from '@/auth';
 import { FieldLink, fieldRedirect } from '@/lib/navigation-field';
 import { normalizeFieldLocale } from '@/lib/i18n/locales';
 import { FieldSyncBadge } from '@/components/field/sync-badge';
+import { FieldUserBinding } from '@/components/field/field-user-binding';
 
 interface FieldLayoutProps {
     children: ReactNode;
@@ -29,6 +30,7 @@ export default async function FieldLayout({ children, params }: FieldLayoutProps
 
     return (
         <div className="min-h-screen bg-background">
+            <FieldUserBinding userId={session.user.id} />
             <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
                 <div className="mx-auto flex h-14 max-w-2xl items-center justify-between gap-2 px-4">
                     <FieldLink href="/field" className="text-base font-bold">

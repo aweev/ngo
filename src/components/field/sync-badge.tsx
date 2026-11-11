@@ -5,7 +5,12 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/lib/navigation';
 import { useFieldSyncStore } from '@/store/use-field-sync-store';
 
-/** Header pill: pending count at a glance, taps through to the sync screen. */
+/**
+ * Header pill: pending count at a glance, taps through to the sync screen.
+ * Also the reconnect auto-sync: when the device comes back online (or the
+ * global SyncProvider fires its `sync-queue` event), the queue pushes itself —
+ * an officer no longer has to remember to tap Sync after regaining signal.
+ */
 export function FieldSyncBadge() {
     const t = useTranslations('Field');
     const { pendingCount, isSyncing, refresh } = useFieldSyncStore();
@@ -17,6 +22,18 @@ export function FieldSyncBadge() {
         });
         return () => cancelAnimationFrame(raf);
     }, [refresh]);
+
+    useEffect(() => {
+        const trigger = () => {
+            void useFieldSyncStore.getState().syncNow();
+        };
+        window.addEventListener('online', trigger);
+        window.addEventListener('sync-queue', trigger);
+        return () => {
+            window.removeEventListener('online', trigger);
+            window.removeEventListener('sync-queue', trigger);
+        };
+    }, []);
 
     return (
         <Link

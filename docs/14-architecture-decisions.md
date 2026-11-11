@@ -111,3 +111,33 @@ domain mutation ── enqueueOutboxEvent() ──▶ outbox_events
   trigger, conditions, actions and workflow steps, with two explicit choices:
   "Install (disabled)" or "Install & activate" (`applyAutomationBundle({
   activate: true })` lands the rule enabled and its workflow chain active).
+- **Spine contract fix (2026-11-03):** `postSibling` now sends the
+  `x-cron-secret` header every function actually checks (it previously sent only
+  `apikey`/`Authorization`, so every sibling call 401'd and **no outbox event
+  could ever be delivered**), and `20261103000002_fix_schedule_cron_runtime.sql`
+  re-points the pg_cron installer at the live function contracts —
+  `webhook-delivery` gains a claim-based GET drain for engine-queued hooks, the
+  dispatcher is driven by GET, and the vestigial `automation-engine` poller is
+  retired. `verify:reliability` now locks both contracts.
+- **Function type gate (2026-11-03):** type-checking the edge functions surfaced a
+  real outage — `notification-dispatcher`'s doc block was never closed, so its
+  `import` statements sat inside the comment and every helper (`jsonResponse`,
+  `requireCronSecret`, `serviceClient`, `logEvent`, `nextAttemptIso`) was
+  undefined at runtime; the grep-based reliability check had even matched
+  `requireCronSecret` inside that dead import. Fixed, and
+  `pnpm verify:functions` (`tsconfig.functions.json` + `deno-edge-shim.d.ts`)
+  now type-checks `supabase/functions` as part of `pnpm verify`, because those
+  files are excluded from the Next.js tsconfig and no other gate parses them.
+  Running the real `deno check` (Deno 2.9) also proved
+  `crypto.subtle.timingSafeEqual` **does not exist**, so `requireCronSecret`'s
+  "timing-safe" branch was dead code and the shared secret was compared with a
+  plain `!==`; it now uses an explicit constant-time byte comparison.
+- **Gate hardening (2026-11-03):** that one-off verification is now permanent.
+  `pnpm verify:functions` runs the authoritative `deno check` in CI
+  (`denoland/setup-deno@v2`, with `REQUIRE_DENO=1` so a missing binary fails
+  loudly) and falls back to `tsc -p tsconfig.functions.json` locally.
+  `pnpm test:runtime` (`scripts/run-runtime-tests.mjs`) applies the runtime
+  migration to a real database inside a transaction that always rolls back, then
+  asserts the claim RPC and the pg_cron job contract
+  (`supabase/tests/schedule-runtime-shims.sql` + `-tests.sql`); CI runs it on the
+  same Supabase stack as the RLS suite.

@@ -3,6 +3,27 @@
 **Version:** 1.0  
 **Last Updated:** 2026-10-10
 
+> **Status (2026-11-04): this document is the TARGET architecture, not the
+> current state.** What is real today:
+>
+> - **`/api/health`** — Supabase reachability check, `{status, checks.supabase}`,
+>   200/503 (`src/app/api/health/route.ts`).
+> - **`/api/metrics`** — token-gated Prometheus endpoint with seven operational
+>   gauges: `ngo_outbox_pending`, `ngo_outbox_dead`, `ngo_jobs_dead_letter`,
+>   `ngo_jobs_last_run_failed`, `ngo_notifications_pending`,
+>   `ngo_notifications_failed`, `ngo_webhook_deliveries_unconfirmed`
+>   (`src/app/api/metrics/route.ts`).
+> - **Cron-runner structured JSON logs** + the 401/200 probe
+>   (`supabase/functions/cron-runner`).
+>
+> Everything else below — Sentry, Loki/OTel/Grafana/PagerDuty, RUM, the
+> `http_*`/`cms_*`/`translation_*`/`donation_*` metric series, the six
+> `incident-runbook.md#*` anchors, `deploy.yml` + `test:smoke`, and
+> `/api/revalidate` — is **not implemented yet**. The live alert thresholds and
+> the metrics that actually exist are documented in
+> `docs/runbooks/incidents.md` and `docs/09-operations.md`; treat those two as
+> the operational truth until the stack below ships.
+
 ---
 
 ## 1. Monitoring Stack

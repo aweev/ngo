@@ -8,7 +8,7 @@ import {
     BarChart3, Users, UserPlus, HandHeart, HandCoins, Megaphone, FolderKanban,
     Settings, ShieldCheck, ChevronLeft, ChevronRight, Zap, GitBranch,
     Clock, ClipboardList, ClipboardCheck, Wallet, FileBarChart, Bell, MessageSquare,
-    FileText, Puzzle, Tag, CalendarDays, TrendingUp, Award, UserMinus, ScrollText, LayoutTemplate
+    FileText, Puzzle, Tag, CalendarDays, TrendingUp, Award, UserMinus, ScrollText, LayoutTemplate, Languages
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isPhase0NavVisible } from "@/lib/phase0-nav";
@@ -82,6 +82,7 @@ export function AdminSidebar() {
                 { href: "/admin/notifications", label: tItems("notifications"), icon: Bell },
                 { href: "/admin/messaging", label: tItems("messages"), icon: MessageSquare },
                 { href: "/admin/content", label: tItems("cms"), icon: FileText },
+                { href: "/admin/content/entities", label: tItems("contentTranslations"), icon: Languages },
             ],
         },
         {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,14 +29,23 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
+// Topics the form accepts — must stay in sync with the server-side
+// `topic` enum in submitPublicForm's contact-form schema.
+const TOPICS = ["general", "donation", "volunteer", "partner", "report", "privacy"] as const;
+
 export function SmartContactForm() {
     const t = useTranslations("Contact.Form");
-    const [topic, setTopic] = useState("general");
+    // Deep links can preselect a topic (e.g. the donate FAQ points donors at
+    // /public/contact?topic=donation). Unknown values fall back to general.
+    const searchParams = useSearchParams();
+    const requested = searchParams.get("topic") ?? "general";
+    const initialTopic = (TOPICS as readonly string[]).includes(requested) ? requested : "general";
+    const [topic, setTopic] = useState(initialTopic);
     const [isSuccess, setIsSuccess] = useState(false);
 
     const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<FormData>({
         resolver: zodResolver(formSchema),
-        defaultValues: { topic: "general" }
+        defaultValues: { topic: initialTopic }
     });
 
     const onSubmit = async (data: FormData) => {

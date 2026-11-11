@@ -34,6 +34,18 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      # Deno is authoritative for supabase/functions (they run on Deno), and
+      # `REQUIRE_DENO=1` makes a missing binary a hard failure instead of a
+      # silent downgrade to the tsc shim.
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Type-check edge functions (deno check)
+        env:
+          REQUIRE_DENO: "1"
+        run: pnpm verify:functions
+
       - name: Lint
         run: pnpm lint
 
@@ -101,6 +113,10 @@ jobs:
           [ -z "$(cat unrls.txt)" ] || { echo 'RLS missing on public tables'; exit 1; }
       - name: Cross-tenant isolation suite
         run: node scripts/run-rls-tests.mjs "$DB_URL"
+      # Same live stack: applies the scheduled-runtime migrations, asserts the
+      # webhook-delivery claim RPC and the pg_cron job contract, then rolls back.
+      - name: Scheduled-runtime suite (pg_cron installer + delivery claim)
+        run: node scripts/run-runtime-tests.mjs "$DB_URL"
       # Live projection check: the public site reads through narrow SECURITY
       # DEFINER views/functions, so CI must prove they exist and grant anon.
       - name: Verify public views, functions and anon grants

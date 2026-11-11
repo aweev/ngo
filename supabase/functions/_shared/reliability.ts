@@ -51,6 +51,12 @@ export async function postSibling(
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                // Downstream functions authenticate with `requireCronSecret`,
+                // which reads ONLY this header. `apikey`/`Authorization` satisfy
+                // the API gateway, not the function — omitting x-cron-secret
+                // silently 401s every sibling call, so outbox events could never
+                // be marked delivered and every scheduled job would dead-letter.
+                "x-cron-secret": cronSecret,
                 apikey: cronSecret,
                 Authorization: `Bearer ${cronSecret}`,
             },

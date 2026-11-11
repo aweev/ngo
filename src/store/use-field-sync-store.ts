@@ -1,6 +1,7 @@
 'use client';
 
 import { create } from 'zustand';
+import { pushFieldBatch } from '@/actions/field-sync';
 import type { SyncItemResult } from '@/actions/field-sync';
 import {
     addNotice,
@@ -9,11 +10,17 @@ import {
     listNotices,
     markOpFailed,
     removeFieldOps,
+    retryFieldOp,
     setMeta,
     type StoredFieldOp,
     type SyncNotice,
 } from '@/lib/offline/field-db';
-import { classifyResults, nextBatch, type PushTransport } from '@/lib/offline/sync-engine';
+import {
+    classifyResults,
+    MAX_SYNC_ATTEMPTS,
+    selectSyncBatch,
+    type PushTransport,
+} from '@/lib/offline/sync-engine';
 
 /**
  * Field sync status store (Phase 1.2).
@@ -23,12 +30,20 @@ import { classifyResults, nextBatch, type PushTransport } from '@/lib/offline/sy
 interface FieldSyncState {
     pendingCount: number;
     terminalCount: number;
+    /** Terminal ops (attempts exhausted) — the sync screen offers repair. */
+    terminalOps: StoredFieldOp[];
+    /** Ops queued by another officer on this shared device. */
+    lockedCount: number;
     isSyncing: boolean;
     lastSyncAt: string | null;
     lastError: string | null;
     notices: SyncNotice[];
+    currentUserId: string | null;
+    setCurrentUser: (userId: string | null) => void;
     refresh: () => Promise<void>;
-    syncNow: (push: PushTransport, deviceId?: string | null) => Promise<{ synced: number; failed: number }>;
+    syncNow: (push?: PushTransport, deviceId?: string | null) => Promise<{ synced: number; failed: number }>;
+    retryOp: (offlineUuid: string) => Promise<void>;
+    discardOp: (offlineUuid: string) => Promise<void>;
 }
 
 function deviceId(): string {
@@ -52,10 +67,18 @@ export function getFieldDeviceId(): string {
 export const useFieldSyncStore = create<FieldSyncState>()((set, get) => ({
     pendingCount: 0,
     terminalCount: 0,
+    terminalOps: [],
+    lockedCount: 0,
     isSyncing: false,
     lastSyncAt: null,
     lastError: null,
     notices: [],
+    currentUserId: null,
+
+    setCurrentUser: (userId) => {
+        set({ currentUserId: userId });
+        void get().refresh();
+    },
 
     refresh: async () => {
         try {
@@ -64,9 +87,15 @@ export const useFieldSyncStore = create<FieldSyncState>()((set, get) => ({
                 listNotices(),
                 getMeta('last_sync_at'),
             ]);
+            const plan = selectSyncBatch(ops, get().currentUserId);
             set({
                 pendingCount: ops.length,
-                terminalCount: ops.filter((o: StoredFieldOp) => o.attempts >= 8).length,
+                terminalCount: ops.filter((o: StoredFieldOp) => o.attempts >= MAX_SYNC_ATTEMPTS).length,
+                terminalOps: ops
+                    .filter((o: StoredFieldOp) => o.attempts >= MAX_SYNC_ATTEMPTS)
+                    .sort((a, b) => b.created_at - a.created_at)
+                    .slice(0, 20),
+                lockedCount: plan.locked.length,
                 notices,
                 lastSyncAt,
             });
@@ -86,15 +115,16 @@ export const useFieldSyncStore = create<FieldSyncState>()((set, get) => ({
         let failed = 0;
         try {
             const ops = await listFieldOps();
-            const batch = nextBatch(ops, 25);
+            const { batch, locked } = selectSyncBatch(ops, get().currentUserId, 25);
             if (batch.length === 0) {
-                const remaining = ops.length;
+                const remaining = ops.length - locked.length;
                 if (remaining > 0) {
                     set({ lastError: `${remaining} record(s) need human review before retrying.` });
                     failed = remaining;
                 }
             } else {
-                const { data, error } = await push({
+                const transport = push ?? (async (input) => pushFieldBatch(input));
+                const { data, error } = await transport({
                     operations: batch.map((op) => ({
                         kind: op.kind,
                         offline_uuid: op.offline_uuid,
@@ -129,9 +159,13 @@ export const useFieldSyncStore = create<FieldSyncState>()((set, get) => ({
                             created_at: Date.now(),
                         });
                     }
-                    const now = new Date().toISOString();
-                    await setMeta('last_sync_at', now);
-                    set({ lastSyncAt: now });
+                    // "Last sync" means something was acknowledged — a run that
+                    // only collected rejections must not look like progress.
+                    if (failed === 0) {
+                        const now = new Date().toISOString();
+                        await setMeta('last_sync_at', now);
+                        set({ lastSyncAt: now });
+                    }
                     if (failed > 0) set({ lastError: `${failed} record(s) were rejected — kept on this device.` });
                 }
             }
@@ -141,5 +175,15 @@ export const useFieldSyncStore = create<FieldSyncState>()((set, get) => ({
         await get().refresh();
         set({ isSyncing: false });
         return { synced, failed };
+    },
+
+    retryOp: async (offlineUuid) => {
+        await retryFieldOp(offlineUuid);
+        await get().refresh();
+    },
+
+    discardOp: async (offlineUuid) => {
+        await removeFieldOps([offlineUuid]);
+        await get().refresh();
     },
 }));

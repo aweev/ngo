@@ -24,7 +24,11 @@ Production-critical: `ENCRYPTION_KEY` (32+, PII unreadable without it),
 degraded modes: `STRIPE_*` (else pledge mode), `TWILIO_*` (webhook 503s
 closed without it), `RESEND_*`, captcha/edge/CMS-AI keys, `AI_COPILOT_ENABLED`
 (default off), `METRICS_TOKEN` (404s `/api/metrics` when unset),
-`NEXT_PUBLIC_PHASE0_FULL_NAV` (operator nav override).
+`NEXT_PUBLIC_PHASE0_FULL_NAV` (operator nav override). Edge-function secrets
+(used by `notification-dispatcher`): `SMTP_URL` / `SMS_PROVIDER_URL` /
+`PUSH_PROVIDER_URL` — HTTP JSON endpoints the dispatcher POSTs to for the
+email/SMS/push channels (despite the name, `SMTP_URL` is not an SMTP
+connection string); unset URLs leave those channels queued with backoff.
 
 Validate shape any time: `src/lib/env.ts` (zod) fails boot on bad values.
 
@@ -57,9 +61,11 @@ npx supabase secrets set CRON_SECRET=<random-32-bytes>
 ```
 
 Then once in SQL: `vault.create_secret(...)` + `select public.schedule_cron_jobs()`
-(idempotent; skips cleanly without pg_cron/Vault). Cadence: cron-runner +
-webhook-delivery every minute; notification-dispatcher + automation-engine
-every 5 minutes. Full runbook: `supabase/README.md` (release section).
+(idempotent; skips cleanly without pg_cron/Vault). Cadence: `cron-runner` POSTs
+every minute (event spine + due scheduled jobs), `webhook-delivery` GETs every
+minute (delivery drain), `notification-dispatcher` GETs every 5 minutes
+(notification drain). `automation-engine` is not scheduled — cron-runner invokes
+it. Full runbook: `supabase/README.md` (release section).
 
 ## Release checklist
 

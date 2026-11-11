@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import {
     Users, HandHeart, HandCoins, Megaphone, FolderKanban,
-    Zap, GitBranch, Clock, ClipboardList, Wallet, FileBarChart,
+    Clock, ClipboardList, Wallet, FileBarChart,
     CalendarDays, TrendingUp, ShieldCheck, Settings, ArrowUpRight
 } from "lucide-react";
 import { Link } from "@/lib/navigation";
@@ -11,8 +11,6 @@ import { getPartnersStats } from "@/actions/partners";
 import { getDonorsStats } from "@/actions/donors";
 import { getProjectsStats } from "@/actions/projects";
 import { getCampaignsStats } from "@/actions/campaigns";
-import { getAutomationRules } from "@/actions/automations";
-import { getWorkflowDefinitions } from "@/actions/workflows";
 import { getScheduledJobs } from "@/actions/scheduling";
 import { StatCard } from "@/components/manage/stat-card";
 import { PageHeader } from "@/components/manage/page-header";
@@ -27,7 +25,7 @@ export default async function AdminOverviewPage({ params }: { params: Promise<{ 
     const t = await getTranslations({ locale, namespace: "Admin.Overview" });
     const [
         workers, volunteers, partners, donors, projects, campaigns,
-        automations, workflows, jobs
+        jobs
     ] = await Promise.all([
         getWorkersStats(),
         getVolunteersStats(),
@@ -35,8 +33,6 @@ export default async function AdminOverviewPage({ params }: { params: Promise<{ 
         getDonorsStats(),
         getProjectsStats(),
         getCampaignsStats(),
-        getAutomationRules(),
-        getWorkflowDefinitions(),
         getScheduledJobs(),
     ]);
 
@@ -85,13 +81,11 @@ export default async function AdminOverviewPage({ params }: { params: Promise<{ 
         },
     ];
 
-    const activeRulesCount = automations.data?.filter(r => r.is_enabled).length || 0;
     const activeJobsCount = jobs.data?.filter(j => j.is_active).length || 0;
-    const workflowCount = workflows.data?.length || 0;
 
     const quickModules = [
-        { title: t("modules.automations"), desc: t("modules.automations_desc", { count: activeRulesCount }), href: "/admin/automations", icon: Zap, color: "text-amber-500" },
-        { title: t("modules.workflows"), desc: t("modules.workflows_desc", { count: workflowCount }), href: "/admin/workflows", icon: GitBranch, color: "text-blue-500" },
+        // automations/workflows stay Phase-0 frozen (phase0-nav.ts) — quick
+        // modules must not leak links the sidebar deliberately hides.
         { title: t("modules.scheduler"), desc: t("modules.scheduler_desc", { count: activeJobsCount }), href: "/admin/scheduling", icon: Clock, color: "text-indigo-500" },
         { title: t("modules.forms"), desc: t("modules.forms_desc"), href: "/admin/forms", icon: ClipboardList, color: "text-emerald-500" },
         { title: t("modules.financial"), desc: t("modules.financial_desc"), href: "/admin/financial", icon: Wallet, color: "text-purple-500" },

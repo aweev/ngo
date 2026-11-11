@@ -72,3 +72,22 @@ export function isSyncTerminal(op: StoredFieldOp): boolean {
 export function nextBatch(ops: StoredFieldOp[], size = 25): StoredFieldOp[] {
     return ops.filter((op) => !isSyncTerminal(op)).slice(0, Math.max(1, size));
 }
+
+export interface SyncBatchPlan {
+    /** Ops this session may push (FIFO, terminal items excluded). */
+    batch: StoredFieldOp[];
+    /** Ops queued by a DIFFERENT officer — never pushed by this session. */
+    locked: StoredFieldOp[];
+}
+
+/**
+ * Per-officer queue binding: the outbox lives on a shared device, so an op
+ * stamped with another officer's user_id is never pushed by this session.
+ * Ops queued before binding shipped (no user_id) stay pushable — grandfathered
+ * rather than stranded.
+ */
+export function selectSyncBatch(ops: StoredFieldOp[], currentUserId: string | null, size = 25): SyncBatchPlan {
+    const locked = ops.filter((op) => op.user_id && currentUserId && op.user_id !== currentUserId);
+    const eligible = ops.filter((op) => !locked.includes(op));
+    return { batch: nextBatch(eligible, size), locked };
+}

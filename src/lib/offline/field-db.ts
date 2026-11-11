@@ -18,6 +18,8 @@ export interface StoredFieldOp {
     base_updated_at?: string | null;
     payload: Record<string, unknown>;
     device_id?: string | null;
+    /** Officer who queued this op — the queue never pushes another officer's records. */
+    user_id?: string | null;
     attempts: number;
     last_error?: string | null;
     created_at: number;
@@ -147,6 +149,30 @@ export async function markOpFailed(offlineUuid: string, message: string): Promis
         get.onsuccess = () => {
             const op = get.result as StoredFieldOp | undefined;
             if (op) store.put({ ...op, attempts: op.attempts + 1, last_error: message });
+        };
+        t.oncomplete = () => {
+            db.close();
+            resolve();
+        };
+        t.onerror = () => reject(t.error ?? new Error('IndexedDB update failed.'));
+    });
+}
+
+/** Human override: clears the failure counter so the queue retries the op. */
+export async function retryFieldOp(offlineUuid: string): Promise<void> {
+    if (!idbAvailable()) {
+        const op = memory.outbox.get(offlineUuid);
+        if (op) memory.outbox.set(offlineUuid, { ...op, attempts: 0, last_error: null });
+        return;
+    }
+    const db = await openDb();
+    await new Promise<void>((resolve, reject) => {
+        const t = db.transaction('outbox', 'readwrite');
+        const store = t.objectStore('outbox');
+        const get = store.get(offlineUuid);
+        get.onsuccess = () => {
+            const op = get.result as StoredFieldOp | undefined;
+            if (op) store.put({ ...op, attempts: 0, last_error: null });
         };
         t.oncomplete = () => {
             db.close();

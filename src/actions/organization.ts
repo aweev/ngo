@@ -200,3 +200,70 @@ export async function updateBrandExperienceSettings(input: BrandExperienceSettin
     revalidatePath('/', 'layout');
     return { success: true, error: null };
 }
+
+export interface OrganizationProfile {
+    name: string;
+    registration_number: string | null;
+    tax_id: string | null;
+    email: string | null;
+    default_currency: string | null;
+}
+
+/** Reads the active organization's editable profile (settings.manage). */
+export async function getOrganizationProfile(): Promise<{
+    data: OrganizationProfile | null;
+    error: string | null;
+}> {
+    const auth = await authorizePermission('settings.manage');
+    if (!auth.ok) return { data: null, error: auth.error };
+
+    const { data, error } = await auth.supabase
+        .from('organizations')
+        .select('name, registration_number, tax_id, email, default_currency')
+        .eq('id', auth.organizationId)
+        .maybeSingle();
+    if (error || !data) return { data: null, error: 'Could not load the organization profile.' };
+
+    return { data: data as OrganizationProfile, error: null };
+}
+
+/**
+ * Saves the active organization's identity fields. Currency is intentionally
+ * read-only: the single-currency hard block (Decision Log) means changing it
+ * is a data migration, not a settings toggle.
+ */
+export async function updateOrganizationProfile(input: {
+    name: string;
+    registration_number: string | null;
+    tax_id: string | null;
+    email: string | null;
+}): Promise<{ success: boolean; error: string | null }> {
+    const auth = await authorizePermission('settings.manage');
+    if (!auth.ok) return { success: false, error: auth.error };
+
+    const name = input.name.trim();
+    if (name.length < 2) return { success: false, error: 'Organization name is required.' };
+    if (name.length > 200) return { success: false, error: 'Organization name is too long.' };
+    const email = input.email?.trim() || null;
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return { success: false, error: 'Enter a valid contact email address.' };
+    }
+
+    const { error } = await auth.supabase
+        .from('organizations')
+        .update({
+            name,
+            registration_number: input.registration_number?.trim() || null,
+            tax_id: input.tax_id?.trim() || null,
+            email,
+        })
+        .eq('id', auth.organizationId);
+    if (error) {
+        console.error('[updateOrganizationProfile]', error.message);
+        return { success: false, error: 'Could not save the organization profile.' };
+    }
+
+    revalidatePath('/admin/settings');
+    revalidatePath('/', 'layout');
+    return { success: true, error: null };
+}

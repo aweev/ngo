@@ -6,11 +6,14 @@
  *   { "webhook_id": "<uuid>", "organization_id": "<uuid>",
  *     "event_type": "donation.created", "payload": { ... } }  — deliver now
  *   { "delivery_id": "<uuid>" }                               — retry one delivery
+ * GET  /functions/v1/webhook-delivery  (header: x-cron-secret)
+ *        — claims undelivered rows (claim_webhook_deliveries) and redelivers them
  *
  * Each attempt signs the body with HMAC-SHA256 (secret_token when set),
  * records a webhook_deliveries row, and updates the parent webhook counters.
  */
 import { jsonResponse, requireCronSecret, serviceClient } from "../_shared/runtime.ts";
+import { logEvent, nextAttemptIso } from "../_shared/reliability.ts";
 
 async function signBody(secret: string, body: string): Promise<string> {
     const key = await crypto.subtle.importKey(
@@ -134,12 +137,120 @@ async function attemptDelivery(
     return { ok, status: responseStatus };
 }
 
+interface ClaimedDelivery {
+    id: string;
+    organization_id: string;
+    webhook_id: string | null;
+    event_type: string;
+    payload: Record<string, unknown> | null;
+    attempt_count: number;
+    max_attempts: number;
+}
+
+/** Worker identity for delivery leases (unique per invocation). */
+const WORKER_ID = `webhook-${crypto.randomUUID()}`;
+
+/**
+ * GET drain (pg_cron): lease a bounded, per-tenant-fair slice of undelivered
+ * rows and redeliver each. This is what makes engine-queued hooks (the
+ * `trigger_webhook` automation action, which fans out best-effort) and earlier
+ * failed attempts recoverable instead of stranded in `webhook_deliveries`.
+ *
+ * Settlement is exactly-once per row: success clears the retry state, failure
+ * reschedules on the shared backoff curve, and a row whose hook is gone or
+ * inactive is abandoned rather than retried forever.
+ */
+async function redrivePendingDeliveries(): Promise<Response> {
+    const supabase = serviceClient();
+    const cronSecret = Deno.env.get("CRON_SECRET") ?? "";
+
+    const { data: claimed, error: claimError } = await supabase.rpc("claim_webhook_deliveries", {
+        p_worker: WORKER_ID,
+        p_batch: 20,
+        p_per_org: 5,
+        p_lease_seconds: 60,
+    });
+    if (claimError) {
+        logEvent("error", "webhook.claim_failed", { error: claimError.message });
+        return jsonResponse({ error: claimError.message }, 500);
+    }
+
+    const outcomes: Record<string, unknown>[] = [];
+    for (const row of (claimed ?? []) as ClaimedDelivery[]) {
+        const release = { lease_owner: null, lease_expires_at: null };
+
+        if (!row.webhook_id) {
+            await supabase.from("webhook_deliveries")
+                .update({ ...release, next_attempt_at: null, last_error: "delivery has no target webhook" })
+                .eq("id", row.id);
+            outcomes.push({ id: row.id, outcome: "abandoned" });
+            continue;
+        }
+
+        const { data: hookRow } = await supabase.from("webhooks")
+            .select("id, organization_id, url, secret_token, is_active")
+            .eq("id", row.webhook_id)
+            .eq("organization_id", row.organization_id)
+            .maybeSingle();
+        const hook = hookRow as (DeliveryTarget & { is_active: boolean }) | null;
+        if (!hook || !hook.is_active) {
+            // Nothing to deliver to: stop retrying instead of looping forever.
+            await supabase.from("webhook_deliveries")
+                .update({ ...release, next_attempt_at: null, last_error: "webhook missing or inactive" })
+                .eq("id", row.id);
+            logEvent("warn", "webhook.delivery_abandoned", {
+                delivery_id: row.id, organization_id: row.organization_id, reason: "webhook missing or inactive",
+            });
+            outcomes.push({ id: row.id, outcome: "abandoned" });
+            continue;
+        }
+
+        // attemptDelivery records the attempt (attempt_count, response_*) itself.
+        const result = await attemptDelivery(supabase, hook, row.event_type, row.payload ?? {}, cronSecret, hook.id);
+        if (result.ok) {
+            await supabase.from("webhook_deliveries")
+                .update({ ...release, next_attempt_at: null, last_error: null })
+                .eq("id", row.id);
+            outcomes.push({ id: row.id, outcome: "sent", status: result.status });
+            continue;
+        }
+
+        // attemptDelivery already bumped attempt_count for this attempt.
+        const attempt = (row.attempt_count ?? 0) + 1;
+        const dead = attempt >= (row.max_attempts ?? 5);
+        const lastError = `HTTP ${result.status || 0}`;
+        await supabase.from("webhook_deliveries")
+            .update({
+                ...release,
+                next_attempt_at: dead ? null : nextAttemptIso(attempt),
+                last_error: lastError,
+            })
+            .eq("id", row.id);
+        logEvent(dead ? "error" : "warn", dead ? "webhook.dead_letter" : "webhook.retry_scheduled", {
+            delivery_id: row.id, organization_id: row.organization_id, attempt, error: lastError,
+        });
+        outcomes.push({ id: row.id, outcome: dead ? "dead" : "retry", status: result.status });
+    }
+
+    return jsonResponse({
+        ok: true,
+        processed: outcomes.length,
+        sent: outcomes.filter((o) => o.outcome === "sent").length,
+        outcomes,
+    });
+}
+
 Deno.serve(async (req: Request): Promise<Response> => {
     if (req.method === "OPTIONS") return jsonResponse({ error: "Method not allowed" }, 405);
-    if (req.method !== "POST") return jsonResponse({ error: "Method not allowed" }, 405);
+    if (req.method !== "POST" && req.method !== "GET") {
+        return jsonResponse({ error: "Method not allowed" }, 405);
+    }
 
     const unauthorized = requireCronSecret(req);
     if (unauthorized) return unauthorized;
+
+    // GET is the pg_cron drain path; POST is a targeted deliver/retry.
+    if (req.method === "GET") return redrivePendingDeliveries();
 
     let body: {
         webhook_id?: string;

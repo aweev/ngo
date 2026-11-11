@@ -26,7 +26,7 @@ export const MAX_AMOUNT = 1_000_000;
 /** Same shape the server accepts via z.string().email().max(200). */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function DonationWidget() {
+export function DonationWidget({ stripeConfigured }: { stripeConfigured: boolean }) {
     const t = useTranslations("Donation.Widget");
     const [frequency, setFrequency] = useState<"MONTHLY" | "ONE_TIME">("MONTHLY");
     const [amount, setAmount] = useState<number>(50);
@@ -343,10 +343,12 @@ export function DonationWidget() {
                         {t("submit_btn", { amount })}
                     </Button>
 
-                    <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                        <Lock className="w-3 h-3" />
-                        <span>{t("secure_footer")}</span>
-                    </div>
+                    {stripeConfigured && (
+                        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground uppercase tracking-wider font-medium">
+                            <Lock className="w-3 h-3" />
+                            <span>{t("secure_footer")}</span>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

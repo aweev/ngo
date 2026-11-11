@@ -1,8 +1,4 @@
 {
-  "Metadata": {
-    "title": "AWE e.V.",
-    "description": "Würdevolles Wachstum & Strahlende Gemeinschaft. Gemeinschaften durch Bildung, Unterstützung und nachhaltige Entwicklung stärken."
-  },
   "NotFound": {
     "title": "Seite nicht gefunden",
     "description": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
@@ -795,8 +791,7 @@
       "transparency_desc": "Wir glauben, dass Vertrauen verdient werden muss. Hier sehen Sie genau, wohin Ihr Geld fließt.",
       "faq_title": "Häufig gestellte Fragen",
       "matching_title": "Spendenverdopplung durch Arbeitgeber",
-      "matching_desc": "Verdoppelt Ihr Arbeitgeber Spenden? Suchen Sie unten.",
-      "matching_placeholder": "Suchen Sie nach Ihrem Unternehmen..."
+      "matching_desc": "Verdoppelt Ihr Arbeitgeber Spenden? Fragen Sie in Ihrer Personalabteilung nach — viele Firmen machen mit. Schicken Sie uns das Formular über die Kontaktseite; den Rest erledigen wir."
     },
     "Widget": {
       "frequency_monthly": "Monatlich geben",
@@ -827,11 +822,11 @@
     },
     "FAQ": {
       "q1": "Kann ich meine monatliche Spende kündigen?",
-      "a1": "Ja, absolut. Sie können Ihre monatliche Spende jederzeit über das Spenderportal oder durch direkte Kontaktaufnahme pausieren, ändern oder kündigen.",
+      "a1": "Ja, absolut. Sie können Ihre monatliche Spende jederzeit pausieren, ändern oder kündigen — melden Sie sich einfach über die Kontaktseite und wählen Sie als Thema \"Spende\". Wir setzen die Änderung innerhalb weniger Werktage um.",
       "q2": "Ist das steuerlich absetzbar?",
-      "a2": "Ja. AWE e.V. ist eine registrierte gemeinnützige Organisation. Wir versenden automatisch jährliche Spendenbescheinigungen für steuerliche Zwecke.",
-      "q3": "Akzeptieren Sie PayPal?",
-      "a3": "Ja, wir akzeptieren alle gängigen Kreditkarten, PayPal, Apple Pay und Google Pay."
+      "a2": "Ja. AWE e.V. ist eine registrierte gemeinnützige Organisation. Sie erhalten für jede abgeschlossene Spende eine E-Mail-Bestätigung; Spendenbescheinigungen stellen wir für absetzbare Einzelspenden aus. Für einen zusammengefassten Jahresnachweis melden Sie sich über die Kontaktseite (Thema \"Spende\").",
+      "q3": "Welche Zahlungsarten kann ich nutzen?",
+      "a3": "Wir akzeptieren gängige Kredit- und Debitkarten über Stripe. Apple Pay und Google Pay erscheinen automatisch, wenn Ihr Gerät und Ihre Bank sie unterstützen. Möchten Sie anders zahlen? Kontaktieren Sie uns — wir finden eine Lösung."
     },
     "ImpactSlider": {
       "level_1": "Grundlagen der Bildung",
@@ -1732,14 +1727,6 @@
       "export_csv": "CSV exportieren",
       "export_json": "JSON exportieren"
     },
-    "Guard": {
-      "unauthenticated": "Sie müssen sich anmelden, um fortzufahren.",
-      "no_organization": "Ihr Konto ist noch nicht mit einer Organisation verknüpft. Bitte nehmen Sie Ihre Einladung an oder wenden Sie sich an einen Administrator.",
-      "forbidden": "Sie haben keine Berechtigung, diese Aktion auszuführen.",
-      "cross_organization": "Zugriff auf eine andere Organisation wurde verweigert.",
-      "role_required": "Sie haben keine Berechtigung, diese Aktion auszuführen. Erforderliche Rolle: {roles}.",
-      "permission_required": "Ihre Rolle „{role}“ enthält „{permission}“ nicht. Erforderliche Rolle: {roles}."
-    },
     "Nav": {
       "groups": {
         "overview": "Übersicht",
@@ -1781,7 +1768,8 @@
         "tags": "Tags",
         "settings": "Einstellungen",
         "governance": "Genehmigungen",
-        "trustCenter": "Trust-Center"
+        "trustCenter": "Trust-Center",
+        "contentTranslations": "Inhaltsübersetzungen"
       },
       "menu": {
         "title": "Navigation",
@@ -2300,6 +2288,26 @@
         "public_label": "Öffentlich (im Impact-Bereich der Website sichtbar)",
         "save": "Kennzahl speichern",
         "error": "Die Kennzahl konnte nicht gespeichert werden."
+      },
+      "fieldReports": {
+        "title": "Feldbericht-Prüfung",
+        "description": "WhatsApp/SMS-Berichte landen in Quarantäne. Prüfen Sie sie, verknüpfen Sie die richtige Wirkungskennzahl und überführen Sie geprüfte Berichte in Messungen.",
+        "empty": "Keine Berichte in Wartestellung — die Eingangsqueue ist leer.",
+        "quantity": "Menge",
+        "project": "Projektcode",
+        "metric": "Wirkungskennzahl",
+        "review": "Zur Prüfung weiterleiten",
+        "verify": "Verifizieren",
+        "reject": "Ablehnen",
+        "promote": "Zu Messung überführen",
+        "working": "Läuft…",
+        "reason_ph": "Ablehnungsgrund (optional)",
+        "metric_ph": "Mit Wirkungskennzahl verknüpfen…",
+        "state_quarantined": "in Quarantäne",
+        "state_pending_review": "in Prüfung",
+        "state_verified": "verifiziert",
+        "state_rejected": "abgelehnt",
+        "state_promoted": "überführt"
       }
     },
     "Financial": {
@@ -2614,7 +2622,8 @@
         "col_locales": "Locales",
         "col_workflow": "Workflow",
         "col_approval": "Approval",
-        "col_status": "Status"
+        "col_status": "Status",
+        "btn_entities": "Alle Übersetzungen"
       },
       "Approval": {
         "approved": "Approved",
@@ -2833,6 +2842,59 @@
       },
       "error": {
         "load_failed": "This panel failed to load."
+      },
+      "Entities": {
+        "title": "Übersetzungsabdeckung",
+        "description": "Übersetzen Sie Kampagnen, Projekte, Partner, Wirkungskennzahlen, Veranstaltungen und das Organisationsprofil und prüfen und veröffentlichen Sie dann jede Sprache. Nur veröffentlichte Sprachen erscheinen auf der öffentlichen Website.",
+        "back": "Zurück zu den Seiten",
+        "ai_warning": "KI-Übersetzung ist in dieser Umgebung nicht aktiviert. Fügen Sie Übersetzungen je Sprache manuell hinzu. Wenn aktiviert, erfordert KI-generierter Text vor der Veröffentlichung immer eine menschliche Prüfung.",
+        "group_empty": "Hier gibt es noch nichts zu übersetzen.",
+        "manage": "Übersetzungen verwalten",
+        "loading": "Übersetzungen werden geladen…",
+        "status_missing": "fehlt",
+        "no_translation": "Noch keine Übersetzung",
+        "percent": "{pct}% übersetzt",
+        "version": " · v{version}",
+        "missing_fields": "Fehlende Felder:",
+        "save": "Speichern",
+        "saving": "Speichern…",
+        "saved_draft": "[{locale}] als Entwurf gespeichert.",
+        "request_review": "Zur Prüfung senden",
+        "approve": "Genehmigen",
+        "publish": "Veröffentlichen",
+        "ai_translate": "KI-Übersetzung",
+        "ai_working": "Übersetzen…",
+        "ai_not_configured": "KI nicht konfiguriert",
+        "ai_tooltip_enabled": "Die englische Version mit KI in diese Sprache übersetzen (menschliche Prüfung weiterhin erforderlich).",
+        "ai_tooltip_disabled": "Legen Sie CMS_TRANSLATION_PROVIDER und CMS_TRANSLATION_API_KEY fest, um die KI-Übersetzung zu aktivieren.",
+        "ai_needs_source": "Speichern Sie zuerst die englische Übersetzung – die KI übersetzt aus der Ausgangssprache.",
+        "title_required": "[{locale}] Name ist erforderlich.",
+        "type_campaign": "Kampagnen",
+        "type_project": "Projekte",
+        "type_partner": "Partner",
+        "type_impact_metric": "Wirkungskennzahlen",
+        "type_org_event": "Veranstaltungen",
+        "type_organization": "Organisationsprofil",
+        "fields": {
+          "name": "Name",
+          "title": "Titel",
+          "description": "Beschreibung",
+          "excerpt": "Auszug",
+          "summary": "Zusammenfassung",
+          "cta_label": "CTA-Beschriftung",
+          "cta_url": "CTA-URL",
+          "category_label": "Kategorie",
+          "location": "Ort",
+          "country": "Land",
+          "city": "Stadt",
+          "unit_label": "Einheit",
+          "mission": "Mission",
+          "vision": "Vision",
+          "author_name": "Autor",
+          "program": "Programm",
+          "role": "Rolle",
+          "commitment": "Verpflichtung"
+        }
       }
     },
     "Error": {
@@ -3158,10 +3220,14 @@
       "info_title": "Organisationsinformationen",
       "info_description": "Primäre Profildetails, sichtbar in Berichten und Mitgliedseinladungen.",
       "org_name": "Organisationsname",
+      "registration_number": "Registernummer",
       "tax_id": "Registrierungs-/Steuernummer",
       "contact_email": "Primäre Kontakt-E-Mail",
       "currency": "Standardwährung",
       "save_profile": "Organisationsprofil speichern",
+      "saving_profile": "Speichern…",
+      "profile_saved": "Profil gespeichert.",
+      "profile_unavailable": "Melden Sie sich als Eigentümer oder Admin an, um das Organisationsprofil zu bearbeiten.",
       "access_title": "Offene Zugriffsanfragen",
       "access_description": "Anfragen für zusätzliche Organisationsrollen prüfen.",
       "exp_title": "Authentifizierung & Onboarding",
@@ -3646,29 +3712,19 @@
     "member_details": "Mitglied {n}",
     "remove_member": "Entfernen",
     "field_login_required": "Zum Außendienst anmelden.",
-    "MediaCarousel": {
-      "carousel_label": "Medien-Karussell",
-      "thumbnails_label": "Vorschaubilder",
-      "pagination_label": "Seitensteuerung",
-      "expanded_label": "Erweiterte Ansicht",
-      "previous": "Zurück",
-      "next": "Weiter",
-      "close": "Schließen",
-      "slide": "Slide",
-      "expand": "Erweitern"
-    },
-    "MediaUpload": {
-      "drop_single": "Bild oder Video hierher ziehen oder klicken zum Auswählen",
-      "drop_multiple": "Bilder oder Videos hierher ziehen oder klicken zum Auswählen",
-      "formats": "Unterstützt: {accept}. Max. Größe: {maxSize}MB",
-      "uploading": "Lade hoch {file}…",
-      "error_size": "Datei zu groß (max {max}MB)",
-      "error_type": "Nicht unterstütztes Dateiformat",
-      "error_upload": "Upload fehlgeschlagen. Bitte erneut versuchen.",
-      "uploaded": "Hochgeladen ({count})",
-      "remove": "Entfernen",
-      "set_focal_point": "Klicken um Fokuspunkt zu setzen"
-    }
+    "device_loss_warning": "Diese Datensätze existieren nur auf diesem Gerät, bis sie synchronisiert sind. Geht das Telefon vorher verloren, sind ungesendete Datensätze weg — synchronisieren Sie, bevor Sie das Einsatzgebiet verlassen, oder exportieren Sie die Queue als Sicherung.",
+    "export_queue": "Queue exportieren (Sicherung)",
+    "export_done": "Queue exportiert.",
+    "locked_records": "{count} Datensätze wurden von einer anderen Person erfasst — melden Sie sich als diese Person an, um sie zu senden.",
+    "attempts": "Versuche",
+    "retry_op": "Jetzt erneut senden",
+    "discard_op": "Verwerfen",
+    "discard_confirm": "Damit wird der Datensatz endgültig von diesem Gerät gelöscht. Zur Bestätigung DELETE eingeben.",
+    "discard_btn": "Endgültig löschen",
+    "kind_household": "Haushalt",
+    "kind_beneficiary": "Person",
+    "kind_service": "Dienstleistung",
+    "kind_referral": "Überweisung"
   },
   "CampaignTheme": {
     "label": "Kampagne",
@@ -3678,26 +3734,5 @@
     "community-week": {
       "message": "Community-Woche: Nimm an Veranstaltungen in deiner Nähe teil."
     }
-  },
-  "MediaCarousel": {
-    "carousel_label": "Mediengalerie",
-    "previous": "Zurück",
-    "next": "Weiter",
-    "expand": "Vergrößern",
-    "thumbnails_label": "Miniaturansichten",
-    "slide": "Folie",
-    "pagination_label": "Galerie-Navigation",
-    "expanded_label": "Vergrößerte Ansicht",
-    "close": "Schließen"
-  },
-  "MediaUpload": {
-    "error_size": "Datei überschreitet {max} MB.",
-    "error_type": "Nicht unterstützter Dateityp.",
-    "error_upload": "Upload fehlgeschlagen. Bitte erneut versuchen.",
-    "formats": "{accept} · max. {maxSize} MB",
-    "uploading": "{file} wird hochgeladen…",
-    "uploaded": "Hochgeladen ({count})",
-    "set_focal_point": "Fokuspunkt festlegen",
-    "remove": "Entfernen"
   }
 }

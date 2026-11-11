@@ -45,6 +45,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local tooling / agent state (machine-specific, never commit)
+.opencode/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -23,7 +23,7 @@ interface QueryResult {
 }
 
 /**
- * Minimal PostgREST-shaped stub (same shape as `content-workflow.test.ts`):
+ * Minimal PostgREST-shaped stub:
  * every method records the call and returns the same awaitable proxy, so
  * `await supabase.from(t).select(...).eq(a, b)` resolves from a FIFO queue.
  */

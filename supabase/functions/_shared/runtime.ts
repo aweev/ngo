@@ -34,23 +34,32 @@ export function serviceClient(): SupabaseClient {
  * config.toml (Scheduler has no user JWT), so this is the auth boundary.
  * Returns null when authorized, otherwise an error Response.
  */
+/**
+ * Constant-time string comparison for the shared secret.
+ *
+ * `crypto.subtle.timingSafeEqual` is NOT available in Deno's WebCrypto (verified
+ * `undefined` in Deno 2.x), so the previous implementation silently fell through
+ * to a plain `!==` and leaked the secret through a timing side-channel. This
+ * compares every byte with no early exit after the (non-secret) length check.
+ */
+function timingSafeEqual(a: string, b: string): boolean {
+    const aBytes = new TextEncoder().encode(a);
+    const bBytes = new TextEncoder().encode(b);
+    if (aBytes.length !== bBytes.length) return false;
+    let diff = 0;
+    for (let i = 0; i < aBytes.length; i += 1) {
+        diff |= aBytes[i] ^ bBytes[i];
+    }
+    return diff === 0;
+}
+
 export function requireCronSecret(req: Request): Response | null {
     const expected = Deno.env.get("CRON_SECRET");
     if (!expected) return jsonResponse({ error: "CRON_SECRET is not configured" }, 500);
     const provided = req.headers.get("x-cron-secret");
     if (!provided) return jsonResponse({ error: "Unauthorized" }, 401);
-    // Timing-safe compare to prevent secret exfiltration via timing side-channel.
-    const expectedBytes = new TextEncoder().encode(expected);
-    const providedBytes = new TextEncoder().encode(provided);
-    if (expectedBytes.length !== providedBytes.length || !crypto.subtle.timingSafeEqual) {
-        // Fallback for runtimes without timingSafeEqual (non-Deno Edge).
-        if (expectedBytes.length !== providedBytes.length || provided !== expected) {
-            return jsonResponse({ error: "Unauthorized" }, 401);
-        }
-    } else {
-        if (!crypto.subtle.timingSafeEqual(expectedBytes, providedBytes)) {
-            return jsonResponse({ error: "Unauthorized" }, 401);
-        }
+    if (!timingSafeEqual(expected, provided)) {
+        return jsonResponse({ error: "Unauthorized" }, 401);
     }
     return null;
 }

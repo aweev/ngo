@@ -204,13 +204,14 @@ The session has expired. The middleware should automatically refresh it. If not:
 
 ## Release & operations runbook (verified)
 
-Current project state (checked with `npx supabase migration list`):
+Current repo state (recomputed from this checkout; confirm remote parity with
+`npx supabase migration list`):
 
 | Item | State |
 |---|---|
-| Migrations | **30 files, all applied** on the linked remote (latest `20260918000001_scheduled_runtime`) |
-| Schema | 61 tables, 13 views, 26 functions, 55 policies, 21 triggers, 108 indexes (`pnpm verify:migrations`) |
-| Edge functions | 4 deployed — `cron-runner`, `webhook-delivery`, `notification-dispatcher`, `automation-engine` |
+| Migrations | **53 files** in `supabase/migrations/` (latest `20261103000002_fix_schedule_cron_runtime`); apply with `npx supabase db push`, then confirm Local == Remote via `npx supabase migration list` |
+| Schema | 87 tables, 16 views, 49 functions, 67 policies, 48 triggers, 158 indexes (`pnpm verify:migrations`, recomputed from this repo) |
+| Edge functions | 4 in `supabase/functions/` — `cron-runner`, `webhook-delivery`, `notification-dispatcher`, `automation-engine` (all `verify_jwt = false`; deploy via step 3) |
 | Scheduled runtime | pg_cron installer in place; jobs activate once the Vault secret exists (step 5) |
 
 ### 1. Apply migrations
@@ -245,6 +246,13 @@ and the import map come from the `[functions.*]` blocks in `config.toml`
 (all four use `verify_jwt = false`; the shared `CRON_SECRET` is the auth
 boundary).
 
+Type-check them first with `pnpm verify:functions`: it runs the authoritative
+`deno check` when Deno is installed (CI does, via `denoland/setup-deno@v2`, and
+sets `REQUIRE_DENO=1` so a missing binary fails loudly) and falls back to
+`tsc -p tsconfig.functions.json` + `deno-edge-shim.d.ts` otherwise. They are
+excluded from the app `tsconfig.json` (those files run on Deno), so this gate is
+the only thing that parses them. It is wired into `pnpm verify`.
+
 ### 4. Set the runtime secret
 
 ```bash
@@ -269,10 +277,28 @@ select vault.create_secret('<CRON_SECRET>', 'cron_secret', 'scheduled runtime');
 select public.schedule_cron_jobs();   -- idempotent: safe to re-run any time
 ```
 
-`schedule_cron_jobs()` reports what it did, e.g. `scheduled 4 job(s) against …`.
+`schedule_cron_jobs()` reports what it did, e.g. `scheduled 3 job(s) against …`.
 It returns a `skipped:` message instead of failing when pg_cron is not enabled
-or the Vault entry is missing. Cadence: `cron-runner` and `webhook-delivery`
-every minute; `notification-dispatcher` and `automation-engine` every 5 minutes.
+or the Vault entry is missing, and it unschedules jobs whose contract no longer
+exists (e.g. the retired `automation-engine-5min` poller).
+
+Cadence (every request carries `x-cron-secret`, read from Vault at run time):
+
+| Job | Method | Schedule | Purpose |
+|---|---|---|---|
+| `cron-runner` | POST | every minute | drives the event spine (outbox → `webhook-delivery` + `automation-engine`, per ADR-0001) and any due `scheduled_jobs` |
+| `webhook-delivery` | GET | every minute | redrives undelivered `webhook_deliveries` rows (claim-based; backoff, then abandon) |
+| `notification-dispatcher` | GET | every 5 minutes | drains queued notifications (claim-based; honours recipient preferences) |
+
+The dispatcher's email/SMS/push channels deliver by POSTing a JSON payload to
+`SMTP_URL` / `SMS_PROVIDER_URL` / `PUSH_PROVIDER_URL` (set via
+`npx supabase secrets set ...`; despite the name, `SMTP_URL` is an HTTP
+endpoint, not an SMTP connection string). In-app and webhook channels need no
+extra secret. Unset provider URLs leave those channels queued with backoff —
+nothing sends, nothing is lost.
+
+`automation-engine` is deliberately **not** scheduled: it has no queue to poll —
+`cron-runner` invokes it with a `rule_id` or an `event` + `organization_id`.
 
 ### 6. RLS isolation tests against a real database
 
@@ -287,6 +313,23 @@ The runner wraps `supabase/tests/rls-isolation-tests.sql` in one transaction and
 always rolls back, so it is safe against a live database — it seeds two
 organizations, impersonates every role through `request.jwt.claim.sub`, asserts
 cross-tenant isolation and the permission gates, then discards everything.
+
+The scheduled runtime has its own live suite:
+
+```bash
+DATABASE_URL="postgresql://..." pnpm test:runtime
+# or
+node scripts/run-runtime-tests.mjs "$DATABASE_URL"
+```
+
+It installs `supabase/tests/schedule-runtime-shims.sql` (a no-op on a real
+Supabase stack, a stand-in for the roles/pg_net/cron/vault surface on bare
+PostgreSQL), applies
+`20261103000002_fix_schedule_cron_runtime.sql`, asserts the claim RPC and the
+pg_cron job contract — `http_post` for `cron-runner`, `http_get` for both drain
+jobs, the retired `automation-engine` poller removed, idempotent re-runs,
+https-only URLs — and rolls back. CI runs it against the same Supabase stack as
+the RLS suite.
 
 ### 7. Full local gate before deploying
 

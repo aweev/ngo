@@ -55,6 +55,28 @@ if (cron) {
     check("cron-runner schedules retries with backoff", /backoff|next_attempt_at/.test(cron));
 }
 
+// --- 2b. Sibling auth contract -------------------------------------------------
+// Receivers authenticate with `requireCronSecret`, which reads the
+// x-cron-secret header. A caller that sends anything else (apikey /
+// Authorization only) is rejected with 401, which strands outbox events and
+// dead-letters every scheduled job — the silent failure this contract prevents.
+const runtimeShared = read("supabase/functions/_shared/runtime.ts");
+check("requireCronSecret reads the x-cron-secret header",
+    runtimeShared !== null && runtimeShared.includes('headers.get("x-cron-secret")'));
+const reliabilityShared = read("supabase/functions/_shared/reliability.ts");
+check("postSibling sends the x-cron-secret header receivers require",
+    reliabilityShared !== null && /"x-cron-secret"\s*:\s*cronSecret/.test(reliabilityShared));
+check("cron-runner sends x-cron-secret when it calls siblings directly",
+    cron !== null && cron.includes('"x-cron-secret"'));
+const engineCaller = read("supabase/functions/automation-engine/index.ts");
+check("automation-engine sends x-cron-secret to webhook-delivery",
+    engineCaller !== null && engineCaller.includes('"x-cron-secret"'));
+for (const fn of ["cron-runner", "automation-engine", "webhook-delivery", "notification-dispatcher"]) {
+    const src = read(`supabase/functions/${fn}/index.ts`);
+    check(`${fn} gates every request on requireCronSecret`,
+        src !== null && src.includes("requireCronSecret"));
+}
+
 // --- 3. notification-dispatcher: claims, not bare poll -----------------------
 const dispatcher = read("supabase/functions/notification-dispatcher/index.ts");
 check("notification-dispatcher exists", dispatcher !== null);
@@ -72,14 +94,35 @@ if (webhook) {
     check("webhook deliveries are idempotent", webhook.includes("idempotency_key"));
 }
 
+// --- 4b. Hook redrive + scheduler contract (P1 fix) --------------------------
+// Rows queued in webhook_deliveries by the automation engine (trigger_webhook
+// fans out best-effort) must be recoverable: a claim RPC, a GET drain in the
+// worker, and a scheduler that installs only jobs matching live contracts.
+const scheduler = read("supabase/migrations/20261103000002_fix_schedule_cron_runtime.sql");
+check("scheduler contract migration present", scheduler !== null);
+if (scheduler) {
+    check("dispatcher is driven via http_get (its drain path)",
+        scheduler.includes("http_get") && scheduler.includes("notification-dispatcher"));
+    check("retired automation-engine poller is unscheduled",
+        scheduler.includes("automation-engine-5min") && scheduler.includes("cron.unschedule"));
+    check("webhook deliveries are claimable (FOR UPDATE SKIP LOCKED)",
+        scheduler.includes("claim_webhook_deliveries") && scheduler.includes("FOR UPDATE SKIP LOCKED"));
+    check("webhook deliveries carry retry + lease state",
+        scheduler.includes("next_attempt_at") && scheduler.includes("lease_expires_at"));
+}
+check("webhook-delivery exposes a claim-based GET drain",
+    webhook !== null
+    && webhook.includes("claim_webhook_deliveries")
+    && webhook.includes('req.method === "GET"'));
+
 // --- 5. App-side modules + tests --------------------------------------------
 check("src/lib/reliability.ts present", read("src/lib/reliability.ts") !== null);
 check("src/lib/reliability.test.ts present", read("src/lib/reliability.test.ts") !== null);
 check("orphan duplicate src/lib/outbox.ts removed", !existsSync(join(root, "src/lib/outbox.ts")));
 
 // --- 6. Outbox producer wired into a real domain action ----------------------
-const workflow = read("src/actions/content-workflow.ts");
-check("content publish enqueues an outbox event", workflow !== null && workflow.includes("enqueueOutboxEvent"));
+const content = read("src/actions/content.ts");
+check("content publish enqueues an outbox event", content !== null && content.includes("enqueueOutboxEvent"));
 
 // --- 7. Metrics endpoint referenced by the incidents runbook -----------------
 const metrics = read("src/app/api/metrics/route.ts");

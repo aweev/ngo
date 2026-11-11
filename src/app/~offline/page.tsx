@@ -27,12 +27,15 @@ export default function OfflineFallbackPage() {
                 </div>
                 <h1 style={{ fontSize: '22px', margin: '16px 0 8px' }}>You are offline</h1>
                 <p style={{ fontSize: '15px', color: '#94a3b8', lineHeight: 1.6 }}>
-                    Your records are safe on this device. Reconnect to the internet,
-                    then retry — queued work sends automatically.
+                    Your records are saved on this device — not yet sent. Reconnect
+                    to the internet, then open the field app and tap Sync. Queued
+                    records stay on this device until they sync, so keep the device
+                    with you.
                 </p>
                 <p style={{ fontSize: '15px', color: '#94a3b8', lineHeight: 1.6 }}>
-                    Vos dossiers sont en s&eacute;curit&eacute; sur cet appareil. Reconnectez-vous,
-                    puis r&eacute;essayez.
+                    Vos dossiers sont enregistr&eacute;s sur cet appareil — pas
+                    encore envoy&eacute;s. Reconnectez-vous, puis ouvrez
+                    l&rsquo;application terrain et touchez Synchroniser.
                 </p>
                 <button
                     type="button"

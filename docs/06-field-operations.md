@@ -1,8 +1,9 @@
 # 06 — Field Operations Manual
 
 Reader: field officers, volunteer coordinators, program managers. The field
-app lives at `/field` (5 destinations max, works in English, German, French,
-Spanish, Arabic). No training manual needed beyond this page.
+app lives at `/field` (5 destinations max, works in English, French, and
+Arabic today — Swahili and Hausa catalogs are on the roadmap and fall back
+to English until they land). No training manual needed beyond this page.
 
 ## First visit (online, once)
 
@@ -11,9 +12,9 @@ Spanish, Arabic). No training manual needed beyond this page.
    caches the app on the device for offline use.
 3. The header pill shows green **Sync** (nothing waiting) or an amber count.
 
-Tip for shared phones: each officer signs in with their own account. Queued
-records are bound to the signer — another user cannot send or absorb your
-queue.
+Tip for shared phones: the queue lives on the device, not in your account —
+anyone signed in on this phone can push what you queued. Sign out once your
+queue is empty.
 
 ## Register a household (under 2 minutes, 7 taps)
 
@@ -27,8 +28,10 @@ Home → **Register household**:
    tap **Use existing** to adopt a matched record (the row is dropped from
    your batch), or **Create new anyway**. Offline, this check happens
    automatically at sync and flags the record for review instead of blocking.
-4. **Save on this device.** The record is safe immediately — sync happens
-   whenever signal returns. If the app crashes mid-entry, the draft restores
+4. **Save on this device.** The record is saved on this device only — sync
+   happens when you tap **Sync now** or save another record while online;
+   it does not fire automatically when signal returns. Until it syncs, the
+   only copy is this phone. If the app crashes mid-entry, the draft restores
    on reopen.
 
 Rules the app enforces: names need 2+ characters; phones stay optional;
@@ -58,15 +61,24 @@ a referral is only "done" when marked complete, not when created.
 - **Duplicates to merge**: records that matched an existing person. A manager
   merges them (services and referrals move to the kept record; the duplicate
   is archived with a full audit trail).
-- **Sync conflicts**: when the server copy changed since your edit started,
-  both versions are preserved and you pick keep-mine / keep-server (or a
-  manager merges field-by-field; names/phones are never overwritten from a
-  conflict payload).
+- **Sync conflicts**: conflict rows appear here when the server flags one
+  during reconciliation (for example an online edit that touched the same
+  record). You pick keep-mine / keep-server. Note: field captures themselves
+  are create-only — they never overwrite an existing record, so ordinary
+  field work cannot create a conflict.
 - **Needs your review**: items rejected 8 times with the server's reason.
-  Fix the data, or escalate — they are never auto-deleted.
+  They are never auto-deleted. On the sync screen you can retry a record
+  immediately, or discard it after typing DELETE to confirm — a record only
+  leaves the device through one of those two actions.
+- **Per-officer queue**: records you queue are stamped with your account and
+  are only sent from your sign-in. On a shared phone, another officer's
+  queued records show as locked with a count — sign in as them to send.
+- **Backup**: the queue can be exported as a JSON file at any time. Records
+  exist only on this device until they sync, so export before wiping or
+  handing in a phone.
 - Offline banner state: "You are offline. Records stay on this device." If an
-  uncached page is opened offline, a dedicated offline screen explains the
-  queue is safe, with a retry button.
+  uncached page is opened offline, a dedicated offline screen explains records
+  are saved on-device and need a manual Sync, with a retry button.
 
 ## Duplicate discipline (for program managers)
 
@@ -97,6 +109,8 @@ Only verified/promoted numbers reach donor reports and the public dashboard.
 - No editing someone else's queue, no deleting synced services, no
   exporting data from the device.
 - Lost/stolen phone: report immediately so the account can be frozen;
-  remote wipe is on the roadmap (see `12-roadmap.md`). Until then, treat a
-  lost device as holding undecrypted PII only if the officer was signed in
-  with cached data — IndexedDB contents are the exposure surface.
+  remote wipe is on the roadmap (see `12-roadmap.md`). **Until a record
+  syncs, it exists only on the phone** — if the device is lost before
+  syncing, unsent records are gone. Sync before you leave the field, and
+  treat a lost device as holding undecrypted PII only if the officer was
+  signed in with cached data — IndexedDB contents are the exposure surface.

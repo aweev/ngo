@@ -1,8 +1,4 @@
 {
-  "Metadata": {
-    "title": "AWE e.V.",
-    "description": "Dignified Growth & Radiant Community. Empowering communities through education, support, and sustainable development."
-  },
   "NotFound": {
     "title": "Page Not Found",
     "description": "The page you are looking for does not exist or has been moved.",
@@ -795,8 +791,7 @@
       "transparency_desc": "We believe trust is earned. Here is exactly where your money goes.",
       "faq_title": "Frequently Asked Questions",
       "matching_title": "Corporate Matching",
-      "matching_desc": "Does your employer match gifts? Search below.",
-      "matching_placeholder": "Search for your company..."
+      "matching_desc": "Does your employer match gifts? Ask your HR team — many companies double your donation. Send us the form via the contact page and we will handle the rest."
     },
     "Widget": {
       "frequency_monthly": "Give Monthly",
@@ -827,11 +822,11 @@
     },
     "FAQ": {
       "q1": "Can I cancel my monthly donation?",
-      "a1": "Yes, absolutely. You can pause, modify, or cancel your monthly gift at any time via the Donor Portal or by contacting us directly.",
+      "a1": "Yes, absolutely. You can pause, modify, or cancel your monthly gift at any time — just reach us via the contact page and choose \"Donation\" as the topic. We process the change within a few business days.",
       "q2": "Is this tax-deductible?",
-      "a2": "Yes. AWE e.V. is a registered non-profit. We send annual donation receipts for tax purposes automatically.",
-      "q3": "Do you accept PayPal?",
-      "a3": "Yes, we accept major Credit Cards, PayPal, Apple Pay, and Google Pay."
+      "a2": "Yes. AWE e.V. is a registered non-profit. You receive an email receipt for every completed donation, and tax receipts are issued for eligible one-time donations. Need a consolidated annual statement? Reach us via the contact page (topic \"Donation\").",
+      "q3": "What payment methods can I use?",
+      "a3": "We accept major credit and debit cards through Stripe. Apple Pay and Google Pay appear automatically when your device and bank support them. Prefer another way to pay? Contact us and we will find a solution."
     },
     "ImpactSlider": {
       "level_1": "Education Essentials",
@@ -1732,14 +1727,6 @@
       "export_csv": "Export CSV",
       "export_json": "Export JSON"
     },
-    "Guard": {
-      "unauthenticated": "You need to sign in to continue.",
-      "no_organization": "Your account is not linked to an organization yet. Please accept your invitation or contact an administrator.",
-      "forbidden": "You do not have permission to perform this action.",
-      "cross_organization": "Cross-organization access denied.",
-      "role_required": "You do not have permission to perform this action. Required role: {roles}.",
-      "permission_required": "Your role \"{role}\" does not include \"{permission}\". Required role: {roles}."
-    },
     "Nav": {
       "groups": {
         "overview": "Overview",
@@ -1781,7 +1768,8 @@
         "tags": "Tags",
         "settings": "Settings",
         "governance": "Approvals",
-        "trustCenter": "Trust Center"
+        "trustCenter": "Trust Center",
+        "contentTranslations": "Content Translations"
       },
       "menu": {
         "title": "Navigation",
@@ -2300,6 +2288,26 @@
         "public_label": "Public (shown on the website impact section)",
         "save": "Save metric",
         "error": "Could not save the metric."
+      },
+      "fieldReports": {
+        "title": "Field report verification",
+        "description": "WhatsApp/SMS reports land quarantined. Review them, link the right impact metric, then promote verified reports into measurements.",
+        "empty": "No reports waiting — the intake queue is clear.",
+        "quantity": "Quantity",
+        "project": "Project code",
+        "metric": "Impact metric",
+        "review": "Move to review",
+        "verify": "Verify",
+        "reject": "Reject",
+        "promote": "Promote to measurement",
+        "working": "Working…",
+        "reason_ph": "Rejection reason (optional)",
+        "metric_ph": "Link to impact metric…",
+        "state_quarantined": "quarantined",
+        "state_pending_review": "pending review",
+        "state_verified": "verified",
+        "state_rejected": "rejected",
+        "state_promoted": "promoted"
       }
     },
     "Financial": {
@@ -2614,7 +2622,8 @@
         "col_locales": "Locales",
         "col_workflow": "Workflow",
         "col_approval": "Approval",
-        "col_status": "Status"
+        "col_status": "Status",
+        "btn_entities": "All translations"
       },
       "Approval": {
         "approved": "Approved",
@@ -2833,6 +2842,59 @@
       },
       "error": {
         "load_failed": "This panel failed to load."
+      },
+      "Entities": {
+        "title": "Translation coverage",
+        "description": "Translate campaigns, projects, partners, impact metrics, events, and the organization profile, then review and publish each locale. Only published locales appear on the public site.",
+        "back": "Back to pages",
+        "ai_warning": "AI translation is not enabled in this environment. Add translations manually per locale. When enabled, AI-generated text always requires human review before publishing.",
+        "group_empty": "Nothing to translate here yet.",
+        "manage": "Manage translations",
+        "loading": "Loading translations…",
+        "status_missing": "missing",
+        "no_translation": "No translation yet",
+        "percent": "{pct}% translated",
+        "version": " · v{version}",
+        "missing_fields": "Missing fields:",
+        "save": "Save",
+        "saving": "Saving…",
+        "saved_draft": "[{locale}] saved as draft.",
+        "request_review": "Request review",
+        "approve": "Approve",
+        "publish": "Publish",
+        "ai_translate": "AI translate",
+        "ai_working": "Translating…",
+        "ai_not_configured": "AI not configured",
+        "ai_tooltip_enabled": "Translate the English version into this locale with AI (human review still required).",
+        "ai_tooltip_disabled": "Set CMS_TRANSLATION_PROVIDER and CMS_TRANSLATION_API_KEY to enable AI translation.",
+        "ai_needs_source": "Save the English translation first — AI translates from the source locale.",
+        "title_required": "[{locale}] Name is required.",
+        "type_campaign": "Campaigns",
+        "type_project": "Projects",
+        "type_partner": "Partners",
+        "type_impact_metric": "Impact metrics",
+        "type_org_event": "Events",
+        "type_organization": "Organization profile",
+        "fields": {
+          "name": "Name",
+          "title": "Title",
+          "description": "Description",
+          "excerpt": "Excerpt",
+          "summary": "Summary",
+          "cta_label": "CTA label",
+          "cta_url": "CTA URL",
+          "category_label": "Category",
+          "location": "Location",
+          "country": "Country",
+          "city": "City",
+          "unit_label": "Unit label",
+          "mission": "Mission",
+          "vision": "Vision",
+          "author_name": "Author",
+          "program": "Program",
+          "role": "Role",
+          "commitment": "Commitment"
+        }
       }
     },
     "Error": {
@@ -3158,10 +3220,14 @@
       "info_title": "Organization Information",
       "info_description": "Primary profile details visible across reports and member invitations.",
       "org_name": "Organization Name",
+      "registration_number": "Registration number",
       "tax_id": "Registration / Tax ID",
       "contact_email": "Primary Contact Email",
       "currency": "Default Currency",
       "save_profile": "Save Organization Profile",
+      "saving_profile": "Saving…",
+      "profile_saved": "Profile saved.",
+      "profile_unavailable": "Sign in as an owner or admin to edit the organization profile.",
       "access_title": "Pending access requests",
       "access_description": "Review requests for additional organization roles.",
       "exp_title": "Auth and onboarding experience",
@@ -3646,29 +3712,19 @@
     "member_details": "Member {n}",
     "remove_member": "Remove",
     "field_login_required": "Sign in to use the field app.",
-    "MediaCarousel": {
-      "carousel_label": "Media carousel",
-      "thumbnails_label": "Thumbnails",
-      "pagination_label": "Pagination",
-      "expanded_label": "Expanded view",
-      "previous": "Previous",
-      "next": "Next",
-      "close": "Close",
-      "slide": "Slide",
-      "expand": "Expand"
-    },
-    "MediaUpload": {
-      "drop_single": "Drag & drop an image or video here, or click to browse",
-      "drop_multiple": "Drag & drop images or videos here, or click to browse",
-      "formats": "Supported: {accept}. Max size: {maxSize}MB",
-      "uploading": "Uploading {file}…",
-      "error_size": "File too large (max {max}MB)",
-      "error_type": "Unsupported file type",
-      "error_upload": "Upload failed. Please try again.",
-      "uploaded": "Uploaded ({count})",
-      "remove": "Remove",
-      "set_focal_point": "Click to set focal point"
-    }
+    "device_loss_warning": "These records exist only on this device until they sync. If the phone is lost before syncing, unsent records are gone — sync before you leave the field, or export the queue as a backup.",
+    "export_queue": "Export queue (backup)",
+    "export_done": "Queue exported.",
+    "locked_records": "{count} record(s) were queued by another officer — sign in as them to send.",
+    "attempts": "Attempts",
+    "retry_op": "Retry now",
+    "discard_op": "Discard",
+    "discard_confirm": "This permanently deletes the record from this device. Type DELETE to confirm.",
+    "discard_btn": "Delete permanently",
+    "kind_household": "Household",
+    "kind_beneficiary": "Beneficiary",
+    "kind_service": "Service",
+    "kind_referral": "Referral"
   },
   "CampaignTheme": {
     "label": "Campaign",
@@ -3678,26 +3734,5 @@
     "community-week": {
       "message": "Community week: join events near you."
     }
-  },
-  "MediaCarousel": {
-    "carousel_label": "Media gallery",
-    "previous": "Previous",
-    "next": "Next",
-    "expand": "Expand",
-    "thumbnails_label": "Thumbnails",
-    "slide": "Slide",
-    "pagination_label": "Gallery pagination",
-    "expanded_label": "Expanded view",
-    "close": "Close"
-  },
-  "MediaUpload": {
-    "error_size": "File exceeds {max} MB.",
-    "error_type": "Unsupported file type.",
-    "error_upload": "Upload failed. Please try again.",
-    "formats": "{accept} · max {maxSize} MB",
-    "uploading": "Uploading {file}…",
-    "uploaded": "Uploaded ({count})",
-    "set_focal_point": "Set focal point",
-    "remove": "Remove"
   }
 }

@@ -48,6 +48,7 @@ export function BeneficiaryDetail({
             offline_uuid: uuid,
             kind,
             idempotency_key: uuid,
+            user_id: useFieldSyncStore.getState().currentUserId,
             payload: { ...payload, beneficiary_id: beneficiary.id },
             device_id: getFieldDeviceId(),
         });

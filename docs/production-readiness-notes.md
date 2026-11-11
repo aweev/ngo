@@ -1,9 +1,37 @@
-> **Status banner (Phases 0–2 shipped):** this note is now historical
-> context. The CMS translation/approval workflow gaps it describes stand,
-> but the finance-integrity, field-core, offline-sync, and reporting gaps
-> from the same era are closed — see `12-roadmap.md` (shipped) and the
-> current guides `02-architecture.md` through `10-testing-and-qa.md`. Do not
-> treat the P0 list below as the current release gate.
+> **Status banner (Phases 0–2 shipped, P0 §1–§3 closed on 2026-11-04):** this
+> note is now historical context — including the P0 list below. The
+> finance-integrity, field-core, offline-sync, and reporting gaps from that era
+> are closed (see `12-roadmap.md` shipped list), and so are the CMS/localization
+> gaps this note was written against:
+>
+> - **§1 CMS localization model** — shipped: `content_page_translations`
+>   (migration `20240101000022`), schema-validated per locale (`localeContentSchema`),
+>   per-locale draft → in_review → approved → published with a publish gate that
+>   refuses partially translated content (`canPublishLocale`, EN first).
+> - **§2 CMS workflow** — shipped: `setPageTranslationStatus` /
+>   `transitionContentWorkflow` (`src/actions/content.ts`), ED-gated publishing
+>   (`content.publish` permission), approval history, review notifications, and a
+>   real AI translation action (`requestAiTranslation`) that fails honestly with
+>   actionable copy when no provider is configured — the button is disabled, not
+>   decorative.
+> - **§3 Public entity localization** — shipped: `entity_translations` +
+>   `public_entity_translations`, per-entity admin editor at
+>   `/admin/content/entities`, and localized public reads with a fallback chain
+>   (`pickEntityFields` / `entityLocaleChain`).
+> - E2E scaffolding exists (`tests/e2e/translation-workflow.spec.ts`,
+>   `public-pages.spec.ts`, `donation-flow.spec.ts`); remaining genuinely open
+>   items are full five-locale E2E coverage, error monitoring rollout, and the
+>   Phase 3 privacy items (DSAR/retention executor, remote wipe) — all tracked in
+>   `12-roadmap.md`.
+> - **Offline-sync hardening (2026-11-04, B-list):** reconnect auto-sync wired
+>   (`online` event + `sync-queue`), per-officer queue binding on shared phones
+>   (`selectSyncBatch`), terminal-op repair UI (retry / typed-DELETE discard),
+>   queue export for device loss, `last_sync_at` stamped only on fully
+>   successful runs, dead generic offline store/banner removed, unused shadcn
+>   primitives and dead actions/components deleted (~40 files).
+>
+> Do not treat the P0 list below as the current release gate; keep it as the
+> original audit for scoring history.
 
 **Production readiness status**
 

@@ -1,8 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Button } from "@/components/ui/button";
-import { getImpactMetrics, getImpactGoals } from "@/actions/impact";
+import { getImpactMetrics } from "@/actions/impact";
+import { getFieldReports } from "@/actions/field-reports";
 import { ImpactMetricCard } from "@/components/admin/impact-metric-card";
+import { FieldReportQueue, type FieldReportRow } from "@/components/admin/field-report-queue";
 import { Plus } from "lucide-react";
 import { Link } from "@/lib/navigation";
 
@@ -11,9 +13,9 @@ export const dynamic = "force-dynamic";
 export default async function ImpactPage({ params }: { params: Promise<{ locale: string }> }) {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: "Admin.Impact" });
-    const [{ data: metrics }, { data: goals }] = await Promise.all([
+    const [{ data: metrics }, { data: reports }] = await Promise.all([
         getImpactMetrics(),
-        getImpactGoals(),
+        getFieldReports(undefined, 50),
     ]);
 
     return (
@@ -29,6 +31,11 @@ export default async function ImpactPage({ params }: { params: Promise<{ locale:
                         </Link>
                     </Button>
                 }
+            />
+
+            <FieldReportQueue
+                initialReports={(reports ?? []) as FieldReportRow[]}
+                metrics={(metrics ?? []).map((m) => ({ id: m.id, name: m.name }))}
             />
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

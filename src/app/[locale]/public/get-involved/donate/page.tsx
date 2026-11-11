@@ -188,16 +188,11 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
                             <DonationFAQ />
                         </div>
 
-                        {/* 5. Matching Gift Banner */}
-                        <div className="bg-brand-radiant-gold/10 border border-brand-radiant-gold/20 p-8 rounded-3xl flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-                            <div className="grow">
+                        {/* 5. Matching Gift Banner — honest: no fake employer search backend */}
+                        <div className="bg-brand-radiant-gold/10 border border-brand-radiant-gold/20 p-8 rounded-3xl">
+                            <div>
                                 <h3 className="text-xl font-bold mb-2">{t("matching_title")}</h3>
                                 <p className="text-muted-foreground text-sm">{t("matching_desc")}</p>
-                            </div>
-                            <div className="w-full md:w-auto">
-                                <div className="bg-background border border-border h-12 px-4 rounded-xl flex items-center text-muted-foreground text-sm w-full md:w-72 shadow-inner">
-                                    {t("matching_placeholder")}
-                                </div>
                             </div>
                         </div>
 
@@ -206,7 +201,7 @@ export default async function DonatePage({ params }: { params: Promise<{ locale:
                     {/* RIGHT COLUMN: Sticky Donation Widget (5 Cols) */}
                     <div className="lg:col-span-5 relative">
                         <div className="sticky top-28">
-                            <DonationWidget />
+                            <DonationWidget stripeConfigured={Boolean(process.env.STRIPE_SECRET_KEY)} />
                         </div>
                     </div>
 

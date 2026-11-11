@@ -36,8 +36,9 @@ export function StoriesHero() {
 
                     <div className="pt-4">
                         <Button asChild size="lg" className="rounded-full px-8 shadow-xl">
-                            {/* Routes to Member Portal */}
-                            <Link href="/auth/login?redirect=/dashboard/stories/new">
+                            {/* Story submissions arrive through the public contact
+                                form — there is no self-serve story editor. */}
+                            <Link href="/public/contact">
                                 <PenTool className="w-4 h-4 me-2" />
                                 {t("cta")}
                             </Link>

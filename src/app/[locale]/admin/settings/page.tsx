@@ -1,15 +1,14 @@
 import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/manage/page-header";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getDefaultBrandTheme } from "@/actions/organization";
+import { getDefaultBrandTheme, getOrganizationProfile } from "@/actions/organization";
 import { BrandingThemeForm } from "./branding-theme-form";
 import { getPendingRoleRequests } from "@/actions/role-requests";
 import { RoleRequestReview } from "@/components/admin/role-request-review";
 import { getPortalExperienceItems } from "@/actions/portal-experience";
 import { PortalExperienceEditor } from "@/components/admin/portal-experience-editor";
+import { OrgProfileForm } from "@/components/admin/org-profile-form";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +18,7 @@ export default async function AdminSettingsPage({ params }: { params: Promise<{ 
     const { data: defaultBrandTheme } = await getDefaultBrandTheme();
     const { data: pendingRoleRequests } = await getPendingRoleRequests();
     const { data: portalExperienceItems } = await getPortalExperienceItems();
+    const { data: orgProfile } = await getOrganizationProfile();
     return (
         <div className="space-y-6">
             <PageHeader title={t("title")} description={t("description")} />
@@ -40,25 +40,11 @@ export default async function AdminSettingsPage({ params }: { params: Promise<{ 
                             <CardDescription>{t("info_description")}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            <div className="grid gap-4 sm:grid-cols-2">
-                                <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("org_name")}</label>
-                                    <Input defaultValue="AWE EV Organization" />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("tax_id")}</label>
-                                    <Input defaultValue="NGO-948204-EU" />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("contact_email")}</label>
-                                    <Input defaultValue="contact@awe-ev.org" />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("currency")}</label>
-                                    <Input defaultValue="EUR" />
-                                </div>
-                            </div>
-                            <Button size="sm">{t("save_profile")}</Button>
+                            {orgProfile ? (
+                                <OrgProfileForm initial={orgProfile} />
+                            ) : (
+                                <p className="text-sm text-muted-foreground">{t("profile_unavailable")}</p>
+                            )}
                         </CardContent>
                     </Card>
                     <Card>

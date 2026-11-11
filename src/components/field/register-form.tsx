@@ -110,10 +110,12 @@ export function RegisterForm() {
         setError(null);
         try {
             const householdUuid = newOfflineUuid();
+            const userId = useFieldSyncStore.getState().currentUserId;
             await enqueueFieldOp({
                 offline_uuid: householdUuid,
                 kind: 'household',
                 idempotency_key: householdUuid,
+                user_id: userId,
                 payload: {
                     head_name: headName.trim(),
                     location_text: location.trim(),
@@ -127,6 +129,7 @@ export function RegisterForm() {
                     offline_uuid: uuid,
                     kind: 'beneficiary',
                     idempotency_key: uuid,
+                    user_id: userId,
                     payload: {
                         full_name: m.name.trim(),
                         sex: m.sex,

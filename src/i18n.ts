@@ -17,9 +17,13 @@ export default getRequestConfig(async ({ requestLocale }) => {
             messages: (await import(`../messages/${locale}.json`)).default
         };
     } catch {
+        // Declared locale without a catalog yet (e.g. field locales sw/ha).
+        // Fall back to English messages rather than rendering raw keys —
+        // an English page beats a broken one, and the roadmap tracks the
+        // pending catalogs.
         return {
             locale,
-            messages: {}
+            messages: (await import('../messages/en.json')).default
         };
     }
 });
