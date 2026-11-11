@@ -2,7 +2,37 @@
 
 This guide will help you set up Supabase for the NGO OS application.
 
-> **Note:** The legacy `schema-*.sql` files have been consolidated into 18 ordered migrations in `supabase/migrations/`. The originals are preserved in `supabase/archive/` for reference only — do not run them.
+> **Note:** The legacy `schema-*.sql` files have been consolidated into the ordered migration set in `supabase/migrations/` (53 files, latest `20261103000002_fix_schedule_cron_runtime.sql`; the step-4 table covers the original migrations 01–18). The originals are preserved in `supabase/archive/` for reference only — do not run them.
+
+## EGM Contract (Repository Root — Hay)
+
+## Classification
+Repository Root (Blueprint / Hay) — no direct application source code; rolls up child code contracts (`archive/`, `functions/`, `migrations/`). Seed SQL files and `config.toml` live at this level.
+
+## Child contracts
+- `./archive/README.md` — Component Package (Peanut): 24 superseded `.sql` schemas (reference only, do not run)
+- `./functions/README.md` — Intermediate Blueprint (Hay): 4 Edge Functions (`cron-runner`, `automation-engine`, `notification-dispatcher`, `webhook-delivery`) + `./_shared/`
+- `./migrations/README.md` — Component Package (Peanut): 53 ordered `.sql` migrations (source of truth for the live schema)
+
+## Interface (public symbols)
+| Symbol | File | Kind | Notes |
+|---|---|---|---|
+| `[functions.*]` blocks (`cron-runner`, `automation-engine`, `webhook-delivery`, `notification-dispatcher`) | `config.toml:426`–`448` | TOML config | `verify_jwt = false`; entrypoint `./functions/<name>/index.ts`; import map `./functions/deno.json` |
+| `seed.sql` default organization insert | `seed.sql:12` | SQL DML | Inserts `AWE e.V.` / slug `awe-ev`; runs on `db reset` ONLY (not `db push`) |
+| `seed-p0-production-content.sql` | `seed-p0-production-content.sql` | SQL DML | P0 production content seed |
+
+## Invariants
+- All four Edge Functions set `verify_jwt = false`; the auth boundary is the shared `CRON_SECRET` (`x-cron-secret` header) enforced by `functions/_shared/runtime.ts` (`requireCronSecret`) ([`config.toml:426`–`448`]).
+- Migrations are applied in filename (timestamp) order; `schema_paths = []` (migrations live in `./migrations/`) ([`config.toml:59`–`64`]).
+- Seed data (`seed.sql`) is applied on `npx supabase db reset` ONLY, never on `db push`; production starts empty ([`seed.sql:5`–`9`]).
+
+## Side Effects
+- `npx supabase db push` / `db reset` mutates the database schema (CREATE/ALTER TABLE, RLS, functions, triggers) — the intended effect of migration application.
+- `public.schedule_cron_jobs()` writes `cron.job` (pg_cron jobs) once `pg_cron`, `pg_net`, and the `cron_secret` Vault entry exist ([`migrations/20260918000001_scheduled_runtime.sql`]).
+- `seed.sql` inserts the default organization `AWE e.V.` ([`seed.sql:12`]).
+
+## Verification command
+`pnpm verify` (typecheck → lint → unit tests → migrations/actions/CTA/i18n gates); `npm run verify:migrations`; `npx supabase db push`; `npx supabase functions deploy --use-api --yes`
 
 ## Prerequisites
 
@@ -39,7 +69,7 @@ cp .env.example .env.local
 
 ### 4. Run Database Migrations
 
-The database schema is versioned as 18 ordered SQL migrations in `supabase/migrations/` (the legacy `schema-*.sql` files were consolidated into these; originals are in `supabase/archive/`).
+The database schema is versioned as 53 ordered SQL migrations in `supabase/migrations/` (latest `20261103000002_fix_schedule_cron_runtime.sql`; the step-4 table covers the original migrations 01–18, with migrations 19–53 extending the runtime, reliability kernel, trust kernel, and phase 0–2 finance truth). The legacy `schema-*.sql` files were consolidated into these; originals are in `supabase/archive/`.
 
 **Option A — Supabase CLI (recommended):**
 

@@ -19,6 +19,7 @@ transparency. Start here; each guide is self-contained for its reader.
 | 12 | [Roadmap](12-roadmap.md) | Product, leadership | What shipped, what is deferred, decision log |
 | 13 | [Glossary](13-glossary.md) | Everyone | Terms, states, and fund types in one place |
 | 14 | [Architecture decisions](14-architecture-decisions.md) | Engineers, product, leadership | ADRs; supersedes/annotates the roadmap's cut list |
+15 | [Feature inventory design](designs/ngo-os-feature-inventory.md) | Engineers, auditors | Code-verified feature inventory, doc-code alignment, CI drift gate |
 
 Older planning material lives in `planning/` and `runbooks/` (operational
 procedures). `production-readiness-notes.md` and `programs-production-plan.md`

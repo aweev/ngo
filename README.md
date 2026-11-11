@@ -101,3 +101,55 @@ guide, deployment, operations, testing, seeding, roadmap, glossary).
 - [`docs/planning/task.md`](./docs/planning/task.md) — build-wave execution log
 - [`MIGRATION-GUIDE.md`](./MIGRATION-GUIDE.md) — Go API → Next.js + Supabase architecture migration
 
+---
+
+## EGM Contract (Repository Root — Hay)
+
+### Classification
+Repository Root (Blueprint / Hay) — rolls up child code contracts (`scripts/`,
+`supabase/`, `src/`) plus documentation (`docs/`). No direct application source
+code at this level; all code lives in subdirectories with their own contracts.
+
+### Child contracts
+
+| Directory | Classification | Contract | What it covers |
+|-----------|---------------|----------|----------------|
+| [`./scripts/README.md`](./scripts/README.md) | Component Package (Peanut) | Leaf package | Verification gates, seed scripts, database test runners |
+| [`./supabase/README.md`](./supabase/README.md) | Repository Root (Hay) | Rolls up archive/, functions/, migrations/ | Edge functions, SQL migrations, seed SQL, config.toml |
+| [`./src/README.md`](./src/README.md) | Repository Root (Hay) | Rolls up actions/, app/, components/, hooks/, lib/, providers/, store/, styles/, types/ | Full Next.js application layer |
+| [`./docs/README.md`](./docs/README.md) | Documentation index | Rolls up 14 numbered guides, runbooks, planning | Product vision, architecture, data model, security, finance, field ops, admin, deployment, operations, testing, seeding, roadmap, glossary |
+
+### Interface (public symbols at root level)
+
+| Symbol | File | Kind | Notes |
+|--------|------|------|-------|
+| `pnpm verify` | `package.json:23` | CI verification | typecheck → lint → vitest → all static verify gates (migrations, actions, CTA links, i18n ×3, db-projections, RLS isolation, reliability, licenses) |
+| `pnpm build` | `package.json:12` | Production build | Next.js production build with PWA |
+| `pnpm test` | `package.json:16` | Unit tests | `vitest run` |
+| `pnpm dev` | `package.json:10` | Dev server | `next dev` on http://localhost:3000 |
+
+### Invariants
+
+- Every Server Action is auth-guarded or allowlisted — [`scripts/verify-action-auth.mjs`]
+- Every migration enables RLS on tenant tables — [`scripts/verify-rls-isolation.mjs`]
+- i18n parity across all 5 locales — [`scripts/verify-i18n.mjs`]
+- CTA links resolve under `/public` — [`scripts/verify-cta-links.mjs`]
+- Every tenant table has `organization_id`-scoped RLS policy — [`supabase/migrations/`]
+- Deno edge functions type-check — [`scripts/verify-functions.mjs`]
+- Allowed production licenses only — [`scripts/verify-licenses.mjs`]
+- Public site reads only `public_*` views — [`scripts/verify-db-projections.mjs`]
+
+### Side Effects
+
+- `pnpm build` generates `.next/` build output and PWA service worker files
+- `npx supabase db push` mutates the database schema (migrations applied in filename order)
+- `npx supabase db reset` reapplies all migrations and runs `seed.sql` (inserts default org `AWE e.V.`) — [`supabase/seed.sql:12`]
+- Seed runners write to a live Supabase database only with `--confirm` flag — [`scripts/seed-master.mjs`, `scripts/seed-personas.mjs`]
+- DB test runners always `ROLLBACK` inside a single transaction — [`scripts/run-rls-tests.mjs`, `scripts/run-runtime-tests.mjs`]
+
+### Verification command
+
+`pnpm verify` — runs `typecheck` → `lint` → `vitest` → all static verify gates
+(`verify:migrations`, `verify:actions`, `verify:cta-links`, `verify:i18n`,
+`verify:i18n:hardcoded`, `verify:i18n:usage`, `verify:db-projections`,
+`verify:rls`, `verify:reliability`, `verify:licenses`). Keep green locally before pushing.
