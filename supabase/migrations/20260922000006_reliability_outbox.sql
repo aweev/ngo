@@ -15,6 +15,10 @@
 --     stop snapshotting broad operational money rows
 -- =====================================================
 
+-- uuid-ossp is required for uuid_generate_v4() used in outbox_events.id
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 -- -----------------------------------------------------
 -- 1. Scheduler: leases, attempts, backoff, dead letters
 -- -----------------------------------------------------
@@ -81,7 +85,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS uq_webhook_deliveries_idem
 -- 4. Transactional outbox
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS outbox_events (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     event_type TEXT NOT NULL,
     payload JSONB NOT NULL DEFAULT '{}'::jsonb,
