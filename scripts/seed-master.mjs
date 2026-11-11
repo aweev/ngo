@@ -263,7 +263,32 @@ async function main() {
 
     // -- Budgets + lines --------------------------------------------------------
     async function ensureBudget(name, row) {
-        return done(await ensureRow(supabase, 'budgets', { organization_id: orgId, name }, { organization_id: orgId, name, ...row }));
+        const { data: existing, error: findErr } = await supabase
+            .from('budgets').select('id, currency')
+            .eq('organization_id', orgId).eq('name', name)
+            .maybeSingle();
+        if (findErr) throw new Error(`budgets lookup failed: ${findErr.message}`);
+        let id;
+        if (existing) {
+            id = existing.id;
+            stats.reused += 1;
+            // Keep the budget currency aligned with the seed intent. A same-named
+            // budget pre-existing with a different currency would make every
+            // budget line insert violate the single-currency guard.
+            if (existing.currency !== row.currency) {
+                const { error: updErr } = await supabase
+                    .from('budgets').update({ currency: row.currency }).eq('id', id);
+                if (updErr) throw new Error(`budget currency align failed: ${updErr.message}`);
+            }
+        } else {
+            const { data, error } = await supabase.from('budgets').insert({
+                organization_id: orgId, name, ...row,
+            }).select('id').single();
+            if (error) throw new Error(`budgets insert failed: ${error.message}`);
+            stats.created += 1;
+            id = data.id;
+        }
+        return id;
     }
     async function ensureLine(budgetId, category, allocated, fundId = null, currency = 'EUR') {
         const { data: existing } = await supabase.from('budget_lines').select('id')

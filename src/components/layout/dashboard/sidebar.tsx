@@ -46,6 +46,15 @@ export function DashboardSidebar({ userRole }: DashboardSidebarProps) {
         ...(hasRole(userRole, ["owner", "admin"]) ? adminNav : []),
     ];
 
+    // Deduplicate by href so the same route isn't rendered twice (e.g.
+    // /dashboard/settings appears in both baseNav and adminNav). Admin
+    // entries take precedence for a shared route.
+    const navByHref = new Map<string, (typeof nav)[number]>();
+    for (const item of nav) {
+        navByHref.set(item.href, item);
+    }
+    const uniqueNav = Array.from(navByHref.values());
+
     return (
         <aside className="hidden w-60 shrink-0 flex-col border-r bg-background md:flex">
             <div className="flex h-14 items-center border-b px-4 text-sm font-bold">
@@ -53,7 +62,7 @@ export function DashboardSidebar({ userRole }: DashboardSidebarProps) {
             </div>
 
             <nav className="flex-1 space-y-1 overflow-y-auto p-2">
-                {nav.map((item) => {
+                {uniqueNav.map((item) => {
                     const isActive =
                         item.href === "/dashboard"
                             ? pathname === "/dashboard"
