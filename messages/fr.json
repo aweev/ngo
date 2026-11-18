@@ -835,6 +835,19 @@
       "level_4": "Classe numérique",
       "min_label": "Petit don",
       "max_label": "Impact énorme"
+    },
+    "ThankYou": {
+      "title": "Merci pour votre don",
+      "description": "Votre soutien rend notre travail possible.",
+      "confirmed_title": "Don confirmé",
+      "confirmed_body": "Votre don de {amount} a été traité. Merci d'avoir fait la différence !",
+      "confirmed_recurring_body": "Votre don mensuel de {amount} a été mis en place. Merci pour votre soutien continu !",
+      "processing_title": "Traitement de votre don",
+      "processing_body": "Nous traitons votre don. Vous recevrez un e-mail de confirmation sous peu.",
+      "receipt_notice": "Un reçu a été envoyé à {email}.",
+      "secure_footer": "Votre transaction est chiffrée et sécurisée.",
+      "back_home": "Retour à l'accueil",
+      "see_impact": "Voir notre impact"
     }
   },
   "Volunteer": {

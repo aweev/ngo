@@ -835,6 +835,19 @@
       "level_4": "Digital Classroom",
       "min_label": "Small Gift",
       "max_label": "Massive Change"
+    },
+    "ThankYou": {
+      "title": "Thank You for Your Donation",
+      "description": "Your support makes our work possible.",
+      "confirmed_title": "Donation Confirmed",
+      "confirmed_body": "Your donation of {amount} has been processed. Thank you for making a difference!",
+      "confirmed_recurring_body": "Your monthly donation of {amount} has been set up. Thank you for your ongoing support!",
+      "processing_title": "Processing Your Donation",
+      "processing_body": "We are processing your donation. You will receive a confirmation email shortly.",
+      "receipt_notice": "A receipt has been sent to {email}.",
+      "secure_footer": "Your transaction is encrypted and secure.",
+      "back_home": "Back to Home",
+      "see_impact": "See Our Impact"
     }
   },
   "Volunteer": {

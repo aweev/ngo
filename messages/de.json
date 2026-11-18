@@ -835,6 +835,19 @@
       "level_4": "Digitales Klassenzimmer",
       "min_label": "Kleine Spende",
       "max_label": "Große Wirkung"
+    },
+    "ThankYou": {
+      "title": "Vielen Dank für Ihre Spende",
+      "description": "Ihre Unterstützung macht unsere Arbeit möglich.",
+      "confirmed_title": "Spende bestätigt",
+      "confirmed_body": "Ihre Spende von {amount} wurde bearbeitet. Vielen Dank, dass Sie einen Unterschied machen!",
+      "confirmed_recurring_body": "Ihre monatliche Spende von {amount} wurde eingerichtet. Vielen Dank für Ihre fortlaufende Unterstützung!",
+      "processing_title": "Spende wird bearbeitet",
+      "processing_body": "Wir bearbeiten Ihre Spende. Sie erhalten in Kürze eine Bestätigungs-E-Mail.",
+      "receipt_notice": "Eine Quittung wurde an {email} gesendet.",
+      "secure_footer": "Ihre Transaktion ist verschlüsselt und sicher.",
+      "back_home": "Zurück zur Startseite",
+      "see_impact": "Unsere Wirkung sehen"
     }
   },
   "Volunteer": {

@@ -835,6 +835,19 @@
       "level_4": "Aula digital",
       "min_label": "Pequeño regalo",
       "max_label": "Cambio masivo"
+    },
+    "ThankYou": {
+      "title": "Gracias por su donación",
+      "description": "Su apoyo hace posible nuestro trabajo.",
+      "confirmed_title": "Donación confirmada",
+      "confirmed_body": "Su donación de {amount} ha sido procesada. ¡Gracias por marcar la diferencia!",
+      "confirmed_recurring_body": "Su donación mensual de {amount} ha sido configurada. ¡Gracias por su apoyo continuo!",
+      "processing_title": "Procesando su donación",
+      "processing_body": "Estamos procesando su donación. Recibirá un correo de confirmación en breve.",
+      "receipt_notice": "Se ha enviado un recibo a {email}.",
+      "secure_footer": "Su transacción está cifrada y es segura.",
+      "back_home": "Volver al inicio",
+      "see_impact": "Ver nuestro impacto"
     }
   },
   "Volunteer": {

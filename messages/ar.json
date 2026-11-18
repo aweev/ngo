@@ -835,6 +835,19 @@
       "level_4": "فصل دراسي رقمي",
       "min_label": "هدية صغيرة",
       "max_label": "تغيير هائل"
+    },
+    "ThankYou": {
+      "title": "شكراً لتبرعك",
+      "description": "دعمك يجعل عملنا ممكناً.",
+      "confirmed_title": "تم تأكيد التبرع",
+      "confirmed_body": "تمت معالجة تبرعك بمبلغ {amount}. شكراً على إحداث الفرق!",
+      "confirmed_recurring_body": "تم إعداد تبرعك الشهري بمبلغ {amount}. شكراً على دعمك المستمر!",
+      "processing_title": "جاري معالجة تبرعك",
+      "processing_body": "نحن نقوم بمعالجة تبرعك. ستتلقى بريداً إلكترونياً للتأكيد قريباً.",
+      "receipt_notice": "تم إرسال إيصال إلى {email}.",
+      "secure_footer": "معاملتك مشفرة وآمنة.",
+      "back_home": "العودة للرئيسية",
+      "see_impact": "شاهد تأثيرنا"
     }
   },
   "Volunteer": {
