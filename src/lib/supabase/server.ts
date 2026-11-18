@@ -87,9 +87,14 @@ export function createSupabasePublicClient(
     options: { revalidate?: number | false; tags?: string[] } = {}
 ) {
     const { revalidate = PUBLIC_REVALIDATE_SECONDS, tags = [PUBLIC_CONTENT_TAG] } = options;
+    // Provide placeholder values during build if env vars are not set
+    // This allows static generation to succeed without Supabase connectivity
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder-anon-key';
+    
     return createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        supabaseUrl,
+        supabaseAnonKey,
         {
             auth: {
                 persistSession: false,
