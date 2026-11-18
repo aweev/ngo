@@ -16,8 +16,11 @@ export function createSupabaseAdminClient() {
         throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set');
     }
 
+    // Fallback for build/misconfigured deploy
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co';
+
     return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        supabaseUrl,
         serviceRoleKey,
         {
             cookies: {

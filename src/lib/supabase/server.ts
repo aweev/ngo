@@ -10,9 +10,13 @@ import { PUBLIC_CONTENT_TAG, PUBLIC_REVALIDATE_SECONDS } from '@/lib/cache-tags'
 export async function createSupabaseServerClient() {
     const cookieStore = await cookies();
 
+    // Fallback for build/misconfigured deploy
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder-anon-key';
+
     return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        supabaseUrl,
+        supabaseAnonKey,
         {
             cookies: {
                 getAll() {
@@ -42,9 +46,13 @@ export async function createSupabaseServerClient() {
 export async function createSupabaseRouteHandlerClient() {
     const cookieStore = await cookies();
 
+    // Fallback for build/misconfigured deploy
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co';
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'placeholder-anon-key';
+
     return createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        supabaseUrl,
+        supabaseAnonKey,
         {
             cookies: {
                 getAll() {
